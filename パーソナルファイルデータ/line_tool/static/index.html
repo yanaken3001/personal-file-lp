@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LINE返信案生成ツール | Z世代未経験層特化</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>📱 LINE返信案生成ツール</h1>
+        <p class="subtitle">Z世代未経験層に最適化されたメッセージを自動生成</p>
+      </header>
+
+      <main>
+        <form id="messageForm">
+          <!-- 診断結果セクション -->
+          <section class="form-section">
+            <h2>🎯 診断結果</h2>
+
+            <div class="form-group">
+              <label for="name"
+                >氏名(苗字のみ) <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="例: 山田"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="personalityType"
+                  >性格類型 <span class="required">*</span></label
+                >
+                <select id="personalityType" name="personalityType" required>
+                  <option value="">選択してください</option>
+                  <option value="PP">PP - エンターテイナー(鼓舞者)</option>
+                  <option value="PA">PA - アルチザン(芸術家)</option>
+                  <option value="PI">PI - コラボレーター(協調者)</option>
+                  <option value="PD">PD - アントレプレナー(起業家)</option>
+                  <option value="AP">AP - プラクティショナー(実務家)</option>
+                  <option value="AA">AA - リサーチャー(情報家)</option>
+                  <option value="AI">AI - ディリジェンサー(努力家)</option>
+                  <option value="AD">AD - アナリスト(分析官)</option>
+                  <option value="IP">IP - コントリビューター(貢献者)</option>
+                  <option value="IA">IA - サポーター(支援者)</option>
+                  <option value="II">II - ハーモナー(共感者)</option>
+                  <option value="ID">ID - シンカー(思考家)</option>
+                  <option value="DI">DI - プロモーター(推進者)</option>
+                  <option value="DP">DP - リーダー(指揮官)</option>
+                  <option value="DA">DA - ファシリテーター(先導者)</option>
+                  <option value="DD">DD - イノベーター(変革者)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="behaviorType"
+                  >行動類型 <span class="required">*</span></label
+                >
+                <select id="behaviorType" name="behaviorType" required>
+                  <option value="">選択してください</option>
+                  <option value="達成型">達成型</option>
+                  <option value="効率型">効率型</option>
+                  <option value="外見型">外見型</option>
+                  <option value="情報型">情報型</option>
+                  <option value="平和型">平和型</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- ユーザー属性セクション -->
+          <section class="form-section">
+            <h2>👤 ユーザー属性</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="employmentStatus">就業状況</label>
+                <select id="employmentStatus" name="employmentStatus">
+                  <option value="在職中">在職中</option>
+                  <option value="離職中">離職中</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="jobTiming">就職時期</label>
+                <select id="jobTiming" name="jobTiming">
+                  <option value="1. できるだけ早く">1. できるだけ早く</option>
+                  <option value="2. 1～3か月">2. 1～3か月</option>
+                  <option value="3. 3～6ヶ月">3. 3～6ヶ月</option>
+                  <option value="4. 相談したい" selected>4. 相談したい</option>
+                  <option value="5. 6ヶ月以上">5. 6ヶ月以上</option>
+                  <option value="6. 適職のみ知りたい">
+                    6. 適職のみ知りたい
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">希望勤務地</label>
+                <select id="location" name="location">
+                  <option value="北海道（札幌）">北海道（札幌）</option>
+                  <option value="宮城県">宮城県</option>
+                  <option value="東京都" selected>東京都</option>
+                  <option value="神奈川県">神奈川県</option>
+                  <option value="埼玉県">埼玉県</option>
+                  <option value="千葉県">千葉県</option>
+                  <option value="愛知県">愛知県</option>
+                  <option value="大阪府">大阪府</option>
+                  <option value="広島県">広島県</option>
+                  <option value="福岡県">福岡県</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="education">最終学歴</label>
+                <select id="education" name="education">
+                  <option value="中卒">中卒</option>
+                  <option value="高卒">高卒</option>
+                  <option value="専門卒">専門卒</option>
+                  <option value="高専卒">高専卒</option>
+                  <option value="短大卒">短大卒</option>
+                  <option value="大卒" selected>大卒</option>
+                  <option value="大学院">大学院</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- ナーチャリング情報セクション -->
+          <section class="form-section">
+            <h2>📊 ナーチャリング情報</h2>
+
+            <div class="form-group">
+              <label for="phase">メッセージPhase</label>
+              <select id="phase" name="phase">
+                <option value="phase1_initial" selected>
+                  Phase 1: 鏡と影(初回メッセージ)
+                </option>
+                <option value="phase1_followup">Phase 1: フォローアップ</option>
+                <option value="phase2_rapport">
+                  Phase 2: 戦略的雑談(ラポール構築)
+                </option>
+                <option value="phase2_value">Phase 2: 価値の断片化</option>
+                <option value="phase3_education">Phase 3: 市場教育</option>
+                <option value="phase4_interview">Phase 4: 面談誘導</option>
+                <option value="phase4_school">Phase 4: スクール誘導</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="conversationCount">対話回数</label>
+              <input
+                type="number"
+                id="conversationCount"
+                name="conversationCount"
+                min="0"
+                max="50"
+                value="0"
+              />
+              <small>ラポール形成度の指標(0-50)</small>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="currentDissatisfaction"
+                  name="currentDissatisfaction"
+                />
+                <span>現状否定フラグ(環境への不満)</span>
+              </label>
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="futureAnxiety"
+                  name="futureAnxiety"
+                />
+                <span>未来絶望フラグ(将来への恐怖)</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="skillDesire" name="skillDesire" />
+                <span>武器渇望フラグ(スキル習得意欲)</span>
+              </label>
+            </div>
+          </section>
+
+          <button type="submit" class="btn-primary">✨ LINE返信案を生成</button>
+        </form>
+
+        <!-- 結果表示エリア -->
+        <div id="result" class="result-container" style="display: none">
+          <h2>📝 生成結果</h2>
+
+          <div class="result-section">
+            <h3>💬 LINE返信案</h3>
+            <div id="messageOutput" class="message-output"></div>
+            <button onclick="copyMessage()" class="btn-secondary">
+              📋 コピー
+            </button>
+          </div>
+
+          <div class="result-section">
+            <h3>📈 ReadinessScore分析</h3>
+            <div id="scoreOutput" class="score-output"></div>
+          </div>
+
+          <div class="result-section">
+            <h3>💡 戦略的アドバイス</h3>
+            <div id="adviceOutput" class="advice-output"></div>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>© 2026 キャリア事業・戦略自動化プロジェクト</p>
+      </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>

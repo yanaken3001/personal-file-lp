@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PERSONAL FILE | 80 TYPES RESOLUTION</title>
+  <meta name="description" content="PERSONAL FILE: 80 TYPES RESOLUTION. SYSTEMATIC CAREER DECODING.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              white: '#FFFFFF',
+              black: '#000000',
+              blue: '#0044CC', // Iconic Blue
+              red: '#EE0000',  // Minimal Alert Red
+              gray: '#F5F5F5'  // Subtle Grid Background
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            eng: ['"Roboto"', 'sans-serif'],
+          },
+          spacing: {
+            'grid': '1px', // For Grid gaps
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Kashiwa Style: Super Flat & Grid */
+    body { background-color: #FFFFFF; color: #000000; font-family: "Noto Sans JP", sans-serif; }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1px;
+      padding: 1px;
+      background-color: #000000; /* Border Color */
+      border: 1px solid #000000;
+    }
+    
+    .grid-item {
+      background-color: #FFFFFF;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .iconic-symbol {
+      font-family: "Roboto", sans-serif;
+      line-height: 0.8;
+      letter-spacing: -0.05em;
+    }
+
+    /* Pictograms */
+    .picto-arrow {
+      width: 24px; height: 24px;
+      border-top: 2px solid #000;
+      border-right: 2px solid #000;
+      transform: rotate(45deg);
+    }
+
+    /* Utilities */
+    .border-b-black { border-bottom: 1px solid #000; }
+    .border-r-black { border-right: 1px solid #000; }
+    .border-black { border: 1px solid #000; }
+    
+    /* Type Grid specific */
+    .type-cell {
+      aspect-ratio: 1;
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 10px;
+    }
+    
+    /* Glitch/Grid Animations */
+    @keyframes gridPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    @keyframes glitchShift {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-2px, 1px); }
+      40% { transform: translate(2px, -1px); }
+      60% { transform: translate(-1px, -2px); }
+      80% { transform: translate(1px, 2px); }
+    }
+    
+    @keyframes letterFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .grid-line-pulse {
+      animation: gridPulse 3s ease-in-out infinite;
+    }
+    
+    .iconic-symbol:hover {
+      animation: glitchShift 0.3s ease-in-out;
+    }
+    
+    .letter-animate {
+      display: inline-block;
+      opacity: 0;
+      animation: letterFadeIn 0.5s ease-out forwards;
+    }
+    
+    .letter-animate:nth-child(1) { animation-delay: 0.1s; }
+    .letter-animate:nth-child(2) { animation-delay: 0.15s; }
+    .letter-animate:nth-child(3) { animation-delay: 0.2s; }
+    .letter-animate:nth-child(4) { animation-delay: 0.25s; }
+    .letter-animate:nth-child(5) { animation-delay: 0.3s; }
+    .letter-animate:nth-child(6) { animation-delay: 0.35s; }
+    .letter-animate:nth-child(7) { animation-delay: 0.4s; }
+    .letter-animate:nth-child(8) { animation-delay: 0.45s; }
+    .letter-animate:nth-child(9) { animation-delay: 0.5s; }
+    .letter-animate:nth-child(10) { animation-delay: 0.55s; }
+    .letter-animate:nth-child(11) { animation-delay: 0.6s; }
+    .letter-animate:nth-child(12) { animation-delay: 0.65s; }
+    .letter-animate:nth-child(13) { animation-delay: 0.7s; }
+    .letter-animate:nth-child(14) { animation-delay: 0.75s; }
+    .letter-animate:nth-child(15) { animation-delay: 0.8s; }
+    .letter-animate:nth-child(16) { animation-delay: 0.85s; }
+    
+  </style>
+</head>
+<body class="bg-white text-brand-black antialiased overflow-x-hidden selection:bg-brand-blue selection:text-white">
+
+  <!-- ===== HEADER (Minimal) ===== -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-white border-b border-black h-16 flex items-center justify-between px-6">
+    <div class="font-eng font-black tracking-tighter text-xl">PERSONAL FILE</div>
+    <a href="https://line.me/R/ti/p/@186mrigv" class="font-bold text-sm bg-brand-black text-white px-4 py-2 hover:bg-brand-blue transition-colors">
+      診断を受ける →
+    </a>
+  </header>
+
+
+  <!-- ===== HERO SECTION (THE SYMBOL) ===== -->
+  <section class="h-screen flex flex-col justify-between items-center relative overflow-hidden pt-16 pb-12 md:pb-16">
+    <!-- Top Spacer -->
+    <div class="flex-1"></div>
+
+    <!-- The Symbol (Centered) -->
+    <div class="relative z-10 text-center flex-shrink-0">
+      <!-- The 80 Symbol -->
+      <h1 class="iconic-symbol font-black text-[35vw] md:text-[25vw] lg:text-[20vw] text-brand-black leading-none select-none">
+        80
+      </h1>
+      <div class="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] md:w-[60vw] lg:w-[50vw] h-[1px] bg-brand-blue grid-line-pulse"></div>
+      <div class="absolute top-1/2 left-[50%] -translate-x-1/2 -translate-y-1/2 w-[1px] h-[40vw] md:h-[30vw] lg:h-[25vw] bg-brand-blue grid-line-pulse" style="animation-delay: 1.5s;"></div>
+      
+      <p class="font-bold text-sm md:text-xl tracking-widest mt-4 md:mt-6 text-brand-blue" id="typesResolution">
+        80タイプの才能診断
+      </p>
+      
+      <script>
+        // Letter-by-letter animation for TYPES RESOLUTION
+        document.addEventListener('DOMContentLoaded', function() {
+          const text = document.getElementById('typesResolution');
+          const originalText = text.textContent.trim();
+          text.innerHTML = '';
+          
+          for (let i = 0; i < originalText.length; i++) {
+            const span = document.createElement('span');
+            span.className = 'letter-animate';
+            span.textContent = originalText[i];
+            span.style.animationDelay = (i * 0.05) + 's';
+            text.appendChild(span);
+          }
+        });
+      </script>
+    </div>
+
+    <!-- Bottom Spacer -->
+    <div class="flex-1"></div>
+
+    <!-- Message + CTA (Bottom) -->
+    <div class="w-full text-center px-6 flex-shrink-0">
+      <!-- Message -->
+      <div class="mb-6 md:mb-8">
+        <p class="text-sm md:text-base font-bold text-gray-600 mb-1">
+          16タイプでは足りない。
+        </p>
+        <p class="text-base md:text-xl font-black text-black">
+          80タイプで、あなたの<span class="text-brand-blue">「勝てる場所」</span>を見つける。
+        </p>
+      </div>
+
+      <!-- CTA Button -->
+      <a href="https://line.me/R/ti/p/@186mrigv" class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-10 md:px-12 py-4 md:py-5 rounded-full font-bold text-base md:text-lg transition-colors shadow-lg hover:shadow-xl">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+        </svg>
+        無料で診断を受ける
+      </a>
+      <p class="text-xs text-gray-500 mt-3">15分で完了 | 登録後すぐに診断開始</p>
+    </div>
+  </section>
+
+
+
+
+  <!-- ===== PROVEN RESULTS (Statistics) ===== -->
+  <section class="border-b border-black bg-white py-24">
+    <div class="container mx-auto px-6">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <div class="inline-block border border-black px-4 py-1 mb-8">
+          <span class="font-eng font-bold text-xs tracking-widest text-black">PROVEN RESULTS</span>
+        </div>
+        <h2 class="font-bold text-2xl md:text-4xl text-black mb-2">
+          本物の診断は、<span class="text-brand-blue">数字</span>で証明する。
+        </h2>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-1 mt-16 max-w-5xl mx-auto bg-black p-1">
+        <!-- Stat 1: 80 Types -->
+        <div class="bg-white p-8 md:p-12 flex flex-col items-center justify-center text-center hover:bg-brand-gray transition-colors group">
+          <div class="font-eng font-black text-6xl md:text-7xl text-brand-black mb-4 group-hover:text-brand-blue transition-colors">
+            80<span class="text-3xl md:text-4xl font-bold ml-1">Types</span>
+          </div>
+          <div class="text-sm font-bold text-gray-600 leading-relaxed">
+            他社の5倍以上の<br>
+            緻密度で分析
+          </div>
+        </div>
+
+        <!-- Stat 2: 94% -->
+        <div class="bg-white p-8 md:p-12 flex flex-col items-center justify-center text-center hover:bg-brand-gray transition-colors group">
+          <div class="font-eng font-black text-6xl md:text-7xl text-brand-black mb-4 group-hover:text-brand-blue transition-colors">
+            94<span class="text-3xl md:text-4xl font-bold">%</span>
+          </div>
+          <div class="text-sm font-bold text-gray-600 leading-relaxed">
+            診断結果の<br>
+            納得度
+          </div>
+        </div>
+
+        <!-- Stat 3: 98% -->
+        <div class="bg-white p-8 md:p-12 flex flex-col items-center justify-center text-center hover:bg-brand-gray transition-colors group">
+          <div class="font-eng font-black text-6xl md:text-7xl text-brand-black mb-4 group-hover:text-brand-blue transition-colors">
+            98<span class="text-3xl md:text-4xl font-bold">%</span>
+          </div>
+          <div class="text-sm font-bold text-gray-600 leading-relaxed">
+            入社半年後の<br>
+            定着率
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY 20 MINUTES (Comparison) ===== -->
+  <section class="border-b border-black bg-white py-24">
+    <div class="container mx-auto px-6">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <div class="inline-block border border-black px-4 py-1 mb-8">
+          <span class="font-eng font-bold text-xs tracking-widest text-black">WHY 200 QUESTIONS?</span>
+        </div>
+        <h2 class="font-bold text-2xl md:text-4xl text-black mb-2">
+          タイパ重視の時代に、<br>
+          あえて<span class="text-brand-blue">「15分」</span>かける理由。
+        </h2>
+      </div>
+
+      <!-- Comparison Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-1 mt-16 max-w-5xl mx-auto bg-black p-1">
+        <!-- Left: Standard Diagnostics -->
+        <div class="bg-white p-8 md:p-12">
+          <div class="mb-8 pb-4">
+            <h3 class="font-bold text-lg text-gray-600">一般的な適職診断</h3>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="flex justify-between items-baseline border-b border-gray-200 pb-4">
+              <span class="text-sm font-bold text-gray-500">設問数</span>
+              <span class="font-eng font-black text-3xl text-gray-400">10~30 Qs</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-200 pb-4">
+              <span class="text-sm font-bold text-gray-500">分類数</span>
+              <span class="font-eng font-black text-3xl text-gray-400">4~16 Types</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-200 pb-4">
+              <span class="text-sm font-bold text-gray-500">所要時間</span>
+              <span class="font-eng font-black text-3xl text-gray-400">1~3 Min</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-200 pb-4">
+              <span class="text-sm font-bold text-gray-500">精度</span>
+              <span class="font-bold text-base text-gray-400">バーナム効果</span>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-6">
+            <p class="text-sm md:text-base font-bold text-gray-400 leading-relaxed">
+              誰にでも当てはまる、<br>
+              無難な言葉の羅列
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Personal File (Recommended) -->
+        <div class="bg-white p-8 md:p-12 relative">
+          <div class="absolute top-4 right-4 bg-brand-blue text-white text-[10px] font-bold px-3 py-1">
+            RECOMMENDED
+          </div>
+          
+          <div class="mb-8 pb-4">
+            <h3 class="font-bold text-lg text-black">パーソナルファイル</h3>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="flex justify-between items-baseline border-b border-gray-300 pb-4">
+              <span class="text-sm font-bold text-gray-600">設問数</span>
+              <span class="font-eng font-black text-3xl text-brand-blue">200 Qs</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-300 pb-4">
+              <span class="text-sm font-bold text-gray-600">分類数</span>
+              <span class="font-eng font-black text-3xl text-brand-blue">80 Types</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-300 pb-4">
+              <span class="text-sm font-bold text-gray-600">所要時間</span>
+              <span class="font-eng font-black text-3xl text-brand-blue">15 Min</span>
+            </div>
+            
+            <div class="flex justify-between items-baseline border-b border-gray-300 pb-4">
+              <span class="text-sm font-bold text-gray-600">精度</span>
+              <span class="font-bold text-base text-brand-blue">あなた固有の結果</span>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-6">
+            <p class="text-sm md:text-base font-bold text-black leading-relaxed">
+              あなただけの才能を<br>
+              データで証明する
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY 200 QUESTIONS (Iconic Logic) ===== -->
+  <section class="border-b border-black">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+        <!-- Visual Number -->
+        <div class="p-12 md:p-24 bg-brand-black text-white flex flex-col justify-center items-center border-b lg:border-b-0 lg:border-r border-white relative overflow-hidden">
+            <h2 class="font-eng font-black text-[25vw] lg:text-[15vw] leading-none tracking-tighter select-none">200</h2>
+            <p class="font-eng font-bold text-sm tracking-[0.5em] absolute bottom-12">QUESTIONS</p>
+        </div>
+        
+        <!-- Logic Text -->
+        <div class="p-12 md:p-24 bg-white flex flex-col justify-center">
+            <h3 class="font-bold text-3xl md:text-5xl mb-8 leading-tight">
+                なぜ、<br>
+                200問なのか。
+            </h3>
+            <div class="space-y-8 font-bold text-sm md:text-base leading-loose tracking-wide">
+                <p>
+                    <span class="border-b-2 border-brand-red">人間の複雑さは、16分割では測れない。</span><br>
+                    たった数分の診断で、あなたのキャリアが決まっていいはずがない。
+                </p>
+                <p>
+                    我々は「早さ」を捨てた。<br>
+                    徹底的な<span class="text-brand-blue">「解像度」</span>を選んだ。
+                </p>
+                <p>
+                    200の問いかけは、あなたの思考の癖、<br>
+                    行動の源泉、そして隠れた矛盾を<br>
+                    1mmの狂いもなくスキャンするための<br>
+                    <span class="bg-black text-white px-1">必須コスト</span>である。
+                </p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- ===== 80 TYPES MATRIX (The Module) ===== -->
+  <section class="border-b border-black bg-white py-20 overflow-hidden">
+    <div class="container mx-auto px-6">
+      
+      <!-- Title -->
+      <div class="text-center mb-16">
+        <h2 class="font-eng font-black text-6xl md:text-8xl tracking-tighter mb-4 text-brand-black">MATRIX</h2>
+        <p class="font-bold text-xs tracking-widest uppercase">4-Quadrant Psychological Strategy Map</p>
+      </div>
+      
+      <!-- Flex Container for Layout -->
+      <div class="flex flex-col items-center max-w-6xl mx-auto">
+        
+        <!-- Top Axis Labels -->
+        <div class="w-full max-w-[800px] mb-4 relative">
+             <!-- Center Top Label -->
+             <div class="text-center mb-2">
+                <span class="text-sm md:text-base font-bold tracking-widest block">外向性（協調性・社交性）が高い</span>
+                <span class="block text-2xl leading-none">↑</span>
+             </div>
+             <!-- Side Top Labels -->
+             <div class="flex justify-between w-full px-8 absolute bottom-0 left-0 right-0 pointer-events-none">
+                 <span class="text-xs md:text-sm font-bold opacity-70">協調性（高）</span>
+                 <span class="text-xs md:text-sm font-bold opacity-70">社交性（高）</span>
+             </div>
+        </div>
+
+        <div class="flex flex-row items-stretch justify-center w-full">
+            
+            <!-- Left Label (Spacer) -->
+            <div class="hidden md:flex flex-col justify-center items-end w-32 mr-4 text-right">
+            </div>
+            
+            <!-- Main Grid Box (Border-4 Black) -->
+            <div class="border-4 border-black w-full max-w-[800px] aspect-square relative bg-brand-gray grid grid-cols-2 grid-rows-2">
+                
+                <!-- QUADRANT I (Top Left) -->
+                <!-- SUPPORT / サポート -->
+                <!-- Hover: Yellow Background, Orange Text -->
+                <div class="border-b-2 border-r-2 border-black bg-white relative group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-yellow-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+
+                    <!-- Sub-Grid 2x2 -->
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                        <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">II</div>
+                        <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">IP</div>
+                        <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">IA</div>
+                        <div class="flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">ID</div>
+                    </div>
+                    
+                    <!-- Center Overlay (Text) -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110">
+                        <span class="font-eng font-black text-6xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-yellow-600 transition-colors">I</span>
+                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-yellow-600 group-hover:text-yellow-600 transition-colors">SUPPORT / サポート</span>
+                    </div>
+
+                    <!-- Hover Description -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
+                        <span class="text-lg md:text-2xl font-bold text-yellow-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
+                            協調大事、リスク回避、平和志向
+                        </span>
+                    </div>
+                </div>
+
+                <!-- QUADRANT P (Top Right) -->
+                <!-- VITALITY / バイタリティ -->
+                <!-- Hover: Pink Background, Pink Text -->
+                <div class="border-b-2 border-black bg-white relative group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-pink-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                     
+                    <!-- Sub-Grid 2x2 -->
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                        <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">PI</div>
+                        <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">PP</div>
+                        <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">PA</div>
+                        <div class="flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">PD</div>
+                    </div>
+                    
+                    <!-- Center Overlay -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110">
+                        <span class="font-eng font-black text-6xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-pink-600 transition-colors">P</span>
+                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-pink-600 group-hover:text-pink-600 transition-colors">VITALITY / バイタリティ</span>
+                    </div>
+
+                    <!-- Hover Description -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
+                         <span class="text-lg md:text-2xl font-bold text-pink-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
+                            ポジティブ、感覚派、ノリ、行動
+                        </span>
+                    </div>
+                </div>
+
+                <!-- QUADRANT A (Bottom Left) -->
+                <!-- ANALYZE / アナライズ -->
+                <!-- Hover: Blue Background, Blue Text -->
+                <div class="border-r-2 border-black bg-white relative group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+
+                     <!-- Sub-Grid 2x2 -->
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                        <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">AI</div>
+                        <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">AP</div>
+                        <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">AA</div>
+                        <div class="flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">AD</div>
+                    </div>
+                    
+                    <!-- Center Overlay -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110">
+                        <span class="font-eng font-black text-6xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-blue-600 transition-colors">A</span>
+                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">ANALYZE / アナライズ</span>
+                    </div>
+
+                    <!-- Hover Description -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
+                         <span class="text-lg md:text-2xl font-bold text-blue-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
+                            慎重、論理重視、正確性重視
+                        </span>
+                    </div>
+                </div>
+
+                <!-- QUADRANT D (Bottom Right) -->
+                <!-- INNOVATE / イノベート -->
+                <!-- Hover: Green Background, Green Text -->
+                <div class="bg-white relative group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+
+                     <!-- Sub-Grid 2x2 -->
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                        <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">DI</div>
+                        <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">DP</div>
+                        <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">DA</div>
+                        <div class="flex items-center justify-center font-eng font-black text-2xl md:text-4xl text-brand-black">DD</div>
+                    </div>
+                    
+                    <!-- Center Overlay -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110">
+                        <span class="font-eng font-black text-6xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-green-600 transition-colors">D</span>
+                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-green-600 group-hover:text-green-600 transition-colors">INNOVATE / イノベート</span>
+                    </div>
+
+                    <!-- Hover Description -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
+                         <span class="text-lg md:text-2xl font-bold text-green-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
+                            合理性、個人主義、即決
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Label (X-Axis Right) -->
+            <div class="hidden md:flex flex-col justify-center items-start w-32 ml-4">
+                <span class="text-2xl leading-none">→</span>
+                <span class="text-xs md:text-sm font-bold tracking-widest mt-2">意思決定・行動の<br>スピードが早い</span>
+            </div>
+            
+        </div>
+
+        <!-- Bottom Label (X-Axis Bottom) -->
+        <div class="mt-4 flex justify-between w-full max-w-[800px] px-4">
+             <div class="flex items-center gap-2">
+                <span class="text-2xl leading-none">←</span>
+                <span class="text-sm md:text-base font-bold tracking-widest">正確性重視</span>
+             </div>
+             <div class="flex items-center gap-2">
+                <span class="text-sm md:text-base font-bold tracking-widest">即断即決</span>
+                <span class="text-2xl leading-none">→</span>
+             </div>
+        </div>
+        
+        <div class="text-center mt-12 w-full">
+            <p class="font-mono text-[10px] tracking-widest text-gray-400">SYSTEM STATUS: MAPPING COMPLETE</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===== 80 TYPES LIST (Full Grid) ===== -->
+  <section class="border-b border-black bg-brand-gray py-24 overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="font-eng font-black text-6xl md:text-8xl tracking-tighter mb-4 text-brand-black">80TYPE</h2>
+        <p class="font-bold text-xs tracking-widest uppercase mb-12">Full Resolution Index</p>
+        
+        <!-- Logic Visual: 4 x 4 x 5 -->
+        <div class="flex items-center justify-center space-x-2 md:space-x-6 mb-16">
+            <!-- Circle 1: Personality -->
+            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border border-gray-400 flex flex-col items-center justify-center bg-gray-100">
+               <span class="text-xs md:text-sm font-bold text-gray-600 mb-2">性格類型</span>
+               <span class="font-eng font-black text-4xl md:text-5xl text-brand-black">4</span>
+            </div>
+  
+            <!-- Cross 1 -->
+            <div class="text-gray-400">
+                <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+  
+            <!-- Circle 2: Auxiliary -->
+            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border border-gray-400 flex flex-col items-center justify-center bg-gray-100">
+               <span class="text-xs md:text-sm font-bold text-gray-600 mb-2">補助類型</span>
+               <span class="font-eng font-black text-4xl md:text-5xl text-brand-black">4</span>
+            </div>
+  
+            <!-- Cross 2 -->
+            <div class="text-gray-400">
+                <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+  
+            <!-- Circle 3: Behavior -->
+            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border border-gray-400 flex flex-col items-center justify-center bg-gray-100">
+               <span class="text-xs md:text-sm font-bold text-gray-600 mb-2">行動類型</span>
+               <span class="font-eng font-black text-4xl md:text-5xl text-brand-black">5</span>
+            </div>
+        </div>
+      </div>
+      
+      <!-- The Grid -->
+      <div class="border-t border-l border-black bg-white mx-auto max-w-[1200px] grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 relative">
+        <!-- JS injected cells -->
+        <script>
+          // 80タイプのデータ（Excelから抽出）
+          const typesData = [
+            {"name": "達成型ディリジェンサー", "summary": "真面目で努力家な委員長タイプ"},
+            {"name": "効率型ディリジェンサー", "summary": "コツコツ積み重ねて専門家になっていく人材"},
+            {"name": "外見型ディリジェンサー", "summary": "不安だからこそ人の倍努力するタイプ"},
+            {"name": "情報型ディリジェンサー", "summary": "真面目で信頼できる優等生"},
+            {"name": "平和型ディリジェンサー", "summary": "努力と誠実性で上り詰めていくタイプ"},
+            {"name": "達成型リサーチャー", "summary": "自分の専門分野では知識量で絶対に負けたくない専門家"},
+            {"name": "効率型リサーチャー", "summary": "合理的で頭の回転が速いタイプ"},
+            {"name": "外見型リサーチャー", "summary": "知的でカッコイイ人が多い類型"},
+            {"name": "情報型リサーチャー", "summary": "自分の専門分野に関してはまるで歩くWikipedia"},
+            {"name": "平和型リサーチャー", "summary": "知的で優しい先生タイプ"},
+            {"name": "達成型アナリスト", "summary": "他人の論理矛盾に瞬時に気づけるスナイパー"},
+            {"name": "効率型アナリスト", "summary": "何でも効率よくこなせるスーパーマン"},
+            {"name": "外見型アナリスト", "summary": "理路整然と意見を言える演説家タイプ"},
+            {"name": "情報型アナリスト", "summary": "ハマったらとことん学ぶ研究者タイプ"},
+            {"name": "平和型アナリスト", "summary": "賢く優しいバランスの良い管理職"},
+            {"name": "達成型プラクティショナー", "summary": "変幻自在な表情を持つ柔軟なタイプ"},
+            {"name": "効率型プラクティショナー", "summary": "無駄なことは極力省いて生きていきたいタイプ"},
+            {"name": "外見型プラクティショナー", "summary": "人に弱みを見せない強いハートの持ち主"},
+            {"name": "情報型プラクティショナー", "summary": "興味あるものを無我夢中で探究できるタイプ"},
+            {"name": "平和型プラクティショナー", "summary": "感情の浮き沈みをある程度コントロールできるタイプ"},
+            {"name": "達成型イノベーター", "summary": "誰も止められない行動力おばけ"},
+            {"name": "効率型イノベーター", "summary": "全類型の中でトップクラスの意思決定スピードを持つ類型"},
+            {"name": "外見型イノベーター", "summary": "数百人に１人くらいのとても珍しい類型"},
+            {"name": "情報型イノベーター", "summary": "高い学習能力と意思決定スピードを併せ持った類型"},
+            {"name": "平和型イノベーター", "summary": "意思決定スピードと他人への配慮を両立させるバランスの良い類型"},
+            {"name": "達成型ファシリテーター", "summary": "誰も敵わないロジックマシーン"},
+            {"name": "効率型ファシリテーター", "summary": "何でもできる最強人材"},
+            {"name": "外見型ファシリテーター", "summary": "見た目も実力も大事にするタイプ"},
+            {"name": "情報型ファシリテーター", "summary": "特定の分野で第一人者になりやすいタイプ"},
+            {"name": "平和型ファシリテーター", "summary": "ロジカルかつ人当たりも良い万能タイプ"},
+            {"name": "達成型プロモーター", "summary": "柔軟性と決断力をバランスよく持つタイプ"},
+            {"name": "効率型プロモーター", "summary": "より効率的な選択肢を見つけたら意見を速やかに変更できるタイプ"},
+            {"name": "外見型プロモーター", "summary": "多角的視点で検討することが得意な類型"},
+            {"name": "情報型プロモーター", "summary": "一度決断したことでも後でよく調べて再確認するタイプ"},
+            {"name": "平和型プロモーター", "summary": "意思決定スピードがとても早く、周りにも気を使えるタイプ"},
+            {"name": "達成型リーダー", "summary": "言葉の力を駆使して人を動かす天性のリーダー類型"},
+            {"name": "効率型リーダー", "summary": "難解な物事を単純化して最速で目標を達成する類型"},
+            {"name": "外見型リーダー", "summary": "自身の能力を理解しその力を活せる自信を持ったリーダー類型"},
+            {"name": "情報型リーダー", "summary": "決断力も知性も併せ持っている完成度の高いリーダー類型"},
+            {"name": "平和型リーダー", "summary": "リーダーシップと社交性を併せ持つバランスの良い管理職類型"},
+            {"name": "達成型サポーター", "summary": "真面目で正義感が強い委員長タイプ"},
+            {"name": "効率型サポーター", "summary": "効率的でサポート力抜群のタイプ"},
+            {"name": "外見型サポーター", "summary": "周囲の状況や感情に配慮し、慎重に行動できるタイプ"},
+            {"name": "情報型サポーター", "summary": "頼れる影の支援者タイプ"},
+            {"name": "平和型サポーター", "summary": "優しく気が利くサポート役"},
+            {"name": "達成型シンカー", "summary": "柔軟で迅速な判断力を持つタイプ"},
+            {"name": "効率型シンカー", "summary": "深い考察により効率的な選択肢を選び出すタイプ"},
+            {"name": "外見型シンカー", "summary": "他人を気遣い、周りの状況を把握するタイプ"},
+            {"name": "情報型シンカー", "summary": "情報を集めて深く考えることが好きなタイプ"},
+            {"name": "平和型シンカー", "summary": "周りを気遣い、細かく考える丁寧なタイプ"},
+            {"name": "達成型ハーモナー", "summary": "冷静な判断と情熱があふれるタイプ"},
+            {"name": "効率型ハーモナー", "summary": "忠実かつ効率的に働く頼れるサポート役"},
+            {"name": "外見型ハーモナー", "summary": "他人の意見を大切にする慎重なタイプ"},
+            {"name": "情報型ハーモナー", "summary": "あれこれ調べて情報通になっていくタイプ"},
+            {"name": "平和型ハーモナー", "summary": "この類型の80％は優しさでできている"},
+            {"name": "達成型コントリビューター", "summary": "真面目さと熱意が融合したタイプ"},
+            {"name": "効率型コントリビューター", "summary": "頼りになる事務員タイプ"},
+            {"name": "外見型コントリビューター", "summary": "他人の意見を考慮する気遣いのあるタイプ"},
+            {"name": "情報型コントリビューター", "summary": "事務処理能力が高い万能型人材"},
+            {"name": "平和型コントリビューター", "summary": "一緒にいて絶妙な安心感を与えるタイプ"},
+            {"name": "達成型アルチザン", "summary": "言いたいことをハッキリと言う職人タイプ"},
+            {"name": "効率型アルチザン", "summary": "ポジティブと慎重と合理主義が同居する不思議なタイプ"},
+            {"name": "外見型アルチザン", "summary": "イケてる感じを演出したい芸術家タイプ"},
+            {"name": "情報型アルチザン", "summary": "勉強熱心で特殊な性格を持った職人タイプ"},
+            {"name": "平和型アルチザン", "summary": "他人に合わせてテンションを調整できるタイプ"},
+            {"name": "達成型アントレプレナー", "summary": "何度失敗しても諦めない天性のアントレプレナー類型"},
+            {"name": "効率型アントレプレナー", "summary": "難しい課題でも周りを巻き込みながら達成していく優秀類型"},
+            {"name": "外見型アントレプレナー", "summary": "行動力抜群の目立ちたがり屋が多い類型"},
+            {"name": "情報型アントレプレナー", "summary": "決断力も行動力も知性も併せ持っている万能型"},
+            {"name": "平和型アントレプレナー", "summary": "極めてバランスの良い管理職類型"},
+            {"name": "達成型コラボレーター", "summary": "感情が高まると、積極的に行動するタイプ"},
+            {"name": "効率型コラボレーター", "summary": "明るく元気で仕事もできるタイプ"},
+            {"name": "外見型コラボレーター", "summary": "社交的で魅力的な一面を持つタイプ"},
+            {"name": "情報型コラボレーター", "summary": "社交的で知識もある優秀類型"},
+            {"name": "平和型コラボレーター", "summary": "チームに一人はほしいムードメーカー"},
+            {"name": "達成型エンターテイナー", "summary": "何度失敗しても折れないスーパーポジティブ類型"},
+            {"name": "効率型エンターテイナー", "summary": "高いコミュニケーションスキルと効率性を併せ持つ類型"},
+            {"name": "外見型エンターテイナー", "summary": "天性のエンターテイナー類型"},
+            {"name": "情報型エンターテイナー", "summary": "社交性と知性を併せ持った優れた能型"},
+            {"name": "平和型エンターテイナー", "summary": "社交性と優しさを併せ持った管理職適任類型"}
+          ];
+
+          const typeGridSect = document.currentScript.parentElement;
+          const typeCats = ['A','B','C','D','E','F','G','H'];
+          
+          for(let i=0; i<80; i++) {
+            const div = document.createElement('div');
+            
+            // Minimal Kashiwa Style
+            div.className = `aspect-square border-r border-b border-black flex flex-col items-center justify-center hover:bg-brand-blue hover:text-white transition-colors cursor-pointer group relative`;
+            
+            const cat = typeCats[Math.floor(i / 10)];
+            const num = (i % 10) + 1;
+            const code = `${cat}-${num.toString().padStart(2, '0')}`;
+            
+            // Get type data
+            const typeData = typesData[i];
+            
+            div.innerHTML = `
+                <span class="font-eng font-black text-xl md:text-2xl mb-1">${code}</span>
+                <span class="text-[8px] font-bold tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">TYPE ${code}</span>
+                
+                <!-- Tooltip -->
+                <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-brand-black text-white p-4 rounded-none border border-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 hidden group-hover:block">
+                  <div class="font-bold text-sm mb-2 tracking-wide">${typeData.name}</div>
+                  <div class="text-xs leading-relaxed opacity-90">${typeData.summary}</div>
+                  <!-- Arrow -->
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+                </div>
+            `;
+            
+            typeGridSect.appendChild(div);
+          }
+        </script>
+      </div>
+       <div class="text-center mt-8">
+        <p class="font-mono text-[10px] tracking-widest">INDEX: 01-80 / COMPLETE</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VOICES (User Testimonials) ===== -->
+  <section class="border-b border-black bg-white py-24">
+    <div class="container mx-auto px-6">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <div class="inline-block border border-black px-4 py-1 mb-8">
+          <span class="font-eng font-bold text-xs tracking-widest text-black">VOICES</span>
+        </div>
+        <h2 class="font-bold text-2xl md:text-4xl text-black mb-2">
+          やり遂げた人だけが知る、<br>
+          <span class="text-brand-blue">衝撃</span>。
+        </h2>
+      </div>
+
+      <!-- Testimonials Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-1 mt-16 max-w-5xl mx-auto bg-black p-1">
+        <!-- Testimonial 1 -->
+        <div class="bg-white p-8 md:p-10 hover:bg-brand-gray transition-colors">
+          <p class="text-sm font-bold leading-relaxed mb-6 text-black">
+            200問は正直長かった。でも結果を見て納得がいった。自分でも気づかなかった強みがそこに書いてあった。
+          </p>
+          <div class="text-xs font-bold text-gray-500">
+            — 24歳・フリーター → ITエンジニア
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="bg-white p-8 md:p-10 hover:bg-brand-gray transition-colors">
+          <p class="text-sm font-bold leading-relaxed mb-6 text-black">
+            "よくある診断"とは次元が違う。80タイプの中から自分だけのタイプが出てきて、「これ、まさに自分だ」と思った。
+          </p>
+          <div class="text-xs font-bold text-gray-500">
+            — 22歳・既卒 → 人事アシスタント
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="bg-white p-8 md:p-10 hover:bg-brand-gray transition-colors">
+          <p class="text-sm font-bold leading-relaxed mb-6 text-black">
+            提案された職種が自分では絶対に思いつかなかったもので、でも説明を読んだら「確かに向いてるかも」と納得した。
+          </p>
+          <div class="text-xs font-bold text-gray-500">
+            — 26歳・第二新卒 → カスタマーサクセス
+          </div>
+        </div>
+
+        <!-- Testimonial 4 -->
+        <div class="bg-white p-8 md:p-10 hover:bg-brand-gray transition-colors">
+          <p class="text-sm font-bold leading-relaxed mb-6 text-black">
+            途中で何度もやめようと思ったけど、最後まで やりきった。自分の取扱説明書を手に入れた気分。
+          </p>
+          <div class="text-xs font-bold text-gray-500">
+            — 23歳・高卒 → 営業職
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON (System Specs) ===== -->
+  <section class="border-b border-black">
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <!-- Left: Standard -->
+      <div class="p-16 md:p-24 bg-gray-100 border-b md:border-b-0 md:border-r border-black flex flex-col justify-center items-center text-center opacity-50 grayscale">
+        <h3 class="font-eng font-bold text-sm tracking-widest mb-8">STANDARD MODEL</h3>
+        <div class="font-eng font-black text-6xl text-gray-400 mb-4">16</div>
+        <p class="text-xs font-bold text-gray-500">Low Resolution</p>
+      </div>
+      
+      <!-- Right: Personal File -->
+      <div class="p-16 md:p-24 bg-white flex flex-col justify-center items-center text-center relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-brand-blue text-white text-[10px] font-bold px-2 py-1">RECOMMENDED</div>
+        <h3 class="font-eng font-bold text-sm tracking-widest mb-8 text-brand-blue">PRO MODEL</h3>
+        <div class="font-eng font-black text-6xl text-brand-black mb-4">80</div>
+        <p class="text-xs font-bold text-brand-black">Ultra High Resolution</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== WORKFLOW (4 Steps) ===== -->
+  <section class="border-b border-black bg-white py-24">
+    <div class="container mx-auto px-6">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <div class="inline-block border border-black px-4 py-1 mb-8">
+          <span class="font-eng font-bold text-xs tracking-widest text-black">WORKFLOW</span>
+        </div>
+        <h2 class="font-bold text-2xl md:text-4xl text-black mb-2">
+          準備はいらない。<br>
+          必要なのは<span class="text-brand-blue">「15分」</span>だけ。
+        </h2>
+      </div>
+
+      <!-- Steps -->
+      <div class="max-w-4xl mx-auto mt-16 space-y-1 bg-black p-1">
+        <!-- Step 1: LINE登録 -->
+        <div class="bg-white p-8 md:p-12 hover:bg-brand-gray transition-colors">
+          <div class="flex items-start gap-6">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-eng font-black text-xl">
+              1
+            </div>
+            <div class="flex-1">
+              <div class="mb-2">
+                <span class="font-eng font-bold text-xs tracking-widest text-brand-blue">INTRO</span>
+              </div>
+              <h3 class="font-bold text-xl md:text-2xl mb-4 text-black">LINE登録</h3>
+              <p class="text-sm font-bold leading-relaxed text-gray-600">
+                まずは公式LINEを友だち追加してください。<br>
+                履歴書も職務経歴書も不要です。スマホ1台で、今すぐ始められます。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: 200問診断 -->
+        <div class="bg-white p-8 md:p-12 hover:bg-brand-gray transition-colors">
+          <div class="flex items-start gap-6">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-eng font-black text-xl">
+              2
+            </div>
+            <div class="flex-1">
+              <div class="mb-2">
+                <span class="font-eng font-bold text-xs tracking-widest text-brand-blue">DIAGNOSIS</span>
+              </div>
+              <h3 class="font-bold text-xl md:text-2xl mb-4 text-black">200問のキャリア分析</h3>
+              <p class="text-sm font-bold leading-relaxed text-gray-600">
+                ここだけは、頑張ってください。<br>
+                15分かけて200問に答えることで、あなたの「適職」の解像度が劇的に上がります。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: プロによる解説 -->
+        <div class="bg-white p-8 md:p-12 hover:bg-brand-gray transition-colors">
+          <div class="flex items-start gap-6">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-eng font-black text-xl">
+              3
+            </div>
+            <div class="flex-1">
+              <div class="mb-2">
+                <span class="font-eng font-bold text-xs tracking-widest text-brand-blue">ANALYSIS</span>
+              </div>
+              <h3 class="font-bold text-xl md:text-2xl mb-4 text-black">プロによる解説・戦略立案</h3>
+              <p class="text-sm font-bold leading-relaxed text-gray-600">
+                診断結果を元に、プロがあなたの強みを言語化します。<br>
+                そして、その強みが活きる「勝てるフィールド」を具体的に提案します。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: 求人紹介 -->
+        <div class="bg-white p-8 md:p-12 hover:bg-brand-gray transition-colors">
+          <div class="flex items-start gap-6">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-eng font-black text-xl">
+              4
+            </div>
+            <div class="flex-1">
+              <div class="mb-2">
+                <span class="font-eng font-bold text-xs tracking-widest text-brand-blue">FUTURE</span>
+              </div>
+              <h3 class="font-bold text-xl md:text-2xl mb-4 text-black">求人紹介・選考</h3>
+              <p class="text-sm font-bold leading-relaxed text-gray-600">
+                相性の良い企業だけをご紹介します。<br>
+                ミスマッチのない、納得のいくキャリアのスタートです。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA (Emotional Close) ===== -->
+  <section class="border-b border-black bg-brand-black py-24">
+    <div class="container mx-auto px-6 max-w-3xl text-center">
+      <!-- Main Headline -->
+      <h2 class="font-bold text-3xl md:text-5xl text-white mb-8 leading-tight">
+        準備はいいですか?
+      </h2>
+      
+      <!-- Supporting Copy -->
+      <div class="space-y-4 text-sm md:text-base font-bold text-gray-300 leading-relaxed mb-12">
+        <p>15分かかります。</p>
+        <p>でも、その15分があなたの人生を変えます。</p>
+        <p class="mt-8">途中でやめるなら、最初からやらない方がいい。</p>
+        <p>でも、最後までやり遂げたとき、</p>
+        <p>あなたは<span class="text-white">「なんとなくの不安」</span>から解放されています。</p>
+      </div>
+
+      <!-- LINE CTA Button -->
+      <div class="mt-12">
+        <a href="https://line.me/R/ti/p/@186mrigv" class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-10 py-5 rounded-full font-bold text-lg transition-colors shadow-lg hover:shadow-xl">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+          </svg>
+          LINEで診断を受ける
+        </a>
+        <p class="text-xs text-gray-500 mt-4">登録後、すぐに診断URLをお届けします</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== FOOTER (Copyright) ===== -->
+  <footer class="bg-white py-12 px-6 flex justify-between items-end">
+    <div class="text-xs font-bold leading-relaxed">
+      PERSONAL FILE<br>
+      Optimized Career Solution.<br>
+      Tokyo, Japan.
+    </div>
+    <div class="font-eng font-bold text-[10px] tracking-widest text-gray-400">
+      © 2026 PERSONAL CO., LTD.
+    </div>
+  </footer>
+
+</body>
+</html>

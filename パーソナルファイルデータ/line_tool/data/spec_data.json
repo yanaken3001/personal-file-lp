@@ -1,0 +1,2635 @@
+{
+  "適性診断マスタ": [
+    {
+      "診断名": "性格類型診断",
+      "設問数": 20,
+      "総設問数": 80.0,
+      "類型": "P",
+      "診断方法": "回答合計値1位→基本系統\n回答合計値2位→補助系統\n※1位 - 2位 > 20 基本系統のみ ",
+      "備考": "優先度：D > P > A > I\n各系統には各傾向が存在、結果詳細では各傾向ごとの得点も表示"
+    },
+    {
+      "診断名": NaN,
+      "設問数": 20,
+      "総設問数": NaN,
+      "類型": "A",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 20,
+      "総設問数": NaN,
+      "類型": "I",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 20,
+      "総設問数": NaN,
+      "類型": "D",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": "行動型類型診断",
+      "設問数": 10,
+      "総設問数": 50.0,
+      "類型": "達成型",
+      "診断方法": "合計数値の高いものがそのまま該当類型",
+      "備考": "優先度：達成型 > 効率型 > 外見型 > 情報型 > 平和型"
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "平和型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "情報型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "外見型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "効率型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": "価値観診断",
+      "設問数": 6,
+      "総設問数": 24.0,
+      "類型": "安定型",
+      "診断方法": "各類型別に点数を集計\n・8割より上：S\n・7～8割：A\n・6～7割：B\n・5～6割：C\n・6割未満：D",
+      "備考": "-"
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "挑戦型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "経営型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "専門型",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": "モチベーション診断",
+      "設問数": 6,
+      "総設問数": 30.0,
+      "類型": "報酬重視傾向",
+      "診断方法": "各類型別に点数を集計\n・8割より上：S\n・7～8割：A\n・6～7割：B\n・5～6割：C\n・6割未満：D",
+      "備考": "-"
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "やりがい重視傾向",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "人間関係重視傾向",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "私生活重視傾向",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 6,
+      "総設問数": NaN,
+      "類型": "仕事重視傾向の5種類",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": "メンタル診断",
+      "設問数": 10,
+      "総設問数": 40.0,
+      "類型": "うつ傾向診断",
+      "診断方法": "各類型別に点数を集計\n・8割より上：S\n・7～8割：A\n・6～7割：B\n・5～6割：C\n・6割未満：D",
+      "備考": "S：ほぼ確定\nA：かなり強い\nB：強い\n↑上記のランクは表示せず日本語だけ表示する？"
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "アスペルガー傾向診断",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "ADHD傾向診断",
+      "診断方法": NaN,
+      "備考": NaN
+    },
+    {
+      "診断名": NaN,
+      "設問数": 10,
+      "総設問数": NaN,
+      "類型": "誠実性診断",
+      "診断方法": NaN,
+      "備考": NaN
+    }
+  ],
+  "診断テスト仕様": [
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：ユーザー側処理全般】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・ユーザーは5つの診断を受けてもらう（性格類型診断→行動型類型診断→価値観診断→モチベーション診断→メンタル診断）",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・途中で中断した場合は送信が完了したテスト以降のテストから再開できる",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・例えば、性格類型診断が完了し送信し、行動型類型診断中に中断すると、行動型類型診断から再開できる"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：性格類型診断テスト仕様】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・性格類型はP、A、I、D系統の4類型存在",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ただし後述する補助系統が別に存在し、こちらも性格類型と同じくP、A、I、D系統の4類型存在"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・つまり、性格類型(4種)と補助系統(4種)を掛け合わせた16類型存在"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・上記4系統別の質問を、各20問ずつの計80問(20x4)行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各質問への選択肢は以下の計5パターン",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・完全に該当する(+5点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当する(+4点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ある程度該当する(+3点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・どちらでもない(+2点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当しない(+0点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各系統の内最も高い系統を基本系統、2番目に高い系統を補助系統とする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・例：Pが最も高く、Aが次に高い場合はPA型"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・ただし、基本系統と補助系統に20点以上の差があった場合は、純粋類型という基本系統も補助系統も同じタイプの類型になる",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・例：P：100、A：66、I：68、D：62 の場合はPP型"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・点数が同じ系統が存在した場合は、優先度をD＞P＞A＞I型とする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各系統には要素(～のような傾向がある)が存在し、各系統毎に4種類存在する",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "例：P型系統（ポジティブ傾向、単純化傾向、行動重視傾向、感覚重視傾向）"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・採点時にはこの要素の点数も集計し、管理者画面の結果ページに点数を出力する"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：行動類型診断テスト仕様】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・行動類型は達成型、平和型、情報型、外見型、効率型の5種類",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・上記5類型別の質問を、各10問ずつの計50問(10x5)行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各質問への選択肢は以下の計5パターン",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・完全に該当する(+5点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当する(+4点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ある程度該当する(+3点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・どちらでもない(+2点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当しない(+0点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・最も数値の高い型をそのまま行動類型とする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・点数が同じ類型が存在した場合は、優先度を達成＞効率＞外見＞情報＞平和型とする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：価値観診断テスト仕様】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・価値観類型は安定型、挑戦型、経営型、専門型の4種類",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・上記4類型別の質問を、各6問ずつの計24問(4x6)行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各質問への選択肢は以下の計5パターン",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・完全に該当する(+5点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当する(+4点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ある程度該当する(+3点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・どちらでもない(+2点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当しない(+0点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各類型別に点数を集計し、8割以上の点数ならSランク、7～8割ならAランク、6～7割ならBランク、5～6割ならCランク、それ以外はDランクとする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Sランク：24～30点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Aランク：21～23点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Bランク：18～20点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Cランク：15～17点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Dランク：0～14点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：モチベーション診断テスト仕様】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・モチベーション傾向は報酬重視傾向、やりがい重視傾向、人間関係重視傾向、私生活重視傾向、仕事重視傾向の5種類",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・上記4傾向別の質問を、各6問ずつの計30問(5x6)行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各質問への選択肢は以下の計5パターン",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・完全に該当する(+5点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当する(+4点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ある程度該当する(+3点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・どちらでもない(+2点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当しない(+0点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各類型別に点数を集計し、8割以上の点数ならSランク、7～8割ならAランク、6～7割ならBランク、5～6割ならCランク、それ以外はDランクとする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Sランク：24～30点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Aランク：21～23点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Bランク：18～20点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Cランク：15～17点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Dランク：0～14点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "【適性診断：メンタル診断テスト仕様】",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・メンタル診断はうつ傾向診断、アスペルガー傾向診断、ADHD傾向診断、誠実性診断の4種を行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・上記4診断別の質問を、各10問ずつの計40問(10x4)行う",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各質問への選択肢は以下の計5パターン",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・完全に該当する(+5点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当する(+4点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・ある程度該当する(+3点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・どちらでもない(+2点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・該当しない(+0点)"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": "・各類型別に点数を集計し、8割以上の点数ならSランク、7～8割ならAランク、6～7割ならBランク、5～6割ならCランク、それ以外はDランクとする",
+      "Unnamed: 1": NaN
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Sランク：24～30点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Aランク：21～23点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Bランク：18～20点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Cランク：15～17点"
+    },
+    {
+      "仕様書：https://drive.google.com/file/d/1zvfBboYW771qqAOHCu8_cT5GRMSBSZ-5/view?usp=sharing": NaN,
+      "Unnamed: 1": "・Dランク：0～14点"
+    }
+  ],
+  "性格類型説明": [
+    {
+      "類型": "PP",
+      "名称": "エンターテイナー(鼓舞者)",
+      "概要": "明るく社交的で、楽天家。チーム内のムードメーカーになりやすい人材。長く落ち込まない類型で、最後はいつもポジティブシンキング。チームの中にいると周りまで明るくしてくれるタイプ。 "
+    },
+    {
+      "類型": "PA",
+      "名称": "アルチザン(芸術家)",
+      "概要": "明るく大胆な性格と正確かつ緻密な性格を併せ持つタイプ。基本的に社交的で、誰とでも打ち解けやすいが、自分の専門分野に関しては遊び無しで真剣に向き合う鍛冶職人のような気質を持っている。 "
+    },
+    {
+      "類型": "PI",
+      "名称": "コラボレーター(協調者)",
+      "概要": "一定の社交性と協調性があるので、組織の中で調整役として活躍することが多いタイプ。根は明るく前向きだが、心配性なところがある。最初は人見知りが入る傾向があるが、慣れてくると人懐っこい性格が表に出てくる。 "
+    },
+    {
+      "類型": "PD",
+      "名称": "アントレプレナー(起業家)",
+      "概要": "思いついたことを次々に行動に移すため、営業職や事業家に多いタイプ。何かを思いついてから、行動に移すまでがかなり早く、頭の回転も早い。全体の２割くらいの知識しかなくても、ある程度のところまでできてしまうほど要領がいい器用な類型。 "
+    },
+    {
+      "類型": "AP",
+      "名称": "プラクティショナー(実務家)",
+      "概要": "日頃は正確かつスピーディーな仕事をしてくれる頼れる執事のような気質で、一見するといつも冷静で真面目な性格に見えるが、打ち解けてくるとドンドン社交的になっていき、信頼できる仲間になっていくタイプ。 "
+    },
+    {
+      "類型": "AA",
+      "名称": "リサーチャー(情報家)",
+      "概要": "高い調査能力で情報を集めてくるため、一つの分野に絞って業務を任せると「歩く Wikipedia」のような存在になる。勉強も得意で、好きな分野に関しては徹底的に知識を得ようとするヲタク気質がある。知的で冷静な人が多いため、知識面で頼りになる存在。 "
+    },
+    {
+      "類型": "AI",
+      "名称": "ディリジェンサー(努力家)",
+      "概要": "コツコツと正確に作業を積み重ねることに長けた人材。責任感が強い人が多いため、よく働いてくれる。自分の考えや価値観を言語化するのに時間がかかるため、じっくり考えて正確なことを言うタイプ。周りをよく観察しており、分析力もある。 "
+    },
+    {
+      "類型": "AD",
+      "名称": "アナリスト(分析官)",
+      "概要": "高い分析力と合理性を併せ持っており、他人の間違いや矛盾点をすぐに見つけられるタイプ。このタイプにダブルチェックを依頼すると仕事の精度が高くなる。膨大なデータを類型化し、見やすくすることも得意。"
+    },
+    {
+      "類型": "IP",
+      "名称": "コントリビューター(貢献者)",
+      "概要": "日本人に多い類型で、何の事務をさせてもある程度でき、程よく社交性も持っているタイプ。周りによく気を配って生きており、争いを好まない傾向がある。責任感もある程度あるので、頑張りすぎてしまうことがある。数が多い類型であるめ、細分化すると様々な人がいる。"
+    },
+    {
+      "類型": "IA",
+      "名称": "サポーター(支援者)",
+      "概要": "指示されたことを正確にこなすため、事務員としての適性が高い。しかも、心配性な性格であるため、自分で調査し、適時に報告・連絡・相談をしてくれる。部下として優秀な類型であり、タスクを安心して任せることができる。ただし、頑張りすぎる傾向が強いため、タスクの抱え込み過ぎには注意が必要。 "
+    },
+    {
+      "類型": "II",
+      "名称": "ハーモナー(共感者)",
+      "概要": "根が優しい性格をしているため、動物や植物に関わる仕事なども向いている。強い自我や個性を有さないタイプなので、ある程度自分で個性をコントロールでき、どのような組織にも溶け込むことができる特殊な類型である。周りをよく観察し、些細な変化にも敏感に気づくことができる。 "
+    },
+    {
+      "類型": "ID",
+      "名称": "シンカー(思考家)",
+      "概要": "思考の幅が広く深いため、様々な不安要素を洗い出すことができるタイプ。内心では様々なことを考慮し、慎重に決断をくだす類型であるが、外部には「決断力」のみを示すことが多い。決断した後も脳内で何度も思考し直し、間違いがないか確認する傾向が強く、失敗が少ない。 "
+    },
+    {
+      "類型": "DI",
+      "名称": "プロモーター(推進者)",
+      "概要": "日頃は即断即決で行動し、人を引っ張っていく人材だが、一人になる時間ができると冷静に物事を分析し、過去の決断が正しかったかどうかを深く考えるタイプ。自問自答を繰り返す類型であるため、年齢と共に成熟度が増していきやすく、失敗をしなくなっていく。 "
+    },
+    {
+      "類型": "DP",
+      "名称": "リーダー(指揮官)",
+      "概要": "強いリーダーシップ、高い合理性と行動力、さらには社交性まで併せ持っており、責任感も強い類型である。そのため、チームを率いる存在になることが多い。瞬時に物事を理解できる頭脳も持っていることが多いため、ある程度のことは何でもできてしまう。決断力も高いため、思いついてから行動するまでのスピードが異常に早い。 "
+    },
+    {
+      "類型": "DA",
+      "名称": "ファシリテーター(先導者)",
+      "概要": "広い視野と高い分析力を有し、物事の仕組みやルールを創る側にまわることが多い類型。元々のポテンシャル（潜在能力）が高いため、周りから信頼されやすく、リーダーに選任されることが多い。年齢と共に専門性を身につけた場合、多くの人が経営層またはマネジメント層に入る。"
+    },
+    {
+      "類型": "DD",
+      "名称": "イノベーター(変革者)",
+      "概要": "即断即決即行動の最たる類型で、他人の意見に左右されない強い個性を持ったタイプ。目的達成に対する意欲が極めて強く、自分で決めた目標は達成することが多い。特定の分野に精通した場合、他の追随を許さないほどの専門家になりやすく、世界でも通用する人材になりやすい。 "
+    }
+  ],
+  "性格類型説明別案": [
+    {
+      "Unnamed: 0": "PP",
+      "特徴分類": "ポジティブ\n\n単純化\n\n行動重視\n\n感覚重視",
+      "正式名称": "エンターテイナー",
+      "別名": "鼓舞者",
+      "概要": "明るく社交的で、楽天家。チーム内のムードメーカーになりやすい人材。長く落ち込まない類型で、最後はいつもポジティブシンキング。チームの中にいると周りまで明るくしてくれるタイプ。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "PA",
+      "特徴分類": NaN,
+      "正式名称": "アルチザン",
+      "別名": "芸術家",
+      "概要": "明るく大胆な性格と正確かつ緻密な性格を併せ持つタイプ。基本的に社交的で、誰とでも打ち解けやすいが、自分の専門分野に関しては遊び無しで真剣に向き合う鍛冶職人のような気質を持っている。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "PI",
+      "特徴分類": NaN,
+      "正式名称": "コラボレーター",
+      "別名": "協調者",
+      "概要": "一定の社交性と協調性があるので、組織の中で調整役として活躍することが多いタイプ。根は明るく前向きだが、心配性なところがある。最初は人見知りが入る傾向があるが、慣れてくると人懐っこい性格が表に出てくる。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "PD",
+      "特徴分類": NaN,
+      "正式名称": "アントレプレナー",
+      "別名": "起業家",
+      "概要": "思いついたことを次々に行動に移すため、営業職や事業家に多いタイプ。何かを思いついてから、行動に移すまでがかなり早く、頭の回転も早い。全体の２割くらいの知識しかなくても、ある程度のところまでできてしまうほど要領がいい器用な類型。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "AP",
+      "特徴分類": "慎重\n\n精度重視\n\n知識重視\n\n論理重視",
+      "正式名称": "プラクティショナー",
+      "別名": "実務家",
+      "概要": "日頃は正確かつスピーディーな仕事をしてくれる頼れる執事のような気質で、一見するといつも冷静で真面目な性格に見えるが、打ち解けてくるとドンドン社交的になっていき、信頼できる仲間になっていくタイプ。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "AA",
+      "特徴分類": NaN,
+      "正式名称": "リサーチャー",
+      "別名": "情報家",
+      "概要": "高い調査能力で情報を集めてくるため、一つの分野に絞って業務を任せると「歩く Wikipedia」のような存在になる。勉強も得意で、好きな分野に関しては徹底的に知識を得ようとするヲタク気質がある。知的で冷静な人が多いため、知識面で頼りになる存在。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "AI",
+      "特徴分類": NaN,
+      "正式名称": "ディリジェンサー",
+      "別名": "努力家",
+      "概要": "コツコツと正確に作業を積み重ねることに長けた人材。責任感が強い人が多いため、よく働いてくれる。自分の考えや価値観を言語化するのに時間がかかるため、じっくり考えて正確なことを言うタイプ。周りをよく観察しており、分析力もある。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "AD",
+      "特徴分類": NaN,
+      "正式名称": "アナリスト",
+      "別名": "分析官",
+      "概要": "高い分析力と合理性を併せ持っており、他人の間違いや矛盾点をすぐに見つけられるタイプ。このタイプにダブルチェックを依頼すると仕事の精度が高くなる。膨大なデータを類型化し、見やすくすることも得意。",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "IP",
+      "特徴分類": "協調性\n\n優柔不断\n\nリスク回避\n\nチーム愛好",
+      "正式名称": "コントリビューター",
+      "別名": "貢献者",
+      "概要": "日本人に多い類型で、何の事務をさせてもある程度でき、程よく社交性も持っているタイプ。周りによく気を配って生きており、争いを好まない傾向がある。責任感もある程度あるので、頑張りすぎてしまうことがある。数が多い類型であるめ、細分化すると様々な人がいる。",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "IA",
+      "特徴分類": NaN,
+      "正式名称": "サポーター",
+      "別名": "支援者",
+      "概要": "指示されたことを正確にこなすため、事務員としての適性が高い。しかも、心配性な性格であるため、自分で調査し、適時に報告・連絡・相談をしてくれる。部下として優秀な類型であり、タスクを安心して任せることができる。ただし、頑張りすぎる傾向が強いため、タスクの抱え込み過ぎには注意が必要。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "II",
+      "特徴分類": NaN,
+      "正式名称": "ハーモナー",
+      "別名": "共感者",
+      "概要": "根が優しい性格をしているため、動物や植物に関わる仕事に向いている。強い自我や個性を有さないタイプなので、ある程度自分で個性をコントロールでき、どのような組織にも溶け込むことができる特殊な類型である。周りをよく観察し、些細な変化にも敏感に気づくことができる。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "ID",
+      "特徴分類": NaN,
+      "正式名称": "シンカー",
+      "別名": "思考家",
+      "概要": "思考の幅が広く深いため、様々な不安要素を洗い出すことができるタイプ。内心では様々なことを考慮し、慎重に決断をくだす類型であるが、外部には「決断力」のみを示すことが多い。決断した後も脳内で何度も思考し直し、間違いがないか確認する傾向が強く、失敗が少ない。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "DI",
+      "特徴分類": "合理性\n即断即決\nリスク愛好\n個人主義",
+      "正式名称": "プロモーター",
+      "別名": "推進者",
+      "概要": "日頃は即断即決で行動し、人を引っ張っていく人材だが、一人になる時間ができると冷静に物事を分析し、過去の決断が正しかったかどうかを深く考えるタイプ。自問自答を繰り返す類型であるため、年齢と共に成熟度が増していきやすく、失敗をしなくなっていく。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "DP",
+      "特徴分類": NaN,
+      "正式名称": "リーダー",
+      "別名": "指揮官",
+      "概要": "強いリーダーシップ、高い合理性と行動力、さらには社交性まで併せ持っており、責任感も強い類型である。そのため、チームを率いる存在になることが多い。瞬時に物事を理解できる頭脳も持っていることが多いため、ある程度のことは何でもできてしまう。決断力も高いため、思いついてから行動するまでのスピードが異常に早い。 ",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "DA",
+      "特徴分類": NaN,
+      "正式名称": "ファシリテーター",
+      "別名": "先導者",
+      "概要": "広い視野と高い分析力を有し、物事の仕組みやルールを創る側にまわることが多い類型。元々のポテンシャル（潜在能力）が高いため、周りから信頼されやすく、リーダーに選任されることが多い。年齢と共に専門性を身につけた場合、多くの人が経営層またはマネジメント層に入る。",
+      "瀧田さんご意見": NaN
+    },
+    {
+      "Unnamed: 0": "DD",
+      "特徴分類": NaN,
+      "正式名称": "イノベーター",
+      "別名": "変革者",
+      "概要": "即断即決即行動の最たる類型で、他人の意見に左右されない強い個性を持ったタイプ。目的達成に対する意欲が極めて強く、自分で決めた目標は達成することが多い。特定の分野に精通した場合、他の追随を許さないほどの専門家になりやすく、世界でも通用する人材になりやすい。 ",
+      "瀧田さんご意見": NaN
+    }
+  ],
+  "DBテーブル設計": [
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■適性診断テーブル(exam_entries)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "foreign_entry_id",
+      "Unnamed: 1": "外部ID",
+      "Unnamed: 2": "診断作成時に入力、元のユーザーデータをスプレッドシートで管理しているらしくそのIDを入力し管理するため",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "氏名",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "email",
+      "Unnamed: 1": "メールアドレス",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "interviewed_on",
+      "Unnamed: 1": "面談日",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "is_ended",
+      "Unnamed: 1": "診断終了済フラグ",
+      "Unnamed: 2": "管理者ページの診断一覧画面で編集ボタンと結果ボタンを出し分けする為",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "token",
+      "Unnamed: 1": "トークン(URL)",
+      "Unnamed: 2": "ユーザーが診断を受ける際のURLのために発行",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■性格類型診断系統テーブル(character_exam_types)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "type_identifier",
+      "Unnamed: 1": "類型識別子",
+      "Unnamed: 2": "PP、PA、等",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "類型名称",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "類型概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "priority",
+      "Unnamed: 1": "優先度",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■行動類型診断系統テーブル(behavior_exam_types)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "類型名称",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "類型概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "priority",
+      "Unnamed: 1": "優先度",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■価値観診断系統テーブル(values_exam_types)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "類型名称",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "類型概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■モチベーション診断系統テーブル(motivation_exam_types)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "類型名称",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "類型概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■メンタル診断系統テーブル(mentality_exam_types)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "name",
+      "Unnamed: 1": "類型名称",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "類型概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■性格類型診断質問テーブル(character_exam_questions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "character_exam_type_id",
+      "Unnamed: 1": "系統ID",
+      "Unnamed: 2": "P、A、I、D型",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "disposition",
+      "Unnamed: 1": "傾向",
+      "Unnamed: 2": "ポジティブ傾向、単純傾向など(要検討：傾向テーブルを使って正規化すべきか、enumで管理するか→enum)",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "text",
+      "Unnamed: 1": "質問文",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■行動類型診断質問テーブル(behavior_exam_questions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "behavior_exam_type_id",
+      "Unnamed: 1": "類型ID",
+      "Unnamed: 2": "達成型、平和型、情報型、外見型、効率型",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "text",
+      "Unnamed: 1": "質問文",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■価値観診断質問テーブル(values_exam_questions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_exam_type_id",
+      "Unnamed: 1": "類型ID",
+      "Unnamed: 2": "安定型、挑戦型、経営型、専門型",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "text",
+      "Unnamed: 1": "質問文",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■モチベーション診断質問テーブル(motivation_exam_questions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_exam_type_id",
+      "Unnamed: 1": "類型ID",
+      "Unnamed: 2": "報酬重視傾向、やりがい重視傾向、人間関係重視傾向、私生活重視傾向、仕事重視傾向",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "text",
+      "Unnamed: 1": "質問文",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■メンタル診断質問テーブル(mentality_exam_questions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mentality_exam_type_id",
+      "Unnamed: 1": "類型ID",
+      "Unnamed: 2": "うつ傾向、アスペルガー傾向、ADHD傾向、誠実性診断",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "text",
+      "Unnamed: 1": "質問文",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■性格類型診断回答テーブル(character_exam_answers)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_entry_id",
+      "Unnamed: 1": "適性診断ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "character_exam_question_id",
+      "Unnamed: 1": "性格類型診断質問ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "point",
+      "Unnamed: 1": "点数",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■行動類型診断回答テーブル(behavior_exam_answers)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_entry_id",
+      "Unnamed: 1": "適性診断ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "behavior_exam_question_id",
+      "Unnamed: 1": "行動類型診断質問ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "point",
+      "Unnamed: 1": "点数",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■価値観診断回答テーブル(values_exam_answers)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_entry_id",
+      "Unnamed: 1": "適性診断ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_exam_question_id",
+      "Unnamed: 1": "価値観診断質問ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "point",
+      "Unnamed: 1": "点数",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■モチベーション診断回答テーブル(motivation_exam_answers)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_entry_id",
+      "Unnamed: 1": "適性診断ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_exam_question_id",
+      "Unnamed: 1": "モチベーション診断質問ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "point",
+      "Unnamed: 1": "点数",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■メンタル診断回答テーブル(mentality_exam_answers)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_entry_id",
+      "Unnamed: 1": "適性診断ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mentality_exam_question_id",
+      "Unnamed: 1": "メンタル診断質問ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "point",
+      "Unnamed: 1": "点数",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■適性診断プロフィールテーブル(exam_profiles)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "character_exam_type_id",
+      "Unnamed: 1": "性格類型診断系統ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "behavior_exam_type_id",
+      "Unnamed: 1": "行動類型診断系統ID",
+      "Unnamed: 2": " ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "exam_profile_description_id",
+      "Unnamed: 1": "適性診断プロフィール詳細ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "subhead",
+      "Unnamed: 1": "概要見出し",
+      "Unnamed: 2": "XDで提示されている「自分の掲げた目標を達成するために全力を尽くす、\nチームのリーダー的存在になりやすいタイプ」に該当するもの\n要確認：プロフィールPDFにここに該当する文言が無い\n→現在瀧田さんに依頼中",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "outline",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": NaN,
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "■適性診断プロフィール詳細テーブル(exam_profile_descriptions)",
+      "Unnamed: 1": NaN,
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "カラム名",
+      "Unnamed: 1": "概要",
+      "Unnamed: 2": "メモ",
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "exam_profiles",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "id",
+      "Unnamed: 1": "ID",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "id",
+      "Unnamed: 5": "slug",
+      "Unnamed: 6": "name",
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "appropriate_job",
+      "Unnamed: 1": "適した職種・職業",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 1,
+      "Unnamed: 5": "good_work",
+      "Unnamed: 6": "適した職種・職業",
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_work_subhead",
+      "Unnamed: 1": "相性の良い作業：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 2,
+      "Unnamed: 5": "good_corporate_culture",
+      "Unnamed: 6": "相性の良い作業",
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_corporate_culture_subhead",
+      "Unnamed: 1": "相性の良い社風：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_boss_subhead",
+      "Unnamed: 1": "相性の良い上司：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "exam_profile_descriptions",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_staff_subhead",
+      "Unnamed: 1": "相性の良い部下：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "id",
+      "Unnamed: 5": "character_exam_type_id",
+      "Unnamed: 6": "behavior_exam_type_id",
+      "Unnamed: 7": "exam_behavior_charator_profile_id",
+      "Unnamed: 8": "subhead",
+      "Unnamed: 9": "outline"
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_workstyle_subhead",
+      "Unnamed: 1": "相性の良い働き方：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 1,
+      "Unnamed: 5": 1,
+      "Unnamed: 6": 1,
+      "Unnamed: 7": 1,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_work_outline",
+      "Unnamed: 1": "相性の良い作業：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 2,
+      "Unnamed: 5": 1,
+      "Unnamed: 6": 2,
+      "Unnamed: 7": 1,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_corporate_culture_outline",
+      "Unnamed: 1": "相性の良い社風：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_boss_outline",
+      "Unnamed: 1": "相性の良い上司：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_staff_outline",
+      "Unnamed: 1": "相性の良い部下：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "中間テーブル案",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "good_workstyle_outline",
+      "Unnamed: 1": "相性の良い働き方：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "exam_profiles",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_work_subhead",
+      "Unnamed: 1": "相性の悪い作業：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "id",
+      "Unnamed: 5": "character_exam_type_id",
+      "Unnamed: 6": "behavior_exam_type_id",
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_corporate_culture_subhead",
+      "Unnamed: 1": "相性の悪い社風：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 1,
+      "Unnamed: 5": 1,
+      "Unnamed: 6": 1,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_boss_subhead",
+      "Unnamed: 1": "相性の悪い上司：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": 2,
+      "Unnamed: 5": 1,
+      "Unnamed: 6": 2,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_staff_subhead",
+      "Unnamed: 1": "相性の悪い部下：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_workstyle_subhead",
+      "Unnamed: 1": "相性の悪い働き方：見出し",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_work_outline",
+      "Unnamed: 1": "相性の悪い作業：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "exam_profiles_descriptions",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_corporate_culture_outline",
+      "Unnamed: 1": "相性の悪い社風：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "id",
+      "Unnamed: 5": "exam_profiles_id",
+      "Unnamed: 6": "exam_description_id",
+      "Unnamed: 7": "subhead",
+      "Unnamed: 8": "outline",
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_boss_outline",
+      "Unnamed: 1": "相性の悪い上司：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": 1,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_staff_outline",
+      "Unnamed: 1": "相性の悪い部下：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": 2,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "bad_workstyle_outline",
+      "Unnamed: 1": "相性の悪い働き方：概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "exam_descriptions",
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_stable_outline",
+      "Unnamed: 1": "価値観診断：安定志向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": "id",
+      "Unnamed: 5": "slug",
+      "Unnamed: 6": "name",
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_challenge_outline",
+      "Unnamed: 1": "価値観診断：挑戦志向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_management_outline",
+      "Unnamed: 1": "価値観診断：経営志向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "values_expert_outline",
+      "Unnamed: 1": "価値観診断：専門志向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_reward_outline",
+      "Unnamed: 1": "モチベーション診断：報酬重視傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_worthwhile_outline",
+      "Unnamed: 1": "モチベーション診断：やりがい重視傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_relationship_outline",
+      "Unnamed: 1": "モチベーション診断：人間関係重視傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_private_outline",
+      "Unnamed: 1": "モチベーション診断：私生活重視傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "motivation_work_outline",
+      "Unnamed: 1": "モチベーション診断：仕事重視傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mental_depression_outline",
+      "Unnamed: 1": "メンタル診断：うつ傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mental_asperger_outline",
+      "Unnamed: 1": "メンタル診断：アスペルガー傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mental_adhd_outline",
+      "Unnamed: 1": "メンタル診断：ADHD傾向概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    },
+    {
+      "※現在設計中の物であり、確定ではありません": "mental_honesty_outline",
+      "Unnamed: 1": "メンタル診断：誠実性(嘘傾向)概要",
+      "Unnamed: 2": NaN,
+      "Unnamed: 3": NaN,
+      "Unnamed: 4": NaN,
+      "Unnamed: 5": NaN,
+      "Unnamed: 6": NaN,
+      "Unnamed: 7": NaN,
+      "Unnamed: 8": NaN,
+      "Unnamed: 9": NaN
+    }
+  ],
+  "行動類型説明": [
+    {
+      "ID": 1,
+      "類型名": "達成型",
+      "概要": "自己主張が強く、目標達成意欲が高い類型。行動力がある類型であるため営業マンとしての適性が高い。"
+    },
+    {
+      "ID": 2,
+      "類型名": "平和型",
+      "概要": "対人関係を良好に保つように行動する類型。他人の面倒をよく見る類型で、相互の関係を調整する役割を担うため、チームの関係を良好に保つ人材となりやすい。"
+    },
+    {
+      "ID": 3,
+      "類型名": "情報型",
+      "概要": "何らかの行動を起こす際はまず情報収集をし、知識を詰め込む類型。他の類型と比べて学習意欲が高く、知識面で優秀な人材が多い。"
+    },
+    {
+      "ID": 4,
+      "類型名": "外見型",
+      "概要": "行動を起こす際に「他人からどう見られるか」を重視する類型。良くも悪くも他人からの評価を気にしている類型であるため、営業マンとしての適性はある程度高い。"
+    },
+    {
+      "ID": 5,
+      "類型名": "効率型",
+      "概要": "行動を起こす際に最も効果的なもの、費用対効果の高いものを選ぶ傾向が強い類型。合理的な言動が多いため、ビジネスでは高い評価を受ける傾向がある。"
+    }
+  ]
+}
