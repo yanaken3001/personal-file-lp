@@ -433,112 +433,144 @@
                 
                 <!-- QUADRANT I (Top Left) -->
                 <!-- SUPPORT / サポート -->
-                <!-- Hover: Yellow Background, Orange Text -->
                 <div class="border-b-2 border-r-2 border-black bg-white relative group cursor-pointer overflow-hidden">
                     <div class="absolute inset-0 bg-yellow-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
 
-                    <!-- Sub-Grid 2x2 -->
-                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                    <!-- Sub-Grid 2x2 (Background) -->
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-10">
                         <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">II</div>
                         <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">IP</div>
                         <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">IA</div>
                         <div class="flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">ID</div>
                     </div>
                     
-                    <!-- Center Overlay (Text) -->
-                    <div class="absolute inset-0 flex flex-col items-center pt-2 justify-start md:justify-center md:pt-0 z-20 transition-transform duration-300 group-hover:scale-110">
+                    <!-- Big Letter (Centered) -->
+                    <div class="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
                         <span class="font-eng font-black text-5xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-yellow-600 transition-colors">I</span>
-                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-yellow-600 group-hover:text-yellow-600 transition-colors">SUPPORT / サポート</span>
+                    </div>
+
+                    <!-- Label (Top for Upper Quadrant) -->
+                    <div class="absolute inset-x-0 top-2 md:top-auto md:inset-0 flex justify-center md:items-center md:justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
+                         <!-- Desktop needs to be centered with the letter, mobile needs to be at top. 
+                              Actually, distinct separation is better. Let's keep Label separate on mobile, but centered on desktop? 
+                              User said "Top tier -> Top". Let's force Top on mobile. -->
+                         <div class="md:hidden text-[10px] font-bold bg-white/90 text-black px-2 border border-black backdrop-blur-sm group-hover:border-yellow-600 group-hover:text-yellow-600 transition-colors">SUPPORT / サポート</div>
+                         
+                         <!-- For Desktop (Center below letter) - Reusing previous logic but hidden on mobile -->
+                         <div class="hidden md:flex flex-col items-center justify-center pt-20"> <!-- Offset for desktop center -->
+                            <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-yellow-600 group-hover:text-yellow-600 transition-colors">SUPPORT / サポート</span>
+                         </div>
                     </div>
 
                     <!-- Hover Description -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
-                        <span class="text-lg md:text-2xl font-bold text-yellow-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
-                            協調大事、リスク回避、平和志向
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-2 text-center">
+                        <span class="text-xs md:text-2xl font-bold text-yellow-600 bg-white/95 px-3 py-2 rounded shadow-sm backdrop-blur-sm leading-relaxed whitespace-nowrap md:whitespace-normal">
+                            協調大事、<br class="md:hidden">リスク回避、平和志向
                         </span>
                     </div>
                 </div>
 
                 <!-- QUADRANT P (Top Right) -->
                 <!-- VITALITY / バイタリティ -->
-                <!-- Hover: Pink Background, Pink Text -->
                 <div class="border-b-2 border-black bg-white relative group cursor-pointer overflow-hidden">
                     <div class="absolute inset-0 bg-pink-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
                      
                     <!-- Sub-Grid 2x2 -->
-                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-10">
                         <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">PI</div>
                         <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">PP</div>
                         <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">PA</div>
                         <div class="flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">PD</div>
                     </div>
                     
-                    <!-- Center Overlay -->
-                    <div class="absolute inset-0 flex flex-col items-center pt-2 justify-start md:justify-center md:pt-0 z-20 transition-transform duration-300 group-hover:scale-110">
+                    <!-- Big Letter -->
+                    <div class="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
                         <span class="font-eng font-black text-5xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-pink-600 transition-colors">P</span>
-                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-pink-600 group-hover:text-pink-600 transition-colors">VITALITY / バイタリティ</span>
+                    </div>
+
+                    <!-- Label (Top) -->
+                    <div class="absolute inset-x-0 top-2 md:top-auto md:inset-0 flex justify-center md:items-center md:justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
+                         <div class="md:hidden text-[10px] font-bold bg-white/90 text-black px-2 border border-black backdrop-blur-sm group-hover:border-pink-600 group-hover:text-pink-600 transition-colors">VITALITY / バイタリティ</div>
+                         
+                         <div class="hidden md:flex flex-col items-center justify-center pt-20">
+                            <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-pink-600 group-hover:text-pink-600 transition-colors">VITALITY / バイタリティ</span>
+                         </div>
                     </div>
 
                     <!-- Hover Description -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
-                         <span class="text-lg md:text-2xl font-bold text-pink-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
-                            ポジティブ、感覚派、ノリ、行動
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-2 text-center">
+                         <span class="text-xs md:text-2xl font-bold text-pink-600 bg-white/95 px-3 py-2 rounded shadow-sm backdrop-blur-sm leading-relaxed whitespace-nowrap md:whitespace-normal">
+                            ポジティブ、<br class="md:hidden">感覚派、ノリ、行動
                         </span>
                     </div>
                 </div>
 
                 <!-- QUADRANT A (Bottom Left) -->
                 <!-- ANALYZE / アナライズ -->
-                <!-- Hover: Blue Background, Blue Text -->
                 <div class="border-r-2 border-black bg-white relative group cursor-pointer overflow-hidden">
                     <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
 
                      <!-- Sub-Grid 2x2 -->
-                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-10">
                         <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">AI</div>
                         <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">AP</div>
                         <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">AA</div>
                         <div class="flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">AD</div>
                     </div>
                     
-                    <!-- Center Overlay -->
-                    <div class="absolute inset-0 flex flex-col items-center pb-2 justify-end md:justify-center md:pb-0 z-20 transition-transform duration-300 group-hover:scale-110">
+                    <!-- Big Letter -->
+                    <div class="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
                         <span class="font-eng font-black text-5xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-blue-600 transition-colors">A</span>
-                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">ANALYZE / アナライズ</span>
+                    </div>
+
+                    <!-- Label (Bottom for Lower Quadrant) -->
+                    <div class="absolute inset-x-0 bottom-2 md:bottom-auto md:inset-0 flex justify-center md:items-center md:justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
+                        <div class="md:hidden text-[10px] font-bold bg-white/90 text-black px-2 border border-black backdrop-blur-sm group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">ANALYZE / アナライズ</div>
+
+                        <div class="hidden md:flex flex-col items-center justify-center pt-20">
+                            <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">ANALYZE / アナライズ</span>
+                        </div>
                     </div>
 
                     <!-- Hover Description -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
-                         <span class="text-lg md:text-2xl font-bold text-blue-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
-                            慎重、論理重視、正確性重視
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-2 text-center">
+                         <span class="text-xs md:text-2xl font-bold text-blue-600 bg-white/95 px-3 py-2 rounded shadow-sm backdrop-blur-sm leading-relaxed whitespace-nowrap md:whitespace-normal">
+                            慎重、論理重視、<br class="md:hidden">正確性重視
                         </span>
                     </div>
                 </div>
 
                 <!-- QUADRANT D (Bottom Right) -->
                 <!-- INNOVATE / イノベート -->
-                <!-- Hover: Green Background, Green Text -->
                 <div class="bg-white relative group cursor-pointer overflow-hidden">
                     <div class="absolute inset-0 bg-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
 
                      <!-- Sub-Grid 2x2 -->
-                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-20">
+                    <div class="w-full h-full grid grid-cols-2 grid-rows-2 relative z-10 transition-opacity duration-300 group-hover:opacity-10">
                         <div class="border-r border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">DI</div>
                         <div class="border-b border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">DP</div>
                         <div class="border-r border-gray-200 flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">DA</div>
                         <div class="flex items-center justify-center font-eng font-black text-xl md:text-4xl text-brand-black">DD</div>
                     </div>
                     
-                    <!-- Center Overlay -->
-                    <div class="absolute inset-0 flex flex-col items-center pb-2 justify-end md:justify-center md:pb-0 z-20 transition-transform duration-300 group-hover:scale-110">
+                    <!-- Big Letter -->
+                    <div class="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
                         <span class="font-eng font-black text-5xl md:text-8xl leading-none text-brand-black drop-shadow-md group-hover:text-green-600 transition-colors">D</span>
-                        <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-green-600 group-hover:text-green-600 transition-colors">INNOVATE / イノベート</span>
+                    </div>
+
+                    <!-- Label (Bottom) -->
+                    <div class="absolute inset-x-0 bottom-2 md:bottom-auto md:inset-0 flex justify-center md:items-center md:justify-center z-20 transition-transform duration-300 group-hover:scale-110 pointer-events-none">
+                        <div class="md:hidden text-[10px] font-bold bg-white/90 text-black px-2 border border-black backdrop-blur-sm group-hover:border-green-600 group-hover:text-green-600 transition-colors">INNOVATE / イノベート</div>
+
+                         <div class="hidden md:flex flex-col items-center justify-center pt-20">
+                            <span class="text-xs font-bold bg-white/90 text-black px-2 mt-1 border border-black backdrop-blur-sm group-hover:border-green-600 group-hover:text-green-600 transition-colors">INNOVATE / イノベート</span>
+                        </div>
                     </div>
 
                     <!-- Hover Description -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-4 text-center">
-                         <span class="text-lg md:text-2xl font-bold text-green-600 bg-white/80 px-4 py-2 rounded shadow-sm backdrop-blur-sm">
-                            合理性、個人主義、即決
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none px-2 text-center">
+                         <span class="text-xs md:text-2xl font-bold text-green-600 bg-white/95 px-3 py-2 rounded shadow-sm backdrop-blur-sm leading-relaxed whitespace-nowrap md:whitespace-normal">
+                            合理性、<br class="md:hidden">個人主義、即決
                         </span>
                     </div>
                 </div>
