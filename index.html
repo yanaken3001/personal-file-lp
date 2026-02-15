@@ -786,8 +786,33 @@
           for(let i=0; i<80; i++) {
             const div = document.createElement('div');
             
-            // Minimal Kashiwa Style
-            div.className = `aspect-square border-r border-b border-black flex flex-col items-center justify-center hover:bg-brand-blue hover:text-white transition-colors cursor-pointer group relative`;
+            // Vivid Colors for Gen Z Action Types
+            // 0: Achievement (Red), 1: Efficiency (Blue), 2: Appearance (Purple), 3: Information (Green), 4: Peace (Pink)
+            const actionColors = [
+                { bg: '#FF3333', text: '#FFFFFF' }, // 達成: Vivid Red
+                { bg: '#0055FF', text: '#FFFFFF' }, // 効率: Electric Blue
+                { bg: '#9900FF', text: '#FFFFFF' }, // 外見: Vivid Purple
+                { bg: '#00FF99', text: '#000000' }, // 情報: Neon Green (Black Text)
+                { bg: '#FF00CC', text: '#FFFFFF' }  // 平和: Hot Pink
+            ];
+
+            const typeIndex = i % 5;
+            const hoverColor = actionColors[typeIndex];
+
+            // Minimal Kashiwa Style (Base)
+            // Removed static hover classes, added dynamic JS handling
+            div.className = `aspect-square border-r border-b border-black flex flex-col items-center justify-center transition-colors cursor-pointer group relative`;
+            
+            // Dynamic Hover Logic
+            div.onmouseenter = function() {
+                this.style.backgroundColor = hoverColor.bg;
+                this.style.color = hoverColor.text;
+                // Icon color change if needed? Text spans inherit color.
+            };
+            div.onmouseleave = function() {
+                this.style.backgroundColor = '';
+                this.style.color = '';
+            };
             
             const cat = typeCats[Math.floor(i / 10)];
             const num = (i % 10) + 1;
@@ -797,7 +822,7 @@
             const typeData = typesData[i];
             
             div.innerHTML = `
-                <span class="font-eng font-black text-xl md:text-2xl mb-1">${code}</span>
+                <span class="font-eng font-black text-xl md:text-2xl mb-1 transition-colors">${code}</span>
                 <span class="text-[8px] font-bold tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">TYPE ${code}</span>
                 
                 <!-- Tooltip -->
