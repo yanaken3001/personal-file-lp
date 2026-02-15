@@ -184,7 +184,7 @@ class MessageGenerator:
         # テンプレートに値を埋め込む
         message = template.format(
             name=user_input.get("name", ""),
-            personality_type=f"{user_input.get('behavior_type', '')}型{user_input.get('personality_type', '')}",
+            personality_type=f"{user_input.get('behavior_type', '')}{user_input.get('personality_type', '')}",
             shadow_trait=shadow_trait,
             strength=strength,
             weakness=weakness,

@@ -1,7 +1,7 @@
 {
   "phase1_initial": {
-    "template": "{name}さん、診断お疲れ様でした✨\n\n{name}さんは{personality_type}という結果でした。\n\n診断結果を見て驚いたんですが、{name}さん、実は職場でこんな損をしていませんか?\n\n{shadow_trait}\n\nこれ、放置するともったいないですよ。",
-    "description": "Phase 1: 鏡と影 - 診断後の初回メッセージ。影の性質を一つだけチラ見せして興味を最大化"
+    "template": "{name}さん、診断お疲れ様でした✨\n\n{name}さんは{personality_type}という結果でした。\n\n診断結果を見て確信したんですが、{name}さんには本来、こんな素晴らしい強みがあるようです！\n\n{strength}\n\nこの才能、今の環境で存分に発揮できていますか？\nもし「もっと評価されたい」と感じているなら、環境を少し変えるだけでもっと輝けるはずですよ😊",
+    "description": "Phase 1: 鏡と影 - 診断後の初回メッセージ。強みを提示して可能性を感じさせる"
   },
   "phase1_followup": {
     "template": "{name}さんの診断結果から、{strength}という強みが見えています。\n\nただ、今の環境だと{weakness}という部分で少し損をしている可能性があります。\n\n{suitable_environment}",
