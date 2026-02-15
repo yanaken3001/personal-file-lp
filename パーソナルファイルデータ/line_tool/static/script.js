@@ -50,6 +50,65 @@ document.getElementById('messageForm').addEventListener('submit', async function
     }
 });
 
+// 画像分析ボタンのイベントリスナー
+document.getElementById('analyzeBtn').addEventListener('click', async function() {
+    const fileInput = document.getElementById('chatImage');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('画像ファイルを選択してください。');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    const button = this;
+    const originalText = button.textContent;
+    button.textContent = '⏳ 分析中...';
+    button.disabled = true;
+    
+    try {
+        const response = await fetch('/api/analyze-image', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            const data = result.data;
+            
+            // フォームに値をセット
+            if (data.conversation_count !== undefined) {
+                document.getElementById('conversationCount').value = data.conversation_count;
+            }
+            if (data.phase) {
+                document.getElementById('phase').value = data.phase;
+            }
+            if (data.current_dissatisfaction_flag !== undefined) {
+                document.getElementById('currentDissatisfaction').checked = data.current_dissatisfaction_flag;
+            }
+            if (data.future_anxiety_flag !== undefined) {
+                document.getElementById('futureAnxiety').checked = data.future_anxiety_flag;
+            }
+            if (data.skill_desire_flag !== undefined) {
+                document.getElementById('skillDesire').checked = data.skill_desire_flag;
+            }
+            
+            // 分析結果を通知
+            alert('分析完了!\n' + data.analysis_comment);
+        } else {
+            alert('分析エラー: ' + result.error);
+        }
+    } catch (error) {
+        alert('通信エラー: ' + error.message);
+    } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+});
+
 function displayResult(data) {
     // 結果エリアを表示
     const resultContainer = document.getElementById('result');

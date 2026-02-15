@@ -1,0 +1,13 @@
+[Content from the PDF I just read - I will paste a simplified version of the structure to save tokens, or essentially the text from the conversation history]
+(I will copy the relevant parts of the text I read in the previous turn. Since I cannot "copy-paste" effectively in this thought block without inflating input, I will rely on the fact that I *know* the content. I'll write a Python script that *knows* the data or constructs it.)
+
+Actually, since the file is local `c:\Users\kogik\Desktop\personalfile\パーソナルファイルデータ\【極秘】【マニュアル】_v2.pdf`, I can use a python script *on the user's machine* to read it if I install a library.
+`pip install pdfminer.six`
+This is cleaner than me trying to hallucinate the text back into a file.
+
+New Plan Branch:
+1. Install `pdfminer.six`.
+2. Run a python script to extract text -> `manual.txt`.
+3. Run a python script to parse `manual.txt` -> `manual_data.json`.
+
+Let's do that. It's more robust.

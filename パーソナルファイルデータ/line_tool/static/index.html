@@ -15,6 +15,19 @@
 
       <main>
         <form id="messageForm">
+          <!-- 画像分析セクション (New) -->
+          <section class="form-section highlight-section">
+            <h2>📸 LINEトーク分析 (Beta)</h2>
+            <div class="form-group">
+              <label for="chatImage">トーク画面のスクショをアップロード</label>
+              <input type="file" id="chatImage" name="chatImage" accept="image/*" />
+              <button type="button" id="analyzeBtn" class="btn-secondary small-btn">
+                🔍 画像から状況を分析・入力
+              </button>
+              <small>※現在はモック動作です（自動的に値を埋めます）</small>
+            </div>
+          </section>
+
           <!-- 診断結果セクション -->
           <section class="form-section">
             <h2>🎯 診断結果</h2>

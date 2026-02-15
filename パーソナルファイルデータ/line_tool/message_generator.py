@@ -13,6 +13,11 @@ class MessageGenerator:
         self.data_dir = data_dir
         self.personality_data = self._load_json("personality_data.json")
         self.templates = self._load_json("message_templates.json")
+        try:
+            self.manual_data = self._load_json("manual_data.json")
+        except:
+            print("Warning: manual_data.json not found")
+            self.manual_data = {}
         self.calculator = ReadinessCalculator()
         
     def _load_json(self, filename):
@@ -125,6 +130,41 @@ class MessageGenerator:
             
         return text
 
+    def _clean_duplicates(self, text):
+        """重複したテキストを除去する(簡易版)"""
+        if not text:
+            return ""
+        # 半分で分割して、前半と後半がほぼ同じなら前半を返す
+        mid = len(text) // 2
+        first_half = text[:mid]
+        second_half = text[mid:]
+        
+        # 完全に一致するか、改行などの些細な違いだけか
+        # 簡易的に、前半の90%が後半に含まれていたら重複とみなす
+        if len(text) > 50 and first_half.strip() in second_half:
+            return first_half.strip()
+        
+        # 重複パターン: "ABC\n\nABC"
+        if text[:mid].strip() == text[mid:].strip():
+             return text[:mid].strip()
+             
+        return text
+
+    def _get_manual_advice(self, type_code, behavior_type):
+        """マニュアルからアドバイスを取得"""
+        if not self.manual_data or type_code not in self.manual_data:
+            return ""
+            
+        type_data = self.manual_data[type_code]
+        
+        # 行動類型ごとの詳細があればそれを優先
+        specific_advice = type_data.get("types", {}).get(behavior_type, "")
+        if specific_advice:
+            return self._clean_duplicates(specific_advice)
+            
+        # なければ全体の概要
+        return self._clean_duplicates(type_data.get("overview", ""))
+
     def generate_message(self, user_input, phase="phase1_initial"):
         """
         LINE返信案を生成
@@ -180,21 +220,40 @@ class MessageGenerator:
             suitable_jobs_short = "、".join(jobs_list)
         else:
             suitable_jobs_short = "ITエンジニア、事務職"
-        
-        # テンプレートに値を埋め込む
-        message = template.format(
-            name=user_input.get("name", ""),
-            personality_type=f"{user_input.get('behavior_type', '')}{user_input.get('personality_type', '')}",
-            shadow_trait=shadow_trait,
-            strength=strength,
-            weakness=weakness,
-            suitable_environment=suitable_environment,
-            job_situation="在職中" if user_input.get("employment_status") == "在職中" else "転職活動中",
-            common_struggle="周りに気を使いすぎて疲れてしまう",
-            suitable_jobs=suitable_jobs_short,
-            location=user_input.get("location", "東京都")
+            
+        # マニュアルからの情報を取得
+        manual_advice = self._get_manual_advice(
+            user_input.get("personality_type"), 
+            user_input.get("behavior_type")
         )
         
+        # テンプレートに値を埋め込む
+        format_args = {
+            "name": user_input.get("name", ""),
+            "personality_type": f"{user_input.get('behavior_type', '')}{user_input.get('personality_type', '')}",
+            "shadow_trait": shadow_trait,
+            "strength": strength,
+            "weakness": weakness,
+            "suitable_environment": suitable_environment,
+            "job_situation": "在職中" if user_input.get("employment_status") == "在職中" else "転職活動中",
+            "common_struggle": "周りに気を使いすぎて疲れてしまう",
+            "suitable_jobs": suitable_jobs_short,
+            "location": user_input.get("location", "東京都"),
+            "manual_advice": manual_advice
+        }
+        
+        try:
+            message = template.format(**format_args)
+        except KeyError as e:
+            # テンプレートに必要なキーが不足している場合のフォールバック
+            missing_key = str(e).strip("'")
+            format_args[missing_key] = ""
+            message = template.format(**format_args)
+
+        # もしテンプレートで manual_advice が使われていないなら、末尾に追加する (Phase 1のみ)
+        if "{manual_advice}" not in template and manual_advice and "Phase 1" in phase:
+             message += f"\n\n【キャリア分析メモ】\n{manual_advice[:300]}..." 
+
         # 戦略的アドバイスを生成
         strategic_advice = self._generate_strategic_advice(readiness, flag_analysis, user_input)
         

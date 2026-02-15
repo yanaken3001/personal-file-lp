@@ -95,6 +95,37 @@ def generate_message():
             "success": False,
             "error": str(e)
         }), 500
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+@app.route('/api/analyze-image', methods=['POST'])
+def analyze_image():
+    """
+    画像を分析してフォーム値を推定するAPI (Mock)
+    """
+    if 'image' not in request.files:
+        return jsonify({"success": False, "error": "No image file provided"}), 400
+        
+    # file = request.files['image']
+    # ここで本来はGemini/OpenAI APIを呼ぶ
+    # 現在はモックとして、「不安を感じているユーザー」のパターンを返す
+    
+    mock_result = {
+        "success": True,
+        "data": {
+            "conversation_count": 5,
+            "phase": "phase2_rapport",
+            "current_dissatisfaction_flag": True,
+            "future_anxiety_flag": True,
+            "skill_desire_flag": False,
+            "analysis_comment": "【画像分析結果】\nユーザーは現状の職場環境に強い不満を抱いており、転職を急いでいる様子が見受けられます。共感を示しつつ、具体的な解決策を提示するフェーズに移行すべきです。"
+        }
+    }
+    
+    return jsonify(mock_result)
 
 @app.route('/api/personality-types', methods=['GET'])
 def get_personality_types():
