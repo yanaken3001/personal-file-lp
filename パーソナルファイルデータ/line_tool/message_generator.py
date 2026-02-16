@@ -54,8 +54,8 @@ class MessageGenerator:
         if data and len(data) > 0:
             first_row = data[0]
             for col in first_row.keys():
-                # "達成型"などで始まるカラムを探す
-                if str(col).startswith(behavior_type):
+                # "達成型"などで始まるカラムを探す (空白除去して比較)
+                if str(col).replace(" ", "").replace("　", "").startswith(behavior_type):
                     column_name = col
                     break
         
@@ -77,7 +77,7 @@ class MessageGenerator:
                 info["weaknesses"] = row.get(column_name, "")
             elif row_type == "未経験可の適職":
                 info["suitable_jobs"] = row.get(column_name, "")
-            elif row_type == "相性の良い社風\n説明":
+            elif "相性の良い社風" in row_type and "説明" in row_type:
                 info["suitable_environment"] = row.get(column_name, "")
                 
         return info
@@ -120,6 +120,8 @@ class MessageGenerator:
             
             # コロンがない場合、最初の文を採用し、句点を取る
             first_sentence = text.split("。")[0].strip()
+            # 改行がある場合は最初の行だけ
+            first_sentence = first_sentence.split("\n")[0].strip()
             return first_sentence
 
         # 全文モード (環境用)
@@ -213,6 +215,19 @@ class MessageGenerator:
         weakness = self._clean_trait(personality_info.get("weaknesses", ""), mode="heading")
         suitable_environment = self._clean_trait(personality_info.get("suitable_environment", ""), mode="full")
         
+        # 共通の悩み (弱みをベースに作成)
+        raw_weakness = personality_info.get("weaknesses", "")
+        if raw_weakness:
+             # 弱みの最初の文や見出しを使って悩みを作成
+             common_struggle_text = self._clean_trait(raw_weakness, mode="heading")
+             # 文末調整
+             if not common_struggle_text.endswith("こと"):
+                 common_struggle = f"{common_struggle_text}で悩んでしまうこと"
+             else:
+                 common_struggle = f"{common_struggle_text}があって辛い"
+        else:
+             common_struggle = "周りに気を使いすぎて疲れてしまうこと"
+
         # 適職を簡潔に
         suitable_jobs = personality_info.get("suitable_jobs", "")
         if suitable_jobs:
@@ -236,7 +251,7 @@ class MessageGenerator:
             "weakness": weakness,
             "suitable_environment": suitable_environment,
             "job_situation": "在職中" if user_input.get("employment_status") == "在職中" else "転職活動中",
-            "common_struggle": "周りに気を使いすぎて疲れてしまう",
+            "common_struggle": common_struggle,
             "suitable_jobs": suitable_jobs_short,
             "location": user_input.get("location", "東京都"),
             "manual_advice": manual_advice

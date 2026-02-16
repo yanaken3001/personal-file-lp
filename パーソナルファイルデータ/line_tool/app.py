@@ -95,21 +95,24 @@ def generate_message():
             "success": False,
             "error": str(e)
         }), 500
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
-
 @app.route('/api/analyze-image', methods=['POST'])
 def analyze_image():
     """
-    画像を分析してフォーム値を推定するAPI (Mock)
+    # 画像を分析してフォーム値を推定するAPI (Mock)
     """
     if 'image' not in request.files:
         return jsonify({"success": False, "error": "No image file provided"}), 400
         
-    # file = request.files['image']
+    file = request.files['image']
+    
+    # 画像保存ディレクトリ (存在しない場合は作成)
+    upload_dir = os.path.join(app.static_folder, 'uploads')
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    # ファイル保存 (本来はUUIDなどでユニークにするが、検証用なので上書き)
+    file_path = os.path.join(upload_dir, file.filename)
+    file.save(file_path)
+    
     # ここで本来はGemini/OpenAI APIを呼ぶ
     # 現在はモックとして、「不安を感じているユーザー」のパターンを返す
     
