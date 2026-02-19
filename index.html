@@ -18,19 +18,6 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 /></noscript>
-<!-- Google tag (gtag.js) - GA4 Cross-Domain -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', {
-    linker: {
-      domains: ['per-sonal.co.jp'],
-      accept_incoming: true
-    }
-  });
-</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PERSONAL FILE | 80 TYPES RESOLUTION</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -1334,26 +1321,13 @@
       var dest = a.href;
       var position = a.getAttribute('data-cta');
 
-      // Facebook Pixel - sendBeaconで確実に送信
+      // Facebook Pixel - 確実に送信してから遷移
       if (typeof fbq === 'function') {
         fbq('track', 'Contact', { content_name: position });
       }
 
-      // GA4 イベント送信
-      if (typeof gtag === 'function') {
-        gtag('event', 'cta_click', {
-          cta_position: position,
-          event_callback: function() {
-            window.location.href = dest;
-          },
-          event_timeout: 2000
-        });
-      } else {
-        window.location.href = dest;
-      }
-
-      // GA4が読み込まれていない場合のフォールバック
-      setTimeout(function() { window.location.href = dest; }, 2500);
+      // Pixel送信の猶予を持たせてから遷移
+      setTimeout(function() { window.location.href = dest; }, 300);
     });
   });
 })();
