@@ -11,7 +11,8 @@
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '519412346829983'); 
+  fbq('init', '519412346829983');
+  fbq('set', 'autoConfig', true, '519412346829983'); 
   fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
@@ -1273,13 +1274,13 @@
 
     <!-- Center: Corporate Links -->
     <div class="flex flex-col md:flex-row gap-4 md:gap-8 items-center order-1 md:order-2">
-        <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
+        <a href="https://per-sonal.co.jp/" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
             <span class="text-xs font-bold tracking-widest group-hover:bg-black group-hover:text-white transition-colors px-1">COMPANY</span>
             <svg class="w-3 h-3 text-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
         </a>
-        <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
+        <a href="https://per-sonal.co.jp/privacy/" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
             <span class="text-xs font-bold tracking-widest group-hover:bg-black group-hover:text-white transition-colors px-1">PRIVACY POLICY</span>
             <svg class="w-3 h-3 text-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
