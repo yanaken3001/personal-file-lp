@@ -18,6 +18,19 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 /></noscript>
+<!-- Google tag (gtag.js) - GA4 Cross-Domain -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', {
+    linker: {
+      domains: ['per-sonal.co.jp'],
+      accept_incoming: true
+    }
+  });
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PERSONAL FILE | 80 TYPES RESOLUTION</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -160,7 +173,7 @@
   <!-- ===== HEADER (Minimal) ===== -->
   <header class="fixed top-0 left-0 w-full z-50 bg-white border-b border-black h-16 flex items-center justify-between px-6">
     <div class="font-eng font-black tracking-tighter text-xl">PERSONAL FILE</div>
-    <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_1" onclick="fbq('track', 'Contact');" class="font-bold text-sm bg-brand-black text-white px-4 py-2 hover:bg-brand-blue transition-colors">
+    <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_1" data-cta="header" class="font-bold text-sm bg-brand-black text-white px-4 py-2 hover:bg-brand-blue transition-colors">
       才能診断を受ける →
     </a>
   </header>
@@ -222,7 +235,7 @@
       <!-- CTA Button -->
       <!-- CTA Button -->
       <!-- CTA Button -->
-      <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_2" onclick="fbq('track', 'Contact');" class="group inline-flex items-center gap-2 md:gap-4 bg-brand-black text-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue transition-colors duration-300">
+      <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_2" data-cta="hero" class="group inline-flex items-center gap-2 md:gap-4 bg-brand-black text-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue transition-colors duration-300">
         <span>【無料】才能診断を受ける</span>
         <svg class="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -872,7 +885,7 @@
         あなたの才能は、<br class="md:hidden">この80タイプのどこにある？
       </h2>
       
-      <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_3" onclick="fbq('track', 'Contact');" class="group inline-flex items-center gap-2 md:gap-4 bg-white text-black border-2 border-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all duration-300">
+      <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_3" data-cta="mid" class="group inline-flex items-center gap-2 md:gap-4 bg-white text-black border-2 border-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all duration-300">
         <span>無料で才能診断を受ける</span>
         <svg class="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1251,7 +1264,7 @@
 
       <!-- LINE CTA Button -->
       <div class="mt-12">
-        <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_4" onclick="fbq('track', 'Contact');" class="group inline-flex items-center gap-2 md:gap-4 bg-white text-black border-2 border-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all duration-300">
+        <a href="https://per-sonal.co.jp/personalfile/contact/?route=80type_4" data-cta="bottom" class="group inline-flex items-center gap-2 md:gap-4 bg-white text-black border-2 border-white px-8 py-4 md:px-16 md:py-6 font-black text-lg md:text-2xl tracking-widest hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all duration-300">
           <span>無料で才能診断を受ける</span>
           <svg class="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1274,13 +1287,13 @@
 
     <!-- Center: Corporate Links -->
     <div class="flex flex-col md:flex-row gap-4 md:gap-8 items-center order-1 md:order-2">
-        <a href="https://per-sonal.co.jp/" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
+        <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
             <span class="text-xs font-bold tracking-widest group-hover:bg-black group-hover:text-white transition-colors px-1">COMPANY</span>
             <svg class="w-3 h-3 text-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
         </a>
-        <a href="https://per-sonal.co.jp/privacy/" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
+        <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1">
             <span class="text-xs font-bold tracking-widest group-hover:bg-black group-hover:text-white transition-colors px-1">PRIVACY POLICY</span>
             <svg class="w-3 h-3 text-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -1293,6 +1306,58 @@
       © 2026 PERSONAL CO., LTD.
     </div>
   </footer>
+
+<!-- Cross-Domain Measurement Script -->
+<script>
+(function() {
+  // UTMパラメータをクロスドメインリンクに引き継ぐ
+  var defined = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid'];
+  var params = new URLSearchParams(window.location.search);
+  var carry = new URLSearchParams();
+  defined.forEach(function(k) {
+    if (params.has(k)) carry.set(k, params.get(k));
+  });
+  var carryStr = carry.toString();
+
+  // data-cta属性を持つ全CTAリンクにUTMパラメータを付与し、
+  // クリック時にfbq + gtagイベントを確実に送信してから遷移する
+  document.querySelectorAll('a[data-cta]').forEach(function(a) {
+    // UTMパラメータを付与
+    if (carryStr) {
+      var url = new URL(a.href);
+      carry.forEach(function(v, k) { url.searchParams.set(k, v); });
+      a.href = url.toString();
+    }
+
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var dest = a.href;
+      var position = a.getAttribute('data-cta');
+
+      // Facebook Pixel - sendBeaconで確実に送信
+      if (typeof fbq === 'function') {
+        fbq('track', 'Contact', { content_name: position });
+      }
+
+      // GA4 イベント送信
+      if (typeof gtag === 'function') {
+        gtag('event', 'cta_click', {
+          cta_position: position,
+          event_callback: function() {
+            window.location.href = dest;
+          },
+          event_timeout: 2000
+        });
+      } else {
+        window.location.href = dest;
+      }
+
+      // GA4が読み込まれていない場合のフォールバック
+      setTimeout(function() { window.location.href = dest; }, 2500);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
