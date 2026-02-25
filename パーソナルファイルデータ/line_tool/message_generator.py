@@ -257,17 +257,20 @@ class MessageGenerator:
             "manual_advice": manual_advice
         }
         
-        try:
-            message = template.format(**format_args)
-        except KeyError as e:
-            # テンプレートに必要なキーが不足している場合のフォールバック
-            missing_key = str(e).strip("'")
-            format_args[missing_key] = ""
-            message = template.format(**format_args)
-
-        # もしテンプレートで manual_advice が使われていないなら、末尾に追加する (Phase 1のみ)
-        if "{manual_advice}" not in template and manual_advice and "Phase 1" in phase:
-             message += f"\n\n【キャリア分析メモ】\n{manual_advice[:300]}..." 
+        if "II" in user_input.get("personality_type", ""):
+             message = self._generate_ii_message(user_input, personality_info, format_args)
+        else:
+             try:
+                message = template.format(**format_args)
+             except KeyError as e:
+                # テンプレートに必要なキーが不足している場合のフォールバック
+                missing_key = str(e).strip("'")
+                format_args[missing_key] = ""
+                message = template.format(**format_args)
+    
+             # もしテンプレートで manual_advice が使われていないなら、末尾に追加する (Phase 1のみ)
+             if "{manual_advice}" not in template and manual_advice and "Phase 1" in phase:
+                  message += f"\n\n【キャリア分析メモ】\n{manual_advice[:300]}..." 
 
         # 戦略的アドバイスを生成
         strategic_advice = self._generate_strategic_advice(readiness, flag_analysis, user_input)
@@ -282,6 +285,55 @@ class MessageGenerator:
                 "suitable_jobs": suitable_jobs_short
             }
         }
+
+    def _generate_ii_message(self, user_input, personality_info, format_args):
+        """
+        II型(ハーモナー)専用のメッセージ生成ロジック (Deep Dive Ver.)
+        心理的シェルターとなる文体と、行動類型ごとの刺さる言葉を生成
+        """
+        behavior_type = user_input.get("behavior_type", "")
+        name = user_input.get("name", "")
+        
+        # 1. 鏡（Mirroring）: 抽象語を排除し、具体的な葛藤を言語化
+        mirror_section = (
+            f"{name}さん、診断ありがとうございます。\n"
+            f"職場のピリついた空気感を敏感に察して、自分まで苦しくなってしまうことはありませんか？\n"
+            f"あるいは、自分の仕事が手一杯でも、誰かに頼まれると断れない…そんな場面が目に浮かびます。"
+        )
+        
+        # 2. 行動類型との相関ロジック
+        behavior_section = ""
+        if "達成型" in behavior_type:
+             behavior_section = (
+                 "周囲への気配りでご自身を後回しにしていませんか？\n"
+                 "その誠実さが正当に報われる場所を、一緒に探したいです。"
+             )
+        elif "平和型" in behavior_type:
+             behavior_section = (
+                 "今は何も決まっておかなくて大丈夫です。\n"
+                 "まずは、今抱えているしんどさを少しだけ軽くするお話をしませんか？"
+             )
+        elif "効率型" in behavior_type:
+             behavior_section = (
+                 "誰も見ていないところで頑張る姿勢、本当に素敵です。\n"
+                 "あなたの縁の下の力持ちとしての貢献が、より穏やかな環境で発揮されるお手伝いをさせてください。"
+             )
+        else:
+             # デフォルト
+             behavior_section = "ご自身の気持ちを大切にできる環境が、きっとあります。"
+
+        # 3. 影（Shadowing）: “警告”ではなく“純粋な心配”へ & 心理的安全性のある結び
+        shadow_section = (
+            f"このまま無理を続けて、{name}さんの自己犠牲の精神が限界にきてしまうことが、何より心配です。\n"
+            f"「転職が成功します」とは言いません。\n"
+            f"ただ、{name}さんの心が今より少しだけ軽くなる場所を、一緒に探すことはできるかもしれませんね。\n"
+            f"まずは「こんなこと話していいのかな」と思うような小さなモヤモヤから、一度吐き出してみるというお気持ちはないでしょうか？"
+        )
+        
+        # 結合
+        full_message = f"{mirror_section}\n\n{behavior_section}\n\n{shadow_section}"
+        
+        return full_message
     
     def _generate_strategic_advice(self, readiness, flag_analysis, user_input):
         """戦略的アドバイスを生成"""
