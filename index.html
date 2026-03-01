@@ -1315,15 +1315,25 @@
   });
   var carryStr = carry.toString();
 
+  // URLにrouteパラメータがあれば取得（流入元識別用）
+  var sourceRoute = params.get('route');
+
   // data-cta属性を持つ全CTAリンクにUTMパラメータを付与し、
   // クリック時にfbq + gtagイベントを確実に送信してから遷移する
   document.querySelectorAll('a[data-cta]').forEach(function(a) {
+    var url = new URL(a.href);
+
     // UTMパラメータを付与
     if (carryStr) {
-      var url = new URL(a.href);
       carry.forEach(function(v, k) { url.searchParams.set(k, v); });
-      a.href = url.toString();
     }
+
+    // URLにrouteがある場合、CTAリンクのrouteを上書き（流入元を優先）
+    if (sourceRoute) {
+      url.searchParams.set('route', sourceRoute);
+    }
+
+    a.href = url.toString();
 
     a.addEventListener('click', function(e) {
       e.preventDefault();
