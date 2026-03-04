@@ -27,6 +27,42 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 /></noscript>
+
+<!-- Light Diagnosis Tracking Script -->
+<script>
+  (function() {
+    // URLパラメータからfromを取得してLocalStorageに保存
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromParam = urlParams.get('from');
+
+    if (fromParam && fromParam.startsWith('lightdiag_')) {
+      localStorage.setItem('lightdiag_source', fromParam);
+      console.log('Light Diagnosis source saved:', fromParam);
+    }
+
+    // ページ読み込み後、CTAリンクのrouteパラメータを書き換え
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedSource = localStorage.getItem('lightdiag_source');
+
+      if (savedSource) {
+        // data-cta属性を持つすべてのリンクを取得
+        const ctaLinks = document.querySelectorAll('a[data-cta]');
+
+        ctaLinks.forEach(function(link) {
+          const href = link.getAttribute('href');
+          if (href && href.includes('per-sonal.co.jp/personalfile/contact')) {
+            // routeパラメータを書き換え
+            const url = new URL(href);
+            url.searchParams.set('route', savedSource);
+            link.setAttribute('href', url.toString());
+            console.log('CTA link updated:', link.getAttribute('data-cta'), '→', savedSource);
+          }
+        });
+      }
+    });
+  })();
+</script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PERSONAL FILE | 80 TYPES RESOLUTION</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">

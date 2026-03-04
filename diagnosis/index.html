@@ -1995,7 +1995,7 @@ function ResultScreen({ scores }) {
             </p>
 
             <a
-              href="https://www.personal-file.jp/"
+              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -2127,6 +2127,7 @@ function ResultScreen({ scores }) {
               <div style={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: "10px",
                 marginBottom: "12px",
                 padding: "0 4px",
@@ -2146,7 +2147,7 @@ function ResultScreen({ scores }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>PERSONALITY & BEHAVIOR</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
                 {[
                   { num: "01", label: "基本タイプ", icon: "◉" },
                   { num: "02", label: "性格傾向", icon: "◈" },
@@ -2191,6 +2192,7 @@ function ResultScreen({ scores }) {
               <div style={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: "10px",
                 marginBottom: "12px",
                 padding: "0 4px",
@@ -2210,7 +2212,7 @@ function ResultScreen({ scores }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>COMPATIBILITY</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
                 {[
                   { num: "09", label: "相性の良い社風", good: true },
                   { num: "10", label: "相性の悪い社風", good: false },
@@ -2252,7 +2254,7 @@ function ResultScreen({ scores }) {
 
             {/* Bottom CTA repeat */}
             <a
-              href="https://www.personal-file.jp/"
+              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
