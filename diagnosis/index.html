@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ジブンタイプ診断 | PERSONAL FILE</title>
+
+  <!-- OGP -->
+  <meta property="og:title" content="ジブンタイプ診断 | PERSONAL FILE" />
+  <meta property="og:description" content="たった10問であなたの才能タイプをスキャン。80タイプ診断の入口。" />
+  <meta property="og:url" content="https://www.personal-file.jp/diagnosis" />
+  <meta property="og:image" content="https://www.personal-file.jp/ogp-diagnosis.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ジブンタイプ診断 | PERSONAL FILE" />
+  <meta name="twitter:description" content="たった10問であなたの才能タイプをスキャン。" />
+  <meta name="twitter:image" content="https://www.personal-file.jp/ogp-diagnosis.png" />
+
+  <!-- React CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0A0A12; font-family: 'Noto Sans JP', sans-serif; }
+    #root { min-height: 100dvh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+const { useState, useEffect } = React;
+
+// ─── Animated Diagnosis Counter ───
+function DiagCounter({ style = {} }) {
+  const [count, setCount] = useState(31247);
+  useEffect(() => {
+    const iv = setInterval(() => {
+      // ランダム間隔で+1（リアルタイム感）
+      setCount((c) => c + 1);
+    }, 8000 + Math.random() * 12000); // 8-20秒ごとに+1
+    return () => clearInterval(iv);
+  }, []);
+  return <span style={{ color: "#E0E0E8", fontWeight: 700, ...style }}>{count.toLocaleString()}人</span>;
+}
+
+const QUESTIONS = [
+  // ── 日常シーン（Q1-5） ──
+  {
+    id: 1,
+    question: "友達との約束の時間に遅れそう。\nあなたの反応は？",
+    emoji: "⏰",
+    options: [
+      { text: "まあいっか、着いたら謝ろ", type: "P" },
+      { text: "遅れたら相手に悪い…急がなきゃ", type: "I" },
+      { text: "何分遅れるか計算して連絡しよう", type: "A" },
+      { text: "タクシー使ってでも間に合わせる", type: "D" },
+    ],
+  },
+  {
+    id: 2,
+    question: "新しい仕事を任された。\n最初にすることは？",
+    emoji: "💼",
+    options: [
+      { text: "とりあえずやってみる", type: "P" },
+      { text: "周りの人にやり方を聞く", type: "I" },
+      { text: "まず情報を集めて調べる", type: "A" },
+      { text: "ゴールを確認して逆算する", type: "D" },
+    ],
+  },
+  {
+    id: 3,
+    question: "理不尽なことを言われた時、\nあなたは？",
+    emoji: "😤",
+    options: [
+      { text: "まあそういう人もいるよね、と流す", type: "P" },
+      { text: "その場では我慢して、後で誰かに相談", type: "I" },
+      { text: "なぜそう言われたのか原因を分析する", type: "A" },
+      { text: "その場でハッキリ反論する", type: "D" },
+    ],
+  },
+  {
+    id: 4,
+    question: "予定のない休日、\n一番やりそうなことは？",
+    emoji: "☀️",
+    options: [
+      { text: "友達を誘って遊びに行く", type: "P" },
+      { text: "家でゴロゴロして、誰かとLINEする", type: "I" },
+      { text: "気になってたことを調べたり勉強する", type: "A" },
+      { text: "前から計画してたことを一気に片付ける", type: "D" },
+    ],
+  },
+  {
+    id: 5,
+    question: "グループワークで、\n自然となりやすい役割は？",
+    emoji: "👥",
+    options: [
+      { text: "場を盛り上げるムードメーカー", type: "P" },
+      { text: "みんなの意見をまとめる調整役", type: "I" },
+      { text: "情報を集めて資料を作る人", type: "A" },
+      { text: "方向性を決めてリードする人", type: "D" },
+    ],
+  },
+  // ── キャリア・仕事シーン（Q6-10） ──
+  {
+    id: 6,
+    question: "会議で自分の意見と\n多数派の意見が違う。どうする？",
+    emoji: "🗣️",
+    options: [
+      { text: "空気を読んで、楽しく話せる方に合わせる", type: "P" },
+      { text: "波風立てたくないし、多数派に従う", type: "I" },
+      { text: "データや根拠を示して冷静に主張する", type: "A" },
+      { text: "自分が正しいと思うなら堂々と言う", type: "D" },
+    ],
+  },
+  {
+    id: 7,
+    question: "転職先を選ぶとき、\n一番重視するのは？",
+    emoji: "🏢",
+    options: [
+      { text: "楽しそうな雰囲気かどうか", type: "P" },
+      { text: "人間関係が良さそうかどうか", type: "I" },
+      { text: "スキルが身につくかどうか", type: "A" },
+      { text: "成果が正当に評価されるかどうか", type: "D" },
+    ],
+  },
+  {
+    id: 8,
+    question: "仕事でミスをした。\nまず頭に浮かぶことは？",
+    emoji: "💭",
+    options: [
+      { text: "まあ次うまくやればいいか！", type: "P" },
+      { text: "周りに迷惑かけちゃったな…", type: "I" },
+      { text: "なぜ失敗したのか原因を突き止めたい", type: "A" },
+      { text: "すぐリカバリー策を考えて動く", type: "D" },
+    ],
+  },
+  {
+    id: 9,
+    question: "上司から「自由にやっていいよ」\nと言われたら？",
+    emoji: "🚀",
+    options: [
+      { text: "やった！面白そうなことから始める", type: "P" },
+      { text: "少し不安。まず周りに相談したい", type: "I" },
+      { text: "まず全体像を整理してから着手する", type: "A" },
+      { text: "チャンス。自分の裁量で最速で成果を出す", type: "D" },
+    ],
+  },
+  {
+    id: 10,
+    question: "理想の働き方に\n一番近いのは？",
+    emoji: "✨",
+    options: [
+      { text: "ワイワイ楽しく、飽きない毎日", type: "P" },
+      { text: "穏やかな環境で、チームと助け合い", type: "I" },
+      { text: "専門性を深めて、着実にスキルアップ", type: "A" },
+      { text: "裁量を持って、結果で勝負", type: "D" },
+    ],
+  },
+];
+
+const TYPE_DATA = {
+  P: {
+    name: "P型",
+    label: "ポジティブ・直感タイプ",
+    catchcopy: "考えるより先に動く。ノリと勢いで場を動かすムードメーカー。",
+    color: "#FF2D55",
+    gradient: "linear-gradient(135deg, #FF2D55 0%, #D91A40 100%)",
+    darkBg: "#2E0A14",
+    emoji: "🌟",
+    axis: { x: 1, y: 1 },
+    shortDesc: "基本的に明るい性格で、何事も前向きに捉えるポジティブ思考の持ち主。物事をシンプルに考え、複雑なことを嫌う傾向があります。深く考えるより「とにかくやってみよう」と行動に出るタイプで、直感的な発言や行動が多いのが特徴です。",
+    traits: [
+      { name: "ポジティブ傾向", desc: "落ち込んでも立ち直りが早く、周囲を明るくする力がある" },
+      { name: "単純化傾向", desc: "複雑な物事をシンプルに整理して伝えることが得意" },
+      { name: "行動重視傾向", desc: "考えるより先にまず動く。行動力はピカイチ" },
+      { name: "感覚重視傾向", desc: "論理より直感を大切にし、ひらめきで動くことが多い" },
+    ],
+    patterns: [
+      "嫌なことがあっても、寝たら大体リセットされる",
+      "難しい話を「要するにこういうことでしょ？」とまとめがち",
+      "計画を立てるより、とりあえず始めてから考えるタイプ",
+      "「なんとかなるっしょ」が口癖になりがち",
+    ],
+    subTypes: [
+      "エンターテイナー（鼓舞者）",
+      "アルチザン（芸術家）",
+      "コラボレーター（協調者）",
+      "アントレプレナー（起業家）",
+    ],
+    ctaText: ["「やりたいことと違った」を防ぐ。", "あなたの直感が活きる職場を80タイプ診断で特定する"],
+  },
+  I: {
+    name: "I型",
+    label: "協調・平和志向タイプ",
+    catchcopy: "人の気持ちに敏感で、チームの空気を整える調整力の持ち主。",
+    color: "#FFBE0B",
+    gradient: "linear-gradient(135deg, #FFBE0B 0%, #E5A800 100%)",
+    darkBg: "#2E2400",
+    emoji: "🤝",
+    axis: { x: -1, y: 1 },
+    shortDesc: "周りの人との争いを避け、みんなで仲良くすることを好む平和主義者。リスクの大きなことをわざわざ行うことは少なく、より確実な選択肢を取りに行く傾向があります。孤独を嫌い、チームに属することを好むため、いつも誰かと一緒にいたいタイプです。",
+    traits: [
+      { name: "協調性傾向", desc: "周りとの調和を大切にし、揉め事が起きにくい" },
+      { name: "慎重熟考傾向", desc: "決断や選択に時間がかかるが、それだけ慎重に考えている" },
+      { name: "リスク回避傾向", desc: "確実な選択肢を好み、無謀な挑戦より着実な一歩を選ぶ" },
+      { name: "チーム愛好傾向", desc: "一人より仲間と一緒にいることを好む。縁の下の力持ち" },
+    ],
+    patterns: [
+      "意見が対立したとき、自分が折れて場を丸く収めがち",
+      "「みんなどう思う？」と周りの反応を確認してから発言する",
+      "一人でランチより、誰かと一緒に食べたい派",
+      "断れなくて頼みごとを引き受けてしまうことが多い",
+    ],
+    subTypes: [
+      "コントリビューター（貢献者）",
+      "サポーター（支援者）",
+      "ハーモナー（共感者）",
+      "シンカー（思考家）",
+    ],
+    ctaText: ["「人間関係がつらい」を防ぐ。", "あなたと相性の良い上司・チームを80タイプ診断で特定する"],
+  },
+  A: {
+    name: "A型",
+    label: "慎重・論理重視タイプ",
+    catchcopy: "情報を集め、筋道を立て、最善策を見つけ出す知性派。",
+    color: "#4361EE",
+    gradient: "linear-gradient(135deg, #4361EE 0%, #3A0CA3 100%)",
+    darkBg: "#0C1040",
+    emoji: "🔍",
+    axis: { x: -1, y: -1 },
+    shortDesc: "何事も慎重に検討して最善策を見つけ出す努力家。仕事は丁寧でミスも少なく、行動を起こす前にまず情報を収集し、知識を得てから動くことが多いタイプです。発言は論理的で、感情に任せた行動はあまり取りません。",
+    traits: [
+      { name: "慎重傾向", desc: "行動する前によく考え、リスクを最小限に抑える" },
+      { name: "精度重視傾向", desc: "一つひとつの作業を緻密に行い、ミスが少ない" },
+      { name: "知識重視傾向", desc: "情報収集と学習を重視し、知識の裏付けを持って動く" },
+      { name: "論理重視傾向", desc: "物事をロジカルに考え、筋道を立てて説明できる" },
+    ],
+    patterns: [
+      "買い物の前にレビューを徹底的に調べてから購入する",
+      "他人の説明の「論理のおかしいところ」にすぐ気づく",
+      "「理屈っぽい」と言われたことがある",
+      "見切り発車が苦手で、準備が整ってから動きたい派",
+    ],
+    subTypes: [
+      "プラクティショナー（実務家）",
+      "リサーチャー（情報家）",
+      "ディリジェンサー（努力家）",
+      "アナリスト（分析官）",
+    ],
+    ctaText: ["「この仕事、意味ある？」を防ぐ。", "あなたの知性が正しく評価される職場を80タイプ診断で特定する"],
+  },
+  D: {
+    name: "D型",
+    label: "即断即決・合理タイプ",
+    catchcopy: "迷わない。決めたら即行動。結果で自分を証明する実力主義者。",
+    color: "#06D6A0",
+    gradient: "linear-gradient(135deg, #06D6A0 0%, #05A67D 100%)",
+    darkBg: "#0A2E24",
+    emoji: "⚡",
+    axis: { x: 1, y: -1 },
+    shortDesc: "周りとの良好な関係よりも、合理的な決断や意思決定を優先するタイプ。意思決定に迷いが少なく即断即決で行動に出ます。自らリスクを取ることが多く、自己の選択に責任を持つ傾向が強い。チームに属しても、個々人の実力や能力を重視します。",
+    traits: [
+      { name: "合理性傾向", desc: "最も合理的な選択肢を選び、無駄を徹底的に排除する" },
+      { name: "即断即決傾向", desc: "決断スピードが速く、迷っている時間がもったいないと感じる" },
+      { name: "リスク愛好傾向", desc: "自分で意思決定して責任を負うことを好む挑戦者" },
+      { name: "個人主義傾向", desc: "馴れ合いより実力勝負。結果で語りたいタイプ" },
+    ],
+    patterns: [
+      "メニューを見て3秒で注文を決められる",
+      "非効率なルールや会議に対して「これ意味ある？」と思いがち",
+      "やると決めたら即行動。周りの許可を待たない",
+      "「せっかちだね」と言われたことが何度もある",
+    ],
+    subTypes: [
+      "プロモーター（推進者）",
+      "リーダー（指揮官）",
+      "ファシリテーター（先導者）",
+      "イノベーター（変革者）",
+    ],
+    ctaText: ["「任せてもらえない」を防ぐ。", "あなたの決断力が武器になる職場を80タイプ診断で特定する"],
+  },
+};
+
+// ─── Bucket Questions (Ask Method Deep Dive) ───
+const BUCKET_DATA = {
+  P: {
+    question: "P型のあなたが、就職・配属で一番不安なことは？",
+    options: [
+      { text: "やりたいことと違う仕事をさせられる", short: "ミスマッチ不安", proofPct: 76 },
+      { text: "飽きっぽい自分が続けられるか不安", short: "継続不安", proofPct: 82 },
+      { text: "自由がなく、ルールで縛られる環境が怖い", short: "拘束不安", proofPct: 71 },
+      { text: "ノリで動く自分が、社会人として通用するか不安", short: "適応不安", proofPct: 79 },
+    ],
+    previews: [
+      {
+        typeName: "エンターテイナー（鼓舞者）",
+        catchphrase: "場を盛り上げ、人を動かすカリスマ型",
+        keywords: ["社交性", "表現力", "ムードメーカー", "行動力", "ポジティブ"],
+        jobs: "営業職、企画職、イベントP、広告クリエイター、PR担当",
+        compatibility: { good: "自由な社風で挑戦を推奨する会社", bad: "ルールが厳しく裁量の少ない環境" },
+        strengths: { good: "チームのモチベーションを自然に引き上げる力がある", caution: "飽きやすく、地道な作業が続くとパフォーマンスが低下する" },
+      },
+      {
+        typeName: "コラボレーター（協調者）",
+        catchphrase: "人と人をつないで、チームを前に進める調和型",
+        keywords: ["協調性", "明るさ", "気配り", "チームワーク", "柔軟性"],
+        jobs: "人事、総務、接客業、広報、コミュニティマネージャー",
+        compatibility: { good: "チームの雰囲気を大切にする組織", bad: "個人作業が中心の環境" },
+        strengths: { good: "組織の潤滑油としてチームを機能させる", caution: "自分の意見を押し殺してストレスを溜めやすい" },
+      },
+      {
+        typeName: "アントレプレナー（起業家）",
+        catchphrase: "思いついたら即行動。ゼロから作れる開拓型",
+        keywords: ["行動力", "発想力", "スピード", "独立心", "大胆さ"],
+        jobs: "新規事業、ベンチャー、営業職、経営企画、プロデューサー",
+        compatibility: { good: "裁量が大きくスピード感のある組織", bad: "上意下達の指示待ち文化" },
+        strengths: { good: "ゼロから事業を立ち上げる突破力がある", caution: "計画性が弱く、詳細な管理業務が苦手" },
+      },
+      {
+        typeName: "アルチザン（芸術家）",
+        catchphrase: "繊細な感性と大胆な発想を併せ持つ創造型",
+        keywords: ["創造性", "美的感覚", "大胆さ", "整合性", "オリジナリティ"],
+        jobs: "デザイナー、エンジニア、マーケター、ライター、専門職",
+        compatibility: { good: "創造性と品質を評価する文化", bad: "数値だけで評価される環境" },
+        strengths: { good: "独自の視点で他にないアウトプットを生み出せる", caution: "こだわりが強く、チームとの摩擦が起きやすい" },
+      },
+    ],
+  },
+  I: {
+    question: "I型のあなたが、就職・配属で一番不安なことは？",
+    options: [
+      { text: "上司やチームメンバーと人間関係が合わない", short: "対人不安", proofPct: 84 },
+      { text: "一人で放置されて孤立しそう", short: "孤立不安", proofPct: 73 },
+      { text: "断れない性格で仕事を抱えすぎそう", short: "過負荷不安", proofPct: 77 },
+      { text: "自分の意見が言えず我慢し続けそう", short: "自己抑圧不安", proofPct: 81 },
+    ],
+    previews: [
+      {
+        typeName: "サポーター（支援者）",
+        catchphrase: "他者への気配りと正確さを兼ね備えた縁の下の力持ち",
+        keywords: ["協調性", "正確性", "誠実さ", "サポート力", "観察力"],
+        jobs: "事務職、総務、秘書、経理、カスタマーサポート",
+        compatibility: { good: "チームの雰囲気を大切にする上司の下", bad: "競争が激しく個人成績重視の環境" },
+        strengths: { good: "指示されたことを正確にこなし、上司からの信頼が厚い", caution: "他人に振り回され、自分の仕事を後回しにしがち" },
+      },
+      {
+        typeName: "ハーモナー（共感者）",
+        catchphrase: "全体を見渡し、組織のバランスを取る安定型",
+        keywords: ["共感力", "観察力", "安定感", "協調性", "誠実さ"],
+        jobs: "事務職全般、カウンセラー、福祉職、教育職、人事",
+        compatibility: { good: "少人数で穏やかなチーム環境", bad: "結果主義でプレッシャーの強い職場" },
+        strengths: { good: "周囲の変化にいち早く気づき、組織の安定に貢献する", caution: "発言が少なく、存在感が薄くなりがち" },
+      },
+      {
+        typeName: "コントリビューター（貢献者）",
+        catchphrase: "責任感が強く、組織への貢献を惜しまない縁の下型",
+        keywords: ["責任感", "社交性", "貢献意欲", "行動力", "信頼性"],
+        jobs: "人事、総務、接客業、営業アシスタント、秘書",
+        compatibility: { good: "感謝が可視化される職場文化", bad: "貢献が見えにくい大組織" },
+        strengths: { good: "任された仕事を確実にこなし、信頼を積み上げる", caution: "断れなくてタスクを抱え込み、パンクしやすい" },
+      },
+      {
+        typeName: "シンカー（思考家）",
+        catchphrase: "深い思考力で本質を見抜く静かな知性型",
+        keywords: ["思考力", "分析力", "内省力", "慈重さ", "知性"],
+        jobs: "リサーチャー、アナリスト、ライター、学術系、コンサルタント",
+        compatibility: { good: "熟考を尊重し個人のペースを認める職場", bad: "即断即決が求められるハイプレッシャー環境" },
+        strengths: { good: "課題の本質を見抜く洞察力がある", caution: "行動に移すまでに時間がかかり、スピード感に欠ける" },
+      },
+    ],
+  },
+  A: {
+    question: "A型のあなたが、就職・配属で一番不安なことは？",
+    options: [
+      { text: "自分のスキルや知識が活かせない部署に配属される", short: "スキル不安", proofPct: 74 },
+      { text: "非効率で論理的でない環境に耐えられない", short: "非合理不安", proofPct: 69 },
+      { text: "調べすぎて動けない自分が、スピード重視の職場で置いていかれそう", short: "慎重すぎ不安", proofPct: 83 },
+      { text: "地道な努力が正当に評価されない気がする", short: "評価不安", proofPct: 78 },
+    ],
+    previews: [
+      {
+        typeName: "リサーチャー（情報家）",
+        catchphrase: "圧倒的な調査力で情報を武器にする知識型",
+        keywords: ["情報収集力", "分析力", "知識欲", "正確性", "専門性"],
+        jobs: "リサーチャー、データアナリスト、エンジニア、マーケティング、学術研究",
+        compatibility: { good: "専門性を深められる研究開発環境", bad: "表面的な雑務ばかりで深堀りできない環境" },
+        strengths: { good: "自ら学び、知識を蓄積し続ける探究心がある", caution: "情報収集に没頭しすぎて行動が遅れることがある" },
+      },
+      {
+        typeName: "アナリスト（分析官）",
+        catchphrase: "データと論理で本質を突き止める分析型",
+        keywords: ["論理性", "合理性", "分析力", "客観性", "整合性"],
+        jobs: "コンサルタント、データサイエンティスト、財務、法務、システムエンジニア",
+        compatibility: { good: "データドリブンな意思決定文化の企業", bad: "感覚的な意思決定が横行する組織" },
+        strengths: { good: "複雑な問題を構造化し、合理的な解決策を導く", caution: "完璧主義が強く、スピードと品質のバランスに悩む" },
+      },
+      {
+        typeName: "ディリジェンサー（努力家）",
+        catchphrase: "コツコツ積み上げて確実に結果を出す実直型",
+        keywords: ["勤勉さ", "正確性", "継続力", "責任感", "向上心"],
+        jobs: "経理、財務、エンジニア、品質管理、士業全般",
+        compatibility: { good: "体系的な研修制度がある企業", bad: "雑務ばかりでスキルが上がらない環境" },
+        strengths: { good: "地道な努力を続けられる粘り強さがある", caution: "変化への適応が遅く、新しいことへの腕が重い" },
+      },
+      {
+        typeName: "プラクティショナー（実務家）",
+        catchphrase: "正確でスピーディな仕事をこなす実行型",
+        keywords: ["実行力", "正確性", "スピード", "実務力", "信頼性"],
+        jobs: "事務職、営業職、技術職、経理財務、プロジェクトマネージャー",
+        compatibility: { good: "品質重視・プロセスを大切にする組織", bad: "スピードだけが重視され、緻密さが評価されない環境" },
+        strengths: { good: "任された業務を確実かつ素早くこなす安定感がある", caution: "ルーチン外の仕事を振られるとストレスを感じやすい" },
+      },
+    ],
+  },
+  D: {
+    question: "D型のあなたが、就職・配属で一番不安なことは？",
+    options: [
+      { text: "裁量がなく、指示待ちの仕事ばかりになりそう", short: "裁量不安", proofPct: 80 },
+      { text: "意思決定が遅い組織のスピード感に耐えられない", short: "速度不安", proofPct: 72 },
+      { text: "年功序列で実力が反映されない環境が怖い", short: "昇進不安", proofPct: 86 },
+      { text: "馴れ合いの文化で実力勝負ができない", short: "実力不安", proofPct: 75 },
+    ],
+    previews: [
+      {
+        typeName: "リーダー（指揮官）",
+        catchphrase: "決断力も知性も併せ持つ完成度の高い統率型",
+        keywords: ["決断力", "戦略的思考", "リーダーシップ", "専門性", "行動力"],
+        jobs: "経営者、管理職、コンサルタント、士業、専門職全般",
+        compatibility: { good: "若手にも裁量を与えるフラットな組織", bad: "年功序列で実力が反映されない環境" },
+        strengths: { good: "難解な物事を単純化し、組織を統率する力がある", caution: "調子に乗りやすく、慎重さが不足することがある" },
+      },
+      {
+        typeName: "イノベーター（変革者）",
+        catchphrase: "既存の枠を壊し、新しい価値を生み出す先駆型",
+        keywords: ["革新性", "スピード", "合理性", "突破力", "独立心"],
+        jobs: "起業家、ベンチャー、コンサル、IT営業、不動産営業",
+        compatibility: { good: "変革を推進するベンチャー・新規事業部門", bad: "前例主義で新しい提案が通らない組織" },
+        strengths: { good: "結果を出すための行動力と努力がずば抜けている", caution: "周囲との摩擦が起きやすく、協調性に欠けることがある" },
+      },
+      {
+        typeName: "プロモーター（推進者）",
+        catchphrase: "即断即決で人を巻き込み、物事を動かす推進型",
+        keywords: ["推進力", "決断力", "影響力", "分析力", "実行力"],
+        jobs: "営業職、企画職、プロジェクトマネージャー、ディレクター、管理職",
+        compatibility: { good: "成果に応じた抜擢人事がある企業", bad: "ポストが詰まって推進力を発揮できない組織" },
+        strengths: { good: "冒険を取ってでも結果を出しに行く積極性がある", caution: "短気で、他人のペースに合わせるのが苦手" },
+      },
+      {
+        typeName: "ファシリテーター（先導者）",
+        catchphrase: "広い視野と分析力で組織を導くバランス型",
+        keywords: ["バランス感覚", "分析力", "リーダーシップ", "合理性", "信頼性"],
+        jobs: "経営企画、マネジメント層、コンサルタント、事業開発、各種専門職",
+        compatibility: { good: "成果主義かつチームリードを任せる文化", bad: "協調を強いられて合理的判断ができない環境" },
+        strengths: { good: "全体を見渡して最適解を導く統率力がある", caution: "他人に厳しくなりすぎて、チームの士気を下げることがある" },
+      },
+    ],
+  },
+};
+
+// ─── Styles ───
+const styles = {
+  container: {
+    minHeight: "100vh",
+    background: "#0A0A12",
+    fontFamily: "'Noto Sans JP', 'Helvetica Neue', sans-serif",
+    color: "#F0F0F5",
+    overflow: "hidden",
+    position: "relative",
+  },
+  bgGlow: (color) => ({
+    position: "fixed",
+    width: "600px",
+    height: "600px",
+    borderRadius: "50%",
+    background: `radial-gradient(circle, ${color}15 0%, transparent 70%)`,
+    pointerEvents: "none",
+    zIndex: 0,
+  }),
+  inner: {
+    position: "relative",
+    zIndex: 1,
+    maxWidth: "480px",
+    margin: "0 auto",
+    padding: "0 20px",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  },
+};
+
+// ─── Components ───
+
+function ProgressBar({ current, total }) {
+  const pct = (current / total) * 100;
+  return (
+    <div style={{ padding: "20px 0 8px", display: "flex", alignItems: "center", gap: "12px" }}>
+      <div style={{ flex: 1, height: "4px", background: "#1A1A2E", borderRadius: "2px", overflow: "hidden" }}>
+        <div
+          style={{
+            width: `${pct}%`,
+            height: "100%",
+            background: "linear-gradient(90deg, #FF2D55, #FFBE0B, #4361EE, #06D6A0)",
+            borderRadius: "2px",
+            transition: "width 0.5s cubic-bezier(.4,0,.2,1)",
+          }}
+        />
+      </div>
+      <span style={{ fontSize: "13px", color: "#666", fontWeight: 600, minWidth: "44px", textAlign: "right" }}>
+        {current}/{total}
+      </span>
+    </div>
+  );
+}
+
+function StartScreen({ onStart }) {
+  const [show, setShow] = useState(false);
+  const [phase, setPhase] = useState(0);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+    setTimeout(() => setPhase(1), 400);
+    setTimeout(() => setPhase(2), 800);
+    setTimeout(() => setPhase(3), 1200);
+    setTimeout(() => setPhase(4), 1600);
+  }, []);
+
+  const typeColors = ["#FF2D55", "#FFBE0B", "#4361EE", "#06D6A0"];
+
+  return (
+    <div style={{ ...styles.inner, justifyContent: "center", alignItems: "center", textAlign: "center", position: "relative" }}>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap');
+        @keyframes heroGlow {
+          0%, 100% { box-shadow: 0 0 40px rgba(255,45,85,0.25), 0 0 80px rgba(67,97,238,0.1); }
+          50% { box-shadow: 0 0 60px rgba(255,45,85,0.4), 0 0 100px rgba(67,97,238,0.25); }
+        }
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes gradShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes scanLineIcon {
+          0% { top: -2px; opacity: 1; }
+          100% { top: calc(100% + 2px); opacity: 0.3; }
+        }
+        @keyframes scanLineFull {
+          0% { top: -10%; opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 110%; opacity: 0; }
+        }
+        @keyframes scanPulse {
+          0% { transform: scaleX(0.3); opacity: 0; }
+          50% { transform: scaleX(1); opacity: 0.4; }
+          100% { transform: scaleX(0.3); opacity: 0; }
+        }
+        @keyframes btnShimmer {
+          0% { left: -100%; }
+          100% { left: 200%; }
+        }
+        @keyframes particle {
+          0% { transform: translateY(0) scale(1); opacity: 0.6; }
+          100% { transform: translateY(-120px) scale(0); opacity: 0; }
+        }
+        @keyframes revealUp {
+          0% { opacity: 0; transform: translateY(24px); filter: blur(8px); }
+          100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes ringRotate {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes gridFade {
+          0%, 100% { opacity: 0.03; }
+          50% { opacity: 0.07; }
+        }
+        @keyframes dataStream {
+          0% { transform: translateY(0); opacity: 0.3; }
+          100% { transform: translateY(-200px); opacity: 0; }
+        }
+      `}</style>
+
+      {/* ── Background Layer ── */}
+
+      {/* Grid pattern overlay */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
+        backgroundImage: `
+          linear-gradient(rgba(255,45,85,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,45,85,0.04) 1px, transparent 1px)
+        `,
+        backgroundSize: "40px 40px",
+        animation: "gridFade 4s ease-in-out infinite",
+      }} />
+
+      {/* Full-width scan lines (repeating) */}
+      {[0, 1, 2].map((i) => (
+        <div
+          key={`scanfull-${i}`}
+          style={{
+            position: "absolute",
+            left: 0, right: 0,
+            height: "1px",
+            background: `linear-gradient(90deg, transparent 5%, ${typeColors[i]}40 30%, ${typeColors[i]}60 50%, ${typeColors[i]}40 70%, transparent 95%)`,
+            animation: `scanLineFull ${4 + i * 1.5}s ease-in-out ${i * 1.8}s infinite`,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+      ))}
+
+      {/* Background particles (v1 spec: 20 particles, 2-5px, stronger) */}
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              width: `${2 + Math.random() * 3}px`,
+              height: `${2 + Math.random() * 3}px`,
+              borderRadius: "50%",
+              background: typeColors[i % 4],
+              left: `${5 + Math.random() * 90}%`,
+              bottom: `${Math.random() * 40}%`,
+              opacity: 0,
+              animation: show ? `particle ${3 + Math.random() * 4}s ease-in-out ${Math.random() * 3}s infinite` : "none",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Ambient glow orbs (v1 spec: 300px/250px, 0.12 opacity) */}
+      <div style={{
+        position: "absolute",
+        width: "300px", height: "300px",
+        borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(255,45,85,0.12) 0%, transparent 70%)",
+        top: "-80px", left: "-100px",
+        filter: "blur(40px)",
+        pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute",
+        width: "250px", height: "250px",
+        borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(67,97,238,0.12) 0%, transparent 70%)",
+        bottom: "-60px", right: "-80px",
+        filter: "blur(40px)",
+        pointerEvents: "none",
+      }} />
+
+      {/* ── Main Content ── */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+
+        {/* Hero scanner icon */}
+        <div style={{
+          position: "relative",
+          width: "120px",
+          height: "120px",
+          margin: "0 auto 36px",
+          opacity: show ? 1 : 0,
+          transition: "opacity 0.8s ease",
+          animation: show ? "heroFloat 4s ease-in-out infinite" : "none",
+        }}>
+          {/* Rotating ring */}
+          <div style={{
+            position: "absolute",
+            top: "50%", left: "50%",
+            width: "120px", height: "120px",
+            borderRadius: "50%",
+            border: "1px solid transparent",
+            borderTopColor: "rgba(255,45,85,0.25)",
+            borderRightColor: "rgba(67,97,238,0.12)",
+            animation: "ringRotate 8s linear infinite",
+          }} />
+
+          {/* Scanner corner brackets */}
+          <div style={{ position: "absolute", top: "10px", left: "10px", width: "20px", height: "20px", borderTop: "2px solid rgba(255,45,85,0.5)", borderLeft: "2px solid rgba(255,45,85,0.5)", borderRadius: "3px 0 0 0" }} />
+          <div style={{ position: "absolute", top: "10px", right: "10px", width: "20px", height: "20px", borderTop: "2px solid rgba(67,97,238,0.5)", borderRight: "2px solid rgba(67,97,238,0.5)", borderRadius: "0 3px 0 0" }} />
+          <div style={{ position: "absolute", bottom: "10px", left: "10px", width: "20px", height: "20px", borderBottom: "2px solid rgba(6,214,160,0.5)", borderLeft: "2px solid rgba(6,214,160,0.5)", borderRadius: "0 0 0 3px" }} />
+          <div style={{ position: "absolute", bottom: "10px", right: "10px", width: "20px", height: "20px", borderBottom: "2px solid rgba(255,190,11,0.5)", borderRight: "2px solid rgba(255,190,11,0.5)", borderRadius: "0 0 3px 0" }} />
+
+          {/* Core orb */}
+          <div style={{
+            position: "absolute",
+            top: "50%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "72px",
+            height: "72px",
+            borderRadius: "20px",
+            background: "linear-gradient(135deg, #FF2D55 0%, #4361EE 50%, #06D6A0 100%)",
+            backgroundSize: "200% 200%",
+            animation: "gradShift 4s ease infinite, heroGlow 3s ease-in-out infinite",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            {/* Scan line inside icon */}
+            <div style={{ position: "absolute", inset: 0, borderRadius: "20px", overflow: "hidden" }}>
+              <div style={{
+                position: "absolute", left: 0, right: 0, height: "2px",
+                background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
+                animation: "scanLineIcon 1.8s ease-in-out infinite",
+              }} />
+            </div>
+            <span style={{ fontSize: "32px", position: "relative", zIndex: 1, filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.3))" }}>&#10022;</span>
+          </div>
+
+          {/* Scan pulse wave beneath icon */}
+          <div style={{
+            position: "absolute",
+            bottom: "-8px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "140px",
+            height: "2px",
+            background: "linear-gradient(90deg, transparent, #FF2D5560, #4361EE60, transparent)",
+            animation: "scanPulse 2s ease-in-out infinite",
+          }} />
+        </div>
+
+        {/* "SCANNING" micro label */}
+        <div style={{
+          opacity: phase >= 1 ? 1 : 0,
+          animation: phase >= 1 ? "revealUp 0.5s ease forwards" : "none",
+          marginBottom: "6px",
+        }}>
+          <span style={{
+            fontFamily: "'Sora', sans-serif",
+            fontSize: "9px",
+            letterSpacing: "6px",
+            color: "rgba(255,45,85,0.5)",
+            fontWeight: 500,
+            textTransform: "uppercase",
+          }}>
+            Personality Scan
+          </span>
+        </div>
+
+        {/* Brand label */}
+        <div style={{
+          opacity: phase >= 1 ? 1 : 0,
+          animation: phase >= 1 ? "revealUp 0.5s ease 0.1s forwards" : "none",
+          marginBottom: "20px",
+        }}>
+          <span style={{
+            fontFamily: "'Sora', sans-serif",
+            fontSize: "10px",
+            letterSpacing: "4px",
+            color: "rgba(255,45,85,0.7)",
+            fontWeight: 600,
+            textTransform: "uppercase",
+          }}>
+            Jibun Type Diagnostic
+          </span>
+        </div>
+
+        {/* Main heading */}
+        <div style={{
+          opacity: phase >= 2 ? 1 : 0,
+          animation: phase >= 2 ? "revealUp 0.6s ease forwards" : "none",
+        }}>
+          <h1 style={{
+            fontSize: "28px",
+            fontWeight: 900,
+            lineHeight: 1.4,
+            margin: "0 0 16px",
+          }}>
+            <span style={{ color: "#E0E0E8" }}>あなたの才能、</span>
+            <br />
+            <span style={{
+              background: "linear-gradient(135deg, #FF2D55, #FF6B8A, #4361EE)",
+              backgroundSize: "200% 200%",
+              animation: "gradShift 3s ease infinite",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "1px",
+              fontSize: "32px",
+            }}>スキャンします。</span>
+          </h1>
+        </div>
+
+        {/* Sub description */}
+        <div style={{
+          opacity: phase >= 3 ? 1 : 0,
+          animation: phase >= 3 ? "revealUp 0.5s ease forwards" : "none",
+          marginBottom: "40px",
+        }}>
+          <p style={{
+            fontSize: "13px",
+            color: "#666",
+            lineHeight: 1.8,
+            margin: 0,
+            maxWidth: "300px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}>
+            たった10問のパーソナリティ解析。
+            <br />
+            自分でも知らなかった自分のタイプが見つかる。
+          </p>
+        </div>
+
+        {/* Social proof counter */}
+        <div style={{
+          opacity: phase >= 3 ? 1 : 0,
+          animation: phase >= 3 ? "revealUp 0.5s ease 0.2s forwards" : "none",
+          marginBottom: "16px",
+          textAlign: "center",
+        }}>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 20px",
+            borderRadius: "24px",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}>
+            <span style={{ fontSize: "10px", color: "#06D6A0" }}>●</span>
+            <span style={{ fontSize: "12px", color: "#888", fontWeight: 500 }}>
+              <DiagCounter />が診断済み
+            </span>
+          </div>
+        </div>
+
+        {/* Authority badge */}
+        <div style={{
+          opacity: phase >= 3 ? 1 : 0,
+          animation: phase >= 3 ? "revealUp 0.5s ease 0.4s forwards" : "none",
+          marginBottom: "40px",
+          textAlign: "center",
+        }}>
+          <p style={{ fontSize: "11px", color: "#555", margin: 0, lineHeight: 1.6 }}>
+            開発者がこれまで<span style={{ color: "#888", fontWeight: 600 }}>数万人の性格データ</span>を分析して作った診断
+          </p>
+        </div>
+
+        {/* CTA Button */}
+        <div style={{
+          opacity: phase >= 4 ? 1 : 0,
+          animation: phase >= 4 ? "revealUp 0.5s ease forwards" : "none",
+        }}>
+          <button
+            onClick={onStart}
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              background: "linear-gradient(135deg, #FF2D55 0%, #C91B78 40%, #4361EE 100%)",
+              backgroundSize: "200% 200%",
+              animation: "gradShift 3s ease infinite",
+              color: "#fff",
+              border: "none",
+              borderRadius: "18px",
+              padding: "20px 64px",
+              fontSize: "18px",
+              fontWeight: 800,
+              cursor: "pointer",
+              boxShadow: "0 4px 32px rgba(255,45,85,0.35), 0 0 60px rgba(67,97,238,0.15)",
+              transition: "all 0.3s ease",
+              letterSpacing: "2px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
+              e.currentTarget.style.boxShadow = "0 8px 40px rgba(255,45,85,0.45), 0 0 80px rgba(67,97,238,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0) scale(1)";
+              e.currentTarget.style.boxShadow = "0 4px 32px rgba(255,45,85,0.35), 0 0 60px rgba(67,97,238,0.15)";
+            }}
+          >
+            <div style={{
+              position: "absolute", top: 0, left: "-100%", width: "60%", height: "100%",
+              background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+              animation: "btnShimmer 3s ease-in-out infinite",
+              pointerEvents: "none",
+            }} />
+            <span style={{ position: "relative", zIndex: 1 }}>スキャン開始</span>
+          </button>
+        </div>
+
+        {/* Bottom metadata */}
+        <div style={{
+          marginTop: "28px",
+          display: "flex",
+          gap: "20px",
+          justifyContent: "center",
+          opacity: phase >= 4 ? 1 : 0,
+          transition: "opacity 0.6s ease 0.3s",
+        }}>
+          {[
+            { icon: "\u26A1", text: "約2分" },
+            { icon: "\u25CE", text: "全10問" },
+            { icon: "\u2726", text: "無料" },
+          ].map((item, i) => (
+            <span key={i} style={{
+              fontSize: "12px",
+              color: "#555",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              fontWeight: 500,
+            }}>
+              <span style={{ fontSize: "10px", color: "#FF2D5560" }}>{item.icon}</span>
+              {item.text}
+            </span>
+          ))}
+        </div>
+
+        {/* Powered by */}
+        <div style={{
+          marginTop: "48px",
+          opacity: phase >= 4 ? 0.35 : 0,
+          transition: "opacity 1s ease 0.5s",
+        }}>
+          <span style={{
+            fontFamily: "'Sora', sans-serif",
+            fontSize: "8px",
+            letterSpacing: "3px",
+            color: "#444",
+            textTransform: "uppercase",
+          }}>
+            Powered by Personal File
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function QuestionScreen({ question, qIndex, total, onAnswer }) {
+  const [show, setShow] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setShow(false);
+    setSelected(null);
+    const t = setTimeout(() => setShow(true), 50);
+    return () => clearTimeout(t);
+  }, [qIndex]);
+
+  const handleSelect = (opt, idx) => {
+    if (selected !== null) return;
+    setSelected(idx);
+    setTimeout(() => onAnswer(opt.type), 380);
+  };
+
+
+  return (
+    <div style={{ ...styles.inner, paddingTop: "12px" }}>
+      <ProgressBar current={qIndex + 1} total={total} />
+
+      <div
+        style={{
+          opacity: show ? 1 : 0,
+          transform: show ? "translateX(0)" : "translateX(40px)",
+          transition: "all 0.5s cubic-bezier(.4,0,.2,1)",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "16px",
+        }}
+      >
+        {/* Question icon - scanner themed */}
+        <div style={{
+          position: "relative",
+          width: "72px",
+          height: "72px",
+          marginBottom: "16px",
+        }}>
+          {/* Scanner corners */}
+          <div style={{ position: "absolute", top: 0, left: 0, width: "12px", height: "12px", borderTop: "2px solid rgba(255,45,85,0.5)", borderLeft: "2px solid rgba(255,45,85,0.5)", borderRadius: "3px 0 0 0" }} />
+          <div style={{ position: "absolute", top: 0, right: 0, width: "12px", height: "12px", borderTop: "2px solid rgba(67,97,238,0.4)", borderRight: "2px solid rgba(67,97,238,0.4)", borderRadius: "0 3px 0 0" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, width: "12px", height: "12px", borderBottom: "2px solid rgba(67,97,238,0.4)", borderLeft: "2px solid rgba(67,97,238,0.4)", borderRadius: "0 0 0 3px" }} />
+          <div style={{ position: "absolute", bottom: 0, right: 0, width: "12px", height: "12px", borderBottom: "2px solid rgba(255,45,85,0.5)", borderRight: "2px solid rgba(255,45,85,0.5)", borderRadius: "0 0 3px 0" }} />
+
+          {/* Inner orb with Q number */}
+          <div style={{
+            position: "absolute",
+            top: "50%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "48px",
+            height: "48px",
+            borderRadius: "14px",
+            background: qIndex < 5
+              ? "linear-gradient(135deg, #FF2D55 0%, #4361EE 100%)"
+              : "linear-gradient(135deg, #4361EE 0%, #06D6A0 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: qIndex < 5
+              ? "0 0 24px rgba(255,45,85,0.25)"
+              : "0 0 24px rgba(67,97,238,0.25)",
+          }}>
+            <span style={{
+              fontFamily: "'Sora', sans-serif",
+              fontSize: "16px",
+              fontWeight: 800,
+              color: "#fff",
+              letterSpacing: "1px",
+            }}>Q{qIndex + 1}</span>
+          </div>
+        </div>
+
+        <h2
+          style={{
+            fontSize: "20px",
+            fontWeight: 700,
+            lineHeight: 1.6,
+            margin: "0 0 28px",
+            whiteSpace: "pre-line",
+            color: "#F0F0F5",
+          }}
+        >
+          {question.question}
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {question.options.map((opt, i) => {
+            const isSelected = selected === i;
+            const isOther = selected !== null && selected !== i;
+            return (
+              <button
+                key={i}
+                onClick={() => handleSelect(opt, i)}
+                style={{
+                  background: isSelected ? "linear-gradient(135deg, #FF2D55, #4361EE)" : "rgba(255,255,255,0.04)",
+                  border: isSelected ? "1.5px solid transparent" : "1.5px solid rgba(255,255,255,0.08)",
+                  borderRadius: "14px",
+                  padding: "16px 18px",
+                  textAlign: "left",
+                  color: isSelected ? "#fff" : isOther ? "#555" : "#D0D0D8",
+                  fontSize: "15px",
+                  fontWeight: isSelected ? 700 : 500,
+                  cursor: selected === null ? "pointer" : "default",
+                  transition: "all 0.3s ease",
+                  transform: isSelected ? "scale(1.02)" : isOther ? "scale(0.97)" : "scale(1)",
+                  opacity: isOther ? 0.35 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "14px",
+                  lineHeight: 1.5,
+                }}
+                onMouseEnter={(e) => {
+                  if (selected === null) {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.borderColor = "rgba(255,45,85,0.3)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selected === null) {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                  }
+                }}
+              >
+                <span
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "8px",
+                    background: isSelected ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    flexShrink: 0,
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {String.fromCharCode(65 + i)}
+                </span>
+                {opt.text}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <style>{`@keyframes fadeSlide { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }`}</style>
+    </div>
+  );
+}
+
+function MatrixViz({ resultType }) {
+  const types = ["P", "I", "A", "D"];
+  return (
+    <div style={{ position: "relative", width: "220px", height: "220px", margin: "0 auto 24px" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "10%",
+          right: "10%",
+          height: "1px",
+          background: "rgba(255,255,255,0.1)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "10%",
+          bottom: "10%",
+          width: "1px",
+          background: "rgba(255,255,255,0.1)",
+        }}
+      />
+
+      <span style={{ position: "absolute", right: "0", top: "50%", transform: "translateY(-50%)", fontSize: "10px", color: "#666", letterSpacing: "1px" }}>
+        社交性
+      </span>
+      <span style={{ position: "absolute", left: "0", top: "50%", transform: "translateY(-50%)", fontSize: "10px", color: "#666", letterSpacing: "1px" }}>
+        協調性
+      </span>
+      <span style={{ position: "absolute", top: "4%", left: "50%", transform: "translateX(-50%)", fontSize: "10px", color: "#666" }}>
+        慎重熟考
+      </span>
+      <span style={{ position: "absolute", bottom: "4%", left: "50%", transform: "translateX(-50%)", fontSize: "10px", color: "#666" }}>
+        即断即決
+      </span>
+
+      {types.map((t) => {
+        const td = TYPE_DATA[t];
+        const isActive = t === resultType;
+        const cx = 50 + td.axis.x * 28;
+        const cy = 50 - td.axis.y * 28;
+        return (
+          <div
+            key={t}
+            style={{
+              position: "absolute",
+              left: `${cx}%`,
+              top: `${cy}%`,
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <div
+              style={{
+                width: isActive ? "44px" : "32px",
+                height: isActive ? "44px" : "32px",
+                borderRadius: "50%",
+                background: isActive ? td.gradient : "rgba(255,255,255,0.06)",
+                border: isActive ? "none" : "1px solid rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: isActive ? "16px" : "13px",
+                fontWeight: 800,
+                color: isActive ? "#fff" : "#555",
+                boxShadow: isActive ? `0 0 24px ${td.color}60` : "none",
+                transition: "all 0.6s ease",
+              }}
+            >
+              {t}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ScoreBar({ scores, resultType }) {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
+  const types = ["P", "I", "A", "D"];
+  return (
+    <div style={{ marginBottom: "24px" }}>
+      <div style={{ display: "flex", gap: "6px" }}>
+        {types.map((t) => {
+          const pct = Math.round((scores[t] / total) * 100);
+          const td = TYPE_DATA[t];
+          const isActive = t === resultType;
+          return (
+            <div key={t} style={{ flex: Math.max(scores[t], 0.5), minWidth: "30px", transition: "flex 0.8s ease" }}>
+              <div
+                style={{
+                  height: "8px",
+                  borderRadius: "4px",
+                  background: isActive ? td.gradient : `${td.color}40`,
+                  transition: "all 0.8s ease",
+                  marginBottom: "6px",
+                }}
+              />
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "11px",
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? td.color : "#555",
+                  textAlign: "center",
+                  transition: "all 0.6s ease",
+                }}
+              >
+                {t} {pct}%
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ResultScreen({ scores }) {
+  const [show, setShow] = useState(false);
+  const [phase, setPhase] = useState(0);
+  const [bucketAnswer, setBucketAnswer] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
+
+
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+    setTimeout(() => setPhase(1), 800);
+    setTimeout(() => setPhase(2), 1800);
+    setTimeout(() => setPhase(3), 2800);
+    setTimeout(() => setPhase(4), 3600);
+  }, []);
+
+  const priority = ["D", "P", "A", "I"];
+  let maxType = priority[0];
+  let maxScore = scores[priority[0]] || 0;
+  for (const t of priority) {
+    if ((scores[t] || 0) > maxScore) {
+      maxScore = scores[t] || 0;
+      maxType = t;
+    }
+  }
+  const d = TYPE_DATA[maxType];
+  const bucket = BUCKET_DATA[maxType];
+
+  const handleBucketSelect = (idx) => {
+    setBucketAnswer(idx);
+    setTimeout(() => setShowPreview(true), 600);
+  };
+
+  return (
+    <div style={{ ...styles.container }}>
+      <div style={{ ...styles.bgGlow(d.color), top: "-200px", right: "-200px" }} />
+      <div style={{ ...styles.bgGlow(d.color), bottom: "-200px", left: "-200px" }} />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
+
+      <div
+        style={{
+          ...styles.inner,
+          paddingTop: "40px",
+          paddingBottom: "40px",
+          opacity: show ? 1 : 0,
+          transition: "opacity 0.8s ease",
+        }}
+      >
+        {/* Result header */}
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <style>{`
+            @keyframes scanLineIcon {
+              0% { top: -2px; opacity: 0.8; }
+              100% { top: calc(100% + 2px); opacity: 0; }
+            }
+            @keyframes btnShimmer {
+              0% { left: -100%; }
+              100% { left: 200%; }
+            }
+            @keyframes fadeSlide {
+              from { opacity: 0; transform: translateY(-8px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+
+          {/* Scan complete badge */}
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "6px 18px",
+            borderRadius: "20px",
+            background: "rgba(255,45,85,0.12)",
+            border: "1px solid rgba(255,45,85,0.2)",
+            marginBottom: "24px",
+          }}>
+            <span style={{ fontSize: "10px", color: "#06D6A0" }}>●</span>
+            <span style={{
+              fontFamily: "'Sora', sans-serif",
+              color: "#FF2D55",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "3px",
+            }}>
+              SCAN COMPLETE
+            </span>
+          </div>
+
+          {/* Type icon - scanner frame */}
+          <div style={{
+            position: "relative",
+            width: "130px",
+            height: "130px",
+            margin: "0 auto 20px",
+          }}>
+            {/* Outer glow */}
+            <div style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "130px", height: "130px",
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${d.color}15 0%, transparent 70%)`,
+            }} />
+
+            {/* Scanner frame corners */}
+            <div style={{ position: "absolute", top: "8px", left: "8px", width: "22px", height: "22px", borderTop: `2px solid ${d.color}`, borderLeft: `2px solid ${d.color}`, borderRadius: "4px 0 0 0" }} />
+            <div style={{ position: "absolute", top: "8px", right: "8px", width: "22px", height: "22px", borderTop: `2px solid ${d.color}80`, borderRight: `2px solid ${d.color}80`, borderRadius: "0 4px 0 0" }} />
+            <div style={{ position: "absolute", bottom: "8px", left: "8px", width: "22px", height: "22px", borderBottom: `2px solid ${d.color}80`, borderLeft: `2px solid ${d.color}80`, borderRadius: "0 0 0 4px" }} />
+            <div style={{ position: "absolute", bottom: "8px", right: "8px", width: "22px", height: "22px", borderBottom: `2px solid ${d.color}`, borderRight: `2px solid ${d.color}`, borderRadius: "0 0 4px 0" }} />
+
+            {/* Cross hairs */}
+            <div style={{ position: "absolute", top: "50%", left: "6px", width: "12px", height: "1px", background: `${d.color}40` }} />
+            <div style={{ position: "absolute", top: "50%", right: "6px", width: "12px", height: "1px", background: `${d.color}40` }} />
+            <div style={{ position: "absolute", left: "50%", top: "6px", width: "1px", height: "12px", background: `${d.color}40` }} />
+            <div style={{ position: "absolute", left: "50%", bottom: "6px", width: "1px", height: "12px", background: `${d.color}40` }} />
+
+            {/* Core orb */}
+            <div style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "76px",
+              height: "76px",
+              borderRadius: "20px",
+              background: d.gradient,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: `0 0 40px ${d.color}35, 0 0 80px ${d.color}15`,
+            }}>
+              {/* Scan line inside orb */}
+              <div style={{ position: "absolute", inset: 0, borderRadius: "20px", overflow: "hidden" }}>
+                <div style={{
+                  position: "absolute", left: 0, right: 0, height: "2px",
+                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
+                  animation: "scanLineIcon 2s ease-in-out infinite",
+                }} />
+              </div>
+              {/* Type letter */}
+              <span style={{
+                fontFamily: "'Sora', sans-serif",
+                fontSize: "36px",
+                fontWeight: 800,
+                color: maxType === "I" ? "#1A1A2A" : "#fff",
+                lineHeight: 1,
+                position: "relative",
+                zIndex: 1,
+                filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.3))",
+              }}>{maxType}</span>
+            </div>
+          </div>
+
+          {/* Type name */}
+          <h1 style={{
+            fontSize: "36px",
+            fontWeight: 900,
+            margin: "0 0 6px",
+            background: d.gradient,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            letterSpacing: "2px",
+          }}>
+            {d.name}
+          </h1>
+
+          {/* Type label with accent lines */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
+            <div style={{ width: "20px", height: "1px", background: `${d.color}60` }} />
+            <p style={{ fontSize: "14px", color: d.color, fontWeight: 600, margin: 0, letterSpacing: "1px" }}>{d.label}</p>
+            <div style={{ width: "20px", height: "1px", background: `${d.color}60` }} />
+          </div>
+
+          {/* Catchcopy */}
+          <p style={{
+            fontSize: "13px",
+            color: "#999",
+            fontWeight: 500,
+            margin: "0 0 20px",
+            lineHeight: 1.6,
+          }}>{d.catchcopy}</p>
+        </div>
+
+        {/* Score bar */}
+        <div
+          style={{
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "translateY(0)" : "translateY(15px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+          }}
+        >
+          <ScoreBar scores={scores} resultType={maxType} />
+        </div>
+
+        {/* Matrix */}
+        <div
+          style={{
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "scale(1)" : "scale(0.8)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+          }}
+        >
+          <MatrixViz resultType={maxType} />
+        </div>
+
+        {/* Short description */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            borderRadius: "16px",
+            padding: "20px",
+            marginBottom: "24px",
+            borderLeft: `3px solid ${d.color}`,
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1) 0.2s",
+          }}
+        >
+          <p style={{ fontSize: "14px", lineHeight: 1.8, color: "#C0C0C8", margin: 0 }}>{d.shortDesc}</p>
+        </div>
+
+        {/* 4 Traits */}
+        <div
+          style={{
+            marginBottom: "24px",
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1) 0.4s",
+          }}
+        >
+          <div style={{ fontSize: "13px", fontWeight: 700, color: d.color, marginBottom: "12px", letterSpacing: "1px" }}>
+            ◆ {d.name}の4つの傾向
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {d.traits.map((trait, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "12px",
+                  padding: "14px 16px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                  <span
+                    style={{
+                      background: `${d.color}20`,
+                      color: d.color,
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "3px 10px",
+                      borderRadius: "6px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {trait.name}
+                  </span>
+                </div>
+                <p style={{ fontSize: "13px", color: "#A0A0A8", lineHeight: 1.6, margin: 0 }}>{trait.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Behavioral patterns */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.03)",
+            borderRadius: "16px",
+            padding: "20px",
+            marginBottom: "28px",
+            opacity: phase >= 2 ? 1 : 0,
+            transform: phase >= 2 ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+          }}
+        >
+          <div style={{ fontSize: "13px", fontWeight: 700, color: "#C0C0C8", marginBottom: "14px" }}>
+            💡 {d.name}あるある
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {d.patterns.map((p, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                <span style={{ color: d.color, fontSize: "14px", lineHeight: "22px", flexShrink: 0 }}>✓</span>
+                <p style={{ fontSize: "13px", color: "#999", lineHeight: 1.6, margin: 0 }}>{p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 20分の1 hook */}
+        <div
+          style={{
+            opacity: phase >= 3 ? 1 : 0,
+            transform: phase >= 3 ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+          }}
+        >
+          <div
+            style={{
+              background: `linear-gradient(135deg, ${d.darkBg}, #0A0A12)`,
+              border: `1px solid ${d.color}30`,
+              borderRadius: "20px",
+              padding: "28px 24px",
+              textAlign: "center",
+              marginBottom: "24px",
+            }}
+          >
+            <p style={{ fontSize: "13px", color: "#888", margin: "0 0 12px" }}>
+              でも、これはあなたのパーソナリティの
+            </p>
+            <div
+              style={{
+                fontSize: "48px",
+                fontWeight: 900,
+                margin: "0 0 12px",
+                background: d.gradient,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                lineHeight: 1.1,
+              }}
+            >
+              20分の1
+            </div>
+            <p style={{ fontSize: "12px", color: "#666", margin: "0 0 24px", lineHeight: 1.6 }}>に過ぎません</p>
+
+            {/* 80 Types Structure Diagram */}
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                borderRadius: "16px",
+                padding: "20px 16px",
+                marginBottom: "16px",
+              }}
+            >
+              <p style={{ fontSize: "11px", color: "#666", letterSpacing: "2px", fontWeight: 600, margin: "0 0 16px", textTransform: "uppercase" }}>
+                全80種の構造
+              </p>
+
+              {/* 3 circles diagram */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "16px" }}>
+                {[
+                  { label: "性格類型", num: "4", desc: "いまココ！", isActive: true },
+                  { label: "補助類型", num: "4", desc: "未解析", isActive: false },
+                  { label: "行動類型", num: "5", desc: "未解析", isActive: false },
+                ].map((item, idx) => (
+                  <React.Fragment key={idx}>
+                    {idx > 0 && (
+                      <span style={{ fontSize: "18px", fontWeight: 800, color: "#444", margin: "0 2px" }}>×</span>
+                    )}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        background: item.isActive
+                          ? `linear-gradient(135deg, ${d.color}20, ${d.color}08)`
+                          : "rgba(255,255,255,0.02)",
+                        border: item.isActive
+                          ? `2px solid ${d.color}60`
+                          : "1px solid rgba(255,255,255,0.08)",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.6s ease",
+                      }}
+                    >
+                      <span style={{
+                        fontSize: "10px",
+                        color: item.isActive ? d.color : "#555",
+                        fontWeight: 600,
+                        letterSpacing: "0.5px",
+                        marginBottom: "2px",
+                      }}>
+                        {item.label}
+                      </span>
+                      <span style={{
+                        fontSize: "28px",
+                        fontWeight: 900,
+                        color: item.isActive ? d.color : "#333",
+                        lineHeight: 1,
+                      }}>
+                        {item.num}
+                      </span>
+                      <span style={{
+                        fontSize: "9px",
+                        color: item.isActive ? `${d.color}CC` : "#444",
+                        marginTop: "3px",
+                        fontWeight: item.isActive ? 700 : 500,
+                      }}>
+                        {item.desc}
+                      </span>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {/* Result line */}
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                padding: "10px 0",
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <span style={{ fontSize: "12px", color: "#555" }}>=</span>
+                <span style={{
+                  fontSize: "20px",
+                  fontWeight: 900,
+                  background: d.gradient,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  全80タイプ
+                </span>
+              </div>
+            </div>
+
+            {/* Sub types detail */}
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                borderRadius: "12px",
+                padding: "16px",
+              }}
+            >
+              <p style={{ fontSize: "13px", color: "#999", lineHeight: 1.7, margin: 0 }}>
+                {d.name}の中にも
+                {d.subTypes.map((s, i) => (
+                  <span key={i}>
+                    {i > 0 && "・"}
+                    <span style={{ color: d.color, fontWeight: 600 }}>
+                      {s}
+                    </span>
+                  </span>
+                ))}
+                の4つの性格類型があり、さらにそれぞれが5つの行動パターンに分かれます。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ ASK METHOD DEEP DIVE ═══ */}
+
+        {/* Step 1: Bucket Question */}
+        <div
+          style={{
+            opacity: phase >= 4 && bucketAnswer === null ? 1 : phase >= 4 && bucketAnswer !== null ? 0.4 : 0,
+            maxHeight: phase >= 4 ? (bucketAnswer !== null ? "0px" : "800px") : "0px",
+            overflow: "hidden",
+            transform: phase >= 4 ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+            marginBottom: bucketAnswer === null ? "24px" : "0px",
+          }}
+        >
+          <div
+            style={{
+              background: `linear-gradient(135deg, ${d.darkBg}, #0A0A12)`,
+              border: `2px solid ${d.color}50`,
+              borderRadius: "20px",
+              padding: "28px 20px",
+              position: "relative",
+            }}
+          >
+            {/* Top accent bar */}
+            <div style={{
+              position: "absolute",
+              top: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "60%",
+              height: "3px",
+              background: d.gradient,
+              borderRadius: "0 0 4px 4px",
+            }} />
+
+            {/* Bonus question badge */}
+            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+              <span style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "12px",
+                fontWeight: 700,
+                color: maxType === "I" ? "#1A1A0A" : "#fff",
+                background: d.gradient,
+                padding: "6px 16px",
+                borderRadius: "20px",
+                boxShadow: `0 2px 12px ${d.color}40`,
+              }}>
+                ▶ 深層スキャン
+              </span>
+            </div>
+
+            {/* Question text */}
+            <p style={{
+              fontSize: "11px",
+              color: "#888",
+              textAlign: "center",
+              margin: "0 0 6px",
+            }}>
+              あなたのタイプをさらに深く分析するため、もう1つだけ教えてください
+            </p>
+            <p style={{
+              fontSize: "13px",
+              color: d.color,
+              textAlign: "center",
+              margin: "0 0 8px",
+              fontWeight: 600,
+            }}>
+              残りの19/20を知るための、最後の質問です
+            </p>
+            <p style={{
+              fontSize: "16px",
+              fontWeight: 700,
+              color: "#E0E0E8",
+              textAlign: "center",
+              margin: "0 0 8px",
+              lineHeight: 1.6,
+            }}>
+              {bucket.question}
+            </p>
+
+            {/* Options */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {bucket.options.map((opt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleBucketSelect(idx)}
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: `1px solid ${d.color}25`,
+                    borderRadius: "14px",
+                    padding: "16px",
+                    color: "#C0C0C8",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    lineHeight: 1.5,
+                    textAlign: "left",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                  }}
+                >
+                  <span style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    background: `${d.color}15`,
+                    border: `1px solid ${d.color}40`,
+                    color: d.color,
+                    fontSize: "12px",
+                    fontWeight: 800,
+                    flexShrink: 0,
+                  }}>
+                    {["A", "B", "C", "D"][idx]}
+                  </span>
+                  <span>{opt.text}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Step 2: Locked Preview (after bucket answer) */}
+        {bucketAnswer !== null && (
+          <div
+            style={{
+              opacity: showPreview ? 1 : 0,
+              transform: showPreview ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+              marginBottom: "24px",
+            }}
+          >
+            {/* Selected bucket badge */}
+            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+              <span style={{
+                display: "inline-block",
+                fontSize: "18px",
+                fontWeight: 700,
+                color: d.color,
+                background: `${d.color}15`,
+                border: `1px solid ${d.color}30`,
+                padding: "14px 32px",
+                borderRadius: "28px",
+                letterSpacing: "1px",
+              }}>
+                回答：{bucket.options[bucketAnswer].short}
+              </span>
+            </div>
+
+            {/* Personalized social proof */}
+            <div style={{
+              textAlign: "center",
+              marginBottom: "24px",
+              padding: "10px 16px",
+              borderRadius: "12px",
+              background: "rgba(255,255,255,0.03)",
+            }}>
+              <p style={{ fontSize: "12px", color: "#888", margin: 0, lineHeight: 1.6 }}>
+                同じ<span style={{ color: d.color, fontWeight: 600 }}>{d.name}×{bucket.options[bucketAnswer].short}</span>の人の
+                <span style={{ color: "#E0E0E8", fontWeight: 700 }}>{bucket.options[bucketAnswer].proofPct}%</span>が
+                <br />
+                80タイプ診断で具体的な対策を見つけています
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: `linear-gradient(135deg, ${d.darkBg}, #0A0A12)`,
+                border: `1px solid ${d.color}30`,
+                borderRadius: "20px",
+                padding: "28px 24px",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              {/* Scan result header */}
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <div style={{ fontSize: "28px", marginBottom: "8px" }}>🔒</div>
+                <span style={{ fontSize: "10px", color: "#06D6A0" }}>●</span>
+                <span style={{ fontFamily: "'Sora', sans-serif", fontSize: "10px", letterSpacing: "3px", color: "#666", marginLeft: "6px" }}>DEEP SCAN PREVIEW</span>
+              </div>
+
+              {/* 1. 80 Type Name (blurred) */}
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 6px", letterSpacing: "1px" }}>
+                  あなたの80タイプ名
+                </p>
+                <p style={{ fontSize: "13px", color: "#888", margin: "0 0 8px" }}>
+                  あなたは {d.name}の中でも…
+                </p>
+                <div style={{
+                  fontSize: "24px",
+                  fontWeight: 900,
+                  color: d.color,
+                  filter: "blur(8px)",
+                  userSelect: "none",
+                  margin: "0 0 4px",
+                  lineHeight: 1.4,
+                }}>
+                  {bucket.previews[bucketAnswer].typeName}
+                </div>
+                <div style={{
+                  fontSize: "13px",
+                  color: d.color,
+                  filter: "blur(6px)",
+                  userSelect: "none",
+                  fontStyle: "italic",
+                }}>
+                  {bucket.previews[bucketAnswer].catchphrase}
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div style={{ width: "40px", height: "1px", background: `${d.color}30`, margin: "0 auto 20px" }} />
+
+              {/* 2. Keywords (blurred tags) */}
+              <div style={{ marginBottom: "20px" }}>
+                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 10px", letterSpacing: "1px" }}>
+                  ✦ あなたを表すキーワード
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", filter: "blur(5px)", userSelect: "none" }}>
+                  {bucket.previews[bucketAnswer].keywords.map((kw, ki) => (
+                    <span key={ki} style={{
+                      background: `${d.color}15`,
+                      border: `1px solid ${d.color}30`,
+                      color: d.color,
+                      padding: "6px 14px",
+                      borderRadius: "20px",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                    }}>{kw}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Jobs (blurred) */}
+              <div style={{
+                background: "rgba(255,255,255,0.03)",
+                borderRadius: "12px",
+                padding: "16px",
+                marginBottom: "12px",
+              }}>
+                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 8px", letterSpacing: "1px" }}>
+                  ✦ あなたの適職
+                </p>
+                <p style={{
+                  fontSize: "13px",
+                  color: "#999",
+                  margin: 0,
+                  lineHeight: 1.7,
+                  filter: "blur(5px)",
+                  userSelect: "none",
+                }}>
+                  {bucket.previews[bucketAnswer].jobs}
+                </p>
+              </div>
+
+              {/* 4. Compatibility (blurred) */}
+              <div style={{
+                background: "rgba(255,255,255,0.03)",
+                borderRadius: "12px",
+                padding: "16px",
+                marginBottom: "12px",
+              }}>
+                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 10px", letterSpacing: "1px" }}>
+                  ✦ 職場との相性
+                </p>
+                <div style={{ filter: "blur(5px)", userSelect: "none" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                    <span style={{ fontSize: "12px", color: "#06D6A0", flexShrink: 0 }}>○</span>
+                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.good}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                    <span style={{ fontSize: "12px", color: "#FF4466", flexShrink: 0 }}>×</span>
+                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.bad}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 5. Strengths & Cautions (blurred) */}
+              <div style={{
+                background: "rgba(255,255,255,0.03)",
+                borderRadius: "12px",
+                padding: "16px",
+              }}>
+                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 10px", letterSpacing: "1px" }}>
+                  ✦ あなたの強みと注意点
+                </p>
+                <div style={{ filter: "blur(5px)", userSelect: "none" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                    <span style={{ fontSize: "12px", color: "#4361EE", flexShrink: 0 }}>◎</span>
+                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].strengths.good}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                    <span style={{ fontSize: "12px", color: "#FFBE0B", flexShrink: 0 }}>△</span>
+                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].strengths.caution}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Step 4: CTA (always shown after preview) */}
+        {showPreview && (
+          <div style={{ animation: "fadeSlide 0.6s ease 0.3s both" }}>
+            {/* Social proof before CTA */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              marginBottom: "16px",
+            }}>
+              <span style={{ fontSize: "10px", color: "#06D6A0" }}>●</span>
+              <span style={{ fontSize: "12px", color: "#888" }}>
+                <DiagCounter />が診断済み
+              </span>
+            </div>
+
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#C0C0C8",
+                lineHeight: 1.7,
+                textAlign: "center",
+                margin: "0 0 20px",
+              }}
+            >
+              <span style={{ fontWeight: 700 }}>{d.ctaText[0]}</span>
+              <br />
+              {d.ctaText[1]}
+            </p>
+
+            <a
+              href="https://www.personal-file.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "block",
+                position: "relative",
+                overflow: "hidden",
+                background: d.gradient,
+                color: maxType === "I" ? "#1A1A0A" : "#fff",
+                border: "none",
+                borderRadius: "16px",
+                padding: "20px",
+                fontSize: "16px",
+                fontWeight: 700,
+                textAlign: "center",
+                textDecoration: "none",
+                boxShadow: `0 4px 24px ${d.color}40`,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                marginBottom: "12px",
+              }}
+            >
+              <div style={{
+                position: "absolute", top: 0, left: "-100%", width: "60%", height: "100%",
+                background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                animation: "btnShimmer 3s ease-in-out infinite",
+                pointerEvents: "none",
+              }} />
+              <span style={{ position: "relative", zIndex: 1 }}>🔓 80タイプ完全診断を受ける（無料）</span>
+            </a>
+
+            <p style={{ fontSize: "11px", color: "#555", textAlign: "center", margin: "0 0 24px" }}>
+              ※ 完全無料 ・ 診断結果をもとにキャリア相談もできます
+            </p>
+
+            {/* Share */}
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "center",
+                padding: "20px 0",
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <button
+                onClick={() => {
+                  const resultUrl = `https://www.personal-file.jp/`;
+                  const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
+                  const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(resultUrl)}&text=${encodeURIComponent(text)}`;
+                  window.open(lineUrl, "_blank");
+                }}
+                style={{
+                  background: "rgba(6,199,85,0.12)",
+                  border: "1px solid rgba(6,199,85,0.25)",
+                  borderRadius: "12px",
+                  padding: "12px 24px",
+                  color: "#06C755",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <span style={{ fontSize: "16px", lineHeight: 1 }}>💬</span>
+                LINEで送る
+              </button>
+              <button
+                onClick={() => {
+                  const resultUrl = `https://www.personal-file.jp/`;
+                  const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
+                  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
+                  window.open(tweetUrl, "_blank");
+                }}
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "12px",
+                  padding: "12px 24px",
+                  color: "#C0C0C8",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                𝕏 でシェア
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ 80タイプ診断でわかる16のこと ═══ */}
+        {showPreview && (
+          <div style={{ marginTop: "32px", animation: "fadeSlide 0.6s ease 0.5s both" }}>
+            {/* Section header */}
+            <div style={{ textAlign: "center", marginBottom: "24px" }}>
+              <div style={{
+                display: "inline-block",
+                fontSize: "10px",
+                fontWeight: 700,
+                color: d.color,
+                letterSpacing: "2.5px",
+                marginBottom: "10px",
+                textTransform: "uppercase",
+              }}>
+                FULL DIAGNOSIS REVEALS
+              </div>
+              <h2 style={{
+                fontSize: "20px",
+                fontWeight: 900,
+                color: "#E0E0E8",
+                margin: "0 0 4px",
+                lineHeight: 1.4,
+              }}>
+                80タイプ診断でわかる
+                <span style={{
+                  background: d.gradient,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}> 16のこと</span>
+              </h2>
+            </div>
+
+            {/* Category 1: 性格・行動傾向 */}
+            <div style={{ marginBottom: "16px" }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "12px",
+                padding: "0 4px",
+              }}>
+                <span style={{
+                  fontSize: "16px",
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: `${d.color}15`,
+                  borderRadius: "10px",
+                }}>🧬</span>
+                <div>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#E0E0E8" }}>性格・行動傾向</div>
+                  <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>PERSONALITY & BEHAVIOR</div>
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                {[
+                  { num: "01", label: "基本タイプ", icon: "◉" },
+                  { num: "02", label: "性格傾向", icon: "◈" },
+                  { num: "03", label: "行動傾向", icon: "▸" },
+                  { num: "04", label: "価値観", icon: "✦" },
+                  { num: "05", label: "モチベーション", icon: "⚡" },
+                  { num: "06", label: "向いている職種", icon: "◎" },
+                  { num: "07", label: "得意な作業", icon: "◆" },
+                  { num: "08", label: "苦手な作業", icon: "▽" },
+                ].map((item) => (
+                  <div
+                    key={item.num}
+                    style={{
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.06)",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: "10px",
+                      color: d.color,
+                      fontWeight: 800,
+                      fontFamily: "monospace",
+                      opacity: 0.6,
+                    }}>{item.num}</span>
+                    <span style={{
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: "#C0C0C8",
+                    }}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Category 2: 相性 */}
+            <div style={{ marginBottom: "20px" }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "12px",
+                padding: "0 4px",
+              }}>
+                <span style={{
+                  fontSize: "16px",
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: `${d.color}15`,
+                  borderRadius: "10px",
+                }}>🤝</span>
+                <div>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#E0E0E8" }}>相性のいい働き方</div>
+                  <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>COMPATIBILITY</div>
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                {[
+                  { num: "09", label: "相性の良い社風", good: true },
+                  { num: "10", label: "相性の悪い社風", good: false },
+                  { num: "11", label: "相性の良い上司", good: true },
+                  { num: "12", label: "相性の悪い上司", good: false },
+                  { num: "13", label: "相性の良い部下", good: true },
+                  { num: "14", label: "相性の悪い部下", good: false },
+                  { num: "15", label: "相性の良い働き方", good: true },
+                  { num: "16", label: "相性の悪い働き方", good: false },
+                ].map((item) => (
+                  <div
+                    key={item.num}
+                    style={{
+                      background: item.good ? `${d.color}08` : "rgba(255,80,80,0.05)",
+                      border: `1px solid ${item.good ? `${d.color}20` : "rgba(255,80,80,0.15)"}`,
+                      borderRadius: "12px",
+                      padding: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: "10px",
+                      color: item.good ? d.color : "#FF5050",
+                      fontWeight: 800,
+                      fontFamily: "monospace",
+                      opacity: 0.6,
+                    }}>{item.num}</span>
+                    <span style={{
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: item.good ? "#C0C0C8" : "#A08080",
+                    }}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom CTA repeat */}
+            <a
+              href="https://www.personal-file.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "block",
+                position: "relative",
+                overflow: "hidden",
+                background: d.gradient,
+                color: maxType === "I" ? "#1A1A0A" : "#fff",
+                border: "none",
+                borderRadius: "16px",
+                padding: "20px",
+                fontSize: "16px",
+                fontWeight: 700,
+                textAlign: "center",
+                textDecoration: "none",
+                boxShadow: `0 4px 24px ${d.color}40`,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                marginBottom: "8px",
+              }}
+            >
+              <div style={{
+                position: "absolute", top: 0, left: "-100%", width: "60%", height: "100%",
+                background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                animation: "btnShimmer 3s ease-in-out infinite",
+                pointerEvents: "none",
+              }} />
+              <span style={{ position: "relative", zIndex: 1 }}>🔓 16項目すべてを解き明かす（無料）</span>
+            </a>
+            <p style={{ fontSize: "11px", color: "#555", textAlign: "center", margin: "0" }}>
+              ※ 完全無料 ・ 診断結果をもとにキャリア相談もできます
+            </p>
+          </div>
+        )}
+
+        {/* Footer */}
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px 0 0",
+            borderTop: "1px solid rgba(255,255,255,0.04)",
+            marginTop: "auto",
+          }}
+        >
+          <span style={{ fontSize: "11px", color: "#444" }}>
+            Powered by ジブンタイプ診断 — Personal File
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoadingScreen() {
+  const [dots, setDots] = useState(0);
+  const [msg, setMsg] = useState(0);
+  const msgs = ["回答を分析しています", "パーソナリティを判定中", "あなたのタイプを特定中"];
+
+  useEffect(() => {
+    const iv1 = setInterval(() => setDots((d) => (d + 1) % 4), 400);
+    const iv2 = setInterval(() => setMsg((m) => Math.min(m + 1, msgs.length - 1)), 800);
+    return () => {
+      clearInterval(iv1);
+      clearInterval(iv2);
+    };
+  }, []);
+
+  return (
+    <div style={{ ...styles.inner, justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+      <div
+        style={{
+          width: "64px",
+          height: "64px",
+          borderRadius: "50%",
+          border: "3px solid rgba(255,45,85,0.15)",
+          borderTopColor: "#FF2D55",
+          animation: "spin 0.8s linear infinite",
+          marginBottom: "24px",
+        }}
+      />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <p style={{ fontSize: "15px", color: "#888", fontWeight: 600, transition: "all 0.3s ease" }}>
+        {msgs[msg]}
+        {".".repeat(dots)}
+      </p>
+    </div>
+  );
+}
+
+// ─── App ───
+function App() {
+  const [phase, setPhase] = useState("start");
+  const [qIndex, setQIndex] = useState(0);
+  const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
+
+  const handleStart = () => setPhase("quiz");
+
+  const handleAnswer = (type) => {
+    const newScores = { ...scores, [type]: scores[type] + 1 };
+    setScores(newScores);
+
+    if (qIndex < QUESTIONS.length - 1) {
+      setQIndex(qIndex + 1);
+    } else {
+      setPhase("loading");
+      setTimeout(() => setPhase("result"), 2200);
+    }
+  };
+
+  const accentColor = "#FF2D55";
+
+  if (phase === "result") {
+    return <ResultScreen scores={scores} />;
+  }
+
+  return (
+    <div style={styles.container}>
+      <div style={{ ...styles.bgGlow(accentColor), top: "-300px", right: "-200px" }} />
+      <div style={{ ...styles.bgGlow(accentColor), bottom: "-300px", left: "-200px" }} />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
+
+      {phase === "start" && <StartScreen onStart={handleStart} />}
+      {phase === "quiz" && (
+        <QuestionScreen question={QUESTIONS[qIndex]} qIndex={qIndex} total={QUESTIONS.length} onAnswer={handleAnswer} />
+      )}
+      {phase === "loading" && <LoadingScreen />}
+    </div>
+  );
+}
+
+
+// ─── Mount ───
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+  </script>
+</body>
+</html>
