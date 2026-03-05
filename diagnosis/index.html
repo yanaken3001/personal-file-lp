@@ -16,6 +16,28 @@
   <meta name="twitter:description" content="たった10問であなたの才能タイプをスキャン。" />
   <meta name="twitter:image" content="https://www.personal-file.jp/ogp-diagnosis.png" />
 
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '519412346829983');
+    fbq('set', 'autoConfig', true, '519412346829983');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Facebook Pixel Code -->
+
   <!-- React CDN -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -1226,6 +1248,11 @@ function ResultScreen({ scores }) {
 
 
   useEffect(() => {
+    // Facebook Pixel - 診断完了イベント
+    if (typeof fbq === 'function') {
+      fbq('track', 'CompleteRegistration', { content_name: 'diagnosis_complete' });
+    }
+
     setTimeout(() => setShow(true), 200);
     setTimeout(() => setPhase(1), 800);
     setTimeout(() => setPhase(2), 1800);
@@ -2000,6 +2027,12 @@ function ResultScreen({ scores }) {
               href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                // Facebook Pixel - CTAクリックイベント
+                if (typeof fbq === 'function') {
+                  fbq('track', 'Contact', { content_name: 'cta_top', diagnosis_type: maxType });
+                }
+              }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2259,6 +2292,11 @@ function ResultScreen({ scores }) {
               href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof fbq === 'function') {
+                  fbq('track', 'Contact', { content_name: 'cta_bottom', diagnosis_type: maxType });
+                }
+              }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2352,7 +2390,13 @@ function App() {
   const [qIndex, setQIndex] = useState(0);
   const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
 
-  const handleStart = () => setPhase("quiz");
+  const handleStart = () => {
+    // Facebook Pixel - 診断開始イベント
+    if (typeof fbq === 'function') {
+      fbq('track', 'Lead', { content_name: 'diagnosis_start' });
+    }
+    setPhase("quiz");
+  };
 
   const handleAnswer = (type) => {
     const newScores = { ...scores, [type]: scores[type] + 1 };
