@@ -30,7 +30,7 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '519412346829983');
-    fbq('set', 'autoConfig', true, '519412346829983');
+    fbq('set', 'autoConfig', false, '519412346829983');
     fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
@@ -55,7 +55,7 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 // ─── Animated Diagnosis Counter ───
 function DiagCounter({ style = {} }) {
@@ -1245,12 +1245,14 @@ function ResultScreen({ scores }) {
   const [phase, setPhase] = useState(0);
   const [bucketAnswer, setBucketAnswer] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const hasTrackedRef = useRef(false);
 
 
   useEffect(() => {
-    // Facebook Pixel - 診断完了イベント
-    if (typeof fbq === 'function') {
+    // Facebook Pixel - 診断完了イベント（1回のみ確実に発火）
+    if (typeof fbq === 'function' && !hasTrackedRef.current) {
       fbq('track', 'CompleteRegistration', { content_name: 'diagnosis_complete' });
+      hasTrackedRef.current = true;
     }
 
     setTimeout(() => setShow(true), 200);
