@@ -52,7 +52,7 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useMemo } = React;
 
 // ─── Animated Diagnosis Counter ───
 function DiagCounter({ style = {} }) {
@@ -1235,7 +1235,7 @@ function ScoreBar({ scores, resultType }) {
   );
 }
 
-function ResultScreen({ scores }) {
+function ResultScreen({ scores, adRoute }) {
   const [show, setShow] = useState(false);
   const [phase, setPhase] = useState(0);
   const [bucketAnswer, setBucketAnswer] = useState(null);
@@ -2014,7 +2014,7 @@ function ResultScreen({ scores }) {
             </p>
 
             <a
-              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
+              href={`https://www.personal-file.jp/?from=${adRoute ? adRoute + '_' : ''}lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_main', content_category: maxType }); }}
@@ -2274,7 +2274,7 @@ function ResultScreen({ scores }) {
 
             {/* Bottom CTA repeat */}
             <a
-              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
+              href={`https://www.personal-file.jp/?from=${adRoute ? adRoute + '_' : ''}lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_bottom', content_category: maxType }); }}
@@ -2371,6 +2371,12 @@ function App() {
   const [qIndex, setQIndex] = useState(0);
   const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
 
+  // 広告のrouteパラメータを取得して保持
+  const adRoute = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('route') || '';
+  }, []);
+
   const handleStart = () => {
     if (typeof fbq === 'function') fbq('trackCustom', 'DiagnosisStart', { content_name: 'diagnosis_start' });
     setPhase("quiz");
@@ -2391,7 +2397,7 @@ function App() {
   const accentColor = "#FF2D55";
 
   if (phase === "result") {
-    return <ResultScreen scores={scores} />;
+    return <ResultScreen scores={scores} adRoute={adRoute} />;
   }
 
   return (
