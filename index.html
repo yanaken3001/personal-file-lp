@@ -35,7 +35,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const fromParam = urlParams.get('from');
 
-    if (fromParam && fromParam.startsWith('lightdiag_')) {
+    if (fromParam && fromParam.includes('lightdiag_')) {
       localStorage.setItem('lightdiag_source', fromParam);
       console.log('Light Diagnosis source saved:', fromParam);
     }
