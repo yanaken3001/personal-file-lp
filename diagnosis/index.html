@@ -16,28 +16,6 @@
   <meta name="twitter:description" content="たった10問であなたの才能タイプをスキャン。" />
   <meta name="twitter:image" content="https://www.personal-file.jp/ogp-diagnosis.png" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-
-  <!-- Facebook Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '519412346829983');
-    fbq('set', 'autoConfig', false, '519412346829983');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Facebook Pixel Code -->
-
   <!-- React CDN -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -51,11 +29,27 @@
     body { background: #0A0A12; font-family: 'Noto Sans JP', sans-serif; }
     #root { min-height: 100dvh; }
   </style>
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '519412346829983');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
+  /></noscript>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect } = React;
 
 // ─── Animated Diagnosis Counter ───
 function DiagCounter({ style = {} }) {
@@ -187,7 +181,7 @@ const QUESTIONS = [
 
 const TYPE_DATA = {
   P: {
-    name: "行動者",
+    name: "P型",
     label: "ポジティブ・直感タイプ",
     catchcopy: "考えるより先に動く。ノリと勢いで場を動かすムードメーカー。",
     color: "#FF2D55",
@@ -217,7 +211,7 @@ const TYPE_DATA = {
     ctaText: ["「やりたいことと違った」を防ぐ。", "あなたの直感が活きる職場を80タイプ診断で特定する"],
   },
   I: {
-    name: "調和者",
+    name: "I型",
     label: "協調・平和志向タイプ",
     catchcopy: "人の気持ちに敏感で、チームの空気を整える調整力の持ち主。",
     color: "#FFBE0B",
@@ -247,7 +241,7 @@ const TYPE_DATA = {
     ctaText: ["「人間関係がつらい」を防ぐ。", "あなたと相性の良い上司・チームを80タイプ診断で特定する"],
   },
   A: {
-    name: "分析者",
+    name: "A型",
     label: "慎重・論理重視タイプ",
     catchcopy: "情報を集め、筋道を立て、最善策を見つけ出す知性派。",
     color: "#4361EE",
@@ -277,7 +271,7 @@ const TYPE_DATA = {
     ctaText: ["「この仕事、意味ある？」を防ぐ。", "あなたの知性が正しく評価される職場を80タイプ診断で特定する"],
   },
   D: {
-    name: "決断者",
+    name: "D型",
     label: "即断即決・合理タイプ",
     catchcopy: "迷わない。決めたら即行動。結果で自分を証明する実力主義者。",
     color: "#06D6A0",
@@ -311,7 +305,7 @@ const TYPE_DATA = {
 // ─── Bucket Questions (Ask Method Deep Dive) ───
 const BUCKET_DATA = {
   P: {
-    question: "行動者のあなたが、就職・配属で一番不安なことは？",
+    question: "P型のあなたが、就職・配属で一番不安なことは？",
     options: [
       { text: "やりたいことと違う仕事をさせられる", short: "ミスマッチ不安", proofPct: 76 },
       { text: "飽きっぽい自分が続けられるか不安", short: "継続不安", proofPct: 82 },
@@ -354,7 +348,7 @@ const BUCKET_DATA = {
     ],
   },
   I: {
-    question: "調和者のあなたが、就職・配属で一番不安なことは？",
+    question: "I型のあなたが、就職・配属で一番不安なことは？",
     options: [
       { text: "上司やチームメンバーと人間関係が合わない", short: "対人不安", proofPct: 84 },
       { text: "一人で放置されて孤立しそう", short: "孤立不安", proofPct: 73 },
@@ -397,7 +391,7 @@ const BUCKET_DATA = {
     ],
   },
   A: {
-    question: "分析者のあなたが、就職・配属で一番不安なことは？",
+    question: "A型のあなたが、就職・配属で一番不安なことは？",
     options: [
       { text: "自分のスキルや知識が活かせない部署に配属される", short: "スキル不安", proofPct: 74 },
       { text: "非効率で論理的でない環境に耐えられない", short: "非合理不安", proofPct: 69 },
@@ -440,7 +434,7 @@ const BUCKET_DATA = {
     ],
   },
   D: {
-    question: "決断者のあなたが、就職・配属で一番不安なことは？",
+    question: "D型のあなたが、就職・配属で一番不安なことは？",
     options: [
       { text: "裁量がなく、指示待ちの仕事ばかりになりそう", short: "裁量不安", proofPct: 80 },
       { text: "意思決定が遅い組織のスピード感に耐えられない", short: "速度不安", proofPct: 72 },
@@ -863,9 +857,7 @@ function StartScreen({ onStart }) {
           textAlign: "center",
         }}>
           <p style={{ fontSize: "11px", color: "#555", margin: 0, lineHeight: 1.6 }}>
-            <span style={{ color: "#888", fontWeight: 600 }}>AI×心理学×数万人の性格データ</span>
-            <br />
-            を元に作った本格診断
+            開発者がこれまで<span style={{ color: "#888", fontWeight: 600 }}>数万人の性格データ</span>を分析して作った診断
           </p>
         </div>
 
@@ -922,7 +914,7 @@ function StartScreen({ onStart }) {
           transition: "opacity 0.6s ease 0.3s",
         }}>
           {[
-            { icon: "\u26A1", text: "約1分" },
+            { icon: "\u26A1", text: "約2分" },
             { icon: "\u25CE", text: "全10問" },
             { icon: "\u2726", text: "無料" },
           ].map((item, i) => (
@@ -1245,16 +1237,9 @@ function ResultScreen({ scores }) {
   const [phase, setPhase] = useState(0);
   const [bucketAnswer, setBucketAnswer] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-  const hasTrackedRef = useRef(false);
 
 
   useEffect(() => {
-    // Facebook Pixel - 診断完了イベント（1回のみ確実に発火）
-    if (typeof fbq === 'function' && !hasTrackedRef.current) {
-      fbq('track', 'CompleteRegistration', { content_name: 'diagnosis_complete' });
-      hasTrackedRef.current = true;
-    }
-
     setTimeout(() => setShow(true), 200);
     setTimeout(() => setPhase(1), 800);
     setTimeout(() => setPhase(2), 1800);
@@ -1756,6 +1741,15 @@ function ResultScreen({ scores }) {
               あなたのタイプをさらに深く分析するため、もう1つだけ教えてください
             </p>
             <p style={{
+              fontSize: "13px",
+              color: d.color,
+              textAlign: "center",
+              margin: "0 0 8px",
+              fontWeight: 600,
+            }}>
+              残りの19/20を知るための、最後の質問です
+            </p>
+            <p style={{
               fontSize: "16px",
               fontWeight: 700,
               color: "#E0E0E8",
@@ -2026,15 +2020,10 @@ function ResultScreen({ scores }) {
             </p>
 
             <a
-              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
+              href="https://www.personal-file.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => {
-                // Facebook Pixel - CTAクリックイベント
-                if (typeof fbq === 'function') {
-                  fbq('track', 'Contact', { content_name: 'cta_top', diagnosis_type: maxType });
-                }
-              }}
+              onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_main', content_category: maxType }); }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2079,7 +2068,7 @@ function ResultScreen({ scores }) {
             >
               <button
                 onClick={() => {
-                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
+                  const resultUrl = `https://www.personal-file.jp/`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(resultUrl)}&text=${encodeURIComponent(text)}`;
                   window.open(lineUrl, "_blank");
@@ -2104,7 +2093,7 @@ function ResultScreen({ scores }) {
               </button>
               <button
                 onClick={() => {
-                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
+                  const resultUrl = `https://www.personal-file.jp/`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
                   window.open(tweetUrl, "_blank");
@@ -2164,7 +2153,6 @@ function ResultScreen({ scores }) {
               <div style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
                 gap: "10px",
                 marginBottom: "12px",
                 padding: "0 4px",
@@ -2184,7 +2172,7 @@ function ResultScreen({ scores }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>PERSONALITY & BEHAVIOR</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                 {[
                   { num: "01", label: "基本タイプ", icon: "◉" },
                   { num: "02", label: "性格傾向", icon: "◈" },
@@ -2229,7 +2217,6 @@ function ResultScreen({ scores }) {
               <div style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
                 gap: "10px",
                 marginBottom: "12px",
                 padding: "0 4px",
@@ -2249,7 +2236,7 @@ function ResultScreen({ scores }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>COMPATIBILITY</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                 {[
                   { num: "09", label: "相性の良い社風", good: true },
                   { num: "10", label: "相性の悪い社風", good: false },
@@ -2291,14 +2278,10 @@ function ResultScreen({ scores }) {
 
             {/* Bottom CTA repeat */}
             <a
-              href={`https://www.personal-file.jp/?from=lightdiag_${maxType}`}
+              href="https://www.personal-file.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => {
-                if (typeof fbq === 'function') {
-                  fbq('track', 'Contact', { content_name: 'cta_bottom', diagnosis_type: maxType });
-                }
-              }}
+              onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_bottom', content_category: maxType }); }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2393,10 +2376,7 @@ function App() {
   const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
 
   const handleStart = () => {
-    // Facebook Pixel - 診断開始イベント
-    if (typeof fbq === 'function') {
-      fbq('track', 'Lead', { content_name: 'diagnosis_start' });
-    }
+    if (typeof fbq === 'function') fbq('trackCustom', 'DiagnosisStart', { content_name: 'diagnosis_start' });
     setPhase("quiz");
   };
 

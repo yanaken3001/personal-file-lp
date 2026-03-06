@@ -29,6 +29,22 @@
     body { background: #0A0A12; font-family: 'Noto Sans JP', sans-serif; }
     #root { min-height: 100dvh; }
   </style>
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '519412346829983');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
+  /></noscript>
 </head>
 <body>
   <div id="root"></div>
@@ -2007,6 +2023,7 @@ function ResultScreen({ scores }) {
               href="https://www.personal-file.jp/"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_main', content_category: maxType }); }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2264,6 +2281,7 @@ function ResultScreen({ scores }) {
               href="https://www.personal-file.jp/"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => { if (typeof fbq === 'function') fbq('trackCustom', 'CTA80TypeClick', { content_name: '80type_cta_bottom', content_category: maxType }); }}
               style={{
                 display: "block",
                 position: "relative",
@@ -2357,7 +2375,10 @@ function App() {
   const [qIndex, setQIndex] = useState(0);
   const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
 
-  const handleStart = () => setPhase("quiz");
+  const handleStart = () => {
+    if (typeof fbq === 'function') fbq('trackCustom', 'DiagnosisStart', { content_name: 'diagnosis_start' });
+    setPhase("quiz");
+  };
 
   const handleAnswer = (type) => {
     const newScores = { ...scores, [type]: scores[type] + 1 };
