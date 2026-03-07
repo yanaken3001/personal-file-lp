@@ -2131,23 +2131,16 @@ function ResultScreen({ scores, adRoute }) {
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   
                   try {
-                    const shareEl = document.getElementById("share-image-template");
-                    // Web Share APIとファイル添付が可能か（主にスマホを対象）
+                    // X (Twitter) はiOSのWeb Share APIで画像を受け取れない不具合（仕様）があるため、
+                    // テキストとURLのみをシェアするか、フォールバックの intent/tweet を使います。
+                    // ユーザー体験を統一するため、Xの場合は画像生成自体をスキップします。
                     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                     
-                    if (isMobile && shareEl && navigator.canShare) {
-                       const canvas = await html2canvas(shareEl, {
-                          scale: 2,
-                          backgroundColor: "#0A0A12",
-                          useCORS: true
-                       });
-                       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                       const file = new File([blob], `result_${maxType}.png`, { type: 'image/png' });
-                       
-                       if (navigator.canShare({ files: [file] })) {
+                    if (isMobile && navigator.canShare) {
+                       if (navigator.canShare({ text: text, url: resultUrl })) {
                            await navigator.share({
-                               text: text + "\n" + resultUrl, // Xの仕様でテキスト内にURLを含める
-                               files: [file]
+                               text: text,
+                               url: resultUrl
                            });
                            setIsSharingX(false);
                            return; // 成功
