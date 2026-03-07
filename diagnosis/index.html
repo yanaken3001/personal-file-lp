@@ -2094,7 +2094,7 @@ function ResultScreen({ scores, adRoute }) {
                 onClick={async () => {
                   if (isSharingLine) return;
                   setIsSharingLine(true);
-                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
+                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}?v=2`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   
                   try {
@@ -2153,7 +2153,7 @@ function ResultScreen({ scores, adRoute }) {
                 onClick={() => {
                   if (isSharingX) return;
                   setIsSharingX(true);
-                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
+                  const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}?v=2`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   
                   // Web Share APIだとiOS環境でXがうまく開かない/画像添付が暴走するケースがあるため、
