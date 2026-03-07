@@ -2158,9 +2158,9 @@ function ResultScreen({ scores, adRoute }) {
                   
                   // Web Share APIだとiOS環境でXがうまく開かない/画像添付が暴走するケースがあるため、
                   // 確実にXの投稿画面が開く intent/tweet 方式のみを使用します。
-                  // TwitterのOGPキャッシュを無効化するため、タイムスタンプをURLパラメータに付与します
-                  const cacheBustUrl = resultUrl + "?t=" + new Date().getTime();
-                  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(cacheBustUrl)}`;
+                  // ※XのOGPクローラーはクエリパラメーター付きのURLを正しく解釈できない場合があるため、
+                  // キャッシュバスター（?t=）は外し、クリーンなURLを渡します。
+                  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
                   window.open(tweetUrl, "_blank");
                   setIsSharingX(false);
                 }}
