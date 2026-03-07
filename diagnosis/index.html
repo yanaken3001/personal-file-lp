@@ -957,7 +957,7 @@ function StartScreen({ onStart }) {
   );
 }
 
-function QuestionScreen({ question, qIndex, total, onAnswer }) {
+function QuestionScreen({ question, qIndex, total, onAnswer, onBack }) {
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -1105,6 +1105,32 @@ function QuestionScreen({ question, qIndex, total, onAnswer }) {
             );
           })}
         </div>
+
+        {/* 前に戻るボタン */}
+        {qIndex > 0 && (
+          <button
+            onClick={onBack}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#555",
+              fontSize: "13px",
+              fontWeight: 500,
+              cursor: "pointer",
+              padding: "16px 0 4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "4px",
+              width: "100%",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#999"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#555"; }}
+          >
+            <span style={{ fontSize: "11px" }}>←</span> 前の質問に戻る
+          </button>
+        )}
       </div>
 
       <style>{`@keyframes fadeSlide { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }`}</style>
@@ -2132,7 +2158,9 @@ function ResultScreen({ scores, adRoute }) {
                   
                   // Web Share APIだとiOS環境でXがうまく開かない/画像添付が暴走するケースがあるため、
                   // 確実にXの投稿画面が開く intent/tweet 方式のみを使用します。
-                  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
+                  // TwitterのOGPキャッシュを無効化するため、タイムスタンプをURLパラメータに付与します
+                  const cacheBustUrl = resultUrl + "?t=" + new Date().getTime();
+                  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(cacheBustUrl)}`;
                   window.open(tweetUrl, "_blank");
                   setIsSharingX(false);
                 }}
@@ -2490,6 +2518,7 @@ function App() {
   const [phase, setPhase] = useState("start");
   const [qIndex, setQIndex] = useState(0);
   const [scores, setScores] = useState({ P: 0, I: 0, A: 0, D: 0 });
+  const [answerHistory, setAnswerHistory] = useState([]);
 
   // 広告のrouteパラメータを取得して保持
   const adRoute = useMemo(() => {
@@ -2505,6 +2534,7 @@ function App() {
   const handleAnswer = (type) => {
     const newScores = { ...scores, [type]: scores[type] + 1 };
     setScores(newScores);
+    setAnswerHistory([...answerHistory, type]);
 
     if (qIndex < QUESTIONS.length - 1) {
       setQIndex(qIndex + 1);
@@ -2512,6 +2542,14 @@ function App() {
       setPhase("loading");
       setTimeout(() => setPhase("result"), 2200);
     }
+  };
+
+  const handleBack = () => {
+    if (qIndex <= 0) return;
+    const prevType = answerHistory[answerHistory.length - 1];
+    setScores({ ...scores, [prevType]: scores[prevType] - 1 });
+    setAnswerHistory(answerHistory.slice(0, -1));
+    setQIndex(qIndex - 1);
   };
 
   const accentColor = "#FF2D55";
@@ -2531,7 +2569,7 @@ function App() {
 
       {phase === "start" && <StartScreen onStart={handleStart} />}
       {phase === "quiz" && (
-        <QuestionScreen question={QUESTIONS[qIndex]} qIndex={qIndex} total={QUESTIONS.length} onAnswer={handleAnswer} />
+        <QuestionScreen question={QUESTIONS[qIndex]} qIndex={qIndex} total={QUESTIONS.length} onAnswer={handleAnswer} onBack={handleBack} />
       )}
       {phase === "loading" && <LoadingScreen />}
     </div>
