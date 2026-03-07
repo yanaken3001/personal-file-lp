@@ -2124,33 +2124,14 @@ function ResultScreen({ scores, adRoute }) {
               
               <button
                 disabled={isSharingX}
-                onClick={async () => {
+                onClick={() => {
                   if (isSharingX) return;
                   setIsSharingX(true);
                   const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
                   
-                  try {
-                    // X (Twitter) はiOSのWeb Share APIで画像を受け取れない不具合（仕様）があるため、
-                    // テキストとURLのみをシェアするか、フォールバックの intent/tweet を使います。
-                    // ユーザー体験を統一するため、Xの場合は画像生成自体をスキップします。
-                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    
-                    if (isMobile && navigator.canShare) {
-                       if (navigator.canShare({ text: text, url: resultUrl })) {
-                           await navigator.share({
-                               text: text,
-                               url: resultUrl
-                           });
-                           setIsSharingX(false);
-                           return; // 成功
-                       }
-                    }
-                  } catch (e) {
-                     console.error("Native share failed", e);
-                  }
-                  
-                  // フォールバック: 通常のOGP付きツイート
+                  // Web Share APIだとiOS環境でXがうまく開かない/画像添付が暴走するケースがあるため、
+                  // 確実にXの投稿画面が開く intent/tweet 方式のみを使用します。
                   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
                   window.open(tweetUrl, "_blank");
                   setIsSharingX(false);
