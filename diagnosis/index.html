@@ -23,6 +23,7 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -1240,6 +1241,8 @@ function ResultScreen({ scores, adRoute }) {
   const [phase, setPhase] = useState(0);
   const [bucketAnswer, setBucketAnswer] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [isSharingX, setIsSharingX] = useState(false);
+  const [isSharingLine, setIsSharingLine] = useState(false);
 
 
   useEffect(() => {
@@ -2061,11 +2064,43 @@ function ResultScreen({ scores, adRoute }) {
               }}
             >
               <button
-                onClick={() => {
+                disabled={isSharingLine}
+                onClick={async () => {
+                  if (isSharingLine) return;
+                  setIsSharingLine(true);
                   const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
+                  
+                  try {
+                    const shareEl = document.getElementById("share-image-template");
+                    // Web Share APIとファイル添付が可能か（主にスマホを対象）
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile && shareEl && navigator.canShare) {
+                       const canvas = await html2canvas(shareEl, {
+                          scale: 2,
+                          backgroundColor: "#0A0A12",
+                          useCORS: true
+                       });
+                       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                       const file = new File([blob], `result_${maxType}.png`, { type: 'image/png' });
+                       
+                       if (navigator.canShare({ files: [file] })) {
+                           await navigator.share({
+                               text: text + resultUrl, // LINE等でもテキスト+画像が送れることが多い
+                               files: [file]
+                           });
+                           setIsSharingLine(false);
+                           return; // シェア成功
+                       }
+                    }
+                  } catch (e) {
+                    console.error("Native share failed:", e);
+                  }
+                  
+                  // フォールバック: 通常のLINEシェアURL
                   const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(resultUrl)}&text=${encodeURIComponent(text)}`;
                   window.open(lineUrl, "_blank");
+                  setIsSharingLine(false);
                 }}
                 style={{
                   background: "rgba(6,199,85,0.12)",
@@ -2075,22 +2110,57 @@ function ResultScreen({ scores, adRoute }) {
                   color: "#06C755",
                   fontSize: "13px",
                   fontWeight: 600,
-                  cursor: "pointer",
+                  cursor: isSharingLine ? "not-allowed" : "pointer",
                   transition: "all 0.2s ease",
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
+                  opacity: isSharingLine ? 0.6 : 1
                 }}
               >
                 <span style={{ fontSize: "16px", lineHeight: 1 }}>💬</span>
-                LINEで送る
+                {isSharingLine ? "処理中..." : "LINEで送る"}
               </button>
+              
               <button
-                onClick={() => {
+                disabled={isSharingX}
+                onClick={async () => {
+                  if (isSharingX) return;
+                  setIsSharingX(true);
                   const resultUrl = `https://www.personal-file.jp/diagnosis/${maxType}`;
                   const text = `ジブンタイプ診断の結果は「${d.name}（${d.label}）」でした ✦\n\nたった10問で診断できます👇\n`;
+                  
+                  try {
+                    const shareEl = document.getElementById("share-image-template");
+                    // Web Share APIとファイル添付が可能か（主にスマホを対象）
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    
+                    if (isMobile && shareEl && navigator.canShare) {
+                       const canvas = await html2canvas(shareEl, {
+                          scale: 2,
+                          backgroundColor: "#0A0A12",
+                          useCORS: true
+                       });
+                       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                       const file = new File([blob], `result_${maxType}.png`, { type: 'image/png' });
+                       
+                       if (navigator.canShare({ files: [file] })) {
+                           await navigator.share({
+                               text: text + "\n" + resultUrl, // Xの仕様でテキスト内にURLを含める
+                               files: [file]
+                           });
+                           setIsSharingX(false);
+                           return; // 成功
+                       }
+                    }
+                  } catch (e) {
+                     console.error("Native share failed", e);
+                  }
+                  
+                  // フォールバック: 通常のOGP付きツイート
                   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(resultUrl)}`;
                   window.open(tweetUrl, "_blank");
+                  setIsSharingX(false);
                 }}
                 style={{
                   background: "rgba(255,255,255,0.06)",
@@ -2100,12 +2170,88 @@ function ResultScreen({ scores, adRoute }) {
                   color: "#C0C0C8",
                   fontSize: "13px",
                   fontWeight: 600,
-                  cursor: "pointer",
+                  cursor: isSharingX ? "not-allowed" : "pointer",
                   transition: "all 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  opacity: isSharingX ? 0.6 : 1
                 }}
               >
-                𝕏 でシェア
+                {isSharingX ? "生成中..." : "𝕏 でシェア"}
               </button>
+            </div>
+            
+            {/* --- シェア画像生成用 隠しテンプレート --- */}
+            <div 
+              id="share-image-template"
+              style={{
+                position: "fixed",
+                left: "-9999px",
+                top: "-9999px",
+                width: "480px",
+                height: "540px",
+                background: "#0A0A12",
+                fontFamily: "'Noto Sans JP', sans-serif",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "40px",
+                boxSizing: "border-box"
+              }}
+            >
+                <div style={{
+                  width: "120px",
+                  height: "120px",
+                  borderRadius: "24px",
+                  background: d.gradient,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "32px",
+                  boxShadow: `0 0 40px ${d.color}40`,
+                }}>
+                  <span style={{ fontFamily: "'Sora', sans-serif", fontSize: "72px", fontWeight: 800, color: maxType==="I"?"#1A1A2A":"#fff", lineHeight: 1 }}>
+                    {maxType}
+                  </span>
+                </div>
+                
+                <h1 style={{
+                  fontSize: "44px",
+                  fontWeight: 900,
+                  margin: "0 0 20px",
+                  background: d.gradient,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  {d.name}
+                </h1>
+                
+                <div style={{ fontSize: "18px", color: d.color, fontWeight: 700, marginBottom: "32px" }}>
+                  {d.label}
+                </div>
+                
+                <p style={{ fontSize: "16px", color: "#C0C0C8", lineHeight: 1.6, textAlign: "center", marginBottom: "40px", padding: "0 20px" }}>
+                  {d.catchcopy}
+                </p>
+                
+                <div style={{
+                   background: "linear-gradient(135deg, #FF2D55 0%, #C91B78 40%, #4361EE 100%)",
+                   color: "#fff",
+                   padding: "20px 48px",
+                   borderRadius: "16px",
+                   fontSize: "20px",
+                   fontWeight: 700,
+                   marginBottom: "24px",
+                   boxShadow: "0 4px 24px rgba(255,45,85,0.4)"
+                }}>
+                   あなたも診断を受ける
+                </div>
+                
+                <div style={{ fontSize: "14px", color: "#666" }}>
+                   たった10問で診断できます
+                </div>
             </div>
           </div>
         )}
