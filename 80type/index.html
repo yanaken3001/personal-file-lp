@@ -79,7 +79,7 @@
 
     /* ===== LAYOUT ===== */
     .app-container {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
       min-height: 100vh;
       min-height: 100dvh;
@@ -382,7 +382,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      max-width: 320px;
+      max-width: 400px;
       padding: 18px 32px;
       background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
       border: none;
@@ -596,13 +596,13 @@
       color: var(--text-primary);
       text-align: center;
       margin-bottom: 44px;
-      max-width: 400px;
+      max-width: 560px;
     }
 
     /* ===== LIKERT SCALE ===== */
     .likert-container {
       width: 100%;
-      max-width: 400px;
+      max-width: 560px;
     }
 
     .likert-track {
@@ -1488,9 +1488,9 @@
 
     /* SP: 1カラム */
     .result-main-content {
-      max-width: 600px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 0 16px;
+      padding: 0 24px;
     }
 
     /* Phase 3: アニメーション */
@@ -4614,20 +4614,6 @@
             marginBottom: '16px',
             color: '#00D2FF'
           }}>✓</div>
-          <h3 style={{
-            fontSize: '20px',
-            fontWeight: '700',
-            color: '#fff',
-            marginBottom: '8px'
-          }}>
-            Chapter {chapter.id - 1} 完了！
-          </h3>
-          <p style={{
-            fontSize: '14px',
-            color: 'rgba(255,255,255,0.5)'
-          }}>
-            次は「{chapter.name}」です
-          </p>
         </div>
       );
     }
@@ -4857,10 +4843,11 @@
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: '24px',
+            padding: '24px 40px',
             animation: isAnimating ? 'fadeOut 0.3s ease-out' : 'fadeIn 0.3s ease-out',
-            maxWidth: '600px',
-            margin: '0 auto'
+            maxWidth: '780px',
+            margin: '0 auto',
+            width: '100%'
           }} key={qIndex}>
             {/* 設問テキスト */}
             <h2 style={{
@@ -4880,7 +4867,7 @@
               flexDirection: 'column',
               gap: '12px',
               width: '100%',
-              maxWidth: '400px'
+              maxWidth: '560px'
             }}>
               {options.map((opt) => (
                 <button
