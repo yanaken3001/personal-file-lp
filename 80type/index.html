@@ -1468,29 +1468,58 @@
       }
     }
 
+    /* SP: 1カラム */
+    .result-main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
     /* Phase 2: PC 2カラムレイアウト + スティッキーサイドバー */
-    @media (min-width: 900px) {
+    @media (min-width: 960px) {
       .sticky-sidebar {
         display: block !important;
       }
+      .result-hero-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 48px 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        text-align: left !important;
+      }
+      .result-hero-inner .hero-text-area {
+        flex: 1;
+      }
+      .result-hero-inner .hero-emoji-area {
+        font-size: 140px !important;
+        margin-bottom: 0 !important;
+        margin-left: 40px;
+        flex-shrink: 0;
+      }
+      .result-hero-keywords {
+        justify-content: flex-start !important;
+      }
       .result-main-content {
         display: flex;
-        gap: 32px;
-        max-width: 1100px;
+        flex-direction: row-reverse;
+        gap: 40px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 0 24px;
+        padding: 0 48px;
       }
       .result-content-area {
         flex: 1;
         min-width: 0;
       }
-    }
-
-    /* SP: 1カラム */
-    .result-main-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 24px;
+      .result-content-area h2 {
+        font-size: 22px !important;
+      }
+      .result-content-area p {
+        font-size: 15px !important;
+        line-height: 2 !important;
+      }
     }
 
     /* Phase 3: アニメーション */
@@ -1533,8 +1562,18 @@
     /* スマホ最適化（ResultHero） */
     @media (max-width: 480px) {
       .result-hero h1 {
-        font-size: 26px !important;
+        font-size: 28px !important;
       }
+      .hero-emoji-area {
+        font-size: 64px !important;
+      }
+    }
+
+    /* SP: ヒーローは縦レイアウト（emoji→テキスト） */
+    .result-hero-inner {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
     }
 
     /* セーフエリア対応（iPhone ノッチ / ホームバー） */
@@ -4595,8 +4634,11 @@
 
     // --- ChapterTransition ---
     function ChapterTransition({ chapter, onComplete }) {
+      const completedCount = chapter.questionRange[0];
+      const remainingCount = TOTAL_QUESTIONS - completedCount;
+
       React.useEffect(() => {
-        const timer = setTimeout(onComplete, 1200);
+        const timer = setTimeout(onComplete, 1800);
         return () => clearTimeout(timer);
       }, []);
 
@@ -4611,9 +4653,23 @@
         }}>
           <div style={{
             fontSize: '48px',
-            marginBottom: '16px',
+            marginBottom: '20px',
             color: '#00D2FF'
           }}>✓</div>
+          <p style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '8px'
+          }}>
+            {completedCount}問 完了です
+          </p>
+          <p style={{
+            fontSize: '14px',
+            color: 'rgba(255,255,255,0.45)'
+          }}>
+            残り {remainingCount}問
+          </p>
         </div>
       );
     }
@@ -5337,91 +5393,108 @@
       if (!typeMeta) return null;
 
       return (
-        <div style={{
+        <div className="result-hero" style={{
           background: typeColor.gradient,
-          padding: '48px 24px 40px',
-          borderRadius: '0 0 32px 32px',
-          textAlign: 'center',
           position: 'relative',
           overflow: 'hidden'
         }}>
+          {/* 装飾 */}
           <div style={{
             position: 'absolute',
-            top: '-50px',
-            right: '-50px',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '-30px',
-            left: '-30px',
-            width: '120px',
-            height: '120px',
+            top: '-80px',
+            right: '-80px',
+            width: '300px',
+            height: '300px',
             borderRadius: '50%',
             background: 'rgba(255,255,255,0.08)',
           }} />
-
           <div style={{
-            fontSize: '72px',
-            marginBottom: '12px',
-            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
-          }}>
-            {typeMeta.emoji}
-          </div>
-
-          <p style={{
-            fontSize: '14px',
-            fontWeight: '500',
-            color: 'rgba(255,255,255,0.8)',
-            margin: '0 0 4px',
-            letterSpacing: '2px',
-            textTransform: 'uppercase'
-          }}>
-            あなたのタイプ
-          </p>
-
-          <h1 style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            color: '#fff',
-            margin: '0 0 4px',
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)'
-          }}>
-            {behaviorType}{typeMeta.name}
-          </h1>
-
-          <p style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'rgba(255,255,255,0.9)',
-            margin: '0 0 16px'
-          }}>
-            {typeMeta.subname}（{personalityCode}）
-          </p>
-
+            position: 'absolute',
+            bottom: '-60px',
+            left: '-60px',
+            width: '200px',
+            height: '200px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.06)',
+          }} />
           <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '8px',
-            marginBottom: '20px'
+            position: 'absolute',
+            top: '30%',
+            right: '20%',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.05)',
+          }} />
+
+          <div className="result-hero-inner" style={{
+            padding: '48px 24px 40px',
+            textAlign: 'center',
+            position: 'relative',
+            zIndex: 1
           }}>
-            {keywords.map((kw, i) => (
-              <span key={i} style={{
-                padding: '4px 14px',
-                background: 'rgba(255,255,255,0.2)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '20px',
-                fontSize: '13px',
+            {/* SP: emoji上、PC: emoji右 */}
+            <div className="hero-text-area">
+              <p style={{
+                fontSize: '14px',
                 fontWeight: '600',
-                color: '#fff'
+                color: 'rgba(255,255,255,0.85)',
+                margin: '0 0 8px',
+                letterSpacing: '3px',
               }}>
-                #{kw}
-              </span>
-            ))}
+                あなたの性格タイプ:
+              </p>
+
+              <h1 style={{
+                fontSize: '36px',
+                fontWeight: '900',
+                color: '#fff',
+                margin: '0 0 6px',
+                textShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                lineHeight: 1.2
+              }}>
+                {behaviorType}{typeMeta.name}
+              </h1>
+
+              <p style={{
+                fontSize: '20px',
+                fontWeight: '500',
+                color: 'rgba(255,255,255,0.9)',
+                margin: '0 0 20px'
+              }}>
+                {typeMeta.subname}（{personalityCode}）
+              </p>
+
+              <div className="result-hero-keywords" style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: '8px',
+              }}>
+                {keywords.map((kw, i) => (
+                  <span key={i} style={{
+                    padding: '5px 16px',
+                    background: 'rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '20px',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    color: '#fff'
+                  }}>
+                    #{kw}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-emoji-area" style={{
+              fontSize: '80px',
+              marginBottom: '16px',
+              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))',
+              lineHeight: 1
+            }}>
+              {typeMeta.emoji}
+            </div>
           </div>
         </div>
       );
@@ -6011,39 +6084,40 @@
           className="sticky-sidebar"
           style={{
             position: 'sticky',
-            top: '24px',
-            width: '220px',
+            top: '32px',
+            width: '280px',
             flexShrink: 0,
             display: 'none',
+            alignSelf: 'flex-start',
           }}
         >
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            borderRadius: '16px',
-            padding: '20px',
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: '20px',
+            padding: '24px',
             marginBottom: '16px',
             textAlign: 'center',
             borderTop: `3px solid ${typeColor.primary}`
           }}>
-            <div style={{ fontSize: '40px', marginBottom: '8px' }}>{typeMeta.emoji}</div>
-            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>あなたのタイプ:</div>
-            <div style={{ fontSize: '16px', fontWeight: '700', color: '#fff' }}>
+            <div style={{ fontSize: '48px', marginBottom: '10px' }}>{typeMeta.emoji}</div>
+            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px' }}>あなたのタイプ:</div>
+            <div style={{ fontSize: '18px', fontWeight: '800', color: '#fff', marginBottom: '2px' }}>
               {behaviorType}{typeMeta.name}
             </div>
-            <div style={{ fontSize: '13px', color: typeColor.primary }}>
+            <div style={{ fontSize: '14px', color: typeColor.primary, fontWeight: '600' }}>
               {typeMeta.subname}（{personalityCode}）
             </div>
           </div>
 
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            borderRadius: '16px',
-            padding: '16px'
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: '20px',
+            padding: '20px'
           }}>
             <div style={{
               fontSize: '12px',
               color: 'rgba(255,255,255,0.4)',
-              marginBottom: '12px',
+              marginBottom: '14px',
               fontWeight: '600'
             }}>
               このページ内
@@ -6054,15 +6128,17 @@
                 href={`#section-${i}`}
                 style={{
                   display: 'block',
-                  padding: '8px 12px',
-                  fontSize: '13px',
+                  padding: '10px 14px',
+                  fontSize: '14px',
                   color: activeSection === i ? typeColor.primary : 'rgba(255,255,255,0.6)',
-                  fontWeight: activeSection === i ? '700' : '400',
+                  fontWeight: activeSection === i ? '700' : '500',
                   textDecoration: 'none',
                   borderLeft: activeSection === i
                     ? `3px solid ${typeColor.primary}`
                     : '3px solid transparent',
-                  transition: 'all 0.2s ease'
+                  transition: 'all 0.2s ease',
+                  borderRadius: activeSection === i ? '0 8px 8px 0' : '0',
+                  background: activeSection === i ? 'rgba(255,255,255,0.03)' : 'transparent'
                 }}
               >
                 {i + 1}. {section}
@@ -6212,30 +6288,26 @@
 
       return (
         <div style={{ minHeight: '100vh', background: '#0D1117' }}>
-          {/* ヒーローセクション */}
+          {/* ヒーローセクション（全幅） */}
           <ResultHero
             personalityCode={personalityCode}
             behaviorType={behavioralType.name}
             keywords={keywords}
           />
 
-          {/* シェアボタン */}
-          <div style={{ padding: '0 20px' }}>
-            <ShareButtons
-              typeName={typeName80}
-              behaviorType={behavioralType.name}
-              personalityCode={personalityCode}
-            />
-          </div>
-
-          {/* シェアカードプレビュー */}
-          <div style={{ padding: '0 20px' }}>
-            <ShareCardPreview imageDataUrl={shareCardUrl} />
-          </div>
-
           {/* メインコンテンツ（PC: 2カラム、SP: 1カラム） */}
           <div className="result-main-content">
             <div className="result-content-area">
+
+              {/* シェアボタン */}
+              <ShareButtons
+                typeName={typeName80}
+                behaviorType={behavioralType.name}
+                personalityCode={personalityCode}
+              />
+
+              {/* シェアカードプレビュー */}
+              <ShareCardPreview imageDataUrl={shareCardUrl} />
               {/* タイプ解説 */}
               {typeData && typeData.userDescription && (
                 <div style={{
