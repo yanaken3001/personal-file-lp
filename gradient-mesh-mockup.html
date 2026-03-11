@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80タイプ診断 - グラデーションメッシュUIモック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Noto+Sans+JP:wght@500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #fce7f3; /* fall back color */
+        }
+        
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* 
+         * メッシュグラデーション背景
+         * Z世代に刺さる鮮やかでドリーミーな色合い（ピンク、パープル、シアン、オレンジ）
+         */
+        .mesh-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: #ffb7b2;
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(340,100%,76%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(242,100%,70%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0px, transparent 50%);
+            z-index: -1;
+            animation: mesh-movement 20s ease-in-out infinite alternate;
+            filter: blur(40px) saturate(1.2);
+        }
+        
+        @keyframes mesh-movement {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 5%) scale(1.05); }
+            100% { transform: translate(-5%, -5%) scale(1); }
+        }
+        
+        /* グラスモーフィズムパネル */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        
+        /* フローティングアニメーション */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* ボタンのノイズテクスチャエフェクト */
+        .btn-start {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-start::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative text-gray-800 selection:bg-pink-300 selection:text-white">
+    <!-- メッシュグラデーション背景 -->
+    <div class="mesh-bg"></div>
+    
+    <!-- 全体のコンテナ (スマホサイズ想定) -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col justify-center px-5 py-12 relative z-10">
+        
+        <!-- ヘッダー部分 -->
+        <header class="text-center mb-8 floating text-white mix-blend-color-burn">
+            <!-- 視認性向上のためにテキストには少し影や色の工夫 -->
+        </header>
+
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/70 backdrop-blur-md text-xs font-bold text-pink-600 tracking-wider mb-5 border border-white/80 shadow-sm">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
+                </span>
+                AI × 心理診断
+            </div>
+            
+            <h1 class="text-6xl font-montserrat font-black mb-2 text-gray-900 drop-shadow-sm tracking-tighter">
+                80 TYPE<br>
+                <span class="text-4xl">DIAGNOSIS</span>
+            </h1>
+            <p class="text-gray-800 font-bold text-[15px] mt-3 bg-white/40 inline-block px-4 py-1 rounded-full backdrop-blur-sm">あなただけの取扱説明書、作ってみない？</p>
+        </div>
+
+        <!-- 診断カード (グラスモーフィズム) -->
+        <main class="glass-panel rounded-[2rem] p-7 mb-8 relative overflow-hidden transform transition-all hover:-translate-y-1 duration-300">
+            <!-- カード内のデコレーション -->
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-60"></div>
+            <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-pink-200 rounded-full mix-blend-overlay filter blur-xl opacity-60"></div>
+            
+            <div class="relative z-10 text-center">
+                
+                <!-- アイコン -->
+                <div class="w-24 h-24 mx-auto bg-gradient-to-tr from-white to-white/60 rounded-full flex items-center justify-center mb-5 shadow-[0_8px_16px_rgba(0,0,0,0.08)] border-2 border-white/80 ring-4 ring-white/30 backdrop-blur-sm">
+                    <span class="text-4xl relative z-10">✨</span>
+                </div>
+                
+                <h2 class="text-[22px] leading-snug font-bold mb-3 text-gray-900">
+                    本当の自分、<br>知る覚悟はある？
+                </h2>
+                <p class="text-[13px] text-gray-700 font-medium mb-6 leading-relaxed">
+                    最新のパーソナリティアルゴリズムが、<br>57の質問からあなたの深層を暴きます。<br>
+                    <span class="inline-block mt-2 bg-pink-100 text-pink-600 px-2 py-0.5 rounded text-[11px] font-bold">所要時間：たった3分</span>
+                </p>
+                
+                <!-- プログレス／精度バー -->
+                <div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 mb-7 shadow-sm border border-white/80">
+                    <div class="flex justify-between items-center text-xs font-bold text-gray-600 mb-2">
+                        <span>診断精度</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-500 text-lg">98.5%</span>
+                    </div>
+                    <div class="w-full bg-gray-200/80 rounded-full h-2.5 overflow-hidden">
+                        <div class="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 h-full rounded-full w-[98.5%] shadow-[0_0_10px_rgba(236,72,153,0.5)]"></div>
+                    </div>
+                </div>
+
+                <!-- CTAボタン -->
+                <button class="btn-start w-full py-4 rounded-2xl bg-gray-900 text-white font-bold text-[17px] shadow-[0_12px_24px_-8px_rgba(0,0,0,0.5)] transform transition-transform hover:scale-[1.03] active:scale-[0.98] flex justify-center items-center gap-2 group">
+                    <span>診断をスタート</span>
+                    <svg class="w-5 h-5 transform group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                </button>
+                <p class="text-[10px] text-gray-500 mt-3 font-medium">※完全無料・登録不要で結果が見られます</p>
+            </div>
+        </main>
+
+        <!-- ソーシャルプルーフ -->
+        <div class="text-center">
+            <p class="text-[11px] font-bold text-gray-800 mb-3 bg-white/30 inline-block px-3 py-1 rounded-full backdrop-blur-sm">🎉 すでに10万人が体験済み！</p>
+            <div class="flex justify-center -space-x-3 items-center">
+                <img src="https://i.pravatar.cc/100?img=1" class="w-9 h-9 rounded-full border-2 border-white/80 object-cover" alt="user">
+                <img src="https://i.pravatar.cc/100?img=3" class="w-9 h-9 rounded-full border-2 border-white/80 object-cover" alt="user">
+                <img src="https://i.pravatar.cc/100?img=5" class="w-9 h-9 rounded-full border-2 border-white/80 object-cover" alt="user">
+                <img src="https://i.pravatar.cc/100?img=9" class="w-9 h-9 rounded-full border-2 border-white/80 object-cover" alt="user">
+                <div class="w-9 h-9 rounded-full border-2 border-white/80 bg-gray-900/10 backdrop-blur-md flex items-center justify-center text-[10px] font-bold text-gray-800">+10k</div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

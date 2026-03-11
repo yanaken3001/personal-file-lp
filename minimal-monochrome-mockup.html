@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80タイプ診断 - ミニマルモノクロUIモック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        :root {
+            /* 1色の強力なアクセントカラー（今回はビビッドなブルー/シアン系の色を採用） */
+            --accent-color: #00E5FF;
+            --accent-glow: rgba(0, 229, 255, 0.4);
+        }
+
+        body {
+            /* デザイン性を高めるため、英字はジオメトリックなSpace Groteskを採用 */
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        
+        .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* モノクロ感を強調するボーダーやグリッドの装飾 */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+                linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            /* 中央だけグリッドが見えるようなマスク */
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+        
+        /* Brutalist / Minimalist なカードデザイン (一切の影や角丸を排除、または極端にソリッドにする) */
+        .mono-card {
+            background-color: #ffffff;
+            border: 3px solid #000000;
+            border-radius: 0; /* あえてシャープに */
+            box-shadow: 12px 12px 0px #000000; /* ソリッドな影 */
+            transition: all 0.2s ease;
+        }
+        
+        .mono-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 16px 16px 0px var(--accent-color); /* ホバー時のみ影がアクセントカラーに */
+            border-color: #000000;
+        }
+
+        /* アクセントカラーを適用するハイライト */
+        .accent-highlight {
+            background-color: var(--accent-color);
+            color: #000000;
+            display: inline-block;
+            padding: 0 8px;
+            transform: skew(-10deg);
+        }
+        .accent-highlight span {
+            display: inline-block;
+            transform: skew(10deg);
+        }
+
+        /* モノクロボタン */
+        .btn-mono {
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-mono::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background-color: var(--accent-color);
+            transition: left 0.3s ease;
+            z-index: 1;
+        }
+        
+        .btn-mono:hover::before {
+            left: 0;
+        }
+        
+        .btn-mono:hover {
+            color: #000000;
+            border-color: #000000;
+            box-shadow: 6px 6px 0px #000000;
+            transform: translate(-2px, -2px);
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-cyan-300 selection:text-black">
+    <!-- 背景グリッド -->
+    <div class="bg-grid"></div>
+    
+    <!-- 全体のコンテナ -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col justify-center px-6 py-12 relative z-10">
+        
+        <!-- ヘッダー部分 -->
+        <div class="mb-10 mt-4">
+            <!-- バーコードのようなあしらい（モノクロ感の演出） -->
+            <div class="flex gap-1 mb-6 opacity-30">
+                <div class="w-1 h-4 bg-black"></div>
+                <div class="w-2 h-4 bg-black"></div>
+                <div class="w-1 h-4 bg-black"></div>
+                <div class="w-0.5 h-4 bg-black"></div>
+                <div class="w-3 h-4 bg-black"></div>
+                <div class="w-1 h-4 bg-black"></div>
+                <div class="w-1.5 h-4 bg-black ml-2"></div>
+                <div class="w-2 h-4 bg-black text-[10px] font-space tracking-tighter leading-3 ml-2">SYS.80</div>
+            </div>
+            
+            <h1 class="text-6xl font-space font-bold mb-3 tracking-tighter text-black uppercase leading-[0.9]">
+                80 Type<br>
+                <span class="text-black">Analysis</span>
+            </h1>
+            <p class="text-[14px] font-bold text-black mt-4 border-l-4 border-black pl-3 py-0.5">
+                モノクロームの世界で、<br>
+                <span class="accent-highlight mt-1"><span>あなたの「色」を見つける</span></span>
+            </p>
+        </div>
+
+        <!-- 診断カード -->
+        <main class="mono-card p-7 mb-10 relative bg-white">
+            
+            <div class="relative z-10">
+                
+                <!-- 上部のステータスバー的な要素 -->
+                <div class="flex justify-between items-center border-b-2 border-black pb-3 mb-6">
+                    <span class="font-space text-xs font-bold uppercase tracking-widest text-black">Sequence 01</span>
+                    <div class="w-3 h-3 bg-[#00E5FF] rounded-full animate-pulse border border-black"></div>
+                </div>
+                
+                <h2 class="text-[24px] leading-tight font-black mb-4 text-black">
+                    本当の自分を<br>知るプロセス。
+                </h2>
+                <p class="text-[13px] text-black font-medium mb-8 leading-relaxed">
+                    57問のクエスチョン。<br>
+                    直感で選択し、コアへアクセスしてください。
+                </p>
+                
+                <!-- プログレス／精度表示（ミニマル・削ぎ落とし） -->
+                <div class="mb-8 p-3 border-2 border-black">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="font-space text-xs font-bold uppercase">Accuracy Rate</span>
+                        <span class="font-space text-2xl font-bold leading-none text-black">98.5%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-2 border border-black">
+                        <!-- アクセントカラーのメーター -->
+                        <div class="bg-[#00E5FF] h-full w-[98.5%] border-r border-black"></div>
+                    </div>
+                </div>
+
+                <!-- CTAボタン -->
+                <button class="btn-mono w-full py-4 font-bold text-[18px] flex justify-center items-center gap-2 group">
+                    <span class="btn-text font-space uppercase tracking-widest">Start Diagnosis</span>
+                    <svg class="w-5 h-5 btn-text transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- ソーシャルプルーフ（タイポグラフィのみで表現） -->
+        <div class="border-t-2 border-black pt-4 flex justify-between items-center">
+            <div>
+                <p class="font-space text-[10px] uppercase font-bold text-gray-500">Total Users</p>
+                <p class="font-space text-xl font-bold text-black>>100,000</p>
+            </div>
+            <div class="text-right">
+                <p class="font-space text-[10px] uppercase font-bold text-gray-500">Est. Time</p>
+                <p class="font-space text-xl font-bold text-black">03:00</p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

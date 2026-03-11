@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80タイプ診断 - ネオン×ダークUIモック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        :root {
+            /* サイバーパンク・ネオンカラーパレット */
+            --neon-pink: #ff2a85;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #b026ff;
+            --bg-dark: #050505;
+            --panel-bg: rgba(15, 15, 20, 0.85);
+        }
+
+        body {
+            /* 英字はサイバー感のあるOrbitron、日本語はゴシック体 */
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        /* 
+         * レトロウェーブ風のワイヤーフレーム/グリッド背景
+         */
+        .cyber-grid {
+            position: fixed;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 150%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(60deg);
+            z-index: -2;
+            animation: grid-move 10s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
+        }
+
+        /* 画面端のヴィネット（暗闇）効果 */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, transparent 40%, #000 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* サイバー感のある枠付きパネル */
+        .neon-panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 8px; /* 角はシャープ気味に */
+            box-shadow: 
+                0 0 15px rgba(0, 243, 255, 0.1),
+                inset 0 0 20px rgba(0, 243, 255, 0.05);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* パネル四隅のサイバー装飾 */
+        .neon-panel::before, .neon-panel::after {
+            content: ''; position: absolute; width: 15px; height: 15px;
+        }
+        .neon-panel::before {
+            top: -1px; left: -1px;
+            border-top: 2px solid var(--neon-cyan);
+            border-left: 2px solid var(--neon-cyan);
+            box-shadow: -2px -2px 5px var(--neon-cyan);
+        }
+        .neon-panel::after {
+            bottom: -1px; right: -1px;
+            border-bottom: 2px solid var(--neon-cyan);
+            border-right: 2px solid var(--neon-cyan);
+            box-shadow: 2px 2px 5px var(--neon-cyan);
+        }
+
+        /* ネオンサイン風のグラデーションテキストと強烈な光彩 */
+        .text-neon-glow {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-pink),
+                0 0 40px var(--neon-pink),
+                0 0 80px var(--neon-pink);
+            animation: flicker 4s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink), 0 0 80px var(--neon-pink);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        /* Glitchエフェクト用 */
+        .glitch-text {
+            position: relative;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+        }
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--neon-pink);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--neon-cyan);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 86px, 0); }
+            20% { clip: rect(51px, 9999px, 13px, 0); }
+            40% { clip: rect(86px, 9999px, 58px, 0); }
+            60% { clip: rect(14px, 9999px, 91px, 0); }
+            80% { clip: rect(66px, 9999px, 34px, 0); }
+            100% { clip: rect(12px, 9999px, 78px, 0); }
+        }
+
+        /* スキャンライン（走査線）エフェクト */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* レーザー風のボタン */
+        .btn-laser {
+            background-color: transparent;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+        
+        .btn-laser:hover {
+            background-color: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+            text-shadow: none;
+            font-weight: 900;
+        }
+        
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-pink-500 selection:text-white">
+    <!-- 1背景とエフェクト群 -->
+    <div class="cyber-grid"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    
+    <!-- 全体のコンテナ -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col justify-center px-6 py-12 relative z-10">
+        
+        <!-- ヘッダー部分 -->
+        <div class="mb-10 text-center">
+            
+            <div class="inline-block relative">
+                <!-- 警告風の装飾 -->
+                <div class="absolute -top-3 -left-3 w-4 h-4 border-t-2 border-l-2 border-[#ff2a85]"></div>
+                <div class="absolute -bottom-3 -right-3 w-4 h-4 border-b-2 border-r-2 border-[#ff2a85]"></div>
+                
+                <p class="font-orbitron tracking-[0.3em] text-[10px] text-[#ff2a85] uppercase mb-4 opacity-80">System Override</p>
+                
+                <h1 class="text-6xl font-orbitron font-black mb-1 p-2">
+                    <span class="text-neon-glow" data-text="80 TYPE">80 TYPE</span><br>
+                    <span class="text-3xl text-gray-300 tracking-widest" style="text-shadow: 0 0 10px rgba(255,255,255,0.3);">DIAGNOSIS</span>
+                </h1>
+            </div>
+            
+            <p class="text-[13px] font-bold text-gray-300 mt-6 font-mono bg-black/50 py-2 border-y border-gray-800">
+                <span class="text-[#00f3ff]">>_</span> ACCESSING NEURAL NETWORK...
+            </p>
+        </div>
+
+        <!-- 診断カード -->
+        <main class="neon-panel p-7 mb-10">
+            
+            <div class="relative z-10">
+                
+                <!-- データリンク風のヘッダー -->
+                <div class="flex justify-between items-center border-b border-[rgba(0,243,255,0.2)] pb-2 mb-6">
+                    <span class="font-orbitron border border-[#00f3ff] text-[#00f3ff] text-[9px] px-2 py-0.5 rounded-sm">V. 2.0.4</span>
+                    <span class="font-orbitron text-[10px] text-gray-400">STATUS: ON-LINE</span>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <!-- 幾何学的なアイコン -->
+                    <div class="w-16 h-16 mx-auto mb-4 relative flex justify-center items-center">
+                        <div class="absolute w-full h-full border border-[rgba(176,38,255,0.4)] rotate-45"></div>
+                        <div class="absolute w-full h-full border border-[rgba(0,243,255,0.4)] -rotate-45"></div>
+                        <svg class="w-8 h-8 text-[#00f3ff] relative z-10 drop-shadow-[0_0_8px_rgba(0,243,255,0.6)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                </div>
+                
+                <h2 class="text-[20px] leading-tight font-bold mb-3 text-white text-center">
+                    マトリックスを解析する。
+                </h2>
+                <p class="text-[12px] text-gray-400 font-medium mb-8 leading-relaxed text-center">
+                    あなたの行動・思考パターン（57 Nodes）をスキャンし、<br>
+                    最適な「タイプ」をデコードします。
+                </p>
+                
+                <!-- プログレス／精度表示（デジタルHUD風） -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-end mb-1">
+                        <span class="font-orbitron font-bold text-[10px] text-[#00f3ff] flex items-center gap-2">
+                            <span class="w-2 h-2 bg-[#00f3ff] rounded-full animate-ping"></span>
+                            PRECISION MATCH
+                        </span>
+                        <span class="font-orbitron text-lg font-bold text-[#ff2a85] drop-shadow-[0_0_5px_rgba(255,42,133,0.5)]">98.5%</span>
+                    </div>
+                    
+                    <!-- セグメント化されたメーター -->
+                    <div class="flex gap-1 h-3 w-full">
+                        <div class="h-full w-full bg-[#00f3ff] shadow-[0_0_8px_rgba(0,243,255,0.6)]"></div>
+                        <div class="h-full w-full bg-[#00f3ff] shadow-[0_0_8px_rgba(0,243,255,0.6)]"></div>
+                        <div class="h-full w-full bg-[#00f3ff] shadow-[0_0_8px_rgba(0,243,255,0.6)]"></div>
+                        <div class="h-full w-full bg-[#00f3ff] shadow-[0_0_8px_rgba(0,243,255,0.6)]"></div>
+                        <div class="h-full w-full bg-[#00f3ff] shadow-[0_0_8px_rgba(0,243,255,0.6)]"></div>
+                        <div class="h-full w-full bg-[#ff2a85] shadow-[0_0_8px_rgba(255,42,133,0.6)]"></div>
+                        <div class="h-full w-full bg-[#ff2a85] shadow-[0_0_8px_rgba(255,42,133,0.6)]"></div>
+                        <div class="h-full w-full bg-gray-800"></div>
+                    </div>
+                </div>
+
+                <!-- CTAボタン -->
+                <button class="btn-laser w-full py-4 font-bold text-[16px] flex justify-center items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span class="font-orbitron tracking-widest">INITIALIZE SCAN</span>
+                </button>
+            </div>
+            
+            <!-- パネルを飾る細かなデータ文字列 -->
+            <div class="absolute bottom-2 right-2 font-orbitron text-[8px] text-[rgba(255,255,255,0.2)] text-right leading-tight">
+                DATA_NODE: CONNECTED<br>
+                ENC: AES-256
+            </div>
+        </main>
+
+        <!-- メトリクス -->
+        <div class="flex justify-between items-center text-center">
+            <div class="flex-1">
+                <p class="font-orbitron text-[9px] text-[#ff2a85] mb-1">TOTAL_RECORDS</p>
+                <p class="font-orbitron text-[16px] text-white font-bold">104,892</p>
+            </div>
+            <div class="w-px h-8 bg-gray-800"></div>
+            <div class="flex-1">
+                <p class="font-orbitron text-[9px] text-[#00f3ff] mb-1">EST. TIME</p>
+                <p class="font-orbitron text-[16px] text-white font-bold">03M 12S</p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

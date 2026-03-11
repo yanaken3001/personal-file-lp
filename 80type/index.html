@@ -1467,6 +1467,80 @@
         padding: 0 16px;
       }
     }
+
+    /* Phase 2: PC 2カラムレイアウト + スティッキーサイドバー */
+    @media (min-width: 900px) {
+      .sticky-sidebar {
+        display: block !important;
+      }
+      .result-main-content {
+        display: flex;
+        gap: 32px;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .result-content-area {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
+    /* SP: 1カラム */
+    .result-main-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Phase 3: アニメーション */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* タッチフィードバック */
+    button:active {
+      transform: scale(0.98) !important;
+      transition: transform 0.1s ease !important;
+    }
+
+    /* スクロールバー */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.15);
+      border-radius: 3px;
+    }
+
+    /* pulse アニメーション */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* スマホ最適化（ResultHero） */
+    @media (max-width: 480px) {
+      .result-hero h1 {
+        font-size: 26px !important;
+      }
+    }
+
+    /* セーフエリア対応（iPhone ノッチ / ホームバー） */
+    body {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
   </style>
 
   <!-- React 18 CDN -->
@@ -4259,6 +4333,105 @@
       E: "color-E",
     };
 
+    // ===== タイプ別カラーシステム =====
+    const TYPE_COLORS = {
+      P: {
+        primary: '#FF6B6B',
+        secondary: '#FFA07A',
+        gradient: 'linear-gradient(135deg, #FF6B6B, #FFA07A)',
+        light: 'rgba(255,107,107,0.1)',
+        glow: 'rgba(255,107,107,0.3)',
+        label: 'エネルギー系'
+      },
+      A: {
+        primary: '#4ECDC4',
+        secondary: '#45B7D1',
+        gradient: 'linear-gradient(135deg, #4ECDC4, #45B7D1)',
+        light: 'rgba(78,205,196,0.1)',
+        glow: 'rgba(78,205,196,0.3)',
+        label: 'アナリティクス系'
+      },
+      I: {
+        primary: '#96E6A1',
+        secondary: '#7ED321',
+        gradient: 'linear-gradient(135deg, #96E6A1, #7ED321)',
+        light: 'rgba(150,230,161,0.1)',
+        glow: 'rgba(150,230,161,0.3)',
+        label: 'ハーモニー系'
+      },
+      D: {
+        primary: '#A855F7',
+        secondary: '#7C3AED',
+        gradient: 'linear-gradient(135deg, #A855F7, #7C3AED)',
+        light: 'rgba(168,85,247,0.1)',
+        glow: 'rgba(168,85,247,0.3)',
+        label: 'ドライブ系'
+      }
+    };
+
+    // 行動類型のトーン変化（同系色の明度調整用）
+    const BEHAVIOR_TONE = {
+      '達成型': { saturationShift: 0, lightnessShift: 0 },
+      '効率型': { saturationShift: -5, lightnessShift: -8 },
+      '情報型': { saturationShift: -3, lightnessShift: 3 },
+      '外見型': { saturationShift: -10, lightnessShift: 15 },
+      '平和型': { saturationShift: -15, lightnessShift: 20 },
+    };
+
+    // 16タイプのメタデータ
+    const TYPE_META = {
+      PP: { name: 'エンターテイナー', subname: '鼓舞者', group: 'P', emoji: '🎭' },
+      PA: { name: 'アルチザン', subname: '芸術家', group: 'P', emoji: '🎨' },
+      PI: { name: 'コラボレーター', subname: '協調者', group: 'P', emoji: '🤝' },
+      PD: { name: 'アントレプレナー', subname: '起業家', group: 'P', emoji: '🚀' },
+      AP: { name: 'プラクティショナー', subname: '実務家', group: 'A', emoji: '⚙️' },
+      AA: { name: 'リサーチャー', subname: '情報家', group: 'A', emoji: '🔍' },
+      AI: { name: 'ディリジェンサー', subname: '努力家', group: 'A', emoji: '📐' },
+      AD: { name: 'アナリスト', subname: '分析官', group: 'A', emoji: '📊' },
+      IP: { name: 'コントリビューター', subname: '貢献者', group: 'I', emoji: '💡' },
+      IA: { name: 'サポーター', subname: '支援者', group: 'I', emoji: '🌱' },
+      II: { name: 'ハーモナー', subname: '共感者', group: 'I', emoji: '🕊️' },
+      ID: { name: 'シンカー', subname: '思考家', group: 'I', emoji: '🧩' },
+      DI: { name: 'プロモーター', subname: '推進者', group: 'D', emoji: '⚡' },
+      DP: { name: 'リーダー', subname: '指揮官', group: 'D', emoji: '👑' },
+      DA: { name: 'ファシリテーター', subname: '先導者', group: 'D', emoji: '🧭' },
+      DD: { name: 'イノベーター', subname: '変革者', group: 'D', emoji: '🔥' },
+    };
+
+    // カラーを取得するユーティリティ関数
+    function getTypeColor(personalityCode) {
+      const firstLetter = personalityCode.charAt(0);
+      return TYPE_COLORS[firstLetter] || TYPE_COLORS.P;
+    }
+
+    // チャプター定義（プログレスバー用）
+    const CHAPTERS = [
+      {
+        id: 1,
+        name: 'あなたの行動パターン',
+        questionRange: [0, 14],
+        description: '日常の行動傾向を分析します'
+      },
+      {
+        id: 2,
+        name: 'あなたの思考スタイル',
+        questionRange: [15, 31],
+        description: '意思決定と思考の特性を分析します'
+      },
+      {
+        id: 3,
+        name: 'あなたの対人スタイル',
+        questionRange: [32, 44],
+        description: '人間関係の傾向を分析します'
+      },
+      {
+        id: 4,
+        name: 'あなたの価値観',
+        questionRange: [45, 56],
+        description: '行動の原動力を分析します'
+      }
+    ];
+
     // ===================================================================
     // SCORING LOGIC
     // ===================================================================
@@ -4375,16 +4548,130 @@
 
     // --- ProgressBar80 ---
     function ProgressBar80({ current, total }) {
-      const pct = Math.round((current / total) * 100);
+      const currentQuestion = current - 1; // 0-indexed
+      const progress = (current / total) * 100;
+      const currentChapter = CHAPTERS.find(ch =>
+        currentQuestion >= ch.questionRange[0] && currentQuestion <= ch.questionRange[1]
+      );
+      const chapterProgress = currentChapter
+        ? ((currentQuestion - currentChapter.questionRange[0] + 1) /
+           (currentChapter.questionRange[1] - currentChapter.questionRange[0] + 1)) * 100
+        : 0;
+
       return (
-        <div className="progress-container">
-          <div className="progress-info">
-            <span className="progress-question-num">Q{current}/{total}</span>
-            <span className="progress-percentage">{pct}%</span>
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          background: 'rgba(13,17,23,0.95)',
+          backdropFilter: 'blur(20px)',
+          padding: '12px 20px 16px',
+          borderBottom: '1px solid rgba(255,255,255,0.06)'
+        }}>
+          {/* チャプター名 + 問番号 */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '8px'
+          }}>
+            <span style={{
+              fontSize: '13px',
+              fontWeight: '600',
+              color: 'rgba(255,255,255,0.8)'
+            }}>
+              {currentChapter?.name}
+            </span>
+            <span style={{
+              fontSize: '12px',
+              color: 'rgba(255,255,255,0.4)'
+            }}>
+              {current} / {total}
+            </span>
           </div>
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: pct + '%' }} />
+
+          {/* メインプログレスバー */}
+          <div style={{
+            height: '4px',
+            background: 'rgba(255,255,255,0.08)',
+            borderRadius: '2px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #00D2FF, #7B68EE)',
+              borderRadius: '2px',
+              transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+            }} />
           </div>
+
+          {/* チャプターインジケーター */}
+          <div style={{
+            display: 'flex',
+            gap: '4px',
+            marginTop: '8px'
+          }}>
+            {CHAPTERS.map((ch) => {
+              const isCompleted = currentQuestion > ch.questionRange[1];
+              const isCurrent = currentChapter?.id === ch.id;
+              return (
+                <div
+                  key={ch.id}
+                  style={{
+                    flex: 1,
+                    height: '3px',
+                    borderRadius: '1.5px',
+                    background: isCompleted
+                      ? '#00D2FF'
+                      : isCurrent
+                        ? `linear-gradient(90deg, #00D2FF ${chapterProgress}%, rgba(255,255,255,0.1) ${chapterProgress}%)`
+                        : 'rgba(255,255,255,0.08)',
+                    transition: 'background 0.3s ease'
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // --- ChapterTransition ---
+    function ChapterTransition({ chapter, onComplete }) {
+      React.useEffect(() => {
+        const timer = setTimeout(onComplete, 1200);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '60vh',
+          animation: 'fadeIn 0.4s ease-out'
+        }}>
+          <div style={{
+            fontSize: '48px',
+            marginBottom: '16px',
+            color: '#00D2FF'
+          }}>✓</div>
+          <h3 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '8px'
+          }}>
+            Chapter {chapter.id - 1} 完了！
+          </h3>
+          <p style={{
+            fontSize: '14px',
+            color: 'rgba(255,255,255,0.5)'
+          }}>
+            次は「{chapter.name}」です
+          </p>
         </div>
       );
     }
@@ -4473,20 +4760,64 @@
             <p className="start-subtitle">57問であなたの80タイプを完全解析</p>
           </div>
 
-          {/* Phase 3: Badges + CTA */}
+          {/* Phase 3: What you'll learn + Badges + CTA */}
           <div className={`start-phase${phases[2] ? ' visible' : ''}`} style={{ animationDelay: '0.15s' }}>
+            {/* 何がわかるかセクション */}
+            <div style={{
+              maxWidth: '600px',
+              margin: '0 auto 32px',
+              padding: '24px',
+              background: 'rgba(255,255,255,0.05)',
+              borderRadius: '16px',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: '700',
+                color: '#fff',
+                marginBottom: '20px',
+                textAlign: 'center'
+              }}>
+                あなたの80タイプがわかると…
+              </h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '16px'
+              }}>
+                {[
+                  { icon: '🧠', title: '性格タイプ', desc: '基本的な思考・行動パターン' },
+                  { icon: '🎯', title: '適職', desc: '本当に向いている仕事' },
+                  { icon: '📊', title: '行動スタイル', desc: '無意識の行動パターン' },
+                  { icon: '💼', title: '働き方相性', desc: '合う社風・上司タイプ' },
+                ].map((item, i) => (
+                  <div key={i} style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '10px'
+                  }}>
+                    <span style={{ fontSize: '24px' }}>{item.icon}</span>
+                    <div>
+                      <div style={{ fontSize: '14px', fontWeight: '700', color: '#fff' }}>{item.title}</div>
+                      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="info-badges">
               <div className="info-badge">
-                <span className="info-badge-icon">&#9200;</span>
-                <span>約8分</span>
+                <span className="info-badge-icon">⏱</span>
+                <span>約7分</span>
               </div>
               <div className="info-badge">
-                <span className="info-badge-icon">&#9998;</span>
+                <span className="info-badge-icon">📝</span>
                 <span>全57問</span>
               </div>
               <div className="info-badge">
-                <span className="info-badge-icon">&#10003;</span>
-                <span>無料</span>
+                <span className="info-badge-icon">🔓</span>
+                <span>無料・登録不要</span>
               </div>
             </div>
 
@@ -4495,66 +4826,150 @@
             </button>
           </div>
 
-          {/* Phase 4: Social proof + brand */}
+          {/* Phase 4: Social proof + testimonial + brand */}
           <div className={`start-phase${phases[3] ? ' visible' : ''}`} style={{ animationDelay: '0.2s' }}>
             <DiagCounter />
+            {/* テスティモニアル */}
+            <div style={{
+              maxWidth: '500px',
+              margin: '16px auto 0',
+              padding: '16px 20px',
+              background: 'rgba(255,255,255,0.03)',
+              borderRadius: '12px',
+              borderLeft: '3px solid rgba(0,210,255,0.5)'
+            }}>
+              <p style={{
+                fontSize: '13px',
+                color: 'rgba(255,255,255,0.7)',
+                lineHeight: '1.6',
+                margin: 0,
+                fontStyle: 'italic'
+              }}>
+                「正直ここまで当たると思ってなかった。自分の行動パターンが言語化されてスッキリした」
+              </p>
+              <p style={{
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.4)',
+                margin: '8px 0 0',
+                textAlign: 'right'
+              }}>
+                — 24歳 男性・営業職
+              </p>
+            </div>
             <div className="brand-note">PERSONAL FILE</div>
           </div>
         </div>
       );
     }
 
-    // --- QuestionScreen80 ---
+    // --- QuestionScreen80 (Phase 3: 1問1画面スタイル) ---
     function QuestionScreen80({ qIndex, onAnswer, onBack, answerHistory }) {
       const question = ORDERED_QUESTIONS[qIndex];
-      const axisColor = AXIS_COLORS[question.axis] || 'color-P';
-      const encourageMsg = ENCOURAGE_MESSAGES[qIndex + 1] || null;
-      const [animKey, setAnimKey] = React.useState(qIndex);
-      const [localSelected, setLocalSelected] = React.useState(null);
+      const [selectedValue, setSelectedValue] = React.useState(null);
+      const [isAnimating, setIsAnimating] = React.useState(false);
+
+      const options = [
+        { value: 1, label: 'まったく当てはまらない' },
+        { value: 2, label: 'あまり当てはまらない' },
+        { value: 3, label: 'どちらとも言えない' },
+        { value: 4, label: 'やや当てはまる' },
+        { value: 5, label: 'とても当てはまる' },
+      ];
 
       React.useEffect(() => {
-        setAnimKey(qIndex);
-        setLocalSelected(answerHistory[qIndex] || null);
+        setSelectedValue(answerHistory[qIndex] || null);
+        setIsAnimating(false);
       }, [qIndex]);
 
-      const handleSelect = (val) => {
-        setLocalSelected(val);
+      const handleSelect = (value) => {
+        setSelectedValue(value);
+        setIsAnimating(true);
         setTimeout(() => {
-          onAnswer(val);
-        }, 400);
+          onAnswer(value);
+          setSelectedValue(null);
+          setIsAnimating(false);
+        }, 500);
       };
 
       return (
         <div className="question-screen">
           <ProgressBar80 current={qIndex + 1} total={TOTAL_QUESTIONS} />
 
-          <div className="question-content" key={animKey}>
-            {encourageMsg && (
-              <div className="question-encourage">{encourageMsg}</div>
-            )}
+          <div style={{
+            minHeight: '70vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '24px',
+            animation: isAnimating ? 'fadeOut 0.3s ease-out' : 'fadeIn 0.3s ease-out',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }} key={qIndex}>
+            {/* 設問テキスト */}
+            <h2 style={{
+              fontSize: '22px',
+              fontWeight: '700',
+              color: '#fff',
+              textAlign: 'center',
+              lineHeight: '1.6',
+              marginBottom: '40px'
+            }}>
+              {question.text}
+            </h2>
 
-            {/* Q Badge - scanner frame style */}
-            <div className="q-badge-wrapper">
-              <div className="q-badge-corner tl" />
-              <div className="q-badge-corner tr" />
-              <div className="q-badge-corner bl" />
-              <div className="q-badge-corner br" />
-              <div className="q-badge-orb">
-                <span className="q-badge-text">Q{qIndex + 1}</span>
-              </div>
+            {/* 回答ボタン群 */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              width: '100%',
+              maxWidth: '400px'
+            }}>
+              {options.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => handleSelect(opt.value)}
+                  disabled={selectedValue !== null && selectedValue !== opt.value}
+                  style={{
+                    padding: '16px 20px',
+                    background: selectedValue === opt.value
+                      ? 'linear-gradient(135deg, #00D2FF, #7B68EE)'
+                      : 'rgba(255,255,255,0.05)',
+                    border: selectedValue === opt.value
+                      ? 'none'
+                      : '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    color: '#fff',
+                    fontSize: '15px',
+                    fontWeight: selectedValue === opt.value ? '700' : '500',
+                    cursor: selectedValue !== null ? 'default' : 'pointer',
+                    transition: 'all 0.2s ease',
+                    transform: selectedValue === opt.value ? 'scale(1.02)' : 'scale(1)',
+                    textAlign: 'center',
+                    opacity: (selectedValue !== null && selectedValue !== opt.value) ? 0.4 : 1
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
             </div>
-
-            <div className="question-text">{question.text}</div>
-            <LikertScale
-              selected={localSelected}
-              onSelect={handleSelect}
-              axisColor={axisColor}
-            />
 
             {/* 前の質問に戻る */}
             {qIndex > 0 && (
-              <button className="back-text-btn" onClick={onBack}>
-                <span style={{ fontSize: '11px' }}>&larr;</span> 前の質問に戻る
+              <button
+                onClick={onBack}
+                style={{
+                  marginTop: '24px',
+                  background: 'none',
+                  border: 'none',
+                  color: 'rgba(255,255,255,0.4)',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  padding: '8px 16px'
+                }}
+              >
+                ← 前の質問に戻る
               </button>
             )}
           </div>
@@ -4562,71 +4977,1276 @@
       );
     }
 
-    // --- LoadingScreen80 ---
+    // --- Confetti (Phase 3) ---
+    function Confetti() {
+      const particles = React.useMemo(() =>
+        Array.from({ length: 50 }, (_, i) => ({
+          id: i,
+          x: Math.random() * 100,
+          delay: Math.random() * 2,
+          duration: 1 + Math.random() * 2,
+          color: ['#FF6B6B', '#4ECDC4', '#96E6A1', '#A855F7', '#00D2FF', '#FFD700'][Math.floor(Math.random() * 6)],
+          isCircle: Math.random() > 0.5
+        }))
+      , []);
+
+      return (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          pointerEvents: 'none',
+          zIndex: 1000,
+          overflow: 'hidden'
+        }}>
+          {particles.map(p => (
+            <div
+              key={p.id}
+              style={{
+                position: 'absolute',
+                left: `${p.x}%`,
+                top: '-10px',
+                width: '8px',
+                height: '8px',
+                borderRadius: p.isCircle ? '50%' : '2px',
+                background: p.color,
+                animation: `confettiFall ${p.duration}s ease-in ${p.delay}s forwards`
+              }}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    // --- LoadingScreen80 (Phase 3: Confetti + ステップ表示) ---
     function LoadingScreen80({ onComplete }) {
-      const messages = [
-        "回答を分析しています",
-        "性格類型を判定中",
-        "行動類型を判定中",
-        "80タイプを特定中",
+      const [step, setStep] = React.useState(0);
+      const steps = [
+        '性格類型を分析中...',
+        '行動パターンを解析中...',
+        '80タイプの中からマッチング中...',
+        'あなたのタイプが判明しました！'
       ];
-      const [msgIndex, setMsgIndex] = React.useState(0);
 
       React.useEffect(() => {
-        const intervals = [
-          setTimeout(() => setMsgIndex(1), 800),
-          setTimeout(() => setMsgIndex(2), 1600),
-          setTimeout(() => setMsgIndex(3), 2400),
-          setTimeout(() => { if (onComplete) onComplete(); }, 3200),
-        ];
-        return () => intervals.forEach(clearTimeout);
+        const timers = steps.map((_, i) =>
+          setTimeout(() => setStep(i), i * 800)
+        );
+        const complete = setTimeout(onComplete, steps.length * 800 + 400);
+        return () => {
+          timers.forEach(clearTimeout);
+          clearTimeout(complete);
+        };
       }, []);
 
       return (
-        <div className="loading-screen">
-          <div className="gradient-mesh" />
-          <div className="loading-spinner" />
-          <div className="loading-message">{messages[msgIndex]}</div>
-          <div className="loading-dots">
-            <div className="loading-dot" />
-            <div className="loading-dot" />
-            <div className="loading-dot" />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '80vh',
+          padding: '24px',
+          background: '#0D1117'
+        }}>
+          <Confetti />
+          <div style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            border: '4px solid rgba(255,255,255,0.1)',
+            borderTopColor: '#00D2FF',
+            animation: 'spin 1s linear infinite',
+            marginBottom: '32px'
+          }} />
+          <p style={{
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#fff',
+            animation: 'fadeIn 0.3s ease-out'
+          }} key={step}>
+            {steps[step]}
+          </p>
+          <div style={{
+            marginTop: '16px',
+            display: 'flex',
+            gap: '8px'
+          }}>
+            {steps.map((_, i) => (
+              <div key={i} style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: i <= step ? '#00D2FF' : 'rgba(255,255,255,0.1)',
+                transition: 'background 0.3s ease'
+              }} />
+            ))}
           </div>
         </div>
       );
     }
 
-    // --- ResultScreen80 ---
+    // --- OGPメタタグ動的更新 ---
+    function updateOGPMeta(personalityCode, behaviorType) {
+      const typeMeta = TYPE_META[personalityCode];
+      if (!typeMeta) return;
+      const title = `${behaviorType}${typeMeta.name}（${typeMeta.subname}）| 80タイプ診断`;
+      const description = `あなたは80タイプの中で「${behaviorType}${typeMeta.name}」でした。あなたのタイプは？`;
+
+      const setMeta = (property, content) => {
+        let meta = document.querySelector(`meta[property="${property}"]`) ||
+                   document.querySelector(`meta[name="${property}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute(property.startsWith('og:') ? 'property' : 'name', property);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      document.title = title;
+      setMeta('og:title', title);
+      setMeta('og:description', description);
+      setMeta('og:type', 'website');
+      setMeta('og:url', window.location.href);
+      setMeta('twitter:card', 'summary_large_image');
+      setMeta('twitter:title', title);
+      setMeta('twitter:description', description);
+    }
+
+    // --- OGPシェアカード生成（Canvas API）---
+    async function generateShareCard(personalityCode, behaviorType, keywords) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d');
+      const typeColor = getTypeColor(personalityCode);
+      const typeMeta = TYPE_META[personalityCode];
+      if (!typeMeta) return null;
+
+      // 背景グラデーション
+      const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
+      bgGrad.addColorStop(0, '#0D1117');
+      bgGrad.addColorStop(1, '#1A1A2E');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // タイプカラーのアクセント線（上部）
+      const accentGrad = ctx.createLinearGradient(0, 0, 1200, 0);
+      accentGrad.addColorStop(0, typeColor.primary);
+      accentGrad.addColorStop(1, typeColor.secondary);
+      ctx.fillStyle = accentGrad;
+      ctx.fillRect(0, 0, 1200, 6);
+
+      // タイプカラーの丸（装飾）
+      ctx.beginPath();
+      ctx.arc(1000, 315, 200, 0, Math.PI * 2);
+      ctx.fillStyle = typeColor.light;
+      ctx.fill();
+
+      // タイトル「80 TYPE DIAGNOSIS」
+      ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.fillText('80 TYPE DIAGNOSIS', 80, 80);
+
+      // 「あなたは」
+      ctx.font = '400 24px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillText('あなたは', 80, 200);
+
+      // タイプ名（大きく）
+      ctx.font = '800 56px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(`${behaviorType}${typeMeta.name}`, 80, 280);
+
+      // サブネーム
+      ctx.font = '500 28px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = typeColor.primary;
+      ctx.fillText(`${typeMeta.subname}（${personalityCode}）`, 80, 330);
+
+      // Emoji
+      ctx.font = '120px sans-serif';
+      ctx.fillText(typeMeta.emoji, 950, 350);
+
+      // キーワードタグ
+      if (keywords && keywords.length > 0) {
+        const tagY = 420;
+        let tagX = 80;
+        ctx.font = '500 18px "Hiragino Sans", "Yu Gothic", sans-serif';
+        keywords.slice(0, 3).forEach((kw) => {
+          const text = `#${kw}`;
+          const textWidth = ctx.measureText(text).width;
+          ctx.fillStyle = typeColor.light;
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(tagX - 8, tagY - 18, textWidth + 16, 32, 6);
+            ctx.fill();
+          } else {
+            ctx.fillRect(tagX - 8, tagY - 18, textWidth + 16, 32);
+          }
+          ctx.fillStyle = typeColor.primary;
+          ctx.fillText(text, tagX, tagY + 4);
+          tagX += textWidth + 28;
+        });
+      }
+
+      // URL
+      ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.textAlign = 'left';
+      ctx.fillText('personal-file.jp/80type', 80, 580);
+
+      // PERSONAL FILE ロゴテキスト
+      ctx.font = '700 16px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.textAlign = 'right';
+      ctx.fillText('PERSONAL FILE', 1120, 580);
+      ctx.textAlign = 'left';
+
+      return canvas.toDataURL('image/png');
+    }
+
+    // --- ShareButtons ---
+    function ShareButtons({ typeName, behaviorType, personalityCode, resultUrl }) {
+      const typeColor = getTypeColor(personalityCode);
+      const typeMeta = TYPE_META[personalityCode];
+
+      const shareText = typeMeta
+        ? `私は「${behaviorType}${typeMeta.name}」タイプでした！\n${typeMeta.emoji} ${typeMeta.subname} — 80タイプの中のあなたはどれ？\n\n`
+        : `私は「${typeName}」タイプでした！\n`;
+      const shareUrl = resultUrl || 'https://www.personal-file.jp/80type';
+      const hashtags = '80タイプ診断,パーソナルファイル';
+
+      const shareToX = () => {
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=${encodeURIComponent(hashtags)}`;
+        window.open(url, '_blank', 'width=550,height=420');
+        try {
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', 'CTA80TypeClick', {
+              content_name: '80type_share_x',
+              full_type: typeName,
+            });
+          }
+        } catch (e) {}
+      };
+
+      const shareToLine = () => {
+        const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+        window.open(url, '_blank');
+        try {
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', 'CTA80TypeClick', {
+              content_name: '80type_share_line',
+              full_type: typeName,
+            });
+          }
+        } catch (e) {}
+      };
+
+      const copyLink = async () => {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          alert('リンクをコピーしました！');
+        } catch {
+          const textArea = document.createElement('textarea');
+          textArea.value = shareUrl;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert('リンクをコピーしました！');
+        }
+      };
+
+      return (
+        <div style={{
+          display: 'flex',
+          gap: '12px',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          margin: '20px 0'
+        }}>
+          <button
+            onClick={shareToX}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              background: '#000',
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <span style={{ fontSize: '16px' }}>𝕏</span>
+            でシェア
+          </button>
+
+          <button
+            onClick={shareToLine}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              background: '#06C755',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            LINE
+          </button>
+
+          <button
+            onClick={copyLink}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              background: 'rgba(255,255,255,0.1)',
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            🔗 リンクコピー
+          </button>
+        </div>
+      );
+    }
+
+    // --- ShareCardPreview ---
+    function ShareCardPreview({ imageDataUrl }) {
+      if (!imageDataUrl) return null;
+
+      const downloadImage = () => {
+        const a = document.createElement('a');
+        a.href = imageDataUrl;
+        a.download = '80type-result.png';
+        a.click();
+      };
+
+      return (
+        <div style={{
+          maxWidth: '600px',
+          margin: '24px auto',
+          textAlign: 'center'
+        }}>
+          <img
+            src={imageDataUrl}
+            alt="シェアカード"
+            style={{
+              width: '100%',
+              borderRadius: '12px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            }}
+          />
+          <button
+            onClick={downloadImage}
+            style={{
+              marginTop: '12px',
+              padding: '10px 24px',
+              background: 'rgba(255,255,255,0.1)',
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '24px',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            📥 画像を保存してシェア
+          </button>
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // Phase 2 COMPONENTS — 結果ページ全面リデザイン
+    // ===================================================================
+
+    // --- ResultHero ---
+    function ResultHero({ personalityCode, behaviorType, keywords }) {
+      const typeColor = getTypeColor(personalityCode);
+      const typeMeta = TYPE_META[personalityCode];
+      if (!typeMeta) return null;
+
+      return (
+        <div style={{
+          background: typeColor.gradient,
+          padding: '48px 24px 40px',
+          borderRadius: '0 0 32px 32px',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-50px',
+            right: '-50px',
+            width: '200px',
+            height: '200px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.1)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '-30px',
+            left: '-30px',
+            width: '120px',
+            height: '120px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.08)',
+          }} />
+
+          <div style={{
+            fontSize: '72px',
+            marginBottom: '12px',
+            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
+          }}>
+            {typeMeta.emoji}
+          </div>
+
+          <p style={{
+            fontSize: '14px',
+            fontWeight: '500',
+            color: 'rgba(255,255,255,0.8)',
+            margin: '0 0 4px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase'
+          }}>
+            あなたのタイプ
+          </p>
+
+          <h1 style={{
+            fontSize: '32px',
+            fontWeight: '800',
+            color: '#fff',
+            margin: '0 0 4px',
+            textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+          }}>
+            {behaviorType}{typeMeta.name}
+          </h1>
+
+          <p style={{
+            fontSize: '18px',
+            fontWeight: '500',
+            color: 'rgba(255,255,255,0.9)',
+            margin: '0 0 16px'
+          }}>
+            {typeMeta.subname}（{personalityCode}）
+          </p>
+
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px',
+            marginBottom: '20px'
+          }}>
+            {keywords.map((kw, i) => (
+              <span key={i} style={{
+                padding: '4px 14px',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '20px',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#fff'
+              }}>
+                #{kw}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- ScoreSliders ---
+    function ScoreSliders({ scores }) {
+      const axes = [
+        { left: '行動志向', right: '慎重志向', leftKey: 'P', rightKey: 'A', leftColor: TYPE_COLORS.P.primary, rightColor: TYPE_COLORS.A.primary },
+        { left: '感覚重視', right: '論理重視', leftKey: 'P', rightKey: 'A', leftColor: TYPE_COLORS.P.primary, rightColor: TYPE_COLORS.A.primary },
+        { left: '個人主義', right: '協調重視', leftKey: 'D', rightKey: 'I', leftColor: TYPE_COLORS.D.primary, rightColor: TYPE_COLORS.I.primary },
+        { left: '安定志向', right: '挑戦志向', leftKey: 'I', rightKey: 'D', leftColor: TYPE_COLORS.I.primary, rightColor: TYPE_COLORS.D.primary },
+      ];
+
+      const computePercentage = (key1, key2) => {
+        const total = scores[key1] + scores[key2];
+        if (total === 0) return 50;
+        return Math.round((scores[key1] / total) * 100);
+      };
+
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0'
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.3)',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>1</span>
+            性格特性
+          </h2>
+
+          {axes.map((axis, i) => {
+            const leftPct = computePercentage(axis.leftKey, axis.rightKey);
+            const rightPct = 100 - leftPct;
+            const dominant = leftPct >= 50 ? 'left' : 'right';
+
+            return (
+              <div key={i} style={{ marginBottom: '20px' }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '8px'
+                }}>
+                  <span style={{
+                    fontSize: '13px',
+                    fontWeight: dominant === 'left' ? '700' : '400',
+                    color: dominant === 'left' ? axis.leftColor : 'rgba(255,255,255,0.4)'
+                  }}>
+                    {axis.left}
+                  </span>
+                  <span style={{
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    color: dominant === 'left' ? axis.leftColor : axis.rightColor
+                  }}>
+                    {dominant === 'left' ? `${leftPct}%` : `${rightPct}%`}
+                  </span>
+                  <span style={{
+                    fontSize: '13px',
+                    fontWeight: dominant === 'right' ? '700' : '400',
+                    color: dominant === 'right' ? axis.rightColor : 'rgba(255,255,255,0.4)'
+                  }}>
+                    {axis.right}
+                  </span>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  height: '8px',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  background: 'rgba(255,255,255,0.06)'
+                }}>
+                  <div style={{
+                    width: `${leftPct}%`,
+                    background: axis.leftColor,
+                    borderRadius: leftPct > 50 ? '4px 0 0 4px' : '4px',
+                    transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }} />
+                  <div style={{
+                    width: `${rightPct}%`,
+                    background: axis.rightColor,
+                    borderRadius: rightPct > 50 ? '0 4px 4px 0' : '4px',
+                    transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // --- RadarChart ---
+    function RadarChart({ behaviorScores, personalityCode }) {
+      const typeColor = getTypeColor(personalityCode);
+      const labels = ['達成', '平和', '情報', '外見', '効率'];
+      const maxScore = 25;
+      const center = 150;
+      const radius = 110;
+
+      const getPoint = (index, value) => {
+        const angle = (Math.PI * 2 * index) / labels.length - Math.PI / 2;
+        const r = (value / maxScore) * radius;
+        return {
+          x: center + r * Math.cos(angle),
+          y: center + r * Math.sin(angle)
+        };
+      };
+
+      const gridLevels = [0.25, 0.5, 0.75, 1];
+
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0',
+          textAlign: 'center'
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            justifyContent: 'center'
+          }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.3)',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>2</span>
+            行動タイプ分析
+          </h2>
+
+          <svg width="300" height="300" viewBox="0 0 300 300" style={{ maxWidth: '100%' }}>
+            {gridLevels.map((level, li) => (
+              <polygon
+                key={li}
+                points={labels.map((_, i) => {
+                  const p = getPoint(i, maxScore * level);
+                  return `${p.x},${p.y}`;
+                }).join(' ')}
+                fill="none"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1"
+              />
+            ))}
+
+            {labels.map((_, i) => {
+              const p = getPoint(i, maxScore);
+              return (
+                <line
+                  key={i}
+                  x1={center} y1={center}
+                  x2={p.x} y2={p.y}
+                  stroke="rgba(255,255,255,0.06)"
+                  strokeWidth="1"
+                />
+              );
+            })}
+
+            <polygon
+              points={labels.map((label, i) => {
+                const p = getPoint(i, behaviorScores[label] || 0);
+                return `${p.x},${p.y}`;
+              }).join(' ')}
+              fill={typeColor.glow}
+              stroke={typeColor.primary}
+              strokeWidth="2"
+            />
+
+            {labels.map((label, i) => {
+              const p = getPoint(i, behaviorScores[label] || 0);
+              return (
+                <circle
+                  key={`dot-${i}`}
+                  cx={p.x} cy={p.y} r="4"
+                  fill={typeColor.primary}
+                />
+              );
+            })}
+
+            {labels.map((label, i) => {
+              const p = getPoint(i, maxScore + 5);
+              return (
+                <text
+                  key={`label-${i}`}
+                  x={p.x} y={p.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="rgba(255,255,255,0.7)"
+                  fontSize="13"
+                  fontWeight="600"
+                >
+                  {label}型
+                </text>
+              );
+            })}
+          </svg>
+        </div>
+      );
+    }
+
+    // --- StrengthsWeaknesses ---
+    function StrengthsWeaknesses({ strengths, weaknesses, personalityCode }) {
+      const typeColor = getTypeColor(personalityCode);
+
+      return (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '16px',
+          margin: '24px 0'
+        }}>
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '20px',
+            borderTop: `3px solid ${typeColor.primary}`
+          }}>
+            <h3 style={{
+              fontSize: '16px',
+              fontWeight: '700',
+              color: typeColor.primary,
+              marginBottom: '12px'
+            }}>
+              💪 強み
+            </h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {strengths.map((item, i) => (
+                <li key={i} style={{
+                  padding: '8px 0',
+                  borderBottom: i < strengths.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                  fontSize: '14px',
+                  color: 'rgba(255,255,255,0.8)',
+                  lineHeight: '1.6'
+                }}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '20px',
+            borderTop: '3px solid rgba(255,200,100,0.6)'
+          }}>
+            <h3 style={{
+              fontSize: '16px',
+              fontWeight: '700',
+              color: 'rgba(255,200,100,0.9)',
+              marginBottom: '12px'
+            }}>
+              ⚠️ 注意したい点
+            </h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {weaknesses.map((item, i) => (
+                <li key={i} style={{
+                  padding: '8px 0',
+                  borderBottom: i < weaknesses.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                  fontSize: '14px',
+                  color: 'rgba(255,255,255,0.8)',
+                  lineHeight: '1.6'
+                }}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    // --- CareerSection ---
+    function CareerSection({ careers, personalityCode }) {
+      const typeColor = getTypeColor(personalityCode);
+
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0'
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.3)',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>3</span>
+            適した職種
+          </h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: '12px'
+          }}>
+            {careers.map((career, i) => (
+              <div key={i} style={{
+                padding: '16px',
+                background: typeColor.light,
+                borderRadius: '12px',
+                borderLeft: `3px solid ${typeColor.primary}`
+              }}>
+                <div style={{
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  color: '#fff',
+                  marginBottom: '4px'
+                }}>
+                  {career.title}
+                </div>
+                {career.description && (
+                  <div style={{
+                    fontSize: '12px',
+                    color: 'rgba(255,255,255,0.5)',
+                    lineHeight: '1.5'
+                  }}>
+                    {career.description}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- BlurredSection ---
+    function BlurredSection({ items, personalityCode }) {
+      const typeColor = getTypeColor(personalityCode);
+
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0',
+          position: 'relative'
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.3)',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>4</span>
+            あなたに合う働き方
+          </h2>
+
+          <div style={{ position: 'relative' }}>
+            {(items || ['作業スタイル', '社風', '上司タイプ', '部下タイプ', '働き方']).map((label, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '14px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.05)'
+              }}>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: 'rgba(255,255,255,0.8)',
+                  minWidth: '100px'
+                }}>
+                  {typeof label === 'string' ? label : label.label}
+                </span>
+                <span style={{
+                  fontSize: '14px',
+                  color: 'rgba(255,255,255,0.5)',
+                  filter: 'blur(5px)',
+                  userSelect: 'none'
+                }}>
+                  詳細な分析結果がここに表示されます。面談で詳しくお伝えします。
+                </span>
+              </div>
+            ))}
+
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '100%',
+              background: 'linear-gradient(transparent 20%, rgba(13,17,23,0.9) 80%)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingBottom: '20px'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{
+                  fontSize: '14px',
+                  color: 'rgba(255,255,255,0.7)',
+                  marginBottom: '12px'
+                }}>
+                  🔓 詳しい分析結果は面談でお伝えします
+                </p>
+                <a
+                  href="https://www.personal-file.jp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    padding: '14px 32px',
+                    background: typeColor.gradient,
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '28px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    boxShadow: `0 4px 16px ${typeColor.glow}`,
+                    textDecoration: 'none'
+                  }}
+                  onClick={() => {
+                    try {
+                      if (typeof fbq === 'function') {
+                        fbq('trackCustom', 'CTA80TypeClick', {
+                          content_name: '80type_blurred_cta',
+                        });
+                      }
+                    } catch (e) {}
+                  }}
+                >
+                  無料面談で詳しく知る →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- CareerIntentQuestion ---
+    function CareerIntentQuestion({ onSelect, personalityCode }) {
+      const typeColor = getTypeColor(personalityCode);
+      const [selected, setSelected] = React.useState(null);
+
+      const options = [
+        { id: 1, text: '今すぐ転職・就職したい', route: 'consultation' },
+        { id: 2, text: '半年以内に考えている', route: 'consultation' },
+        { id: 3, text: '1年以上先に考えている', route: 'affiliate' },
+        { id: 4, text: '今は考えていない', route: 'affiliate' },
+      ];
+
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0',
+          textAlign: 'center'
+        }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '20px'
+          }}>
+            あなたの今の転職・就職意向を教えてください
+          </h3>
+
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            maxWidth: '400px',
+            margin: '0 auto'
+          }}>
+            {options.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => {
+                  setSelected(opt.id);
+                  onSelect(opt);
+                }}
+                style={{
+                  padding: '14px 20px',
+                  background: selected === opt.id ? typeColor.light : 'rgba(255,255,255,0.05)',
+                  border: selected === opt.id
+                    ? `2px solid ${typeColor.primary}`
+                    : '2px solid rgba(255,255,255,0.1)',
+                  borderRadius: '12px',
+                  color: '#fff',
+                  fontSize: '15px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  textAlign: 'left'
+                }}
+              >
+                {opt.text}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- StickySidebar ---
+    function StickySidebar({ personalityCode, behaviorType, sections }) {
+      const typeColor = getTypeColor(personalityCode);
+      const typeMeta = TYPE_META[personalityCode];
+      const [activeSection, setActiveSection] = React.useState(0);
+
+      React.useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const idx = parseInt(entry.target.dataset.sectionIndex);
+              if (!isNaN(idx)) setActiveSection(idx);
+            }
+          });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('[data-section-index]').forEach(el => {
+          observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+      }, []);
+
+      if (!typeMeta) return null;
+
+      return (
+        <div
+          className="sticky-sidebar"
+          style={{
+            position: 'sticky',
+            top: '24px',
+            width: '220px',
+            flexShrink: 0,
+            display: 'none',
+          }}
+        >
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '20px',
+            marginBottom: '16px',
+            textAlign: 'center',
+            borderTop: `3px solid ${typeColor.primary}`
+          }}>
+            <div style={{ fontSize: '40px', marginBottom: '8px' }}>{typeMeta.emoji}</div>
+            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>あなたのタイプ:</div>
+            <div style={{ fontSize: '16px', fontWeight: '700', color: '#fff' }}>
+              {behaviorType}{typeMeta.name}
+            </div>
+            <div style={{ fontSize: '13px', color: typeColor.primary }}>
+              {typeMeta.subname}（{personalityCode}）
+            </div>
+          </div>
+
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '16px'
+          }}>
+            <div style={{
+              fontSize: '12px',
+              color: 'rgba(255,255,255,0.4)',
+              marginBottom: '12px',
+              fontWeight: '600'
+            }}>
+              このページ内
+            </div>
+            {sections.map((section, i) => (
+              <a
+                key={i}
+                href={`#section-${i}`}
+                style={{
+                  display: 'block',
+                  padding: '8px 12px',
+                  fontSize: '13px',
+                  color: activeSection === i ? typeColor.primary : 'rgba(255,255,255,0.6)',
+                  fontWeight: activeSection === i ? '700' : '400',
+                  textDecoration: 'none',
+                  borderLeft: activeSection === i
+                    ? `3px solid ${typeColor.primary}`
+                    : '3px solid transparent',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {i + 1}. {section}
+              </a>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- TypeGrid ---
+    function TypeGrid({ currentType }) {
+      return (
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0'
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#fff',
+            marginBottom: '20px',
+            textAlign: 'center'
+          }}>
+            全16タイプ一覧
+          </h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+            gap: '10px'
+          }}>
+            {Object.entries(TYPE_META).map(([code, meta]) => {
+              const color = TYPE_COLORS[meta.group];
+              const isCurrent = code === currentType;
+
+              return (
+                <div
+                  key={code}
+                  style={{
+                    padding: '14px 10px',
+                    background: isCurrent ? color.light : 'rgba(255,255,255,0.02)',
+                    border: isCurrent ? `2px solid ${color.primary}` : '2px solid rgba(255,255,255,0.06)',
+                    borderRadius: '12px',
+                    textAlign: 'center',
+                    cursor: 'default',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <div style={{ fontSize: '28px', marginBottom: '4px' }}>{meta.emoji}</div>
+                  <div style={{
+                    fontSize: '12px',
+                    fontWeight: '700',
+                    color: isCurrent ? color.primary : 'rgba(255,255,255,0.7)',
+                  }}>
+                    {meta.name}
+                  </div>
+                  <div style={{
+                    fontSize: '11px',
+                    color: 'rgba(255,255,255,0.4)',
+                  }}>
+                    {meta.subname}（{code}）
+                  </div>
+                  {isCurrent && (
+                    <div style={{
+                      marginTop: '4px',
+                      fontSize: '10px',
+                      fontWeight: '700',
+                      color: color.primary,
+                    }}>
+                      ← あなた
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // --- ResultScreen80 (Phase 2 全面リデザイン) ---
     function ResultScreen80({ scores }) {
       const personalityCode = determinePersonalityType(scores);
       const behavioralType = determineBehavioralType(scores);
       const personalityName = PERSONALITY_NAMES[personalityCode] || personalityCode;
-      const personalityLabel = PERSONALITY_LABELS[personalityCode] || '';
-      const first = personalityCode[0];
-      const second = personalityCode[1];
-      const isDouble = first === second;
-
-      // 80タイプ名: "達成型ディリジェンサー" 形式でルックアップ
       const typeName80 = behavioralType.name + personalityName;
       const typeData = (typeof TYPES_80 !== 'undefined') ? TYPES_80[typeName80] : null;
+      const typeColor = getTypeColor(personalityCode);
+      const typeMeta = TYPE_META[personalityCode];
 
-      const [phases, setPhases] = React.useState([false, false, false, false, false, false, false, false]);
-      const [transferIntent, setTransferIntent] = React.useState(null); // null | 1 | 2 | 3 | 4
+      const [shareCardUrl, setShareCardUrl] = React.useState(null);
+      const [careerIntent, setCareerIntent] = React.useState(null);
 
+      // 行動類型スコア → レーダーチャート用オブジェクト
+      const behaviorScores = {
+        '達成': scores.K || 0,
+        '平和': scores.H || 0,
+        '情報': scores.J || 0,
+        '外見': scores.G || 0,
+        '効率': scores.E || 0,
+      };
+
+      const keywords = typeData?.keywords || [];
+
+      // 強み・弱みを配列化（改行区切り or 文字列）
+      const strengthsList = typeData?.strengths
+        ? typeData.strengths.split(/\n+/).filter(s => s.trim())
+        : [];
+      const weaknessesList = typeData?.weaknesses
+        ? typeData.weaknesses.split(/\n+/).filter(s => s.trim())
+        : [];
+
+      // 適職をオブジェクト配列に変換
+      const careers = typeData?.suitableJobs
+        ? typeData.suitableJobs.split(/[、,，\n]/).filter(s => s.trim()).map(j => ({ title: j.trim().replace(/など$/, '') }))
+        : [];
+
+      // OGP更新 + シェアカード生成 + Meta Pixel
       React.useEffect(() => {
-        const timers = [
-          setTimeout(() => setPhases(p => { const n = [...p]; n[0] = true; return n; }), 200),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[1] = true; return n; }), 800),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[2] = true; return n; }), 1400),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[3] = true; return n; }), 2000),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[4] = true; return n; }), 2600),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[5] = true; return n; }), 3200),
-          setTimeout(() => setPhases(p => { const n = [...p]; n[6] = true; return n; }), 3800),
-        ];
-        return () => timers.forEach(clearTimeout);
-      }, []);
+        updateOGPMeta(personalityCode, behavioralType.name);
+        generateShareCard(personalityCode, behavioralType.name, keywords)
+          .then(url => { if (url) setShareCardUrl(url); })
+          .catch(() => {});
 
-      React.useEffect(() => {
         try {
           if (typeof fbq === 'function') {
             fbq('trackCustom', 'Diagnosis80Complete', {
@@ -4639,391 +6259,279 @@
         } catch (e) {}
       }, []);
 
-      const personalityAxes = [
-        { code: 'P', desc: '行動・感覚・楽観', color: 'var(--type-p)', max: 40 },
-        { code: 'A', desc: '分析・慎重・知識', color: 'var(--type-a)', max: 40 },
-        { code: 'I', desc: '協調・受容・チーム', color: 'var(--type-i)', max: 40 },
-        { code: 'D', desc: '決断・独立・挑戦', color: 'var(--type-d)', max: 40 },
+      const sections = [
+        '性格特性',
+        '行動タイプ分析',
+        '適した職種',
+        'あなたに合う働き方',
+        '転職意向',
       ];
-      const behavioralAxes = [
-        { code: 'K', desc: '達成型', color: 'var(--type-p)', max: 25 },
-        { code: 'H', desc: '平和型', color: 'var(--type-i)', max: 25 },
-        { code: 'J', desc: '情報型', color: 'var(--type-a)', max: 25 },
-        { code: 'G', desc: '外見型', color: 'var(--neon-magenta)', max: 25 },
-        { code: 'E', desc: '効率型', color: 'var(--type-d)', max: 25 },
-      ];
-
-      // 作業/社風/上司/部下/働き方 の見出しペア
-      const compatItems = typeData ? [
-        { label: '向いている作業', good: typeData.goodWorkTitle, bad: typeData.badWorkTitle, badLabel: '苦手な作業' },
-        { label: '相性の良い社風', good: typeData.goodCultureTitle, bad: typeData.badCultureTitle, badLabel: '相性の悪い社風' },
-        { label: '相性の良い上司', good: typeData.goodBossTitle, bad: typeData.badBossTitle, badLabel: '相性の悪い上司' },
-        { label: '相性の良い部下', good: typeData.goodSubTitle, bad: typeData.badSubTitle, badLabel: '相性の悪い部下' },
-        { label: '相性の良い働き方', good: typeData.goodWorkStyleTitle, bad: typeData.badWorkStyleTitle, badLabel: '相性の悪い働き方' },
-      ] : [];
-
-      // 16タイプ一覧
-      const allTypes = [
-        ['PP','PA','PI','PD'],
-        ['AP','AA','AI','AD'],
-        ['IP','IA','II','ID'],
-        ['DP','DA','DI','DD'],
-      ];
-      const typeColorMap = { P: 'var(--type-p)', A: 'var(--type-a)', I: 'var(--type-i)', D: 'var(--type-d)' };
 
       return (
-        <div className="result-screen">
-          <div className="gradient-mesh" />
-          <Particles count={12} />
+        <div style={{ minHeight: '100vh', background: '#0D1117' }}>
+          {/* ヒーローセクション */}
+          <ResultHero
+            personalityCode={personalityCode}
+            behaviorType={behavioralType.name}
+            keywords={keywords}
+          />
 
-          {/* Phase 0: ヘッダー - タイプ名・要約・キーワード */}
-          <div className={`result-phase${phases[0] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            <div className="result-header">
-              <div className="result-label">YOUR 80 TYPE</div>
-              <div className="result-type-name">{typeName80}</div>
-              <div className="result-type-label">{personalityName}（{personalityLabel}）× {behavioralType.name}</div>
-              {typeData && typeData.summary && (
-                <div className="result-summary">{typeData.summary}</div>
-              )}
-              {typeData && typeData.keywords && typeData.keywords.length > 0 && (
-                <div className="result-keywords">
-                  {typeData.keywords.map((kw, i) => (
-                    <span key={i} className="result-keyword-tag">{kw}</span>
-                  ))}
+          {/* シェアボタン */}
+          <div style={{ padding: '0 20px' }}>
+            <ShareButtons
+              typeName={typeName80}
+              behaviorType={behavioralType.name}
+              personalityCode={personalityCode}
+            />
+          </div>
+
+          {/* シェアカードプレビュー */}
+          <div style={{ padding: '0 20px' }}>
+            <ShareCardPreview imageDataUrl={shareCardUrl} />
+          </div>
+
+          {/* メインコンテンツ（PC: 2カラム、SP: 1カラム） */}
+          <div className="result-main-content">
+            <div className="result-content-area">
+              {/* タイプ解説 */}
+              {typeData && typeData.userDescription && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  margin: '24px 0'
+                }}>
+                  <h2 style={{
+                    fontSize: '20px',
+                    fontWeight: '700',
+                    color: '#fff',
+                    marginBottom: '12px'
+                  }}>
+                    {typeMeta?.emoji} あなたのタイプ解説
+                  </h2>
+                  <p style={{
+                    fontSize: '14px',
+                    color: 'rgba(255,255,255,0.8)',
+                    lineHeight: '1.8',
+                    whiteSpace: 'pre-line'
+                  }}>
+                    {typeData.userDescription}
+                  </p>
                 </div>
               )}
-            </div>
-          </div>
 
-          {/* Phase 1: 性格類型グラフ */}
-          <div className={`result-phase${phases[1] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            <div className="result-card glass-card-strong">
-              <div className="result-card-title">性格類型スコア</div>
-              <div className="result-personality-code">
-                <div className={`result-axis-badge primary axis-${first}`}>{first}</div>
-                {!isDouble && (
-                  <>
-                    <span className="result-axis-plus">+</span>
-                    <div className={`result-axis-badge axis-${second}`}>{second}</div>
-                  </>
-                )}
-                <span style={{ marginLeft: '12px', fontSize: '15px', color: '#aaa' }}>{personalityName}</span>
+              {/* ① 性格特性スライダー */}
+              <div data-section-index="0" id="section-0">
+                <ScoreSliders scores={scores} />
               </div>
-              <div className="result-scores-grid">
-                {personalityAxes.map(ax => {
-                  const pct = Math.round((scores[ax.code] / ax.max) * 100);
-                  return (
-                    <div className="result-score-item" key={ax.code}>
-                      <div className="result-score-top">
-                        <div className="result-score-label">
-                          <span className="result-score-letter" style={{ color: ax.color }}>{ax.code}</span>
-                          <span className="result-score-desc">{ax.desc}</span>
-                        </div>
-                        <span className="result-score-value" style={{ color: ax.color }}>{pct}%</span>
-                      </div>
-                      <div className="result-score-bar-track">
-                        <div className="result-score-bar-fill" style={{ width: pct + '%', background: ax.color }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
 
-          {/* Phase 2: 行動類型スコア */}
-          <div className={`result-phase${phases[2] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            <div className="result-card glass-card-strong">
-              <div className="result-card-title">行動類型スコア</div>
-              <div className="result-behavioral" style={{ marginBottom: '16px' }}>
-                <div className="result-behavioral-badge">{behavioralType.name}</div>
+              {/* ② 行動タイプ レーダーチャート */}
+              <div data-section-index="1" id="section-1">
+                <RadarChart
+                  behaviorScores={behaviorScores}
+                  personalityCode={personalityCode}
+                />
               </div>
-              <div className="result-scores-grid">
-                {behavioralAxes.map(ax => {
-                  const pct = Math.round((scores[ax.code] / ax.max) * 100);
-                  const isWinner = ax.code === behavioralType.code;
-                  return (
-                    <div className="result-score-item" key={ax.code} style={isWinner ? { background: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '10px 14px' } : {}}>
-                      <div className="result-score-top">
-                        <div className="result-score-label">
-                          <span className="result-score-letter" style={{ color: ax.color, opacity: isWinner ? 1 : 0.6 }}>{ax.code}</span>
-                          <span className="result-score-desc" style={{ opacity: isWinner ? 1 : 0.6 }}>{ax.desc}</span>
-                        </div>
-                        <span className="result-score-value" style={{ color: isWinner ? ax.color : 'var(--text-muted)' }}>{pct}%</span>
-                      </div>
-                      <div className="result-score-bar-track">
-                        <div className="result-score-bar-fill" style={{ width: pct + '%', background: ax.color, opacity: isWinner ? 1 : 0.4 }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
 
-          {/* Phase 3: あなたの特徴（強み・弱み）+ 説明 */}
-          <div className={`result-phase${phases[3] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            {typeData && typeData.userDescription && (
-              <div className="result-card glass-card-strong">
-                <div className="result-card-title">あなたのタイプ解説</div>
-                <div className="result-description" style={{ whiteSpace: 'pre-line' }}>{typeData.userDescription}</div>
-              </div>
-            )}
-            {typeData && typeData.strengths && (
-              <div className="result-card glass-card-strong" style={{ borderLeft: '3px solid var(--type-d)' }}>
-                <div className="result-card-title" style={{ color: 'var(--type-d)' }}>強み</div>
-                <div className="result-description" style={{ whiteSpace: 'pre-line' }}>{typeData.strengths}</div>
-              </div>
-            )}
-            {typeData && typeData.weaknesses && (
-              <div className="result-card glass-card-strong" style={{ borderLeft: '3px solid var(--type-p)' }}>
-                <div className="result-card-title" style={{ color: 'var(--type-p)' }}>注意点</div>
-                <div className="result-description" style={{ whiteSpace: 'pre-line' }}>{typeData.weaknesses}</div>
-              </div>
-            )}
-          </div>
+              {/* ③ 強み・注意点 */}
+              {(strengthsList.length > 0 || weaknessesList.length > 0) && (
+                <StrengthsWeaknesses
+                  strengths={strengthsList}
+                  weaknesses={weaknessesList}
+                  personalityCode={personalityCode}
+                />
+              )}
 
-          {/* Phase 4: 適職・未経験適職・作業/社風/上司/部下/働き方 */}
-          <div className={`result-phase${phases[4] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            {typeData && typeData.suitableJobs && (
-              <div className="result-card glass-card-strong">
-                <div className="result-card-title">適した職種・職業</div>
-                {typeData.suitableJobsTitle && (
-                  <div style={{ fontSize: '14px', color: 'var(--neon-cyan)', marginBottom: '10px' }}>{typeData.suitableJobsTitle}</div>
-                )}
-                <div className="result-job-tags">
-                  {typeData.suitableJobs.split(/[、,，]/).map((job, i) => (
-                    <span key={i} className="result-job-tag">{job.trim().replace(/など$/, '')}</span>
-                  ))}
+              {/* ④ 適した職種 */}
+              {careers.length > 0 && (
+                <div data-section-index="2" id="section-2">
+                  <CareerSection
+                    careers={careers}
+                    personalityCode={personalityCode}
+                  />
                 </div>
-              </div>
-            )}
-            {typeData && typeData.entryJobs && (
-              <div className="result-card glass-card-strong">
-                <div className="result-card-title">未経験からチャレンジできる適職</div>
-                {typeData.entryJobCategories && (
-                  <div style={{ fontSize: '14px', color: 'var(--neon-violet)', marginBottom: '10px' }}>{typeData.entryJobCategories.replace(/\n/g, ' / ')}</div>
-                )}
-                <div className="result-description" style={{ whiteSpace: 'pre-line', fontSize: '13px' }}>{typeData.entryJobs}</div>
-              </div>
-            )}
+              )}
 
-            {/* 作業/社風/上司/部下/働き方 見出しのみ */}
-            {compatItems.length > 0 && (
-              <div className="result-card glass-card-strong">
-                <div className="result-card-title">あなたとの相性</div>
-                <div style={{ fontSize: '12px', color: '#888', marginBottom: '16px' }}>※ 詳細は面談にてお伝えします</div>
-                <div className="result-compat-grid">
-                  {compatItems.map((item, i) => (
-                    <div key={i} className="result-compat-row">
-                      <div className="result-compat-item good">
-                        <span className="result-compat-icon">&#9675;</span>
-                        <div>
-                          <div className="result-compat-label">{item.label}</div>
-                          <div className="result-compat-text">{item.good}</div>
-                        </div>
-                      </div>
-                      <div className="result-compat-item bad">
-                        <span className="result-compat-icon">&#10005;</span>
-                        <div>
-                          <div className="result-compat-label">{item.badLabel}</div>
-                          <div className="result-compat-text">{item.bad}</div>
-                        </div>
-                      </div>
+              {/* 未経験チャレンジ可能な適職 */}
+              {typeData && typeData.entryJobs && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  margin: '24px 0'
+                }}>
+                  <h2 style={{
+                    fontSize: '20px',
+                    fontWeight: '700',
+                    color: '#fff',
+                    marginBottom: '12px'
+                  }}>
+                    未経験からチャレンジできる適職
+                  </h2>
+                  {typeData.entryJobCategories && (
+                    <div style={{ fontSize: '14px', color: typeColor.primary, marginBottom: '10px' }}>
+                      {typeData.entryJobCategories.replace(/\n/g, ' / ')}
                     </div>
-                  ))}
+                  )}
+                  <p style={{
+                    fontSize: '13px',
+                    color: 'rgba(255,255,255,0.7)',
+                    lineHeight: '1.8',
+                    whiteSpace: 'pre-line'
+                  }}>
+                    {typeData.entryJobs}
+                  </p>
                 </div>
+              )}
+
+              {/* ⑤ ぼかしセクション（働き方相性） */}
+              <div data-section-index="3" id="section-3">
+                <BlurredSection personalityCode={personalityCode} />
               </div>
-            )}
-          </div>
 
-          {/* Phase 5: 16タイプ一覧 + ブランド */}
-          <div className={`result-phase${phases[5] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            <div className="result-card glass-card-strong">
-              <div className="result-card-title">全16タイプ一覧</div>
-              <div className="result-types-grid">
-                {allTypes.map((row, ri) => (
-                  row.map(code => {
-                    const isCurrent = code === personalityCode;
-                    const mainAxis = code[0];
-                    return (
-                      <div
-                        key={code}
-                        className={`result-type-cell${isCurrent ? ' current' : ''}`}
-                        style={isCurrent ? { borderColor: typeColorMap[mainAxis], boxShadow: `0 0 12px ${typeColorMap[mainAxis]}40` } : {}}
-                      >
-                        <div className="result-type-cell-code" style={{ color: typeColorMap[mainAxis] }}>{code}</div>
-                        <div className="result-type-cell-name">{PERSONALITY_NAMES[code]}</div>
-                        <div className="result-type-cell-label">{PERSONALITY_LABELS[code]}</div>
-                      </div>
-                    );
-                  })
-                ))}
+              {/* ⑥ 転職意向ヒアリング */}
+              <div data-section-index="4" id="section-4">
+                <CareerIntentQuestion
+                  personalityCode={personalityCode}
+                  onSelect={(opt) => {
+                    setCareerIntent(opt);
+                    try {
+                      if (typeof fbq === 'function') {
+                        fbq('trackCustom', 'CTA80TypeClick', {
+                          type: personalityCode,
+                          behavior: behavioralType.name,
+                          intent: opt.text,
+                          route: opt.route
+                        });
+                      }
+                    } catch (e) {}
+                  }}
+                />
               </div>
-            </div>
 
-            <div className="result-brand">PERSONAL FILE</div>
-          </div>
-
-          {/* Phase 6: 転職意向ヒアリング + CTA分岐 */}
-          <div className={`result-phase${phases[6] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            {transferIntent === null ? (
-              <div className="intent-section">
-                <div className="result-card glass-card-strong">
-                  <div className="intent-title">あなたの今の転職・就職意向を教えてください</div>
-                  <div className="intent-subtitle">回答に合わせたご案内を表示します</div>
-                  <div className="intent-options">
-                    {[
-                      { id: 1, text: '今すぐ転職・就職したい' },
-                      { id: 2, text: '半年以内に考えている' },
-                      { id: 3, text: '1年以上先に考えている' },
-                      { id: 4, text: '今は考えていない' },
-                    ].map(opt => (
-                      <button
-                        key={opt.id}
-                        className="intent-btn"
+              {/* ⑦ CTA（転職意向に応じた分岐） */}
+              {careerIntent && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  padding: '32px 24px',
+                  margin: '24px 0',
+                  textAlign: 'center'
+                }}>
+                  {careerIntent.route === 'consultation' ? (
+                    <>
+                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>
+                        あなたの80タイプを活かした転職相談
+                      </h3>
+                      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '20px' }}>
+                        専門アドバイザーが診断結果をもとに、あなたに合った企業を提案します
+                      </p>
+                      <a
+                        href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_interview_${personalityCode}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-block',
+                          padding: '16px 40px',
+                          background: 'linear-gradient(135deg, #00D2FF, #7B68EE)',
+                          color: '#fff',
+                          borderRadius: '28px',
+                          fontSize: '16px',
+                          fontWeight: '700',
+                          textDecoration: 'none',
+                          boxShadow: '0 4px 20px rgba(0,210,255,0.3)'
+                        }}
                         onClick={() => {
-                          setTransferIntent(opt.id);
                           try {
                             if (typeof fbq === 'function') {
-                              fbq('trackCustom', 'TransferIntent80', {
-                                content_name: '80type_intent',
-                                intent_level: opt.id,
-                                intent_text: opt.text,
+                              fbq('trackCustom', 'CTA80TypeClick', {
+                                content_name: '80type_cta_interview',
+                                content_category: personalityCode,
                                 full_type: typeName80,
+                                intent_level: careerIntent.id,
                               });
                             }
                           } catch (e) {}
-                          setTimeout(() => {
-                            setPhases(p => { const n = [...p]; n[7] = true; return n; });
-                          }, 300);
                         }}
                       >
-                        {opt.text}
-                      </button>
-                    ))}
-                  </div>
+                        無料面談に申し込む
+                      </a>
+                      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '12px' }}>
+                        ※ 完全無料・オンライン対応・所要時間約30分
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>
+                        あなたのタイプにおすすめのスキルアップ
+                      </h3>
+                      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '20px' }}>
+                        {behavioralType.name}{typeMeta?.name || personalityName}のあなたに合ったスクールを厳選
+                      </p>
+                      <a
+                        href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_future_${personalityCode}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-block',
+                          padding: '16px 40px',
+                          background: 'linear-gradient(135deg, #00D2FF, #7B68EE)',
+                          color: '#fff',
+                          borderRadius: '28px',
+                          fontSize: '16px',
+                          fontWeight: '700',
+                          textDecoration: 'none'
+                        }}
+                        onClick={() => {
+                          try {
+                            if (typeof fbq === 'function') {
+                              fbq('trackCustom', 'CTA80TypeClick', {
+                                content_name: '80type_cta_affiliate',
+                                content_category: personalityCode,
+                                full_type: typeName80,
+                                intent_level: careerIntent.id,
+                              });
+                            }
+                          } catch (e) {}
+                        }}
+                      >
+                        無料面談に申し込む
+                      </a>
+                    </>
+                  )}
                 </div>
-              </div>
-            ) : (
-              <div className="cta-section">
-                {/* 転職意向: 高（①②）→ 面談CTA */}
-                {(transferIntent === 1 || transferIntent === 2) && (
-                  <div className="cta-card glass-card-strong">
-                    <div className="cta-card-title">あなたの80タイプに合った<br/>キャリアをプロと一緒に見つけませんか？</div>
-                    <div className="cta-card-desc">
-                      診断結果をもとに、{typeName80}の強みを活かせる求人や<br/>
-                      キャリアプランをアドバイザーが無料でご提案します。
-                    </div>
-                    <a
-                      href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_interview_${personalityCode}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cta-btn cta-btn-interview"
-                      onClick={() => {
-                        try {
-                          if (typeof fbq === 'function') {
-                            fbq('trackCustom', 'CTA80TypeClick', {
-                              content_name: '80type_cta_interview',
-                              content_category: personalityCode,
-                              full_type: typeName80,
-                              intent_level: transferIntent,
-                            });
-                          }
-                        } catch (e) {}
-                      }}
-                    >
-                      <div className="cta-btn-shimmer" />
-                      <span style={{ position: 'relative', zIndex: 1 }}>無料キャリア面談に申し込む</span>
-                    </a>
-                    <div className="cta-note">※ 完全無料・オンライン対応・所要時間約30分</div>
-                  </div>
-                )}
+              )}
 
-                {/* 転職意向: 低（③④）→ アフィリエイトCTA or デフォルト */}
-                {(transferIntent === 3 || transferIntent === 4) && (
-                  <div className="cta-card glass-card-strong">
-                    {typeData && typeData.affiliateUrl ? (
-                      <>
-                        <div className="cta-card-title">{typeName80}におすすめのスキルアップ</div>
-                        <div className="cta-card-desc">
-                          今すぐ転職しなくても、あなたのタイプに合った<br/>
-                          スキルを身につけておくと将来の選択肢が広がります。
-                        </div>
-                        <a
-                          href={typeData.affiliateUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cta-btn cta-btn-affiliate"
-                          onClick={() => {
-                            try {
-                              if (typeof fbq === 'function') {
-                                fbq('trackCustom', 'CTA80TypeClick', {
-                                  content_name: '80type_cta_affiliate',
-                                  content_category: personalityCode,
-                                  full_type: typeName80,
-                                  intent_level: transferIntent,
-                                });
-                              }
-                            } catch (e) {}
-                          }}
-                        >
-                          <div className="cta-btn-shimmer" />
-                          <span style={{ position: 'relative', zIndex: 1 }}>おすすめを見てみる</span>
-                        </a>
-                      </>
-                    ) : (
-                      <>
-                        <div className="cta-card-title">将来のキャリアについて<br/>相談してみませんか？</div>
-                        <div className="cta-card-desc">
-                          今すぐでなくても大丈夫。あなたのタイプに合った<br/>
-                          キャリアの方向性を一緒に考えましょう。
-                        </div>
-                        <a
-                          href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_future_${personalityCode}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cta-btn cta-btn-interview"
-                          onClick={() => {
-                            try {
-                              if (typeof fbq === 'function') {
-                                fbq('trackCustom', 'CTA80TypeClick', {
-                                  content_name: '80type_cta_default',
-                                  content_category: personalityCode,
-                                  full_type: typeName80,
-                                  intent_level: transferIntent,
-                                });
-                              }
-                            } catch (e) {}
-                          }}
-                        >
-                          <div className="cta-btn-shimmer" />
-                          <span style={{ position: 'relative', zIndex: 1 }}>無料キャリア相談を予約する</span>
-                        </a>
-                        <div className="cta-note">※ 完全無料・オンライン対応</div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Phase 7: LINE登録 + シェア（転職意向回答後に表示） */}
-          <div className={`result-phase${phases[7] ? ' visible' : ''}`} style={{ width: '100%' }}>
-            {/* LINE登録セクション（全員に表示） */}
-            <div className="line-section">
-              <div className="line-card glass-card-strong">
-                <div className="line-card-title">LINE公式アカウント</div>
-                <div className="line-card-desc">
-                  友だち追加で診断結果の詳細レポートをお届け。<br/>
-                  あなたのタイプに合ったキャリア情報も配信中！
-                </div>
+              {/* ⑧ LINE登録 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '16px',
+                padding: '24px',
+                margin: '24px 0',
+                textAlign: 'center'
+              }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', marginBottom: '8px' }}>
+                  LINE公式アカウント
+                </h3>
+                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginBottom: '16px' }}>
+                  友だち追加で診断結果の詳細レポートをお届け
+                </p>
                 <a
                   href="https://lin.ee/placeholder"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="line-btn"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '14px 32px',
+                    background: '#06C755',
+                    color: '#fff',
+                    borderRadius: '28px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    textDecoration: 'none'
+                  }}
                   onClick={() => {
                     try {
                       if (typeof fbq === 'function') {
@@ -5042,60 +6550,29 @@
                   友だち追加する
                 </a>
               </div>
-            </div>
 
-            {/* シェアセクション */}
-            <div className="share-section">
-              <div className="share-title">診断結果をシェア</div>
-              <div className="share-buttons">
-                <button
-                  className="share-btn share-btn-line"
-                  onClick={() => {
-                    const text = `【80タイプ診断】私は「${typeName80}」でした！あなたも診断してみて`;
-                    const url = 'https://www.personal-file.jp/80type';
-                    const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
-                    window.open(lineUrl, '_blank');
-                    try {
-                      if (typeof fbq === 'function') {
-                        fbq('trackCustom', 'CTA80TypeClick', {
-                          content_name: '80type_share_line',
-                          full_type: typeName80,
-                        });
-                      }
-                    } catch (e) {}
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.39.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.096 14.395 24 12.458 24 10.304"/>
-                  </svg>
-                  LINE
-                </button>
-                <button
-                  className="share-btn share-btn-x"
-                  onClick={() => {
-                    const text = `【80タイプ診断】私は「${typeName80}」でした！\n57問で性格類型×行動類型＝80タイプを完全解析`;
-                    const url = 'https://www.personal-file.jp/80type';
-                    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-                    window.open(tweetUrl, '_blank');
-                    try {
-                      if (typeof fbq === 'function') {
-                        fbq('trackCustom', 'CTA80TypeClick', {
-                          content_name: '80type_share_x',
-                          full_type: typeName80,
-                        });
-                      }
-                    } catch (e) {}
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                  X (Twitter)
-                </button>
+              {/* ⑨ 全タイプ一覧グリッド */}
+              <TypeGrid currentType={personalityCode} />
+
+              {/* ブランド */}
+              <div style={{
+                textAlign: 'center',
+                padding: '40px 0 60px',
+                fontSize: '14px',
+                fontWeight: '700',
+                color: 'rgba(255,255,255,0.2)',
+                letterSpacing: '4px'
+              }}>
+                PERSONAL FILE
               </div>
             </div>
 
-            <div className="result-brand" style={{ marginTop: '40px' }}>PERSONAL FILE</div>
+            {/* スティッキーサイドバー（PC） */}
+            <StickySidebar
+              personalityCode={personalityCode}
+              behaviorType={behavioralType.name}
+              sections={sections}
+            />
           </div>
         </div>
       );
@@ -5106,14 +6583,20 @@
     // ===================================================================
 
     function App() {
-      const [phase, setPhase] = React.useState('start'); // start | quiz | loading | result
+      const [phase, setPhase] = React.useState('start'); // start | quiz | chapterTransition | loading | result
       const [qIndex, setQIndex] = React.useState(0);
       const [scores, setScores] = React.useState({ P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
       const [answerHistory, setAnswerHistory] = React.useState([]);
+      const [nextChapter, setNextChapter] = React.useState(null);
 
       const handleStart = () => {
         setPhase('quiz');
         window.scrollTo(0, 0);
+      };
+
+      // チャプター境界かどうか判定
+      const getChapterForQuestion = (idx) => {
+        return CHAPTERS.find(ch => idx >= ch.questionRange[0] && idx <= ch.questionRange[1]);
       };
 
       const handleAnswer = (value) => {
@@ -5139,7 +6622,18 @@
 
         // Advance
         if (qIndex + 1 < TOTAL_QUESTIONS) {
-          setQIndex(qIndex + 1);
+          const nextIdx = qIndex + 1;
+          const currentCh = getChapterForQuestion(qIndex);
+          const nextCh = getChapterForQuestion(nextIdx);
+
+          // チャプターが変わったらインタースティシャル表示
+          if (currentCh && nextCh && currentCh.id !== nextCh.id) {
+            setNextChapter(nextCh);
+            setQIndex(nextIdx);
+            setPhase('chapterTransition');
+          } else {
+            setQIndex(nextIdx);
+          }
           window.scrollTo(0, 0);
         } else {
           // All questions answered
@@ -5166,6 +6660,11 @@
         }
       };
 
+      const handleChapterTransitionComplete = () => {
+        setPhase('quiz');
+        setNextChapter(null);
+      };
+
       const handleLoadingComplete = () => {
         setPhase('result');
         window.scrollTo(0, 0);
@@ -5183,6 +6682,9 @@
               onBack={handleBack}
               answerHistory={answerHistory}
             />
+          )}
+          {phase === 'chapterTransition' && nextChapter && (
+            <ChapterTransition chapter={nextChapter} onComplete={handleChapterTransitionComplete} />
           )}
           {phase === 'loading' && (
             <LoadingScreen80 onComplete={handleLoadingComplete} />
