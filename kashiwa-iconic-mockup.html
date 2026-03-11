@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80タイプ診断 - 佐藤可士和風 UI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 
+         * 佐藤可士和氏の真髄である「極太のウェイト」「視認性の暴力」「システムゴシック」を表現するため、
+         * Noto Sans JP の最も太いウェイト（Black 900）を基本グラフィックの要素として扱う
+         */
+        @import url('https://fonts.googleapis.com/css2?family=Jost:wght@800;900&family=Noto+Sans+JP:wght@700;900&display=swap');
+        
+        :root {
+            /* 
+             * 色も迷わせない。純白、漆黒、そしてブランドを象徴する「究極の赤（あるいは鮮烈なピンク）」
+             * 今回はユニクロや楽天のような「アイコニックな赤」に少しピンクを混ぜたブランドカラーを想定
+             */
+            --kashiwa-red: #E60033; /* 日本の伝統色である「紅色」に近い、ソリッドで強い赤 */
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* 背景は純白。一切のグラデーションやノイズを許さない */
+            background-color: #FFFFFF;
+            color: #000000;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-jost {
+            font-family: 'Jost', sans-serif;
+        }
+
+        /* 
+         * 超・記号化されたレイアウト
+         * グラフィックデザイン（ポスター）のように、文字そのものを「図形」として配置する
+         */
+        .kashiwa-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 0;
+            /* 画面全体に引かれた一本の太い線（赤） */
+            border-top: 24px solid var(--kashiwa-red);
+        }
+
+
+
+        /* 
+         * ボタンすらも「四角」と「文字」の組み合わせに純化する。
+         * 影なし、グラデーションなし、角丸なし。
+         */
+        .btn-kashiwa {
+            background-color: var(--kashiwa-red);
+            color: #FFFFFF;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            text-align: center;
+            border-radius: 0; /* 角丸完全排除 */
+            transition: all 0s; /* アニメーションすら排除（Hover時に一瞬で反転） */
+            border: 4px solid var(--kashiwa-red);
+        }
+
+        .btn-kashiwa:hover {
+            background-color: #FFFFFF;
+            color: var(--kashiwa-red);
+        }
+
+        /* 情報のモジュール化（四角い枠で囲い、余白を均等に取る） */
+        .module-box {
+            border: 4px solid #000000;
+            padding: 2rem;
+        }
+
+        /* アクセントとしての黒帯 */
+        .black-bar {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-red-600 selection:text-white">
+    
+    <!-- トップの強力な赤い帯（これが最初のアイキャッチになる） -->
+    <div class="h-6 w-full bg-[#E60033]"></div>
+    
+    <!-- 全体のコンテナ (モバイルファーストだが、文字のデカさでレイアウトを作る) -->
+    <div class="w-full max-w-md mx-auto min-h-screen flex flex-col pt-12 pb-8 px-6">
+        
+        <!-- ヘッダー部分（ロゴを極限まで大きく） -->
+        <div class="mb-12 break-keep">
+            <!-- 日本語のタイトル（スマホでもはみ出さないギリギリを攻める） -->
+            <h1 class="font-black text-black text-[5rem] sm:text-[6rem] leading-[0.9] tracking-tighter">
+                80<span class="text-[4rem] sm:text-[5rem] tracking-tight">タイプ</span><br>
+                <span class="text-[#E60033] ml-1">診断</span>
+            </h1>
+        </div>
+
+        <!-- キャッチコピー（説明ではなく、メッセージ） -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-black leading-tight border-l-8 border-black pl-4">
+                自分を、<br>
+                デザインせよ。
+            </h2>
+            <p class="mt-6 text-[15px] font-bold leading-relaxed">
+                57の質問。<br>
+                3分間の分析。<br>
+                80パターンの本質。
+            </p>
+        </div>
+
+        <!-- 診断情報のモジュール（四角い枠） -->
+        <main class="module-box mb-8 bg-white relative">
+            <!-- 佐藤可士和デザイン特有の、枠の隅に配置されるタグ -->
+            <div class="absolute -top-3 left-4 bg-white px-2 font-jost font-black text-xl tracking-widest text-[#E60033]">
+                SYSTEM
+            </div>
+            
+            <div class="flex justify-between items-end mb-4 border-b-4 border-black pb-2 mt-2">
+                <span class="font-bold text-sm tracking-widest">精度</span>
+                <span class="font-jost font-black text-4xl leading-none">98.5%</span>
+            </div>
+            
+            <p class="font-bold text-sm leading-relaxed mb-8">
+                直感で答えろ。<br>
+                アルゴリズムが、君のすべてを言語化する。
+            </p>
+
+            <!-- CTAボタン（究極のベタ塗り四角） -->
+            <button class="btn-kashiwa w-full py-5 flex justify-center items-center">
+                <span>診断開始</span>
+            </button>
+        </main>
+
+        <!-- フッター（情報要素もブロックとして扱う） -->
+        <div class="mt-auto pt-8 border-t-8 border-black flex justify-between items-end">
+            <div>
+                <p class="font-bold text-[10px] tracking-widest mb-1">体験者数</p>
+                <p class="font-jost font-black text-3xl leading-none">100K+</p>
+            </div>
+            <div class="text-right">
+                <p class="font-bold text-[10px] tracking-widest bg-black text-white px-2 py-1 inline-block">
+                    無料 / 登録不要
+                </p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

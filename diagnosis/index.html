@@ -1306,8 +1306,10 @@ function ResultScreen({ scores, adRoute }) {
       />
 
       <div
+        className="pf-result-inner"
         style={{
           ...styles.inner,
+          maxWidth: "900px",
           paddingTop: "40px",
           paddingBottom: "40px",
           opacity: show ? 1 : 0,
@@ -1328,6 +1330,82 @@ function ResultScreen({ scores, adRoute }) {
             @keyframes fadeSlide {
               from { opacity: 0; transform: translateY(-8px); }
               to { opacity: 1; transform: translateY(0); }
+            }
+            /* ── PC Wide Layout ── */
+            @media (min-width: 768px) {
+              .pf-result-inner {
+                padding-left: 48px !important;
+                padding-right: 48px !important;
+              }
+              .pf-result-title {
+                font-size: 44px !important;
+              }
+              .pf-result-label {
+                font-size: 16px !important;
+              }
+              .pf-result-catchcopy {
+                font-size: 15px !important;
+              }
+              .pf-desc-box {
+                padding: 28px 32px !important;
+                font-size: 15px !important;
+                line-height: 2 !important;
+              }
+              .pf-traits-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+              }
+              .pf-traits-grid > div {
+                margin-bottom: 0 !important;
+              }
+              .pf-patterns-list {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+              }
+              .pf-hook-box {
+                padding: 36px 48px !important;
+              }
+              .pf-circles-row > div:not(span) {
+                width: 120px !important;
+                height: 120px !important;
+              }
+              .pf-16things-grid {
+                grid-template-columns: repeat(4, 1fr) !important;
+                max-width: 100% !important;
+              }
+              .pf-preview-details {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+              }
+              .pf-preview-details > div {
+                margin-bottom: 0 !important;
+              }
+              .pf-share-buttons {
+                gap: 16px !important;
+              }
+              .pf-share-buttons button {
+                padding: 14px 32px !important;
+                font-size: 14px !important;
+              }
+              .pf-cta-btn {
+                max-width: 600px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding: 22px 40px !important;
+                font-size: 18px !important;
+                border-radius: 20px !important;
+              }
+              .pf-score-matrix-wrap {
+                display: flex !important;
+                gap: 32px !important;
+                align-items: flex-start !important;
+              }
+              .pf-score-matrix-wrap > div {
+                flex: 1 !important;
+              }
             }
           `}</style>
 
@@ -1420,7 +1498,7 @@ function ResultScreen({ scores, adRoute }) {
           </div>
 
           {/* Type name */}
-          <h1 style={{
+          <h1 className="pf-result-title" style={{
             fontSize: "36px",
             fontWeight: 900,
             margin: "0 0 6px",
@@ -1435,12 +1513,12 @@ function ResultScreen({ scores, adRoute }) {
           {/* Type label with accent lines */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
             <div style={{ width: "20px", height: "1px", background: `${d.color}60` }} />
-            <p style={{ fontSize: "14px", color: d.color, fontWeight: 600, margin: 0, letterSpacing: "1px" }}>{d.label}</p>
+            <p className="pf-result-label" style={{ fontSize: "14px", color: d.color, fontWeight: 600, margin: 0, letterSpacing: "1px" }}>{d.label}</p>
             <div style={{ width: "20px", height: "1px", background: `${d.color}60` }} />
           </div>
 
           {/* Catchcopy */}
-          <p style={{
+          <p className="pf-result-catchcopy" style={{
             fontSize: "13px",
             color: "#999",
             fontWeight: 500,
@@ -1449,30 +1527,32 @@ function ResultScreen({ scores, adRoute }) {
           }}>{d.catchcopy}</p>
         </div>
 
-        {/* Score bar */}
-        <div
-          style={{
-            opacity: phase >= 1 ? 1 : 0,
-            transform: phase >= 1 ? "translateY(0)" : "translateY(15px)",
-            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
-          }}
-        >
-          <ScoreBar scores={scores} resultType={maxType} />
-        </div>
+        {/* Score bar & Matrix - side by side on PC */}
+        <div className="pf-score-matrix-wrap">
+          <div
+            style={{
+              opacity: phase >= 1 ? 1 : 0,
+              transform: phase >= 1 ? "translateY(0)" : "translateY(15px)",
+              transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+            }}
+          >
+            <ScoreBar scores={scores} resultType={maxType} />
+          </div>
 
-        {/* Matrix */}
-        <div
-          style={{
-            opacity: phase >= 1 ? 1 : 0,
-            transform: phase >= 1 ? "scale(1)" : "scale(0.8)",
-            transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
-          }}
-        >
-          <MatrixViz resultType={maxType} />
+          <div
+            style={{
+              opacity: phase >= 1 ? 1 : 0,
+              transform: phase >= 1 ? "scale(1)" : "scale(0.8)",
+              transition: "all 0.6s cubic-bezier(.4,0,.2,1)",
+            }}
+          >
+            <MatrixViz resultType={maxType} />
+          </div>
         </div>
 
         {/* Short description */}
         <div
+          className="pf-desc-box"
           style={{
             background: "rgba(255,255,255,0.04)",
             borderRadius: "16px",
@@ -1499,7 +1579,7 @@ function ResultScreen({ scores, adRoute }) {
           <div style={{ fontSize: "13px", fontWeight: 700, color: d.color, marginBottom: "12px", letterSpacing: "1px" }}>
             ◆ {d.name}の4つの傾向
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div className="pf-traits-grid" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {d.traits.map((trait, i) => (
               <div
                 key={i}
@@ -1546,7 +1626,7 @@ function ResultScreen({ scores, adRoute }) {
           <div style={{ fontSize: "13px", fontWeight: 700, color: "#C0C0C8", marginBottom: "14px" }}>
             💡 {d.name}あるある
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div className="pf-patterns-list" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {d.patterns.map((p, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                 <span style={{ color: d.color, fontSize: "14px", lineHeight: "22px", flexShrink: 0 }}>✓</span>
@@ -1565,6 +1645,7 @@ function ResultScreen({ scores, adRoute }) {
           }}
         >
           <div
+            className="pf-hook-box"
             style={{
               background: `linear-gradient(135deg, ${d.darkBg}, #0A0A12)`,
               border: `1px solid ${d.color}30`,
@@ -1606,7 +1687,7 @@ function ResultScreen({ scores, adRoute }) {
               </p>
 
               {/* 3 circles diagram */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "16px" }}>
+              <div className="pf-circles-row" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "16px" }}>
                 {[
                   { label: "性格類型", num: "4", desc: "いまココ！", isActive: true },
                   { label: "補助類型", num: "4", desc: "未解析", isActive: false },
@@ -1942,46 +2023,49 @@ function ResultScreen({ scores, adRoute }) {
                 </div>
               </div>
 
-              {/* 3. Jobs (blurred) */}
-              <div style={{
-                background: "rgba(255,255,255,0.03)",
-                borderRadius: "12px",
-                padding: "16px",
-                marginBottom: "12px",
-              }}>
-                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 8px", letterSpacing: "1px" }}>
-                  ✦ あなたの適職
-                </p>
-                <p style={{
-                  fontSize: "13px",
-                  color: "#999",
-                  margin: 0,
-                  lineHeight: 1.7,
-                  filter: "blur(5px)",
-                  userSelect: "none",
+              {/* Preview detail cards */}
+              <div className="pf-preview-details">
+                {/* 3. Jobs (blurred) */}
+                <div style={{
+                  background: "rgba(255,255,255,0.03)",
+                  borderRadius: "12px",
+                  padding: "16px",
+                  marginBottom: "12px",
                 }}>
-                  {bucket.previews[bucketAnswer].jobs}
-                </p>
-              </div>
+                  <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 8px", letterSpacing: "1px" }}>
+                    ✦ あなたの適職
+                  </p>
+                  <p style={{
+                    fontSize: "13px",
+                    color: "#999",
+                    margin: 0,
+                    lineHeight: 1.7,
+                    filter: "blur(5px)",
+                    userSelect: "none",
+                  }}>
+                    {bucket.previews[bucketAnswer].jobs}
+                  </p>
+                </div>
 
-              {/* 4. Compatibility (blurred) */}
-              <div style={{
-                background: "rgba(255,255,255,0.03)",
-                borderRadius: "12px",
-                padding: "16px",
-                marginBottom: "12px",
-              }}>
-                <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 10px", letterSpacing: "1px" }}>
-                  ✦ 職場との相性
-                </p>
-                <div style={{ filter: "blur(5px)", userSelect: "none" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "12px", color: "#06D6A0", flexShrink: 0 }}>○</span>
-                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.good}</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-                    <span style={{ fontSize: "12px", color: "#FF4466", flexShrink: 0 }}>×</span>
-                    <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.bad}</span>
+                {/* 4. Compatibility (blurred) */}
+                <div style={{
+                  background: "rgba(255,255,255,0.03)",
+                  borderRadius: "12px",
+                  padding: "16px",
+                  marginBottom: "12px",
+                }}>
+                  <p style={{ fontSize: "11px", color: "#666", fontWeight: 600, margin: "0 0 10px", letterSpacing: "1px" }}>
+                    ✦ 職場との相性
+                  </p>
+                  <div style={{ filter: "blur(5px)", userSelect: "none" }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                      <span style={{ fontSize: "12px", color: "#06D6A0", flexShrink: 0 }}>○</span>
+                      <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.good}</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                      <span style={{ fontSize: "12px", color: "#FF4466", flexShrink: 0 }}>×</span>
+                      <span style={{ fontSize: "13px", color: "#999", lineHeight: 1.5 }}>{bucket.previews[bucketAnswer].compatibility.bad}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2043,6 +2127,7 @@ function ResultScreen({ scores, adRoute }) {
             </p>
 
             <a
+              className="pf-cta-btn"
               href={`https://www.personal-file.jp/?from=${adRoute ? adRoute + '_' : ''}lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -2081,6 +2166,7 @@ function ResultScreen({ scores, adRoute }) {
 
             {/* Share */}
             <div
+              className="pf-share-buttons"
               style={{
                 display: "flex",
                 gap: "10px",
@@ -2315,7 +2401,7 @@ function ResultScreen({ scores, adRoute }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>PERSONALITY & BEHAVIOR</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
+              <div className="pf-16things-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", margin: "0 auto" }}>
                 {[
                   { num: "01", label: "基本タイプ", icon: "◉" },
                   { num: "02", label: "性格傾向", icon: "◈" },
@@ -2380,7 +2466,7 @@ function ResultScreen({ scores, adRoute }) {
                   <div style={{ fontSize: "9px", color: "#555", fontWeight: 600, letterSpacing: "1px" }}>COMPATIBILITY</div>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "400px", margin: "0 auto" }}>
+              <div className="pf-16things-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", margin: "0 auto" }}>
                 {[
                   { num: "09", label: "相性の良い社風", good: true },
                   { num: "10", label: "相性の悪い社風", good: false },
@@ -2422,6 +2508,7 @@ function ResultScreen({ scores, adRoute }) {
 
             {/* Bottom CTA repeat */}
             <a
+              className="pf-cta-btn"
               href={`https://www.personal-file.jp/?from=${adRoute ? adRoute + '_' : ''}lightdiag_${maxType}`}
               target="_blank"
               rel="noopener noreferrer"
