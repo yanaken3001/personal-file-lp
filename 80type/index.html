@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>80タイプ完全診断 | PERSONAL FILE</title>
+  <title>80タイプ診断 | PERSONAL FILE</title>
   <meta name="description" content="57問であなたの80タイプを完全解析。性格4軸×行動5軸から導き出される、あなただけのパーソナリティタイプを発見しよう。" />
   <meta name="robots" content="index, follow" />
 
   <!-- OGP -->
-  <meta property="og:title" content="80タイプ完全診断 | PERSONAL FILE" />
+  <meta property="og:title" content="80タイプ診断 | PERSONAL FILE" />
   <meta property="og:description" content="57問であなたの80タイプを完全解析。性格4軸×行動5軸から導き出される、あなただけのパーソナリティタイプを発見しよう。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.personal-file.jp/80type" />
@@ -16,7 +16,7 @@
   <meta property="og:site_name" content="PERSONAL FILE" />
   <meta property="og:locale" content="ja_JP" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="80タイプ完全診断 | PERSONAL FILE" />
+  <meta name="twitter:title" content="80タイプ診断 | PERSONAL FILE" />
   <meta name="twitter:description" content="57問であなたの80タイプを完全解析。" />
   <meta name="twitter:image" content="https://www.personal-file.jp/80type/ogp.png" />
 
@@ -695,30 +695,25 @@
       flex: 1;
     }
 
-    /* ===== BACK BUTTON ===== */
-    .back-button {
-      position: absolute;
-      top: 72px;
-      left: 16px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--text-muted);
-      font-size: 18px;
+    /* ===== BACK BUTTON (text link style) ===== */
+    .back-text-btn {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
+      padding: 16px 0 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
-      z-index: 5;
+      gap: 4px;
+      width: 100%;
+      transition: color 0.2s ease;
     }
 
-    .back-button:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      color: var(--text-secondary);
-      background: rgba(255, 255, 255, 0.06);
+    .back-text-btn:hover {
+      color: #999;
     }
 
     /* ===== LOADING SCREEN ===== */
@@ -933,30 +928,52 @@
     }
 
     .result-scores-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
     .result-score-item {
       display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-score-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .result-score-label {
+      display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 10px;
     }
 
     .result-score-letter {
       font-family: 'Sora', sans-serif;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 700;
-      width: 24px;
+      width: 26px;
+    }
+
+    .result-score-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .result-score-value {
+      font-family: 'Sora', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
     }
 
     .result-score-bar-track {
-      flex: 1;
-      height: 4px;
+      width: 100%;
+      height: 6px;
       background: rgba(255, 255, 255, 0.06);
       border-radius: 100px;
       overflow: hidden;
@@ -966,14 +983,6 @@
       height: 100%;
       border-radius: 100px;
       transition: width 1s ease;
-    }
-
-    .result-score-value {
-      font-family: 'Sora', sans-serif;
-      font-size: 12px;
-      color: var(--text-muted);
-      width: 24px;
-      text-align: right;
     }
 
     .result-description {
@@ -1449,10 +1458,7 @@
         gap: 4px;
       }
       .result-score-letter {
-        font-size: 11px;
-      }
-      .result-scores-grid {
-        grid-template-columns: 1fr;
+        font-size: 15px;
       }
     }
 
@@ -4463,7 +4469,7 @@
 
           {/* Phase 2: Title + Subtitle */}
           <div className={`start-phase${phases[1] ? ' visible' : ''}`} style={{ animationDelay: '0.1s' }}>
-            <h1 className="start-title">80タイプ完全診断</h1>
+            <h1 className="start-title">80タイプ診断</h1>
             <p className="start-subtitle">57問であなたの80タイプを完全解析</p>
           </div>
 
@@ -4501,30 +4507,26 @@
     // --- QuestionScreen80 ---
     function QuestionScreen80({ qIndex, onAnswer, onBack, answerHistory }) {
       const question = ORDERED_QUESTIONS[qIndex];
-      const currentAnswer = answerHistory[qIndex] || null;
       const axisColor = AXIS_COLORS[question.axis] || 'color-P';
       const encourageMsg = ENCOURAGE_MESSAGES[qIndex + 1] || null;
       const [animKey, setAnimKey] = React.useState(qIndex);
+      const [localSelected, setLocalSelected] = React.useState(null);
 
       React.useEffect(() => {
         setAnimKey(qIndex);
+        setLocalSelected(answerHistory[qIndex] || null);
       }, [qIndex]);
 
       const handleSelect = (val) => {
+        setLocalSelected(val);
         setTimeout(() => {
           onAnswer(val);
-        }, 300);
+        }, 400);
       };
 
       return (
         <div className="question-screen">
           <ProgressBar80 current={qIndex + 1} total={TOTAL_QUESTIONS} />
-
-          {qIndex > 0 && (
-            <button className="back-button" onClick={onBack} aria-label="前の質問に戻る">
-              &#8249;
-            </button>
-          )}
 
           <div className="question-content" key={animKey}>
             {encourageMsg && (
@@ -4544,10 +4546,17 @@
 
             <div className="question-text">{question.text}</div>
             <LikertScale
-              selected={currentAnswer}
+              selected={localSelected}
               onSelect={handleSelect}
               axisColor={axisColor}
             />
+
+            {/* 前の質問に戻る */}
+            {qIndex > 0 && (
+              <button className="back-text-btn" onClick={onBack}>
+                <span style={{ fontSize: '11px' }}>&larr;</span> 前の質問に戻る
+              </button>
+            )}
           </div>
         </div>
       );
@@ -4631,17 +4640,17 @@
       }, []);
 
       const personalityAxes = [
-        { code: 'P', label: 'P軸（行動・感覚・楽観）', color: 'var(--type-p)', max: 40 },
-        { code: 'A', label: 'A軸（分析・慎重・知識）', color: 'var(--type-a)', max: 40 },
-        { code: 'I', label: 'I軸（協調・受容・チーム）', color: 'var(--type-i)', max: 40 },
-        { code: 'D', label: 'D軸（決断・独立・挑戦）', color: 'var(--type-d)', max: 40 },
+        { code: 'P', desc: '行動・感覚・楽観', color: 'var(--type-p)', max: 40 },
+        { code: 'A', desc: '分析・慎重・知識', color: 'var(--type-a)', max: 40 },
+        { code: 'I', desc: '協調・受容・チーム', color: 'var(--type-i)', max: 40 },
+        { code: 'D', desc: '決断・独立・挑戦', color: 'var(--type-d)', max: 40 },
       ];
       const behavioralAxes = [
-        { code: 'K', label: '達成型', color: 'var(--type-p)', max: 25 },
-        { code: 'H', label: '平和型', color: 'var(--type-i)', max: 25 },
-        { code: 'J', label: '情報型', color: 'var(--type-a)', max: 25 },
-        { code: 'G', label: '外見型', color: 'var(--neon-magenta)', max: 25 },
-        { code: 'E', label: '効率型', color: 'var(--type-d)', max: 25 },
+        { code: 'K', desc: '達成型', color: 'var(--type-p)', max: 25 },
+        { code: 'H', desc: '平和型', color: 'var(--type-i)', max: 25 },
+        { code: 'J', desc: '情報型', color: 'var(--type-a)', max: 25 },
+        { code: 'G', desc: '外見型', color: 'var(--neon-magenta)', max: 25 },
+        { code: 'E', desc: '効率型', color: 'var(--type-d)', max: 25 },
       ];
 
       // 作業/社風/上司/部下/働き方 の見出しペア
@@ -4705,11 +4714,16 @@
                   const pct = Math.round((scores[ax.code] / ax.max) * 100);
                   return (
                     <div className="result-score-item" key={ax.code}>
-                      <span className="result-score-letter" style={{ color: ax.color }}>{ax.label}</span>
+                      <div className="result-score-top">
+                        <div className="result-score-label">
+                          <span className="result-score-letter" style={{ color: ax.color }}>{ax.code}</span>
+                          <span className="result-score-desc">{ax.desc}</span>
+                        </div>
+                        <span className="result-score-value" style={{ color: ax.color }}>{pct}%</span>
+                      </div>
                       <div className="result-score-bar-track">
                         <div className="result-score-bar-fill" style={{ width: pct + '%', background: ax.color }} />
                       </div>
-                      <span className="result-score-value">{pct}%</span>
                     </div>
                   );
                 })}
@@ -4724,17 +4738,22 @@
               <div className="result-behavioral" style={{ marginBottom: '16px' }}>
                 <div className="result-behavioral-badge">{behavioralType.name}</div>
               </div>
-              <div className="result-scores-grid" style={{ gridTemplateColumns: '1fr' }}>
+              <div className="result-scores-grid">
                 {behavioralAxes.map(ax => {
                   const pct = Math.round((scores[ax.code] / ax.max) * 100);
                   const isWinner = ax.code === behavioralType.code;
                   return (
-                    <div className="result-score-item" key={ax.code} style={isWinner ? { background: 'rgba(255,255,255,0.04)', borderRadius: '8px', padding: '6px 8px' } : {}}>
-                      <span className="result-score-letter" style={{ color: ax.color, fontWeight: isWinner ? 700 : 400 }}>{ax.label}</span>
-                      <div className="result-score-bar-track">
-                        <div className="result-score-bar-fill" style={{ width: pct + '%', background: ax.color, opacity: isWinner ? 1 : 0.5 }} />
+                    <div className="result-score-item" key={ax.code} style={isWinner ? { background: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '10px 14px' } : {}}>
+                      <div className="result-score-top">
+                        <div className="result-score-label">
+                          <span className="result-score-letter" style={{ color: ax.color, opacity: isWinner ? 1 : 0.6 }}>{ax.code}</span>
+                          <span className="result-score-desc" style={{ opacity: isWinner ? 1 : 0.6 }}>{ax.desc}</span>
+                        </div>
+                        <span className="result-score-value" style={{ color: isWinner ? ax.color : 'var(--text-muted)' }}>{pct}%</span>
                       </div>
-                      <span className="result-score-value">{pct}%</span>
+                      <div className="result-score-bar-track">
+                        <div className="result-score-bar-fill" style={{ width: pct + '%', background: ax.color, opacity: isWinner ? 1 : 0.4 }} />
+                      </div>
                     </div>
                   );
                 })}
@@ -5032,7 +5051,7 @@
                 <button
                   className="share-btn share-btn-line"
                   onClick={() => {
-                    const text = `【80タイプ完全診断】私は「${typeName80}」でした！あなたも診断してみて`;
+                    const text = `【80タイプ診断】私は「${typeName80}」でした！あなたも診断してみて`;
                     const url = 'https://www.personal-file.jp/80type';
                     const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
                     window.open(lineUrl, '_blank');
@@ -5054,7 +5073,7 @@
                 <button
                   className="share-btn share-btn-x"
                   onClick={() => {
-                    const text = `【80タイプ完全診断】私は「${typeName80}」でした！\n57問で性格類型×行動類型＝80タイプを完全解析`;
+                    const text = `【80タイプ診断】私は「${typeName80}」でした！\n57問で性格類型×行動類型＝80タイプを完全解析`;
                     const url = 'https://www.personal-file.jp/80type';
                     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
                     window.open(tweetUrl, '_blank');
