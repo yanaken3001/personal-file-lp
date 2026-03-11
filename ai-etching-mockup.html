@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80タイプ診断 - AIエッチング UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        
+        :root {
+            /* 淡く発光するAI的なカラーパレット */
+            --ai-core: #f8fafc;
+            --ai-accent-1: #6366f1; /* 柔らかいインディゴ */
+            --ai-accent-2: #ec4899; /* わずかなピンク */
+            --ai-accent-3: #14b8a6; /* ティール（青緑） */
+        }
+
+        body {
+            /* 現代的で丸みのある幾何学フォントOutfitを採用 */
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0f111a; /* 真っ黒ではなく、深淵なミッドナイトブルー */
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* 
+         * バックグラウンドオーラ (AIのアスモフィア)
+         * 画面全体にぼんやりと知的な光が漂うような表現
+         */
+        .aura-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(20, 184, 166, 0.12), transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.1), transparent 50%);
+            z-index: -1;
+            filter: blur(60px);
+            animation: breathe 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* 微細なノイズテクスチャ（質感を高める） */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 50;
+            mix-blend-mode: overlay;
+        }
+
+        /* 
+         * Glass & Etching (AIエッチング) カード
+         * すりガラスの中に微細な光の線（エッチング）が走っているような表現
+         */
+        .glass-etching {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            /* 上部と左部に微細な光のライン */
+            border-top: 1px solid rgba(255,255,255,0.15);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1),
+                inset 0 0 20px rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* カード内部を走るAIの思考線のような光 */
+        .glass-etching::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transform: skewX(-20deg);
+            animation: sweep 6s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            20%, 100% { left: 200%; }
+        }
+
+        /* 流れるようなグラデーションテキスト */
+        .fluid-text {
+            background: linear-gradient(to right, #ffffff, #a5b4fc, #5eead4, #ffffff);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: fluid 8s linear infinite;
+        }
+
+        @keyframes fluid {
+            to { background-position: 200% center; }
+        }
+
+        /* 美しいボタンプライマリー */
+        .btn-ai {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 999px; /* 完全な丸角でモダンに */
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-ai::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, var(--ai-accent-1), var(--ai-accent-3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-ai:hover::before {
+            opacity: 1;
+        }
+
+        .btn-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* AIスキャンリングのアニメーション */
+        .scan-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            border-top-color: rgba(99, 102, 241, 0.8);
+            border-right-color: rgba(20, 184, 166, 0.8);
+            animation: spin 3s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-indigo-500/30 selection:text-white">
+    <!-- 背景オーラとノイズ -->
+    <div class="aura-bg"></div>
+    <div class="noise-overlay"></div>
+    
+    <!-- 全体のコンテナ -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col justify-center px-6 py-12 relative z-10">
+        
+        <!-- ヘッダー部分 -->
+        <div class="mb-10 text-center">
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                <div class="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(20,184,166,0.8)] animate-pulse"></div>
+                <span class="font-outfit text-[10px] font-semibold tracking-[0.2em] text-gray-300 uppercase">AI Neural Engine Active</span>
+            </div>
+            
+            <h1 class="text-[2.5rem] leading-tight font-outfit font-black mb-3 tracking-tight flex items-baseline justify-center gap-2">
+                <span class="text-white drop-shadow-md">80タイプ</span>
+                <span class="fluid-text text-3xl">診断</span>
+            </h1>
+            <p class="text-[14px] font-normal text-gray-400 mt-4 leading-relaxed">
+                人間には見えないあなたの「層」を、<br>
+                アルゴリズムが美しく解き明かす。
+            </p>
+        </div>
+
+        <!-- 診断カード (AI エッチング) -->
+        <main class="glass-etching p-8 mb-10">
+            
+            <div class="relative z-10 flex flex-col items-center">
+                
+                <!-- AIのコア/瞳を模したアイコン -->
+                <div class="relative w-20 h-20 mb-8 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl"></div>
+                    <div class="scan-ring"></div>
+                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full backdrop-blur-md flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-400 to-teal-300 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    </div>
+                </div>
+                
+                <h2 class="text-[22px] leading-snug font-bold mb-4 text-white tracking-wide text-center">
+                    本質へのダイブを開始。
+                </h2>
+                
+                <p class="text-[13px] text-gray-400 font-normal mb-8 leading-relaxed text-center">
+                    57のアセスメントから、<br>
+                    あなただけのパーソナリティ・アーキテクチャを生成。
+                </p>
+                
+                <!-- プログレス／精度表示（ミニマル・線的） -->
+                <div class="w-full mb-8">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="font-outfit text-[10px] uppercase tracking-widest text-gray-500">Analysis Precision</span>
+                        <span class="font-outfit text-lg font-light text-white">98.5<span class="text-xs text-gray-500 ml-0.5">%</span></span>
+                    </div>
+                    <div class="w-full bg-white/5 rounded-full h-1 overflow-hidden">
+                        <div class="h-full w-[98.5%] bg-gradient-to-r from-indigo-500 via-teal-400 to-white relative">
+                            <div class="absolute right-0 top-0 bottom-0 w-4 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTAボタン -->
+                <button class="btn-ai w-full py-4 flex justify-center items-center gap-3 group">
+                    <span class="btn-content font-outfit font-semibold text-[15px] tracking-wide">Start Diagnosis Session</span>
+                    <svg class="w-4 h-4 btn-content transform group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+            
+        </main>
+
+        <!-- メトリクス（ミニマル） -->
+        <div class="flex justify-between items-center px-4">
+            <div class="text-left">
+                <p class="font-outfit text-[9px] uppercase tracking-widest text-gray-500 mb-1">Time Req.</p>
+                <p class="font-outfit text-[16px] text-gray-200 font-light">3 Mins</p>
+            </div>
+            <div class="text-right">
+                <p class="font-outfit text-[9px] uppercase tracking-widest text-gray-500 mb-1">Generated</p>
+                <p class="font-outfit text-[16px] text-gray-200 font-light">100k+ Profiles</p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
