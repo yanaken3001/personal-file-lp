@@ -23,10 +23,10 @@
   <!-- Favicon -->
   <link rel="icon" href="/80type/favicon.svg" type="image/svg+xml" />
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts (Holographic theme: Serif + Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <!-- Meta Pixel -->
   <script>
@@ -63,8 +63,8 @@
 
     body {
       font-family: 'Noto Sans JP', 'Sora', sans-serif;
-      background: #08080F;
-      color: #EAEAEA;
+      background: #FAF5F0;
+      color: #2A2A2A;
       min-height: 100vh;
       min-height: 100dvh;
       overflow-x: hidden;
@@ -86,33 +86,36 @@
       position: relative;
     }
 
-    /* ===== NEON COLORS ===== */
+    /* ===== HOLOGRAPHIC COLORS ===== */
     :root {
-      --neon-cyan: #00F5FF;
-      --neon-magenta: #FF00FF;
-      --neon-violet: #7B61FF;
-      --type-p: #FF2D55;
-      --type-a: #4361EE;
-      --type-i: #FFBE0B;
-      --type-d: #06D6A0;
-      --bg-deep: #08080F;
-      --bg-surface: #0C0C18;
-      --bg-card: rgba(255, 255, 255, 0.04);
-      --bg-card-hover: rgba(255, 255, 255, 0.08);
-      --border-glass: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(255, 255, 255, 0.12);
-      --text-primary: #FFFFFF;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --text-muted: rgba(255, 255, 255, 0.4);
+      --accent: #E8622B;
+      --accent-light: #F4845F;
+      --accent-bg: rgba(232, 98, 43, 0.08);
+      --neon-cyan: #E8622B;
+      --neon-magenta: #E8622B;
+      --neon-violet: #F4845F;
+      --type-p: #E8622B;
+      --type-a: #5B7FEE;
+      --type-i: #E8A832;
+      --type-d: #3CBB8A;
+      --bg-deep: #FAF5F0;
+      --bg-surface: #FFF8F3;
+      --bg-card: rgba(255, 255, 255, 0.6);
+      --bg-card-hover: rgba(255, 255, 255, 0.8);
+      --border-glass: rgba(255, 255, 255, 0.5);
+      --border-glow: rgba(255, 255, 255, 0.7);
+      --text-primary: #1A1A2E;
+      --text-secondary: rgba(42, 42, 42, 0.7);
+      --text-muted: rgba(42, 42, 42, 0.4);
     }
 
     /* ===== ANIMATIONS ===== */
     @keyframes neonPulse {
       0%, 100% {
-        box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px rgba(0, 245, 255, 0.3);
+        box-shadow: 0 0 5px var(--accent), 0 0 10px rgba(232, 98, 43, 0.2);
       }
       50% {
-        box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0, 245, 255, 0.5), 0 0 30px rgba(0, 245, 255, 0.2);
+        box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(232, 98, 43, 0.3), 0 0 30px rgba(232, 98, 43, 0.1);
       }
     }
 
@@ -213,21 +216,23 @@
       }
     }
 
-    /* ===== GLASSMORPHISM ===== */
+    /* ===== GLASSMORPHISM (Light) ===== */
     .glass-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-glass);
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
     }
 
     .glass-card-strong {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border-glow);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
     }
 
     /* ===== PARTICLES ===== */
@@ -249,7 +254,7 @@
       pointer-events: none;
     }
 
-    /* ===== GRADIENT MESH BG ===== */
+    /* ===== HOLOGRAPHIC GRADIENT BG ===== */
     .gradient-mesh {
       position: fixed;
       top: 0;
@@ -259,10 +264,16 @@
       z-index: 0;
       pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(0, 245, 255, 0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(123, 97, 255, 0.05) 0%, transparent 70%),
-        radial-gradient(ellipse 70% 40% at 50% 80%, rgba(255, 0, 255, 0.04) 0%, transparent 70%),
-        linear-gradient(180deg, #08080F 0%, #0C0C18 50%, #08080F 100%);
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 70% at 90% 10%, rgba(173, 216, 255, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 90%, rgba(255, 218, 185, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 70% 60%, rgba(200, 180, 255, 0.2) 0%, transparent 60%),
+        linear-gradient(160deg, #FFF5EE 0%, #FDF0F5 25%, #F0F4FF 50%, #FFF8F0 75%, #F8F0FF 100%);
+      animation: holoShift 20s ease-in-out infinite alternate;
+    }
+    @keyframes holoShift {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(15deg); }
     }
 
     /* ===== START SCREEN ===== */
@@ -299,16 +310,16 @@
     }
 
     .hero-80-text {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Playfair Display', serif;
       font-size: 56px;
       font-weight: 800;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet), var(--neon-magenta));
+      background: linear-gradient(135deg, var(--accent), var(--neon-violet), var(--neon-magenta));
       background-size: 200% 200%;
       animation: gradientShift 4s ease infinite;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.4));
+      filter: drop-shadow(0 2px 8px rgba(232, 98, 43, 0.2));
       line-height: 1;
     }
 
@@ -327,15 +338,12 @@
     }
 
     .start-title {
-      font-family: 'Sora', 'Noto Sans JP', sans-serif;
+      font-family: 'Playfair Display', 'Noto Sans JP', serif;
       font-size: 32px;
       font-weight: 800;
       line-height: 1.3;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 50%, var(--neon-magenta) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--text-primary);
       letter-spacing: -0.02em;
     }
 
@@ -360,17 +368,18 @@
       align-items: center;
       gap: 6px;
       padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(0, 245, 255, 0.2);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       border-radius: 100px;
       font-size: 13px;
       color: var(--text-secondary);
       font-weight: 500;
-      transition: border-color 0.3s;
+      transition: all 0.3s;
+      backdrop-filter: blur(12px);
     }
 
     .info-badge:hover {
-      border-color: rgba(0, 245, 255, 0.5);
+      background: rgba(255, 255, 255, 0.7);
     }
 
     .info-badge-icon {
@@ -384,10 +393,10 @@
       width: 100%;
       max-width: 400px;
       padding: 18px 32px;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+      background: var(--accent);
       border: none;
-      border-radius: 16px;
-      color: #08080F;
+      border-radius: 60px;
+      color: #fff;
       font-family: 'Noto Sans JP', sans-serif;
       font-size: 17px;
       font-weight: 700;
@@ -395,7 +404,7 @@
       position: relative;
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 0 20px rgba(0, 245, 255, 0.3), 0 0 40px rgba(123, 97, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(232, 98, 43, 0.3);
       letter-spacing: 0.02em;
     }
 
@@ -406,13 +415,13 @@
       left: -200%;
       width: 200%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
       animation: shimmer 3s ease-in-out infinite;
     }
 
     .cta-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(0, 245, 255, 0.5), 0 0 60px rgba(123, 97, 255, 0.3);
+      box-shadow: 0 6px 28px rgba(232, 98, 43, 0.4);
     }
 
     .cta-button:active {
@@ -430,7 +439,7 @@
     }
 
     .social-proof-count {
-      color: var(--neon-cyan);
+      color: var(--accent);
       font-family: 'Sora', sans-serif;
       font-weight: 600;
     }
@@ -451,9 +460,9 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(8, 8, 15, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 248, 243, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .progress-info {
@@ -467,7 +476,7 @@
       font-family: 'Sora', sans-serif;
       font-size: 13px;
       font-weight: 600;
-      color: var(--neon-cyan);
+      color: var(--accent);
     }
 
     .progress-percentage {
@@ -479,17 +488,16 @@
     .progress-track {
       width: 100%;
       height: 4px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.06);
       border-radius: 100px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet), var(--neon-magenta));
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
       border-radius: 100px;
       transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      box-shadow: 0 0 8px rgba(0, 245, 255, 0.4);
     }
 
     /* ===== QUESTION SCREEN ===== */
@@ -513,14 +521,13 @@
 
     .question-encourage {
       font-size: 13px;
-      color: var(--neon-cyan);
+      color: var(--accent);
       margin-bottom: 16px;
       font-weight: 600;
       padding: 8px 20px;
-      background: rgba(0, 245, 255, 0.06);
-      border: 1px solid rgba(0, 245, 255, 0.15);
+      background: var(--accent-bg);
+      border: 1px solid rgba(232, 98, 43, 0.15);
       border-radius: 100px;
-      animation: glowFade 2s ease-in-out infinite;
     }
 
     /* --- Q Badge (scanner-style icon) --- */
@@ -538,31 +545,31 @@
     }
     .q-badge-corner.tl {
       top: 0; left: 0;
-      border-top: 2px solid var(--neon-magenta);
-      border-left: 2px solid var(--neon-magenta);
+      border-top: 2px solid var(--accent-light);
+      border-left: 2px solid var(--accent-light);
       border-radius: 4px 0 0 0;
-      opacity: 0.6;
+      opacity: 0.4;
     }
     .q-badge-corner.tr {
       top: 0; right: 0;
       border-top: 2px solid var(--neon-violet);
       border-right: 2px solid var(--neon-violet);
       border-radius: 0 4px 0 0;
-      opacity: 0.5;
+      opacity: 0.3;
     }
     .q-badge-corner.bl {
       bottom: 0; left: 0;
       border-bottom: 2px solid var(--neon-violet);
       border-left: 2px solid var(--neon-violet);
       border-radius: 0 0 0 4px;
-      opacity: 0.5;
+      opacity: 0.3;
     }
     .q-badge-corner.br {
       bottom: 0; right: 0;
-      border-bottom: 2px solid var(--neon-magenta);
-      border-right: 2px solid var(--neon-magenta);
+      border-bottom: 2px solid var(--accent-light);
+      border-right: 2px solid var(--accent-light);
       border-radius: 0 0 4px 0;
-      opacity: 0.6;
+      opacity: 0.4;
     }
 
     .q-badge-orb {
@@ -573,11 +580,11 @@
       width: 54px;
       height: 54px;
       border-radius: 16px;
-      background: linear-gradient(135deg, var(--neon-magenta), var(--neon-violet));
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 28px rgba(255, 0, 255, 0.2), 0 0 56px rgba(123, 97, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(232, 98, 43, 0.25);
     }
 
     .q-badge-text {
@@ -590,7 +597,8 @@
     }
 
     .question-text {
-      font-size: 20px;
+      font-family: 'Playfair Display', 'Noto Sans JP', serif;
+      font-size: 22px;
       font-weight: 700;
       line-height: 1.7;
       color: var(--text-primary);
@@ -1377,15 +1385,15 @@
       justify-content: center;
       gap: 6px;
       padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       font-size: 13px;
       font-weight: 600;
-      color: #fff;
+      color: #1A1A2E;
       text-decoration: none;
       cursor: pointer;
       transition: all 0.25s ease;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.5);
     }
 
     .share-btn-line {
@@ -4522,7 +4530,7 @@
     function Particles({ count = 18 }) {
       const particles = React.useMemo(() => {
         const arr = [];
-        const colors = ['rgba(0,245,255,0.3)', 'rgba(123,97,255,0.25)', 'rgba(255,0,255,0.2)', 'rgba(255,255,255,0.1)'];
+        const colors = ['rgba(232,98,43,0.2)', 'rgba(244,132,95,0.2)', 'rgba(255,182,193,0.25)', 'rgba(173,216,255,0.2)'];
         for (let i = 0; i < count; i++) {
           arr.push({
             id: i,
@@ -4594,10 +4602,11 @@
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          background: 'rgba(13,17,23,0.95)',
+          background: 'rgba(255, 252, 248, 0.9)',
           backdropFilter: 'blur(20px)',
-          padding: '16px 20px',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          WebkitBackdropFilter: 'blur(20px)',
+          padding: '16px 24px',
+          borderBottom: '1px solid rgba(0,0,0,0.06)',
           display: 'flex',
           alignItems: 'center',
           gap: '12px'
@@ -4605,23 +4614,23 @@
           {/* メインプログレスバー */}
           <div style={{
             flex: 1,
-            height: '4px',
-            background: 'rgba(255,255,255,0.08)',
-            borderRadius: '2px',
+            height: '5px',
+            background: 'rgba(0,0,0,0.06)',
+            borderRadius: '3px',
             overflow: 'hidden'
           }}>
             <div style={{
               height: '100%',
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #00D2FF, #7B68EE)',
-              borderRadius: '2px',
+              background: 'linear-gradient(90deg, #E8622B, #F4845F)',
+              borderRadius: '3px',
               transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
             }} />
           </div>
           <span style={{
             fontSize: '13px',
             fontWeight: '600',
-            color: 'rgba(255,255,255,0.4)',
+            color: 'rgba(42,42,42,0.4)',
             minWidth: '48px',
             textAlign: 'right',
             fontFamily: "'Sora', sans-serif"
@@ -4654,19 +4663,19 @@
           <div style={{
             fontSize: '48px',
             marginBottom: '20px',
-            color: '#00D2FF'
+            color: '#E8622B'
           }}>✓</div>
           <p style={{
             fontSize: '18px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '8px'
           }}>
             {completedCount}問 完了です
           </p>
           <p style={{
             fontSize: '14px',
-            color: 'rgba(255,255,255,0.45)'
+            color: 'rgba(42,42,42,0.45)'
           }}>
             残り {remainingCount}問
           </p>
@@ -4765,14 +4774,16 @@
               maxWidth: '600px',
               margin: '0 auto 32px',
               padding: '24px',
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: '16px',
-              backdropFilter: 'blur(10px)'
+              background: 'rgba(255,255,255,0.55)',
+              borderRadius: '20px',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255,255,255,0.7)',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.04)'
             }}>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '700',
-                color: '#fff',
+                color: '#1A1A2E',
                 marginBottom: '20px',
                 textAlign: 'center'
               }}>
@@ -4796,8 +4807,8 @@
                   }}>
                     <span style={{ fontSize: '24px' }}>{item.icon}</span>
                     <div>
-                      <div style={{ fontSize: '14px', fontWeight: '700', color: '#fff' }}>{item.title}</div>
-                      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>{item.desc}</div>
+                      <div style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A2E' }}>{item.title}</div>
+                      <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.6)' }}>{item.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -4832,13 +4843,14 @@
               maxWidth: '500px',
               margin: '16px auto 0',
               padding: '16px 20px',
-              background: 'rgba(255,255,255,0.03)',
+              background: 'rgba(255,255,255,0.5)',
+              backdropFilter: 'blur(12px)',
               borderRadius: '12px',
-              borderLeft: '3px solid rgba(0,210,255,0.5)'
+              borderLeft: '3px solid #E8622B'
             }}>
               <p style={{
                 fontSize: '13px',
-                color: 'rgba(255,255,255,0.7)',
+                color: 'rgba(42,42,42,0.7)',
                 lineHeight: '1.6',
                 margin: 0,
                 fontStyle: 'italic'
@@ -4847,7 +4859,7 @@
               </p>
               <p style={{
                 fontSize: '11px',
-                color: 'rgba(255,255,255,0.4)',
+                color: 'rgba(42,42,42,0.4)',
                 margin: '8px 0 0',
                 textAlign: 'right'
               }}>
@@ -4907,11 +4919,12 @@
           }} key={qIndex}>
             {/* 設問テキスト */}
             <h2 style={{
-              fontSize: '22px',
+              fontFamily: "'Playfair Display', 'Noto Sans JP', serif",
+              fontSize: '24px',
               fontWeight: '700',
-              color: '#fff',
+              color: '#1A1A2E',
               textAlign: 'center',
-              lineHeight: '1.6',
+              lineHeight: '1.7',
               marginBottom: '40px'
             }}>
               {question.text}
@@ -4925,30 +4938,54 @@
               width: '100%',
               maxWidth: '560px'
             }}>
-              {options.map((opt) => (
+              {options.map((opt, idx) => (
                 <button
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
                   disabled={selectedValue !== null && selectedValue !== opt.value}
                   style={{
-                    padding: '16px 20px',
+                    padding: '18px 24px',
                     background: selectedValue === opt.value
-                      ? 'linear-gradient(135deg, #00D2FF, #7B68EE)'
-                      : 'rgba(255,255,255,0.05)',
+                      ? '#E8622B'
+                      : 'rgba(255,255,255,0.55)',
                     border: selectedValue === opt.value
-                      ? 'none'
-                      : '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '12px',
-                    color: '#fff',
+                      ? '2px solid #E8622B'
+                      : '1px solid rgba(0,0,0,0.08)',
+                    borderRadius: '16px',
+                    color: selectedValue === opt.value ? '#fff' : '#2A2A2A',
                     fontSize: '15px',
                     fontWeight: selectedValue === opt.value ? '700' : '500',
                     cursor: selectedValue !== null ? 'default' : 'pointer',
                     transition: 'all 0.2s ease',
                     transform: selectedValue === opt.value ? 'scale(1.02)' : 'scale(1)',
-                    textAlign: 'center',
-                    opacity: (selectedValue !== null && selectedValue !== opt.value) ? 0.4 : 1
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    opacity: (selectedValue !== null && selectedValue !== opt.value) ? 0.4 : 1,
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    boxShadow: selectedValue === opt.value
+                      ? '0 4px 16px rgba(232,98,43,0.25)'
+                      : '0 2px 8px rgba(0,0,0,0.03)'
                   }}
                 >
+                  <span style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    border: selectedValue === opt.value ? '2px solid rgba(255,255,255,0.6)' : '2px solid #E8622B',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    color: selectedValue === opt.value ? '#fff' : '#E8622B',
+                    flexShrink: 0,
+                    fontFamily: "'Sora', sans-serif"
+                  }}>
+                    {String.fromCharCode(65 + idx)}
+                  </span>
                   {opt.label}
                 </button>
               ))}
@@ -4962,7 +4999,7 @@
                   marginTop: '24px',
                   background: 'none',
                   border: 'none',
-                  color: 'rgba(255,255,255,0.4)',
+                  color: 'rgba(42,42,42,0.4)',
                   fontSize: '13px',
                   cursor: 'pointer',
                   padding: '8px 16px'
@@ -4984,7 +5021,7 @@
           x: Math.random() * 100,
           delay: Math.random() * 2,
           duration: 1 + Math.random() * 2,
-          color: ['#FF6B6B', '#4ECDC4', '#96E6A1', '#A855F7', '#00D2FF', '#FFD700'][Math.floor(Math.random() * 6)],
+          color: ['#FF6B6B', '#4ECDC4', '#96E6A1', '#A855F7', '#E8622B', '#FFD700'][Math.floor(Math.random() * 6)],
           isCircle: Math.random() > 0.5
         }))
       , []);
@@ -5048,22 +5085,22 @@
           justifyContent: 'center',
           minHeight: '80vh',
           padding: '24px',
-          background: '#0D1117'
+          background: 'transparent'
         }}>
           <Confetti />
           <div style={{
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            border: '4px solid rgba(255,255,255,0.1)',
-            borderTopColor: '#00D2FF',
+            border: '4px solid rgba(0,0,0,0.06)',
+            borderTopColor: '#E8622B',
             animation: 'spin 1s linear infinite',
             marginBottom: '32px'
           }} />
           <p style={{
             fontSize: '18px',
             fontWeight: '600',
-            color: '#fff',
+            color: '#1A1A2E',
             animation: 'fadeIn 0.3s ease-out'
           }} key={step}>
             {steps[step]}
@@ -5078,7 +5115,7 @@
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                background: i <= step ? '#00D2FF' : 'rgba(255,255,255,0.1)',
+                background: i <= step ? '#E8622B' : 'rgba(0,0,0,0.08)',
                 transition: 'background 0.3s ease'
               }} />
             ))}
@@ -5125,10 +5162,10 @@
       const typeMeta = TYPE_META[personalityCode];
       if (!typeMeta) return null;
 
-      // 背景グラデーション
+      // 背景グラデーション (light theme)
       const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
-      bgGrad.addColorStop(0, '#0D1117');
-      bgGrad.addColorStop(1, '#1A1A2E');
+      bgGrad.addColorStop(0, '#FFF5EE');
+      bgGrad.addColorStop(1, '#FDF0F5');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, 1200, 630);
 
@@ -5147,17 +5184,17 @@
 
       // タイトル「80 TYPE DIAGNOSIS」
       ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.fillStyle = 'rgba(42,42,42,0.4)';
       ctx.fillText('80 TYPE DIAGNOSIS', 80, 80);
 
       // 「あなたは」
       ctx.font = '400 24px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillStyle = 'rgba(42,42,42,0.7)';
       ctx.fillText('あなたは', 80, 200);
 
       // タイプ名（大きく）
       ctx.font = '800 56px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = '#1A1A2E';
       ctx.fillText(`${behaviorType}${typeMeta.name}`, 80, 280);
 
       // サブネーム
@@ -5193,13 +5230,13 @@
 
       // URL
       ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillStyle = 'rgba(42,42,42,0.3)';
       ctx.textAlign = 'left';
       ctx.fillText('personal-file.jp/80type', 80, 580);
 
       // PERSONAL FILE ロゴテキスト
       ctx.font = '700 16px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillStyle = 'rgba(42,42,42,0.3)';
       ctx.textAlign = 'right';
       ctx.fillText('PERSONAL FILE', 1120, 580);
       ctx.textAlign = 'left';
@@ -5274,9 +5311,9 @@
               alignItems: 'center',
               gap: '8px',
               padding: '10px 20px',
-              background: '#000',
+              background: '#1A1A2E',
               color: '#fff',
-              border: '1px solid rgba(255,255,255,0.2)',
+              border: '1px solid rgba(0,0,0,0.1)',
               borderRadius: '24px',
               fontSize: '14px',
               fontWeight: '600',
@@ -5319,9 +5356,9 @@
               alignItems: 'center',
               gap: '8px',
               padding: '10px 20px',
-              background: 'rgba(255,255,255,0.1)',
-              color: '#fff',
-              border: '1px solid rgba(255,255,255,0.2)',
+              background: 'rgba(255,255,255,0.6)',
+              color: '#1A1A2E',
+              border: '1px solid rgba(0,0,0,0.1)',
               borderRadius: '24px',
               fontSize: '14px',
               fontWeight: '600',
@@ -5368,9 +5405,9 @@
             style={{
               marginTop: '12px',
               padding: '10px 24px',
-              background: 'rgba(255,255,255,0.1)',
-              color: '#fff',
-              border: '1px solid rgba(255,255,255,0.2)',
+              background: 'rgba(255,255,255,0.6)',
+              color: '#1A1A2E',
+              border: '1px solid rgba(0,0,0,0.1)',
               borderRadius: '24px',
               fontSize: '14px',
               cursor: 'pointer'
@@ -5406,7 +5443,7 @@
             width: '300px',
             height: '300px',
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)',
+            background: 'rgba(0,0,0,0.04)',
           }} />
           <div style={{
             position: 'absolute',
@@ -5415,7 +5452,7 @@
             width: '200px',
             height: '200px',
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.06)',
+            background: 'rgba(0,0,0,0.04)',
           }} />
           <div style={{
             position: 'absolute',
@@ -5424,7 +5461,7 @@
             width: '100px',
             height: '100px',
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.05)',
+            background: 'rgba(255,255,255,0.5)',
           }} />
 
           <div className="result-hero-inner" style={{
@@ -5517,7 +5554,7 @@
 
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0'
@@ -5525,7 +5562,7 @@
           <h2 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '24px',
             display: 'flex',
             alignItems: 'center',
@@ -5538,9 +5575,10 @@
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              border: '2px solid rgba(255,255,255,0.3)',
+              border: '2px solid rgba(0,0,0,0.15)',
               fontSize: '14px',
-              fontWeight: '600'
+              fontWeight: '600',
+              color: '#1A1A2E'
             }}>1</span>
             性格特性
           </h2>
@@ -5560,7 +5598,7 @@
                   <span style={{
                     fontSize: '13px',
                     fontWeight: dominant === 'left' ? '700' : '400',
-                    color: dominant === 'left' ? axis.leftColor : 'rgba(255,255,255,0.4)'
+                    color: dominant === 'left' ? axis.leftColor : 'rgba(42,42,42,0.4)'
                   }}>
                     {axis.left}
                   </span>
@@ -5574,7 +5612,7 @@
                   <span style={{
                     fontSize: '13px',
                     fontWeight: dominant === 'right' ? '700' : '400',
-                    color: dominant === 'right' ? axis.rightColor : 'rgba(255,255,255,0.4)'
+                    color: dominant === 'right' ? axis.rightColor : 'rgba(42,42,42,0.4)'
                   }}>
                     {axis.right}
                   </span>
@@ -5585,7 +5623,7 @@
                   height: '8px',
                   borderRadius: '4px',
                   overflow: 'hidden',
-                  background: 'rgba(255,255,255,0.06)'
+                  background: 'rgba(0,0,0,0.04)'
                 }}>
                   <div style={{
                     width: `${leftPct}%`,
@@ -5628,7 +5666,7 @@
 
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0',
@@ -5637,7 +5675,7 @@
           <h2 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '16px',
             display: 'flex',
             alignItems: 'center',
@@ -5651,9 +5689,10 @@
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              border: '2px solid rgba(255,255,255,0.3)',
+              border: '2px solid rgba(0,0,0,0.15)',
               fontSize: '14px',
-              fontWeight: '600'
+              fontWeight: '600',
+              color: '#1A1A2E'
             }}>2</span>
             行動タイプ分析
           </h2>
@@ -5667,7 +5706,7 @@
                   return `${p.x},${p.y}`;
                 }).join(' ')}
                 fill="none"
-                stroke="rgba(255,255,255,0.08)"
+                stroke="rgba(0,0,0,0.08)"
                 strokeWidth="1"
               />
             ))}
@@ -5679,7 +5718,7 @@
                   key={i}
                   x1={center} y1={center}
                   x2={p.x} y2={p.y}
-                  stroke="rgba(255,255,255,0.06)"
+                  stroke="rgba(0,0,0,0.06)"
                   strokeWidth="1"
                 />
               );
@@ -5714,7 +5753,7 @@
                   x={p.x} y={p.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill="rgba(255,255,255,0.7)"
+                  fill="rgba(42,42,42,0.7)"
                   fontSize="13"
                   fontWeight="600"
                 >
@@ -5739,7 +5778,7 @@
           margin: '24px 0'
         }}>
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
+            background: 'rgba(255,255,255,0.55)',
             borderRadius: '16px',
             padding: '20px',
             borderTop: `3px solid ${typeColor.primary}`
@@ -5756,9 +5795,9 @@
               {strengths.map((item, i) => (
                 <li key={i} style={{
                   padding: '8px 0',
-                  borderBottom: i < strengths.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                  borderBottom: i < strengths.length - 1 ? '1px solid rgba(0,0,0,0.06)' : 'none',
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.8)',
+                  color: 'rgba(42,42,42,0.8)',
                   lineHeight: '1.6'
                 }}>
                   {item}
@@ -5768,7 +5807,7 @@
           </div>
 
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
+            background: 'rgba(255,255,255,0.55)',
             borderRadius: '16px',
             padding: '20px',
             borderTop: '3px solid rgba(255,200,100,0.6)'
@@ -5785,9 +5824,9 @@
               {weaknesses.map((item, i) => (
                 <li key={i} style={{
                   padding: '8px 0',
-                  borderBottom: i < weaknesses.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                  borderBottom: i < weaknesses.length - 1 ? '1px solid rgba(0,0,0,0.06)' : 'none',
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.8)',
+                  color: 'rgba(42,42,42,0.8)',
                   lineHeight: '1.6'
                 }}>
                   {item}
@@ -5805,7 +5844,7 @@
 
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0'
@@ -5813,7 +5852,7 @@
           <h2 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
@@ -5826,9 +5865,10 @@
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              border: '2px solid rgba(255,255,255,0.3)',
+              border: '2px solid rgba(0,0,0,0.15)',
               fontSize: '14px',
-              fontWeight: '600'
+              fontWeight: '600',
+              color: '#1A1A2E'
             }}>3</span>
             適した職種
           </h2>
@@ -5848,7 +5888,7 @@
                 <div style={{
                   fontSize: '15px',
                   fontWeight: '700',
-                  color: '#fff',
+                  color: '#1A1A2E',
                   marginBottom: '4px'
                 }}>
                   {career.title}
@@ -5856,7 +5896,7 @@
                 {career.description && (
                   <div style={{
                     fontSize: '12px',
-                    color: 'rgba(255,255,255,0.5)',
+                    color: 'rgba(42,42,42,0.5)',
                     lineHeight: '1.5'
                   }}>
                     {career.description}
@@ -5875,7 +5915,7 @@
 
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0',
@@ -5884,7 +5924,7 @@
           <h2 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
@@ -5897,9 +5937,10 @@
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              border: '2px solid rgba(255,255,255,0.3)',
+              border: '2px solid rgba(0,0,0,0.15)',
               fontSize: '14px',
-              fontWeight: '600'
+              fontWeight: '600',
+              color: '#1A1A2E'
             }}>4</span>
             あなたに合う働き方
           </h2>
@@ -5911,19 +5952,19 @@
                 alignItems: 'center',
                 gap: '12px',
                 padding: '14px 0',
-                borderBottom: '1px solid rgba(255,255,255,0.05)'
+                borderBottom: '1px solid rgba(0,0,0,0.06)'
               }}>
                 <span style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: 'rgba(255,255,255,0.8)',
+                  color: 'rgba(42,42,42,0.8)',
                   minWidth: '100px'
                 }}>
                   {typeof label === 'string' ? label : label.label}
                 </span>
                 <span style={{
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(42,42,42,0.5)',
                   filter: 'blur(5px)',
                   userSelect: 'none'
                 }}>
@@ -5938,7 +5979,7 @@
               left: 0,
               right: 0,
               height: '100%',
-              background: 'linear-gradient(transparent 20%, rgba(13,17,23,0.9) 80%)',
+              background: 'linear-gradient(transparent 20%, rgba(255,252,248,0.95) 80%)',
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'center',
@@ -5947,7 +5988,7 @@
               <div style={{ textAlign: 'center' }}>
                 <p style={{
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.7)',
+                  color: 'rgba(42,42,42,0.7)',
                   marginBottom: '12px'
                 }}>
                   🔓 詳しい分析結果は面談でお伝えします
@@ -6002,7 +6043,7 @@
 
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0',
@@ -6011,7 +6052,7 @@
           <h3 style={{
             fontSize: '18px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '20px'
           }}>
             あなたの今の転職・就職意向を教えてください
@@ -6033,12 +6074,12 @@
                 }}
                 style={{
                   padding: '14px 20px',
-                  background: selected === opt.id ? typeColor.light : 'rgba(255,255,255,0.05)',
+                  background: selected === opt.id ? typeColor.light : 'rgba(255,255,255,0.55)',
                   border: selected === opt.id
                     ? `2px solid ${typeColor.primary}`
-                    : '2px solid rgba(255,255,255,0.1)',
+                    : '2px solid rgba(0,0,0,0.08)',
                   borderRadius: '12px',
-                  color: '#fff',
+                  color: '#1A1A2E',
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
@@ -6092,7 +6133,7 @@
           }}
         >
           <div style={{
-            background: 'rgba(255,255,255,0.04)',
+            background: 'rgba(255,255,255,0.5)',
             borderRadius: '20px',
             padding: '24px',
             marginBottom: '16px',
@@ -6100,8 +6141,8 @@
             borderTop: `3px solid ${typeColor.primary}`
           }}>
             <div style={{ fontSize: '48px', marginBottom: '10px' }}>{typeMeta.emoji}</div>
-            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px' }}>あなたのタイプ:</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#fff', marginBottom: '2px' }}>
+            <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>あなたのタイプ:</div>
+            <div style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px' }}>
               {behaviorType}{typeMeta.name}
             </div>
             <div style={{ fontSize: '14px', color: typeColor.primary, fontWeight: '600' }}>
@@ -6110,13 +6151,13 @@
           </div>
 
           <div style={{
-            background: 'rgba(255,255,255,0.04)',
+            background: 'rgba(255,255,255,0.5)',
             borderRadius: '20px',
             padding: '20px'
           }}>
             <div style={{
               fontSize: '12px',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(42,42,42,0.4)',
               marginBottom: '14px',
               fontWeight: '600'
             }}>
@@ -6130,7 +6171,7 @@
                   display: 'block',
                   padding: '10px 14px',
                   fontSize: '14px',
-                  color: activeSection === i ? typeColor.primary : 'rgba(255,255,255,0.6)',
+                  color: activeSection === i ? typeColor.primary : 'rgba(42,42,42,0.6)',
                   fontWeight: activeSection === i ? '700' : '500',
                   textDecoration: 'none',
                   borderLeft: activeSection === i
@@ -6138,7 +6179,7 @@
                     : '3px solid transparent',
                   transition: 'all 0.2s ease',
                   borderRadius: activeSection === i ? '0 8px 8px 0' : '0',
-                  background: activeSection === i ? 'rgba(255,255,255,0.03)' : 'transparent'
+                  background: activeSection === i ? 'rgba(232,98,43,0.06)' : 'transparent'
                 }}
               >
                 {i + 1}. {section}
@@ -6153,7 +6194,7 @@
     function TypeGrid({ currentType }) {
       return (
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
+          background: 'rgba(255,255,255,0.55)',
           borderRadius: '16px',
           padding: '24px',
           margin: '24px 0'
@@ -6161,7 +6202,7 @@
           <h2 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: '#fff',
+            color: '#1A1A2E',
             marginBottom: '20px',
             textAlign: 'center'
           }}>
@@ -6182,8 +6223,8 @@
                   key={code}
                   style={{
                     padding: '14px 10px',
-                    background: isCurrent ? color.light : 'rgba(255,255,255,0.02)',
-                    border: isCurrent ? `2px solid ${color.primary}` : '2px solid rgba(255,255,255,0.06)',
+                    background: isCurrent ? color.light : 'rgba(255,255,255,0.55)',
+                    border: isCurrent ? `2px solid ${color.primary}` : '2px solid rgba(0,0,0,0.06)',
                     borderRadius: '12px',
                     textAlign: 'center',
                     cursor: 'default',
@@ -6194,13 +6235,13 @@
                   <div style={{
                     fontSize: '12px',
                     fontWeight: '700',
-                    color: isCurrent ? color.primary : 'rgba(255,255,255,0.7)',
+                    color: isCurrent ? color.primary : 'rgba(42,42,42,0.7)',
                   }}>
                     {meta.name}
                   </div>
                   <div style={{
                     fontSize: '11px',
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(42,42,42,0.4)',
                   }}>
                     {meta.subname}（{code}）
                   </div>
@@ -6287,7 +6328,7 @@
       ];
 
       return (
-        <div style={{ minHeight: '100vh', background: '#0D1117' }}>
+        <div style={{ minHeight: '100vh', background: 'transparent' }}>
           {/* ヒーローセクション（全幅） */}
           <ResultHero
             personalityCode={personalityCode}
@@ -6311,7 +6352,7 @@
               {/* タイプ解説 */}
               {typeData && typeData.userDescription && (
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'rgba(255,255,255,0.55)',
                   borderRadius: '16px',
                   padding: '24px',
                   margin: '24px 0'
@@ -6319,14 +6360,14 @@
                   <h2 style={{
                     fontSize: '20px',
                     fontWeight: '700',
-                    color: '#fff',
+                    color: '#1A1A2E',
                     marginBottom: '12px'
                   }}>
                     {typeMeta?.emoji} あなたのタイプ解説
                   </h2>
                   <p style={{
                     fontSize: '14px',
-                    color: 'rgba(255,255,255,0.8)',
+                    color: 'rgba(42,42,42,0.8)',
                     lineHeight: '1.8',
                     whiteSpace: 'pre-line'
                   }}>
@@ -6370,7 +6411,7 @@
               {/* 未経験チャレンジ可能な適職 */}
               {typeData && typeData.entryJobs && (
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'rgba(255,255,255,0.55)',
                   borderRadius: '16px',
                   padding: '24px',
                   margin: '24px 0'
@@ -6378,7 +6419,7 @@
                   <h2 style={{
                     fontSize: '20px',
                     fontWeight: '700',
-                    color: '#fff',
+                    color: '#1A1A2E',
                     marginBottom: '12px'
                   }}>
                     未経験からチャレンジできる適職
@@ -6390,7 +6431,7 @@
                   )}
                   <p style={{
                     fontSize: '13px',
-                    color: 'rgba(255,255,255,0.7)',
+                    color: 'rgba(42,42,42,0.7)',
                     lineHeight: '1.8',
                     whiteSpace: 'pre-line'
                   }}>
@@ -6427,7 +6468,7 @@
               {/* ⑦ CTA（転職意向に応じた分岐） */}
               {careerIntent && (
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'rgba(255,255,255,0.55)',
                   borderRadius: '16px',
                   padding: '32px 24px',
                   margin: '24px 0',
@@ -6435,10 +6476,10 @@
                 }}>
                   {careerIntent.route === 'consultation' ? (
                     <>
-                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>
+                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
                         あなたの80タイプを活かした転職相談
                       </h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '20px' }}>
+                      <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
                         専門アドバイザーが診断結果をもとに、あなたに合った企業を提案します
                       </p>
                       <a
@@ -6448,13 +6489,13 @@
                         style={{
                           display: 'inline-block',
                           padding: '16px 40px',
-                          background: 'linear-gradient(135deg, #00D2FF, #7B68EE)',
+                          background: 'linear-gradient(135deg, #E8622B, #F4845F)',
                           color: '#fff',
                           borderRadius: '28px',
                           fontSize: '16px',
                           fontWeight: '700',
                           textDecoration: 'none',
-                          boxShadow: '0 4px 20px rgba(0,210,255,0.3)'
+                          boxShadow: '0 4px 20px rgba(232,98,43,0.3)'
                         }}
                         onClick={() => {
                           try {
@@ -6471,16 +6512,16 @@
                       >
                         無料面談に申し込む
                       </a>
-                      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '12px' }}>
+                      <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.4)', marginTop: '12px' }}>
                         ※ 完全無料・オンライン対応・所要時間約30分
                       </div>
                     </>
                   ) : (
                     <>
-                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>
+                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
                         あなたのタイプにおすすめのスキルアップ
                       </h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '20px' }}>
+                      <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
                         {behavioralType.name}{typeMeta?.name || personalityName}のあなたに合ったスクールを厳選
                       </p>
                       <a
@@ -6490,7 +6531,7 @@
                         style={{
                           display: 'inline-block',
                           padding: '16px 40px',
-                          background: 'linear-gradient(135deg, #00D2FF, #7B68EE)',
+                          background: 'linear-gradient(135deg, #E8622B, #F4845F)',
                           color: '#fff',
                           borderRadius: '28px',
                           fontSize: '16px',
@@ -6519,16 +6560,16 @@
 
               {/* ⑧ LINE登録 */}
               <div style={{
-                background: 'rgba(255,255,255,0.03)',
+                background: 'rgba(255,255,255,0.55)',
                 borderRadius: '16px',
                 padding: '24px',
                 margin: '24px 0',
                 textAlign: 'center'
               }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1A1A2E', marginBottom: '8px' }}>
                   LINE公式アカウント
                 </h3>
-                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginBottom: '16px' }}>
+                <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.5)', marginBottom: '16px' }}>
                   友だち追加で診断結果の詳細レポートをお届け
                 </p>
                 <a
@@ -6575,7 +6616,7 @@
                 padding: '40px 0 60px',
                 fontSize: '14px',
                 fontWeight: '700',
-                color: 'rgba(255,255,255,0.2)',
+                color: 'rgba(42,42,42,0.2)',
                 letterSpacing: '4px'
               }}>
                 PERSONAL FILE
