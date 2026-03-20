@@ -4521,6 +4521,170 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const fromParam = urlParams.get('from') || '';
+    const matchParam = urlParams.get('match') || '';
+
+    // ===================================================================
+    // 相性診断データ
+    // ===================================================================
+
+    // 16タイプ相性マトリクス（非対称: MATRIX[A][B] ≠ MATRIX[B][A]）
+    const COMPATIBILITY_MATRIX = {
+      PP: { PP: null, PA: 62, PI: 62, PD: 70, AP: 61, AA: 98, AI: 74, AD: 89, IP: 63, IA: 66, II: 60, ID: 60, DI: 56, DP: 70, DA: 70, DD: 56 },
+      PA: { PP: 58, PA: null, PI: 80, PD: 67, AP: 80, AA: 74, AI: 67, AD: 62, IP: 58, IA: 62, II: 54, ID: 60, DI: 56, DP: 66, DA: 54, DD: 56 },
+      PI: { PP: 71, PA: 54, PI: null, PD: 76, AP: 58, AA: 68, AI: 77, AD: 62, IP: 85, IA: 66, II: 63, ID: 60, DI: 59, DP: 58, DA: 62, DD: 56 },
+      PD: { PP: 75, PA: 62, PI: 54, PD: null, AP: 58, AA: 82, AI: 66, AD: 77, IP: 54, IA: 58, II: 60, ID: 63, DI: 56, DP: 89, DA: 77, DD: 59 },
+      AP: { PP: 62, PA: 70, PI: 58, PD: 79, AP: null, AA: 68, AI: 62, AD: 96, IP: 58, IA: 54, II: 56, ID: 56, DI: 58, DP: 74, DA: 66, DD: 58 },
+      AA: { PP: 54, PA: 61, PI: 54, PD: 78, AP: 60, AA: null, AI: 75, AD: 94, IP: 58, IA: 66, II: 56, ID: 56, DI: 58, DP: 73, DA: 86, DD: 58 },
+      AI: { PP: 66, PA: 58, PI: 54, PD: 79, AP: 60, AA: 84, AI: null, AD: 87, IP: 58, IA: 70, II: 59, ID: 56, DI: 61, DP: 66, DA: 79, DD: 58 },
+      AD: { PP: 79, PA: 58, PI: 58, PD: 93, AP: 60, AA: 70, AI: 58, AD: null, IP: 54, IA: 54, II: 56, ID: 59, DI: 58, DP: 83, DA: 75, DD: 75 },
+      IP: { PP: 58, PA: 60, PI: 80, PD: 69, AP: 59, AA: 62, AI: 58, AD: 66, IP: null, IA: 75, II: 75, ID: 62, DI: 54, DP: 74, DA: 66, DD: 54 },
+      IA: { PP: 79, PA: 63, PI: 54, PD: 79, AP: 56, AA: 80, AI: 75, AD: 58, IP: 66, IA: null, II: 62, ID: 62, DI: 54, DP: 79, DA: 66, DD: 54 },
+      II: { PP: 64, PA: 60, PI: 64, PD: 58, AP: 56, AA: 81, AI: 62, AD: 58, IP: 89, IA: 94, II: null, ID: 62, DI: 57, DP: 58, DA: 58, DD: 54 },
+      ID: { PP: 62, PA: 60, PI: 58, PD: 69, AP: 56, AA: 54, AI: 62, AD: 66, IP: 72, IA: 81, II: 54, ID: null, DI: 70, DP: 74, DA: 66, DD: 54 },
+      DI: { PP: 79, PA: 56, PI: 58, PD: 79, AP: 58, AA: 62, AI: 62, AD: 62, IP: 58, IA: 62, II: 57, ID: 70, DI: null, DP: 84, DA: 73, DD: 56 },
+      DP: { PP: 76, PA: 56, PI: 54, PD: 75, AP: 61, AA: 89, AI: 54, AD: 84, IP: 58, IA: 58, II: 54, ID: 54, DI: 56, DP: null, DA: 84, DD: 70 },
+      DA: { PP: 89, PA: 59, PI: 56, PD: 89, AP: 58, AA: 85, AI: 58, AD: 70, IP: 62, IA: 54, II: 54, ID: 54, DI: 56, DP: 79, DA: null, DD: 75 },
+      DD: { PP: 62, PA: 56, PI: 58, PD: 58, AP: 58, AA: 62, AI: 69, AD: 69, IP: 66, IA: 74, II: 54, ID: 57, DI: 56, DP: 89, DA: 84, DD: null }
+    };
+
+    // 相性ラベル定義（6段階）
+    const COMPATIBILITY_LABELS = [
+      { min: 90, max: 98, label: '運命の相棒',       icon: '⚡', tone: '奇跡的に噛み合う2人' },
+      { min: 82, max: 89, label: '最強コンビ',       icon: '🔥', tone: '一緒にいると互いが伸びる' },
+      { min: 72, max: 81, label: '好相性',           icon: '✨', tone: '自然に協力できるペア' },
+      { min: 64, max: 71, label: '伸びしろあり',     icon: '🌱', tone: '刺激し合って成長できる関係' },
+      { min: 57, max: 63, label: '意外な組み合わせ', icon: '💬', tone: '理解に時間はかかるが発見がある' },
+      { min: 50, max: 56, label: '正反対タイプ',     icon: '🔀', tone: 'ぶつかりやすいが、学びも多い' }
+    ];
+
+    // 16タイプのニックネーム（相性画面用）
+    const TYPE_NICKNAMES = {
+      PP: 'チームの太陽', PA: '二面性の魔術師', PI: '愛されの天才', PD: '突破のカリスマ',
+      AP: '頼れる右腕', AA: '歩くWikipedia', AI: '積み上げの達人', AD: '氷の頭脳',
+      IP: '助っ人ヒーロー', IA: '隠れ実力者', II: '共感マスター', ID: '深掘りマニア',
+      DI: '即決エンジン', DP: '大将気質', DA: '静かな司令塔', DD: 'ゲームチェンジャー'
+    };
+
+    // 16タイプのキャッチコピー
+    const TYPE_CATCHCOPY = {
+      PP: '明るさで場を支配する、生まれながらのムードメーカー',
+      PA: '社交と没頭を行き来する、こだわりの二刀流',
+      PI: '人見知りの奥に隠れた、人をつなぐ天性の力',
+      PD: '走りながら考え、考えながら結果を出す突破者',
+      AP: '冷静な仮面の下に、情熱を隠し持つ実務の切り札',
+      AA: '知の深淵を泳ぎ、答えが出るまで浮上しない探究者',
+      AI: '静かに、正確に、気づけば誰より高い場所にいる',
+      AD: '論理の矛盾を一閃で断つ、冷静なる分析の刃',
+      IP: '何でもこなせる万能さで、組織のバランスを静かに保つ',
+      IA: '安心して仕事を任せられる、チームの守り神',
+      II: '誰の痛みにも気づいてしまう、優しさという名の才能',
+      ID: '即断の裏で何度も思考を巡らせ、静かに正解を掴む',
+      DI: '迷う前に決め、進んだ先で答え合わせをする行動者',
+      DP: '圧倒的なリーダーシップ。決断力と行動力は桁違い',
+      DA: '仕組みやルールを創る側に立つ、稀有な頭脳の持ち主',
+      DD: '全タイプ最速の決断力で、ルールごと書き換える異端'
+    };
+
+    // 4グループカラー（相性カード用）
+    const GROUP_COLORS = {
+      P: { color: '#FF3B5C', name: 'ネオンレッド' },
+      A: { color: '#4D6CFA', name: 'エレクトリックインディゴ' },
+      I: { color: '#00D4AA', name: 'ネオンティール' },
+      D: { color: '#8B5CF6', name: 'ウルトラバイオレット' }
+    };
+
+    // 相性スコア算出（平均値）
+    function getCompatibility(typeA, typeB) {
+      if (typeA === typeB) {
+        return { score: 75, label: '好相性', icon: '✨', tone: '同じタイプ同士、深い理解がある', scoreA: null, scoreB: null };
+      }
+      const scoreAB = COMPATIBILITY_MATRIX[typeA]?.[typeB];
+      const scoreBA = COMPATIBILITY_MATRIX[typeB]?.[typeA];
+      if (scoreAB == null || scoreBA == null) {
+        return { score: 65, label: '伸びしろあり', icon: '🌱', tone: 'お互いを知ることで成長できる関係', scoreA: null, scoreB: null };
+      }
+      const avgScore = Math.round((scoreAB + scoreBA) / 2);
+      const labelData = COMPATIBILITY_LABELS.find(l => avgScore >= l.min && avgScore <= l.max) || COMPATIBILITY_LABELS[COMPATIBILITY_LABELS.length - 1];
+      return {
+        score: avgScore,
+        label: labelData.label,
+        icon: labelData.icon,
+        tone: labelData.tone,
+        scoreA: scoreAB,
+        scoreB: scoreBA
+      };
+    }
+
+    // 相性の関係タイプ判定
+    function getRelationType(typeA, typeB) {
+      const groupA = typeA.charAt(0);
+      const groupB = typeB.charAt(0);
+      if (groupA === groupB) return { type: '共感', description: '同じ価値観を持つ仲間' };
+      const complementPairs = [['P', 'A'], ['I', 'D']];
+      const isComplement = complementPairs.some(([a, b]) =>
+        (groupA === a && groupB === b) || (groupA === b && groupB === a)
+      );
+      if (isComplement) return { type: '補完', description: '足りない部分を補い合える関係' };
+      return { type: '共感＋補完', description: '共感しつつ新しい視点をもらえる関係' };
+    }
+
+    // 相性解説テキスト生成
+    function getCompatibilityInsights(typeA, typeB, compat) {
+      const metaA = TYPE_META[typeA];
+      const metaB = TYPE_META[typeB];
+      const nickA = TYPE_NICKNAMES[typeA];
+      const nickB = TYPE_NICKNAMES[typeB];
+      const relation = getRelationType(typeA, typeB);
+      const groupA = typeA.charAt(0);
+      const groupB = typeB.charAt(0);
+
+      // わかり合えるポイント
+      let empathy = '';
+      if (groupA === groupB) {
+        empathy = `${nickA}と${nickB}は同じ${GROUP_COLORS[groupA].name}グループ。根本的な価値観が似ているので、言葉にしなくても自然と分かり合えるポイントが多いです。お互いの行動原理を直感的に理解できるため、一緒にいて心地よさを感じやすい関係です。`;
+      } else {
+        empathy = `${nickA}の${metaA.subname}としての感性と、${nickB}の${metaB.subname}としての視点は、一見異なるようでいて共通の目標に向かうとき強い共鳴を生みます。お互いの得意分野を尊重し合うことで、自然と協力体制が築ける関係です。`;
+      }
+
+      // 補い合えるポイント
+      let complement = '';
+      if (relation.type === '補完') {
+        complement = `${nickA}が得意な領域は${nickB}にとっての伸びしろであり、その逆もまた然り。2人が組むと、単独では到達できない高いパフォーマンスを発揮できます。意思決定のスピードと精度のバランスが最適化される理想的な補完関係です。`;
+      } else if (relation.type === '共感') {
+        complement = `同じグループだからこそ、微妙なアプローチの違いが互いの視野を広げます。${nickA}の${TYPE_CATCHCOPY[typeA].slice(0, 15)}…という側面と、${nickB}の${TYPE_CATCHCOPY[typeB].slice(0, 15)}…という側面が合わさると、同じ方向性をより多角的に追求できます。`;
+      } else {
+        complement = `${nickA}と${nickB}は異なるグループの強みを持ち合わせています。${metaA.subname}の視点と${metaB.subname}の視点が交差することで、どちらか一方では見落としがちなポイントをカバーし合える関係です。`;
+      }
+
+      // 気をつけること
+      let caution = '';
+      if (compat.score >= 82) {
+        caution = `相性が高い分、お互いの意見が近すぎて「一緒にいると居心地がいいが、新しい発見が減る」リスクがあります。時々あえて違う視点を取り入れる意識を持つと、関係がさらに深まります。`;
+      } else if (compat.score >= 64) {
+        caution = `基本的には良い関係ですが、コミュニケーションスタイルの違いから誤解が生まれることもあります。${nickA}は${groupA === 'P' || groupA === 'D' ? '直感的・即決型' : '慎重・分析型'}、${nickB}は${groupB === 'P' || groupB === 'D' ? '直感的・即決型' : '慎重・分析型'}。このテンポの違いを理解しておくとスムーズです。`;
+      } else {
+        caution = `価値観やコミュニケーションスタイルが大きく異なるため、最初は戸惑うこともあるかもしれません。しかし、この「違い」こそが最大の学びの源です。相手のやり方を否定せず、「なぜそう考えるのか」に関心を持つことで、自分にない視点を得られます。`;
+      }
+
+      return { empathy, complement, caution, relation };
+    }
+
+    // 相性リンクエンコード/デコード
+    function encodeMatchData(typeCode, behaviorCode) {
+      return btoa(JSON.stringify({ t: typeCode, b: behaviorCode }));
+    }
+
+    function decodeMatchData(encoded) {
+      try {
+        const data = JSON.parse(atob(encoded));
+        return { typeCode: data.t, behaviorCode: data.b };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // matchParamからクリエイター情報をデコード
+    const matchCreator = matchParam ? decodeMatchData(matchParam) : null;
 
     // ===================================================================
     // COMPONENTS
@@ -6275,6 +6439,7 @@
 
       const [shareCardUrl, setShareCardUrl] = React.useState(null);
       const [careerIntent, setCareerIntent] = React.useState(null);
+      const [showMatchModal, setShowMatchModal] = React.useState(false);
 
       // 行動類型スコア → レーダーチャート用オブジェクト
       const behaviorScores = {
@@ -6339,6 +6504,38 @@
           {/* メインコンテンツ（PC: 2カラム、SP: 1カラム） */}
           <div className="result-main-content">
             <div className="result-content-area">
+
+              {/* ★ 友達との相性を調べるボタン（最も目立つ位置） */}
+              <div style={{ textAlign: 'center', margin: '24px 0' }}>
+                <button
+                  onClick={() => setShowMatchModal(true)}
+                  style={{
+                    width: '100%',
+                    maxWidth: '400px',
+                    padding: '18px 32px',
+                    background: 'linear-gradient(135deg, #E8622B, #F4845F)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '60px',
+                    fontSize: '17px',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                    boxShadow: '0 8px 32px rgba(232,98,43,0.3)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px'
+                  }}
+                >
+                  <span style={{ fontSize: '20px' }}>💕</span>
+                  友達との相性を調べる
+                </button>
+                <p style={{ fontSize: '12px', color: 'rgba(42,42,42,0.4)', marginTop: '8px' }}>
+                  リンクを送るだけで相性がわかる！
+                </p>
+              </div>
 
               {/* シェアボタン */}
               <ShareButtons
@@ -6630,6 +6827,659 @@
               sections={sections}
             />
           </div>
+
+          {/* 相性リンク生成モーダル */}
+          {showMatchModal && (
+            <MatchShareModal
+              personalityCode={personalityCode}
+              behaviorCode={behavioralType.code}
+              onClose={() => setShowMatchModal(false)}
+            />
+          )}
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // 相性診断コンポーネント
+    // ===================================================================
+
+    // --- MatchLandingScreen（相性リンクを開いた人が最初に見る画面）---
+    function MatchLandingScreen({ creatorType, onStart }) {
+      const meta = TYPE_META[creatorType];
+      const nickname = TYPE_NICKNAMES[creatorType];
+      const typeColor = getTypeColor(creatorType);
+      const groupColor = GROUP_COLORS[creatorType.charAt(0)];
+
+      if (!meta) return null;
+
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          padding: '32px 24px',
+          textAlign: 'center'
+        }}>
+          {/* キャラクターEmoji */}
+          <div style={{
+            fontSize: '80px',
+            marginBottom: '24px',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))',
+            animation: 'fadeSlideUp 0.6s ease-out'
+          }}>
+            {meta.emoji}
+          </div>
+
+          {/* ニックネーム */}
+          <div style={{
+            display: 'inline-block',
+            padding: '6px 20px',
+            background: typeColor.gradient,
+            borderRadius: '20px',
+            color: '#fff',
+            fontSize: '14px',
+            fontWeight: '700',
+            marginBottom: '24px',
+            animation: 'fadeSlideUp 0.6s ease-out 0.1s both'
+          }}>
+            {nickname}
+          </div>
+
+          {/* メッセージ */}
+          <h1 style={{
+            fontSize: '24px',
+            fontWeight: '800',
+            color: '#1A1A2E',
+            lineHeight: 1.6,
+            margin: '0 0 12px',
+            fontFamily: "'Playfair Display', 'Noto Sans JP', serif",
+            animation: 'fadeSlideUp 0.6s ease-out 0.2s both'
+          }}>
+            <span style={{ color: typeColor.primary }}>{nickname}</span>のあの人が<br />
+            あなたとの相性を<br />
+            知りたがっています
+          </h1>
+
+          <p style={{
+            fontSize: '14px',
+            color: 'rgba(42,42,42,0.5)',
+            marginBottom: '40px',
+            animation: 'fadeSlideUp 0.6s ease-out 0.3s both'
+          }}>
+            無料の性格診断であなたのタイプを判定し、<br />
+            2人の相性を分析します
+          </p>
+
+          {/* CTAボタン */}
+          <button
+            onClick={onStart}
+            className="cta-button-glow"
+            style={{
+              width: '100%',
+              maxWidth: '360px',
+              padding: '18px 32px',
+              background: typeColor.gradient,
+              border: 'none',
+              borderRadius: '60px',
+              color: '#fff',
+              fontSize: '18px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              boxShadow: `0 8px 32px ${typeColor.glow}`,
+              animation: 'fadeSlideUp 0.6s ease-out 0.4s both',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            無料で診断して相性を調べる
+          </button>
+
+          <p style={{
+            fontSize: '12px',
+            color: 'rgba(42,42,42,0.35)',
+            marginTop: '16px',
+            animation: 'fadeSlideUp 0.6s ease-out 0.5s both'
+          }}>
+            ※ 所要時間：約3分 ・ 57問の性格診断
+          </p>
+        </div>
+      );
+    }
+
+    // --- 相性カード画像生成（Canvas API / 1080×1080） ---
+    async function generateCompatibilityCard(typeA, typeB, compatData) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1080;
+      const ctx = canvas.getContext('2d');
+
+      const metaA = TYPE_META[typeA];
+      const metaB = TYPE_META[typeB];
+      const nickA = TYPE_NICKNAMES[typeA];
+      const nickB = TYPE_NICKNAMES[typeB];
+      const groupA = GROUP_COLORS[typeA.charAt(0)];
+      const groupB = GROUP_COLORS[typeB.charAt(0)];
+
+      if (!metaA || !metaB) return null;
+
+      // 背景グラデーション（2人のグループカラー）
+      const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
+      bgGrad.addColorStop(0, groupA.color);
+      bgGrad.addColorStop(0.5, '#FFF5EE');
+      bgGrad.addColorStop(1, groupB.color);
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // 半透明オーバーレイ
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // 装飾円
+      ctx.beginPath();
+      ctx.arc(200, 380, 160, 0, Math.PI * 2);
+      ctx.fillStyle = groupA.color + '15';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(880, 380, 160, 0, Math.PI * 2);
+      ctx.fillStyle = groupB.color + '15';
+      ctx.fill();
+
+      // 上部テキスト「性格タイプ相性診断」
+      ctx.font = '600 22px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(42,42,42,0.4)';
+      ctx.textAlign = 'center';
+      ctx.fillText('性格タイプ相性診断', 540, 100);
+
+      // Emoji（左右配置）
+      ctx.font = '100px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(metaA.emoji, 270, 420);
+      ctx.fillText(metaB.emoji, 810, 420);
+
+      // 中央の「×」
+      ctx.font = '700 48px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(42,42,42,0.3)';
+      ctx.fillText('×', 540, 400);
+
+      // ニックネーム
+      ctx.font = '700 26px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = '#1A1A2E';
+      ctx.fillText(`${nickA}  ×  ${nickB}`, 540, 540);
+
+      // ラベルアイコン + ラベル + スコア
+      ctx.font = '800 64px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = '#E8622B';
+      ctx.fillText(`${compatData.icon} ${compatData.label}`, 540, 660);
+
+      ctx.font = '800 80px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = '#1A1A2E';
+      ctx.fillText(`${compatData.score}%`, 540, 770);
+
+      // トーン
+      ctx.font = '500 24px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = 'rgba(42,42,42,0.6)';
+      ctx.fillText(compatData.tone, 540, 840);
+
+      // ブランド
+      ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = 'rgba(42,42,42,0.3)';
+      ctx.fillText('PERSONAL FILE', 540, 980);
+      ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillText('personalfile.jp', 540, 1010);
+
+      return canvas.toDataURL('image/png');
+    }
+
+    // --- CompatibilityResult（相性結果画面）---
+    function CompatibilityResult({ creatorType, responderType, onNewMatch }) {
+      const compat = getCompatibility(creatorType, responderType);
+      const insights = getCompatibilityInsights(creatorType, responderType, compat);
+      const metaA = TYPE_META[creatorType];
+      const metaB = TYPE_META[responderType];
+      const nickA = TYPE_NICKNAMES[creatorType];
+      const nickB = TYPE_NICKNAMES[responderType];
+      const colorA = getTypeColor(creatorType);
+      const colorB = getTypeColor(responderType);
+      const groupA = GROUP_COLORS[creatorType.charAt(0)];
+      const groupB = GROUP_COLORS[responderType.charAt(0)];
+
+      const [cardUrl, setCardUrl] = React.useState(null);
+      const [copied, setCopied] = React.useState(false);
+
+      React.useEffect(() => {
+        generateCompatibilityCard(creatorType, responderType, compat)
+          .then(url => { if (url) setCardUrl(url); })
+          .catch(() => {});
+      }, []);
+
+      if (!metaA || !metaB) return null;
+
+      const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}%！\nあなたも相性を調べてみよう！\n\n`;
+      const shareUrl = 'https://www.personal-file.jp/80type/';
+
+      const shareToX = () => {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
+      };
+      const shareToLine = () => {
+        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+      };
+      const downloadCard = () => {
+        if (!cardUrl) return;
+        const a = document.createElement('a');
+        a.href = cardUrl;
+        a.download = `compatibility-${creatorType}-${responderType}.png`;
+        a.click();
+      };
+
+      return (
+        <div style={{ minHeight: '100vh', padding: '0 0 60px' }}>
+          {/* ヒーローエリア */}
+          <div style={{
+            background: `linear-gradient(135deg, ${groupA.color}20, #FFF5EE, ${groupB.color}20)`,
+            padding: '48px 24px 40px',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {/* 装飾円 */}
+            <div style={{ position: 'absolute', top: '-40px', left: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: groupA.color + '10' }} />
+            <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: groupB.color + '10' }} />
+
+            {/* Emoji × Emoji */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '24px',
+              marginBottom: '20px',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{ fontSize: '64px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>{metaA.emoji}</div>
+              <span style={{ fontSize: '28px', color: 'rgba(42,42,42,0.3)', fontWeight: '700' }}>×</span>
+              <div style={{ fontSize: '64px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>{metaB.emoji}</div>
+            </div>
+
+            {/* ニックネーム */}
+            <p style={{
+              fontSize: '16px',
+              fontWeight: '700',
+              color: '#1A1A2E',
+              marginBottom: '24px',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <span style={{ color: colorA.primary }}>{nickA}</span>
+              <span style={{ color: 'rgba(42,42,42,0.3)', margin: '0 8px' }}>×</span>
+              <span style={{ color: colorB.primary }}>{nickB}</span>
+            </p>
+
+            {/* スコア */}
+            <div style={{
+              display: 'inline-flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '24px 40px',
+              background: 'rgba(255,255,255,0.7)',
+              backdropFilter: 'blur(20px)',
+              borderRadius: '24px',
+              border: '1px solid rgba(255,255,255,0.8)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '4px' }}>{compat.icon}</div>
+              <div style={{
+                fontSize: '20px',
+                fontWeight: '800',
+                color: '#E8622B',
+                marginBottom: '4px',
+                fontFamily: "'Playfair Display', serif"
+              }}>
+                {compat.label}
+              </div>
+              <div style={{
+                fontSize: '56px',
+                fontWeight: '900',
+                color: '#1A1A2E',
+                lineHeight: 1,
+                fontFamily: "'Sora', sans-serif"
+              }}>
+                {compat.score}<span style={{ fontSize: '24px' }}>%</span>
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: 'rgba(42,42,42,0.5)',
+                marginTop: '8px'
+              }}>
+                {compat.tone}
+              </div>
+            </div>
+          </div>
+
+          {/* 詳細コンテンツ */}
+          <div style={{ maxWidth: '700px', margin: '0 auto', padding: '0 20px' }}>
+
+            {/* 個別視点スコア */}
+            {compat.scoreA != null && (
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                margin: '24px 0',
+                justifyContent: 'center'
+              }}>
+                <div style={{
+                  flex: 1,
+                  maxWidth: '200px',
+                  padding: '14px',
+                  background: 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(12px)',
+                  borderRadius: '14px',
+                  textAlign: 'center',
+                  border: '1px solid rgba(255,255,255,0.7)'
+                }}>
+                  <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickA}から見た相性</div>
+                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorA.primary, fontFamily: "'Sora', sans-serif" }}>{compat.scoreA}%</div>
+                </div>
+                <div style={{
+                  flex: 1,
+                  maxWidth: '200px',
+                  padding: '14px',
+                  background: 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(12px)',
+                  borderRadius: '14px',
+                  textAlign: 'center',
+                  border: '1px solid rgba(255,255,255,0.7)'
+                }}>
+                  <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickB}から見た相性</div>
+                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorB.primary, fontFamily: "'Sora', sans-serif" }}>{compat.scoreB}%</div>
+                </div>
+              </div>
+            )}
+
+            {/* 関係タイプバッジ */}
+            <div style={{ textAlign: 'center', margin: '20px 0' }}>
+              <span style={{
+                display: 'inline-block',
+                padding: '6px 18px',
+                background: 'rgba(232,98,43,0.08)',
+                borderRadius: '20px',
+                fontSize: '13px',
+                fontWeight: '700',
+                color: '#E8622B'
+              }}>
+                {insights.relation.type}タイプ — {insights.relation.description}
+              </span>
+            </div>
+
+            {/* わかり合えるポイント */}
+            <div style={{
+              background: 'rgba(255,255,255,0.6)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '16px',
+              padding: '24px',
+              margin: '16px 0',
+              border: '1px solid rgba(255,255,255,0.7)'
+            }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                💚 わかり合えるポイント
+              </h3>
+              <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.75)', lineHeight: 1.8 }}>
+                {insights.empathy}
+              </p>
+            </div>
+
+            {/* 補い合えるポイント */}
+            <div style={{
+              background: 'rgba(255,255,255,0.6)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '16px',
+              padding: '24px',
+              margin: '16px 0',
+              border: '1px solid rgba(255,255,255,0.7)'
+            }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                🤝 補い合えるポイント
+              </h3>
+              <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.75)', lineHeight: 1.8 }}>
+                {insights.complement}
+              </p>
+            </div>
+
+            {/* 気をつけること */}
+            <div style={{
+              background: 'rgba(255,255,255,0.6)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '16px',
+              padding: '24px',
+              margin: '16px 0',
+              border: '1px solid rgba(255,255,255,0.7)'
+            }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                ⚠️ 気をつけること
+              </h3>
+              <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.75)', lineHeight: 1.8 }}>
+                {insights.caution}
+              </p>
+            </div>
+
+            {/* 相性カードプレビュー */}
+            {cardUrl && (
+              <div style={{ textAlign: 'center', margin: '32px 0' }}>
+                <img
+                  src={cardUrl}
+                  alt="相性カード"
+                  style={{
+                    width: '100%',
+                    maxWidth: '400px',
+                    borderRadius: '16px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                  }}
+                />
+              </div>
+            )}
+
+            {/* シェアボタン群 */}
+            <div style={{
+              display: 'flex',
+              gap: '10px',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              margin: '24px 0'
+            }}>
+              <button onClick={shareToX} style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '12px 24px', background: '#1A1A2E', color: '#fff',
+                border: 'none', borderRadius: '28px', fontSize: '14px',
+                fontWeight: '700', cursor: 'pointer'
+              }}>
+                𝕏 でシェア
+              </button>
+              <button onClick={shareToLine} style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '12px 24px', background: '#06C755', color: '#fff',
+                border: 'none', borderRadius: '28px', fontSize: '14px',
+                fontWeight: '700', cursor: 'pointer'
+              }}>
+                LINE
+              </button>
+              {cardUrl && (
+                <button onClick={downloadCard} style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '12px 24px', background: 'rgba(255,255,255,0.6)',
+                  color: '#1A1A2E', border: '1px solid rgba(0,0,0,0.1)',
+                  borderRadius: '28px', fontSize: '14px', fontWeight: '700', cursor: 'pointer'
+                }}>
+                  📥 画像を保存
+                </button>
+              )}
+            </div>
+
+            {/* 他の友達との相性を調べるボタン */}
+            <div style={{ textAlign: 'center', margin: '32px 0' }}>
+              <button
+                onClick={onNewMatch}
+                style={{
+                  width: '100%',
+                  maxWidth: '360px',
+                  padding: '16px 32px',
+                  background: 'linear-gradient(135deg, #E8622B, #F4845F)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '28px',
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 20px rgba(232,98,43,0.3)'
+                }}
+              >
+                他の友達との相性も調べる
+              </button>
+            </div>
+
+            {/* ブランド */}
+            <div style={{
+              textAlign: 'center',
+              padding: '32px 0',
+              fontSize: '14px',
+              fontWeight: '700',
+              color: 'rgba(42,42,42,0.2)',
+              letterSpacing: '4px'
+            }}>
+              PERSONAL FILE
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- MatchShareModal（相性リンク生成・共有モーダル）---
+    function MatchShareModal({ personalityCode, behaviorCode, onClose }) {
+      const [copied, setCopied] = React.useState(false);
+      const matchData = encodeMatchData(personalityCode, behaviorCode);
+      const matchUrl = `https://www.personal-file.jp/80type/index.html?match=${matchData}`;
+      const nickname = TYPE_NICKNAMES[personalityCode];
+      const meta = TYPE_META[personalityCode];
+
+      const shareText = `あなたとの相性を調べてみませんか？\n${meta?.emoji} ${nickname}の私と、あなたの相性は…？\n`;
+
+      const copyLink = () => {
+        navigator.clipboard.writeText(matchUrl).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      };
+
+      const shareToLine = () => {
+        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(matchUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+      };
+
+      const shareToX = () => {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(matchUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
+      };
+
+      return (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.4)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          animation: 'fadeIn 0.2s ease-out'
+        }} onClick={onClose}>
+          <div style={{
+            background: '#fff',
+            borderRadius: '24px',
+            padding: '32px 24px',
+            maxWidth: '400px',
+            width: '100%',
+            boxShadow: '0 16px 64px rgba(0,0,0,0.15)',
+            animation: 'fadeSlideUp 0.3s ease-out'
+          }} onClick={e => e.stopPropagation()}>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <div style={{ fontSize: '48px', marginBottom: '12px' }}>{meta?.emoji}</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: '800',
+                color: '#1A1A2E',
+                marginBottom: '8px'
+              }}>
+                友達に相性リンクを送ろう
+              </h3>
+              <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.5)' }}>
+                リンクを受け取った人が診断すると、<br />あなたとの相性結果が表示されます
+              </p>
+            </div>
+
+            {/* リンク表示 */}
+            <div style={{
+              background: 'rgba(0,0,0,0.03)',
+              borderRadius: '12px',
+              padding: '12px',
+              marginBottom: '20px',
+              fontSize: '11px',
+              color: 'rgba(42,42,42,0.6)',
+              wordBreak: 'break-all',
+              lineHeight: 1.5,
+              textAlign: 'center'
+            }}>
+              {matchUrl}
+            </div>
+
+            {/* シェアボタン群 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <button onClick={shareToLine} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                padding: '14px', background: '#06C755', color: '#fff',
+                border: 'none', borderRadius: '14px', fontSize: '15px',
+                fontWeight: '700', cursor: 'pointer', width: '100%'
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.39.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.096 14.395 24 12.458 24 10.304"/></svg>
+                LINEで送る
+              </button>
+
+              <button onClick={shareToX} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                padding: '14px', background: '#1A1A2E', color: '#fff',
+                border: 'none', borderRadius: '14px', fontSize: '15px',
+                fontWeight: '700', cursor: 'pointer', width: '100%'
+              }}>
+                𝕏 でシェア
+              </button>
+
+              <button onClick={copyLink} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                padding: '14px', background: copied ? '#E8622B' : 'rgba(0,0,0,0.04)',
+                color: copied ? '#fff' : '#1A1A2E',
+                border: 'none', borderRadius: '14px', fontSize: '15px',
+                fontWeight: '700', cursor: 'pointer', width: '100%',
+                transition: 'all 0.2s ease'
+              }}>
+                {copied ? '✓ コピーしました！' : '🔗 リンクをコピー'}
+              </button>
+            </div>
+
+            <button onClick={onClose} style={{
+              display: 'block',
+              width: '100%',
+              marginTop: '16px',
+              padding: '12px',
+              background: 'transparent',
+              border: 'none',
+              fontSize: '14px',
+              color: 'rgba(42,42,42,0.4)',
+              cursor: 'pointer'
+            }}>
+              閉じる
+            </button>
+          </div>
         </div>
       );
     }
@@ -6639,11 +7489,16 @@
     // ===================================================================
 
     function App() {
-      const [phase, setPhase] = React.useState('start'); // start | quiz | chapterTransition | loading | result
+      // 相性リンクから来た場合: matchLanding → quiz → loading → result + compatibility
+      // 通常フロー: start → quiz → loading → result
+      const isMatchMode = !!matchCreator;
+
+      const [phase, setPhase] = React.useState(isMatchMode ? 'matchLanding' : 'start');
       const [qIndex, setQIndex] = React.useState(0);
       const [scores, setScores] = React.useState({ P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
       const [answerHistory, setAnswerHistory] = React.useState([]);
       const [nextChapter, setNextChapter] = React.useState(null);
+      const [showCompatibility, setShowCompatibility] = React.useState(false);
 
       const handleStart = () => {
         setPhase('quiz');
@@ -6723,11 +7578,30 @@
 
       const handleLoadingComplete = () => {
         setPhase('result');
+        // 相性モードの場合、結果表示後に自動的に相性画面も表示
+        if (isMatchMode) {
+          setShowCompatibility(true);
+        }
         window.scrollTo(0, 0);
       };
 
+      // 相性結果から「他の友達との相性も調べる」→ 自分の結果画面に戻り、新しいリンクを生成
+      const handleNewMatch = () => {
+        setShowCompatibility(false);
+        window.scrollTo(0, 0);
+      };
+
+      // 結果画面で「相性結果を見る」ボタン（matchモード時）
+      const responderType = phase === 'result' ? determinePersonalityType(scores) : null;
+
       return (
         <div className="app-container">
+          {phase === 'matchLanding' && matchCreator && (
+            <MatchLandingScreen
+              creatorType={matchCreator.typeCode}
+              onStart={handleStart}
+            />
+          )}
           {phase === 'start' && (
             <StartScreen80 onStart={handleStart} />
           )}
@@ -6745,8 +7619,55 @@
           {phase === 'loading' && (
             <LoadingScreen80 onComplete={handleLoadingComplete} />
           )}
-          {phase === 'result' && (
-            <ResultScreen80 scores={scores} />
+          {phase === 'result' && !showCompatibility && (
+            <>
+              <ResultScreen80 scores={scores} />
+              {/* 相性モードの場合: 結果の上部に相性結果へのボタンを表示 */}
+              {isMatchMode && matchCreator && responderType && (
+                <div style={{
+                  position: 'fixed',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 500,
+                  padding: '16px 20px',
+                  background: 'rgba(255,252,248,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  borderTop: '1px solid rgba(0,0,0,0.06)',
+                  textAlign: 'center'
+                }}>
+                  <button
+                    onClick={() => { setShowCompatibility(true); window.scrollTo(0, 0); }}
+                    style={{
+                      width: '100%',
+                      maxWidth: '360px',
+                      padding: '16px 32px',
+                      background: 'linear-gradient(135deg, #E8622B, #F4845F)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '60px',
+                      fontSize: '16px',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 20px rgba(232,98,43,0.3)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    💕 相性結果を見る
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+          {phase === 'result' && showCompatibility && matchCreator && responderType && (
+            <CompatibilityResult
+              creatorType={matchCreator.typeCode}
+              responderType={responderType}
+              onNewMatch={handleNewMatch}
+            />
           )}
         </div>
       );
