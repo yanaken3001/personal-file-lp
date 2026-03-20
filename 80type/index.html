@@ -5293,8 +5293,8 @@
       const typeMeta = TYPE_META[personalityCode];
       if (!typeMeta) return;
       const nickname = TYPE_NICKNAMES[personalityCode] || typeMeta.name;
-      const title = `${nickname}×${behaviorType} | 80タイプ診断`;
-      const description = `あなたは80タイプの中で「${nickname}×${behaviorType}」でした。あなたのタイプは？`;
+      const title = `${behaviorType}${personalityCode} ${nickname} | 80タイプ診断`;
+      const description = `あなたは80タイプの中で「${behaviorType}${personalityCode} ${nickname}」でした。あなたのタイプは？`;
 
       const setMeta = (property, content) => {
         let meta = document.querySelector(`meta[property="${property}"]`) ||
@@ -5357,16 +5357,19 @@
       ctx.fillStyle = 'rgba(42,42,42,0.7)';
       ctx.fillText('あなたは', 80, 200);
 
-      // タイプ名（あだ名×行動類型）
+      // タイプ名（行動類型コード + あだ名）
       const nickname = TYPE_NICKNAMES[personalityCode] || typeMeta.name;
-      ctx.font = '800 48px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.font = '600 32px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.fillStyle = 'rgba(42,42,42,0.6)';
+      ctx.fillText(`${behaviorType}${personalityCode}`, 80, 250);
+      ctx.font = '800 52px "Hiragino Sans", "Yu Gothic", sans-serif';
       ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(`${nickname}×${behaviorType}`, 80, 280);
+      ctx.fillText(nickname, 80, 310);
 
       // キャッチコピー
       ctx.font = '500 22px "Hiragino Sans", "Yu Gothic", sans-serif';
       ctx.fillStyle = typeColor.primary;
-      ctx.fillText(TYPE_CATCHCOPY[personalityCode] || '', 80, 330);
+      ctx.fillText(TYPE_CATCHCOPY[personalityCode] || '', 80, 365);
 
       // Emoji
       ctx.font = '120px sans-serif';
@@ -5417,7 +5420,7 @@
 
       const nickname = TYPE_NICKNAMES[personalityCode] || typeName;
       const shareText = typeMeta
-        ? `私は「${nickname}×${behaviorType}」タイプでした！\n${typeMeta.emoji} ${TYPE_CATCHCOPY[personalityCode] || ''}\n\n`
+        ? `私は「${behaviorType}${personalityCode} ${nickname}」タイプでした！\n${typeMeta.emoji} ${TYPE_CATCHCOPY[personalityCode] || ''}\n\n`
         : `私は「${typeName}」タイプでした！\n`;
       const shareUrl = resultUrl || 'https://www.personal-file.jp/80type';
       const hashtags = '80タイプ診断,パーソナルファイル';
@@ -5640,24 +5643,24 @@
             {/* SP: emoji上、PC: emoji右 */}
             <div className="hero-text-area">
               <p style={{
-                fontSize: '14px',
+                fontSize: '15px',
                 fontWeight: '600',
-                color: 'rgba(255,255,255,0.85)',
-                margin: '0 0 8px',
-                letterSpacing: '3px',
+                color: 'rgba(255,255,255,0.7)',
+                margin: '0 0 6px',
+                letterSpacing: '2px',
               }}>
-                あなたの性格タイプ:
+                {behaviorType}{personalityCode}
               </p>
 
               <h1 style={{
-                fontSize: '32px',
+                fontSize: '36px',
                 fontWeight: '900',
                 color: '#fff',
-                margin: '0 0 6px',
+                margin: '0 0 10px',
                 textShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                lineHeight: 1.3
+                lineHeight: 1.2
               }}>
-                {TYPE_NICKNAMES[personalityCode]}×{behaviorType}
+                {TYPE_NICKNAMES[personalityCode]}
               </h1>
 
               <p style={{
@@ -6309,9 +6312,9 @@
             borderTop: `3px solid ${typeColor.primary}`
           }}>
             <div style={{ fontSize: '48px', marginBottom: '10px' }}>{typeMeta.emoji}</div>
-            <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>あなたのタイプ:</div>
-            <div style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px', lineHeight: 1.4 }}>
-              {TYPE_NICKNAMES[personalityCode]}×{behaviorType}
+            <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{behaviorType}{personalityCode}</div>
+            <div style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A2E', lineHeight: 1.4 }}>
+              {TYPE_NICKNAMES[personalityCode]}
             </div>
           </div>
 
@@ -6714,7 +6717,7 @@
                         あなたのタイプにおすすめのスキルアップ
                       </h3>
                       <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
-                        {TYPE_NICKNAMES[personalityCode] || personalityName}×{behavioralType.name}のあなたに合ったスクールを厳選
+                        {behavioralType.name}{personalityCode} {TYPE_NICKNAMES[personalityCode] || personalityName}のあなたに合ったスクールを厳選
                       </p>
                       <a
                         href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_future_${personalityCode}`}
