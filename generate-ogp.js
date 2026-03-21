@@ -31,7 +31,7 @@ const path = require("path");
         /* Blue Crosshairs */
         .h-line {
           position: absolute;
-          top: 360px; /* Below the center of 80 */
+          top: 315px; /* Exactly center of 630px */
           left: 0;
           width: 100%;
           height: 1px;
@@ -41,7 +41,7 @@ const path = require("path");
         .v-line {
           position: absolute;
           top: 0;
-          left: 600px;
+          left: 600px; /* Exactly center of 1200px */
           width: 1px;
           height: 100%;
           background-color: #0055FF;
@@ -51,20 +51,20 @@ const path = require("path");
         .number {
           font-family: 'Roboto', sans-serif;
           font-weight: 900;
-          font-size: 550px;
+          font-size: 380px; /* Decreased from 550px */
           color: #000000;
           line-height: 1;
           z-index: 2;
-          margin-top: -60px; /* Adjust to center vertically */
+          margin-top: -60px; /* Adjust to center vertically, visual center of 80 is lower */
           letter-spacing: -0.05em;
         }
         /* Text */
         .text {
           position: absolute;
-          bottom: 80px;
+          bottom: 70px;
           font-family: 'Noto Sans JP', sans-serif;
           font-weight: 900;
-          font-size: 38px;
+          font-size: 54px; /* Increased from 38px */
           color: #0055FF;
           letter-spacing: 0.1em;
           z-index: 2;
