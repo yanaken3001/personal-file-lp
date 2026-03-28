@@ -2,7 +2,19 @@
   "permissions": {
     "allow": [
       "Bash(start \"\" \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile/80type/design-concept.html\")",
-      "Bash(start \"\" \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile/80type/80cards.html\")"
+      "Bash(start \"\" \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile/80type/80cards.html\")",
+      "mcp__637d2a50-df20-416a-9b6f-d8cdddb41ee2__list_teams",
+      "mcp__637d2a50-df20-416a-9b6f-d8cdddb41ee2__list_projects",
+      "mcp__637d2a50-df20-416a-9b6f-d8cdddb41ee2__get_project",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" status)",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" check-ignore -v \"80type/80cards.html\" \"80type/design-concept.html\" \"80type/agents/1-product/riku.md\" \"80type/guidelines/project-overview.md\")",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" add --dry-run \"80type/80cards.html\")",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" add \"80type/80cards.html\")",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" status -s)",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" ls-files -v \"80type/80cards.html\")",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" ls-files \"80type/index.html\")",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" log --oneline -5)",
+      "Bash(git -C \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile\" diff HEAD -- \"80type/80cards.html\")"
     ]
   }
 }
