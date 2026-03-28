@@ -216,23 +216,46 @@
       }
     }
 
-    /* ===== GLASSMORPHISM (Light) ===== */
+    /* ===== GLASSMORPHISM (Light - Pro Max) ===== */
     .glass-card {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.45) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.04),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.9),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    .glass-card:hover {
+      box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.06),
+        inset 1px 1px 1px rgba(255, 255, 255, 1),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.4);
     }
 
     .glass-card-strong {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.06),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.9),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.4);
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    .glass-card-strong:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 16px 56px rgba(0, 0, 0, 0.08),
+        inset 1px 1px 1px rgba(255, 255, 255, 1),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.5);
     }
 
     /* ===== PARTICLES ===== */
@@ -392,20 +415,20 @@
       justify-content: center;
       width: 100%;
       max-width: 400px;
-      padding: 18px 32px;
-      background: var(--accent);
+      padding: 20px 32px;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff8a5c 100%);
       border: none;
-      border-radius: 60px;
+      border-radius: 64px;
       color: #fff;
       font-family: 'Noto Sans JP', sans-serif;
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 4px 20px rgba(232, 98, 43, 0.3);
-      letter-spacing: 0.02em;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 8px 24px rgba(232, 98, 43, 0.4), inset 0 2px 4px rgba(255,255,255,0.25);
+      letter-spacing: 0.04em;
     }
 
     .cta-button::before {
@@ -415,17 +438,18 @@
       left: -200%;
       width: 200%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      animation: shimmer 3s ease-in-out infinite;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2.5s ease-in-out infinite;
     }
 
     .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(232, 98, 43, 0.4);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 32px rgba(232, 98, 43, 0.5), inset 0 2px 4px rgba(255,255,255,0.35);
     }
-
+    
     .cta-button:active {
-      transform: translateY(0);
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 4px 12px rgba(232, 98, 43, 0.25);
     }
 
     .social-proof {
@@ -598,12 +622,13 @@
 
     .question-text {
       font-family: 'Playfair Display', 'Noto Sans JP', serif;
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.7;
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
       color: var(--text-primary);
       text-align: center;
-      margin-bottom: 44px;
+      margin-bottom: 48px;
       max-width: 560px;
     }
 
@@ -621,37 +646,44 @@
     }
 
     .likert-btn {
-      width: 56px;
-      height: 56px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid rgba(0, 0, 0, 0.04);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       color: var(--text-secondary);
       font-family: 'Sora', sans-serif;
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       align-items: center;
       justify-content: center;
       -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
 
     .likert-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 45, 85, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(232, 98, 43, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
     }
 
     .likert-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.92);
+      transition: all 0.1s;
     }
 
     .likert-btn.selected {
       color: #FFFFFF;
-      font-weight: 700;
+      font-weight: 800;
       border-color: transparent;
-      transform: scale(1.02);
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .likert-btn.selected.color-P,
@@ -697,7 +729,7 @@
 
     .likert-label-center {
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
       text-align: center;
       line-height: 1.35;
       flex: 1;
