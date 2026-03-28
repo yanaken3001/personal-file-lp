@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"\" \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile/80type/design-concept.html\")",
+      "Bash(start \"\" \"C:/Users/kogik/Desktop/【②Personalitix・診断系】/personalfile/80type/80cards.html\")"
+    ]
+  }
+}

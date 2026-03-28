@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>80CARDS — Design Concept v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-light: #F8F7F4;
+  --bg-cosmos: #0A0A14;
+  --bg-surface-dark: #12121E;
+  --text-light: #1A1A1A;
+  --text-light-2: rgba(26,26,26,0.55);
+  --text-dark: #F0EDE8;
+  --text-dark-2: rgba(240,237,232,0.65);
+  --text-dark-3: rgba(240,237,232,0.35);
+  --type-p: #FF3B5C;
+  --type-a: #4D6CFA;
+  --type-i: #00D4AA;
+  --type-d: #8B5CF6;
+  --glow-p: rgba(255,59,92,0.5);
+  --glow-a: rgba(77,108,250,0.5);
+  --glow-i: rgba(0,212,170,0.5);
+  --glow-d: rgba(139,92,246,0.5);
+  --gold: #F5C542;
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'Noto Sans JP', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-body);background:var(--bg-light);color:var(--text-light);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(248,247,244,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,0.05);padding:10px 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{padding:7px 16px;border-radius:999px;border:1.5px solid rgba(0,0,0,0.08);background:#fff;font-size:12px;font-weight:600;font-family:var(--font-body);cursor:pointer;white-space:nowrap;transition:all .2s;color:var(--text-light);}
+.nav-btn:hover{border-color:var(--gold);color:#b8941f;}
+.nav-btn.active{background:var(--gold);color:var(--bg-cosmos);border-color:var(--gold);}
+
+.section{min-height:100vh;padding:72px 20px 60px;position:relative;}
+.section-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.section-heading{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;}
+.section-desc{font-size:13px;color:var(--text-light-2);line-height:1.8;max-width:500px;margin-bottom:36px;}
+
+/* ======================================================================
+   HERO — 16Personalities inspired: text top, characters bottom panorama
+   ====================================================================== */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  background:linear-gradient(170deg,#0D0D1A 0%,#141428 30%,#1A1A3A 60%,#12122A 100%);
+  color:var(--text-dark);
+}
+
+/* Animated aurora overlay */
+.hero-aurora{
+  position:absolute;inset:0;z-index:0;opacity:.5;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 30%, rgba(255,59,92,0.18), transparent 50%),
+    radial-gradient(ellipse 50% 60% at 85% 20%, rgba(77,108,250,0.18), transparent 50%),
+    radial-gradient(ellipse 55% 50% at 75% 85%, rgba(139,92,246,0.15), transparent 50%),
+    radial-gradient(ellipse 60% 55% at 20% 80%, rgba(0,212,170,0.15), transparent 50%);
+  animation:auroraShift 15s ease-in-out infinite alternate;
+}
+@keyframes auroraShift{
+  0%{transform:scale(1) translate(0,0);}
+  50%{transform:scale(1.1) translate(2%,-2%);}
+  100%{transform:scale(1.05) translate(-1%,1%);}
+}
+
+/* Stars */
+.hero-stars{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.star{
+  position:absolute;border-radius:50%;background:#fff;
+  animation:starTwinkle ease-in-out infinite;
+}
+@keyframes starTwinkle{
+  0%,100%{opacity:.2;transform:scale(1);}
+  50%{opacity:.8;transform:scale(1.4);}
+}
+
+/* Particles floating up */
+.hero-particles{position:absolute;inset:0;z-index:2;pointer-events:none;}
+.hero-particle{
+  position:absolute;border-radius:50%;opacity:0;
+  animation:particleUp linear infinite;
+}
+@keyframes particleUp{
+  0%{opacity:0;transform:translateY(0) scale(0);}
+  10%{opacity:.8;transform:scale(1);}
+  90%{opacity:.6;}
+  100%{opacity:0;transform:translateY(-100vh) scale(.3);}
+}
+
+/* Text content area — upper portion */
+.hero-text{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  padding:100px 24px 40px;
+  flex-shrink:0;
+}
+
+.hero-title{
+  font-family:var(--font-body);font-size:36px;font-weight:800;
+  letter-spacing:.02em;line-height:1.45;margin-bottom:16px;
+}
+@media(min-width:768px){.hero-title{font-size:48px;}}
+
+.hero-title .accent{
+  background:linear-gradient(135deg,var(--type-p),var(--type-a),var(--type-i),var(--type-d));
+  background-size:200% 200%;animation:gradShift 4s ease infinite;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+@keyframes gradShift{
+  0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}
+}
+
+.hero-sub{
+  font-size:15px;color:var(--text-dark-2);line-height:2;
+  margin-bottom:36px;max-width:400px;
+}
+
+/* CTA */
+.hero-cta{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:18px 56px;font-family:var(--font-display);font-size:16px;font-weight:700;
+  color:var(--bg-cosmos);
+  background:linear-gradient(135deg,var(--gold),#FFD700,#FFC107);background-size:200% 200%;
+  animation:gradShift 3s ease infinite;
+  border:none;border-radius:999px;cursor:pointer;
+  box-shadow:0 4px 32px rgba(245,197,66,0.4);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+.hero-cta::before{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+  animation:shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer{0%{left:-100%;}50%,100%{left:150%;}}
+.hero-cta:hover{
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 8px 40px rgba(245,197,66,0.55),0 0 0 5px rgba(245,197,66,0.15);
+}
+
+/* Characters panorama — bottom area */
+.hero-characters{
+  position:relative;z-index:5;
+  flex:1;min-height:280px;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0 20px;
+  overflow:hidden;
+}
+
+/* Ground glow */
+.hero-ground{
+  position:absolute;bottom:0;left:0;right:0;height:120px;z-index:0;
+  background:linear-gradient(180deg,transparent,rgba(245,197,66,0.04) 50%,rgba(245,197,66,0.08));
+}
+
+.hero-char-wrap{
+  position:relative;display:flex;align-items:flex-end;justify-content:center;
+  gap:0;max-width:900px;width:100%;
+}
+
+.hero-char{
+  object-fit:contain;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+  position:relative;z-index:2;
+  flex-shrink:0;
+}
+
+/* Each character: different sizes for depth, floating animations */
+.hero-char--ip{width:120px;animation:hFloat 5s ease-in-out 0s infinite;}
+.hero-char--dd{width:160px;animation:hFloat 6s ease-in-out .5s infinite;margin:0 -10px;}
+.hero-char--aa{width:145px;animation:hFloat 5.5s ease-in-out 1s infinite;margin:0 -5px;}
+.hero-char--pp{width:190px;animation:hFloat 5s ease-in-out 1.5s infinite;z-index:4;margin:0 -8px;}
+.hero-char--ii{width:155px;animation:hFloat 5.5s ease-in-out 2s infinite;margin:0 -5px;}
+.hero-char--pd{width:150px;animation:hFloat 6s ease-in-out 2.5s infinite;margin:0 -10px;}
+.hero-char--da{width:125px;animation:hFloat 5s ease-in-out 3s infinite;}
+
+@keyframes hFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+/* Character glow underneath */
+.hero-char-glow{
+  position:absolute;bottom:-20px;width:80px;height:30px;border-radius:50%;
+  filter:blur(20px);opacity:.4;z-index:1;
+}
+
+/* Scroll indicator */
+.scroll-hint{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:20;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-size:10px;color:var(--text-dark-3);letter-spacing:.12em;font-family:var(--font-display);
+  animation:scrollBounce 2s ease-in-out infinite;
+}
+.scroll-hint-line{width:1px;height:20px;background:linear-gradient(180deg,rgba(255,255,255,0.2),transparent);}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+
+/* ======================================================================
+   CARD DESIGN — Rebalanced
+   ====================================================================== */
+#cards{background:var(--bg-cosmos);color:var(--text-dark);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;max-width:1280px;margin:0 auto;}
+
+.type-card{
+  position:relative;width:100%;max-width:360px;margin:0 auto;
+  aspect-ratio:1;border-radius:20px;overflow:hidden;
+  cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.type-card:hover{transform:translateY(-8px) scale(1.02);}
+
+.type-card__bg{position:absolute;inset:0;z-index:0;}
+.type-card__bg--p{background:radial-gradient(ellipse 90% 70% at 50% 65%,rgba(255,59,92,0.25),transparent 55%),linear-gradient(180deg,#1A0A0E,#0F0608);}
+.type-card__bg--a{background:radial-gradient(ellipse 90% 70% at 50% 65%,rgba(77,108,250,0.25),transparent 55%),linear-gradient(180deg,#0A0E1A,#060810);}
+.type-card__bg--i{background:radial-gradient(ellipse 90% 70% at 50% 65%,rgba(0,212,170,0.25),transparent 55%),linear-gradient(180deg,#0A1A14,#06100C);}
+.type-card__bg--d{background:radial-gradient(ellipse 90% 70% at 50% 65%,rgba(139,92,246,0.25),transparent 55%),linear-gradient(180deg,#0E0A1A,#080610);}
+
+.type-card__noise{position:absolute;inset:0;z-index:1;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+.type-card__bar{position:absolute;top:0;left:0;right:0;height:3px;z-index:5;}
+.type-card__bar--p{background:linear-gradient(90deg,#FF3B5C,#FF6B8A);}
+.type-card__bar--a{background:linear-gradient(90deg,#4D6CFA,#7B93FF);}
+.type-card__bar--i{background:linear-gradient(90deg,#00D4AA,#4DEBB5);}
+.type-card__bar--d{background:linear-gradient(90deg,#8B5CF6,#A78BFA);}
+
+.type-card__frame{position:absolute;inset:0;z-index:6;border-radius:20px;pointer-events:none;transition:all .3s;}
+.type-card__frame--p{border:1.5px solid rgba(255,59,92,0.15);}
+.type-card__frame--a{border:1.5px solid rgba(77,108,250,0.15);}
+.type-card__frame--i{border:1.5px solid rgba(0,212,170,0.15);}
+.type-card__frame--d{border:1.5px solid rgba(139,92,246,0.15);}
+.type-card:hover .type-card__frame--p{border-color:rgba(255,59,92,0.4);box-shadow:inset 0 0 40px rgba(255,59,92,0.06),0 0 40px rgba(255,59,92,0.1);}
+.type-card:hover .type-card__frame--a{border-color:rgba(77,108,250,0.4);box-shadow:inset 0 0 40px rgba(77,108,250,0.06),0 0 40px rgba(77,108,250,0.1);}
+.type-card:hover .type-card__frame--i{border-color:rgba(0,212,170,0.4);box-shadow:inset 0 0 40px rgba(0,212,170,0.06),0 0 40px rgba(0,212,170,0.1);}
+.type-card:hover .type-card__frame--d{border-color:rgba(139,92,246,0.4);box-shadow:inset 0 0 40px rgba(139,92,246,0.06),0 0 40px rgba(139,92,246,0.1);}
+
+.type-card__content{
+  position:relative;z-index:3;display:flex;flex-direction:column;
+  align-items:center;height:100%;padding:16px 20px 14px;text-align:center;
+}
+
+.type-card__label{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.1em;opacity:.45;margin-bottom:4px;}
+.type-card__name{font-family:var(--font-body);font-size:26px;font-weight:800;letter-spacing:.02em;}
+.type-card__name--p{color:var(--type-p);}
+.type-card__name--a{color:var(--type-a);}
+.type-card__name--i{color:var(--type-i);}
+.type-card__name--d{color:var(--type-d);}
+
+/* Character — MAX size, minimal spacing */
+.type-card__character{
+  position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+  width:100%;margin:0;
+}
+.type-card__aura{
+  position:absolute;width:260px;height:260px;border-radius:50%;filter:blur(45px);
+  animation:auraPulse 4s ease-in-out infinite;
+}
+.type-card__aura--p{background:var(--glow-p);}
+.type-card__aura--a{background:var(--glow-a);}
+.type-card__aura--i{background:var(--glow-i);}
+.type-card__aura--d{background:var(--glow-d);}
+@keyframes auraPulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:.9;transform:scale(1.1);}}
+
+.type-card__aura-ring{
+  position:absolute;width:240px;height:240px;border-radius:50%;
+  border:1px solid;opacity:.12;
+  animation:ringPulse 4s ease-in-out infinite;
+}
+.type-card__aura-ring--p{border-color:var(--type-p);}
+.type-card__aura-ring--a{border-color:var(--type-a);}
+.type-card__aura-ring--i{border-color:var(--type-i);}
+.type-card__aura-ring--d{border-color:var(--type-d);}
+@keyframes ringPulse{0%,100%{opacity:.08;transform:scale(1);}50%{opacity:.2;transform:scale(1.06);}}
+
+.type-card__character img{
+  position:relative;z-index:2;width:230px;height:230px;object-fit:contain;
+  filter:drop-shadow(0 8px 28px rgba(0,0,0,0.5));
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.type-card:hover .type-card__character img{transform:scale(1.06) translateY(-4px);}
+
+/* Catch — BIGGER text */
+.type-card__catch{font-size:14px;font-weight:500;line-height:1.7;color:var(--text-dark-2);margin-bottom:4px;}
+
+.type-card__footer{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.type-card__brand{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--text-dark-3);}
+.type-card__number{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--text-dark-3);}
+
+/* ======================================================================
+   REVEAL SECTION
+   ====================================================================== */
+#reveal{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+
+.reveal-stage{
+  position:relative;width:100%;max-width:380px;aspect-ratio:1;margin:0 auto;
+  border-radius:28px;overflow:hidden;
+  background:var(--bg-light);border:2px solid rgba(0,0,0,0.06);
+  transition:background .7s ease,border-color .7s ease;
+}
+.reveal-stage.dark{background:var(--bg-cosmos);border-color:rgba(255,255,255,0.06);}
+
+.reveal-stage__quiz{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  transition:opacity .5s;z-index:2;padding:20px;
+}
+.reveal-stage.dark .reveal-stage__quiz{opacity:0;pointer-events:none;}
+.reveal-stage__q{font-family:var(--font-display);font-size:44px;font-weight:800;color:var(--text-light);}
+.reveal-stage__q-label{font-size:14px;color:var(--text-light-2);}
+
+/* Particles in reveal */
+.reveal-particles{position:absolute;inset:0;z-index:3;opacity:0;transition:opacity .5s .2s;}
+.reveal-stage.dark .reveal-particles{opacity:1;}
+.rp{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--type-p);animation:rpFloat 2.5s ease-in-out infinite;}
+@keyframes rpFloat{
+  0%{opacity:0;transform:translate(0,0) scale(0);}
+  30%{opacity:1;transform:scale(1);}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0);}
+}
+
+.reveal-card-wrap{
+  position:absolute;inset:24px;z-index:5;
+  opacity:0;transform:scale(.75) translateY(30px);
+  transition:opacity .7s 1s,transform .8s 1s cubic-bezier(.34,1.56,.64,1);
+}
+.reveal-stage.revealed .reveal-card-wrap{opacity:1;transform:scale(1) translateY(0);}
+.reveal-card-wrap .type-card{width:100%;max-width:100%;height:100%;aspect-ratio:auto;border-radius:16px;}
+.reveal-card-wrap .type-card__character img{width:140px;height:140px;}
+.reveal-card-wrap .type-card__name{font-size:22px;}
+.reveal-card-wrap .type-card__catch{font-size:11px;}
+
+.reveal-btn{
+  margin-top:24px;padding:14px 40px;font-family:var(--font-display);font-size:14px;font-weight:700;
+  color:var(--bg-cosmos);background:linear-gradient(135deg,var(--gold),#FFD700);
+  border:none;border-radius:999px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(245,197,66,0.3);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.reveal-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 32px rgba(245,197,66,0.45);}
+
+/* ======================================================================
+   COLLECTION — Light Gallery
+   ====================================================================== */
+#collection{background:var(--bg-light);}
+
+.collection-wrap{max-width:480px;margin:0 auto;background:#fff;border-radius:24px;
+  box-shadow:0 2px 24px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04);overflow:hidden;}
+
+.collection-header{padding:20px 20px 16px;}
+.collection-progress{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.cp-count{font-family:var(--font-display);font-size:32px;font-weight:800;
+  background:linear-gradient(135deg,var(--gold),#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cp-of{font-size:14px;color:var(--text-light-2);font-weight:600;}
+.cp-bar-wrap{flex:1;height:6px;border-radius:999px;background:rgba(0,0,0,0.04);overflow:hidden;}
+.cp-bar-fill{height:100%;width:15%;border-radius:999px;
+  background:linear-gradient(90deg,var(--type-p),var(--type-a),var(--type-i),var(--type-d));
+  background-size:300% 100%;animation:barShift 4s ease infinite;}
+@keyframes barShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+/* Next unlock teaser */
+.unlock-teaser{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(245,197,66,0.08),rgba(245,197,66,0.03));
+  border:1px solid rgba(245,197,66,0.15);margin-bottom:14px;
+}
+.unlock-teaser__icon{font-size:18px;}
+.unlock-teaser__text{font-size:12px;color:var(--text-light);font-weight:600;line-height:1.5;}
+.unlock-teaser__text span{color:var(--gold);font-weight:800;}
+
+/* Group tabs */
+.group-tabs{display:flex;gap:6px;padding:0 0 2px;overflow-x:auto;scrollbar-width:none;}
+.group-tabs::-webkit-scrollbar{display:none;}
+.g-tab{padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600;
+  border:1.5px solid rgba(0,0,0,0.08);background:transparent;cursor:pointer;
+  font-family:var(--font-body);transition:all .2s;color:var(--text-light-2);white-space:nowrap;}
+.g-tab.active-all{border-color:var(--text-light);color:var(--text-light);background:rgba(0,0,0,0.03);}
+.g-tab.active-p{border-color:var(--type-p);color:var(--type-p);background:rgba(255,59,92,0.06);}
+.g-tab.active-a{border-color:var(--type-a);color:var(--type-a);background:rgba(77,108,250,0.06);}
+.g-tab.active-i{border-color:var(--type-i);color:var(--type-i);background:rgba(0,212,170,0.06);}
+.g-tab.active-d{border-color:var(--type-d);color:var(--type-d);background:rgba(139,92,246,0.06);}
+
+/* Card grid */
+.c-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px 20px 20px;}
+
+.mc{aspect-ratio:1;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;
+  transition:transform .3s,box-shadow .3s;}
+.mc:hover{transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+
+/* Acquired mini card */
+.mc--got{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;text-align:center;}
+.mc--got.bg-p{background:var(--bg-cosmos);background:linear-gradient(145deg,#1A0A0E,#12080B);}
+.mc--got.bg-a{background:linear-gradient(145deg,#0A0E1A,#080B14);}
+.mc--got.bg-i{background:linear-gradient(145deg,#0A1A14,#080E10);}
+.mc--got.bg-d{background:linear-gradient(145deg,#0E0A1A,#0A0814);}
+
+.mc--got::before{content:'';position:absolute;width:50px;height:50px;border-radius:50%;
+  filter:blur(16px);opacity:.35;top:50%;left:50%;transform:translate(-50%,-50%);}
+.mc--got.bg-p::before{background:var(--type-p);}
+.mc--got.bg-a::before{background:var(--type-a);}
+.mc--got.bg-i::before{background:var(--type-i);}
+.mc--got.bg-d::before{background:var(--type-d);}
+
+.mc__img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4));position:relative;z-index:1;margin-bottom:3px;}
+.mc__name{font-size:9px;font-weight:700;line-height:1.2;position:relative;z-index:1;}
+.mc__name--p{color:var(--type-p);}.mc__name--a{color:var(--type-a);}
+.mc__name--i{color:var(--type-i);}.mc__name--d{color:var(--type-d);}
+
+/* Locked mini card */
+.mc--locked{display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.02);border:1.5px dashed rgba(0,0,0,0.07);}
+.mc__lock{font-size:10px;opacity:.15;font-weight:700;font-family:var(--font-display);}
+
+/* ======================================================================
+   TAGLINE SECTION
+   ====================================================================== */
+#tagline{
+  background:var(--bg-cosmos);color:var(--text-dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;min-height:70vh;position:relative;overflow:hidden;
+}
+.tg-glow{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(100px);opacity:.12;}
+.tg-glow--1{background:var(--type-p);top:-80px;left:-80px;}
+.tg-glow--2{background:var(--type-a);top:-80px;right:-80px;}
+.tg-glow--3{background:var(--type-i);bottom:-80px;left:-80px;}
+.tg-glow--4{background:var(--type-d);bottom:-80px;right:-80px;}
+
+.tg-text{position:relative;z-index:1;font-family:var(--font-body);font-size:36px;font-weight:800;
+  letter-spacing:.04em;line-height:1.6;margin-bottom:12px;}
+.tg-80{background:linear-gradient(135deg,var(--type-p),var(--type-a),var(--type-i),var(--type-d));
+  background-size:200% 200%;animation:gradShift 5s ease infinite;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tg-sub{position:relative;z-index:1;font-family:var(--font-display);font-size:13px;font-weight:600;
+  letter-spacing:.15em;color:var(--text-dark-3);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+  .cards-grid{grid-template-columns:1fr;padding:0 8px;}
+  .type-card{max-width:340px;}
+  .hero-title{font-size:28px;}
+  .section-heading{font-size:22px;}
+  .tg-text{font-size:28px;}
+  .comparison{grid-template-columns:1fr;}
+  .c-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(min-width:768px){.tg-text{font-size:48px;}.hero-title{font-size:40px;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="goTo('#hero')">Hero</button>
+  <button class="nav-btn" onclick="goTo('#cards')">Cards</button>
+  <button class="nav-btn" onclick="goTo('#reveal')">Reveal</button>
+  <button class="nav-btn" onclick="goTo('#collection')">Collection</button>
+  <button class="nav-btn" onclick="goTo('#tagline')">Tagline</button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="section" id="hero" style="padding:0;">
+  <div class="hero-aurora"></div>
+  <div class="hero-stars" id="heroStars"></div>
+  <div class="hero-particles" id="heroParticles"></div>
+
+  <!-- Text area (top) -->
+  <div class="hero-text">
+    <h1 class="hero-title"><span class="accent">80</span>枚の中に、<br>あなたがいる。</h1>
+    <p class="hero-sub">57の質問で見つかる、あなただけのカード。<br>友達のカードを集めて、相性を確かめよう。</p>
+    <button class="hero-cta">自分のカードを見つける</button>
+  </div>
+
+  <!-- Characters panorama (bottom) -->
+  <div class="hero-characters">
+    <div class="hero-ground"></div>
+    <div class="hero-char-wrap">
+      <img class="hero-char hero-char--ip" src="character/IP%20%E5%8A%A9%E3%81%A3%E4%BA%BA%E3%83%92%E3%83%BC%E3%83%AD%E3%83%BC.png" alt="IP">
+      <img class="hero-char hero-char--dd" src="character/DD%20%E3%82%B2%E3%83%BC%E3%83%A0%E3%83%81%E3%82%A7%E3%83%B3%E3%82%B8%E3%83%A3%E3%83%BC.png" alt="DD">
+      <img class="hero-char hero-char--aa" src="character/AA%20%E7%9F%A5%E3%81%AE%E7%95%AA%E4%BA%BA.png" alt="AA">
+      <img class="hero-char hero-char--pp" src="character/PP%20%E3%83%81%E3%83%BC%E3%83%A0%E3%81%AE%E5%A4%AA%E9%99%BD.png" alt="PP">
+      <img class="hero-char hero-char--ii" src="character/II%20%E5%85%B1%E6%84%9F%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC3.png" alt="II">
+      <img class="hero-char hero-char--pd" src="character/PD%20%E7%AA%81%E7%A0%B4%E3%81%AE%E3%82%AB%E3%83%AA%E3%82%B9%E3%83%9E3.png" alt="PD">
+      <img class="hero-char hero-char--da" src="character/DA%20%E9%9D%99%E3%81%8B%E3%81%AA%E5%8F%B8%E4%BB%A4%E5%A1%94.png" alt="DA">
+    </div>
+  </div>
+
+  <div class="scroll-hint"><div class="scroll-hint-line"></div>SCROLL</div>
+</section>
+
+<!-- ===== CARDS ===== -->
+<section class="section" id="cards">
+  <div class="section-label" style="color:var(--gold)">Card Design</div>
+  <div class="section-heading" style="color:var(--text-dark)">4群のカードデザイン</div>
+  <div class="section-desc" style="color:var(--text-dark-2)">各群カラーの世界観 × オーラグロウ × マット3Dキャラクター</div>
+
+  <div class="cards-grid">
+    <!-- PP -->
+    <div class="type-card">
+      <div class="type-card__bg type-card__bg--p"></div>
+      <div class="type-card__noise"></div>
+      <div class="type-card__bar type-card__bar--p"></div>
+      <div class="type-card__frame type-card__frame--p"></div>
+      <div class="type-card__content">
+        <div><div class="type-card__label">達成型PP</div><div class="type-card__name type-card__name--p">チームの太陽</div></div>
+        <div class="type-card__character">
+          <div class="type-card__aura type-card__aura--p"></div>
+          <div class="type-card__aura-ring type-card__aura-ring--p"></div>
+          <img src="character/PP%20%E3%83%81%E3%83%BC%E3%83%A0%E3%81%AE%E5%A4%AA%E9%99%BD.png" alt="PP">
+        </div>
+        <div class="type-card__catch">明るさで場を支配する、<br>生まれながらのムードメーカー</div>
+        <div class="type-card__footer"><div class="type-card__brand">80CARDS</div><div class="type-card__number">#01/80</div></div>
+      </div>
+    </div>
+    <!-- AA -->
+    <div class="type-card">
+      <div class="type-card__bg type-card__bg--a"></div>
+      <div class="type-card__noise"></div>
+      <div class="type-card__bar type-card__bar--a"></div>
+      <div class="type-card__frame type-card__frame--a"></div>
+      <div class="type-card__content">
+        <div><div class="type-card__label">情報型AA</div><div class="type-card__name type-card__name--a">知の番人</div></div>
+        <div class="type-card__character">
+          <div class="type-card__aura type-card__aura--a"></div>
+          <div class="type-card__aura-ring type-card__aura-ring--a"></div>
+          <img src="character/AA%20%E7%9F%A5%E3%81%AE%E7%95%AA%E4%BA%BA.png" alt="AA">
+        </div>
+        <div class="type-card__catch">知の深淵を泳ぎ、答えが出るまで<br>浮上しない探究者</div>
+        <div class="type-card__footer"><div class="type-card__brand">80CARDS</div><div class="type-card__number">#22/80</div></div>
+      </div>
+    </div>
+    <!-- II -->
+    <div class="type-card">
+      <div class="type-card__bg type-card__bg--i"></div>
+      <div class="type-card__noise"></div>
+      <div class="type-card__bar type-card__bar--i"></div>
+      <div class="type-card__frame type-card__frame--i"></div>
+      <div class="type-card__content">
+        <div><div class="type-card__label">調和型II</div><div class="type-card__name type-card__name--i">共感マスター</div></div>
+        <div class="type-card__character">
+          <div class="type-card__aura type-card__aura--i"></div>
+          <div class="type-card__aura-ring type-card__aura-ring--i"></div>
+          <img src="character/II%20%E5%85%B1%E6%84%9F%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC3.png" alt="II">
+        </div>
+        <div class="type-card__catch">誰の痛みにも気づいてしまう、<br>優しさという名の才能</div>
+        <div class="type-card__footer"><div class="type-card__brand">80CARDS</div><div class="type-card__number">#43/80</div></div>
+      </div>
+    </div>
+    <!-- DD -->
+    <div class="type-card">
+      <div class="type-card__bg type-card__bg--d"></div>
+      <div class="type-card__noise"></div>
+      <div class="type-card__bar type-card__bar--d"></div>
+      <div class="type-card__frame type-card__frame--d"></div>
+      <div class="type-card__content">
+        <div><div class="type-card__label">効率型DD</div><div class="type-card__name type-card__name--d">ゲームチェンジャー</div></div>
+        <div class="type-card__character">
+          <div class="type-card__aura type-card__aura--d"></div>
+          <div class="type-card__aura-ring type-card__aura-ring--d"></div>
+          <img src="character/DD%20%E3%82%B2%E3%83%BC%E3%83%A0%E3%83%81%E3%82%A7%E3%83%B3%E3%82%B8%E3%83%A3%E3%83%BC.png" alt="DD">
+        </div>
+        <div class="type-card__catch">全タイプ最速の決断力で、<br>ルールごと書き換える異端</div>
+        <div class="type-card__footer"><div class="type-card__brand">80CARDS</div><div class="type-card__number">#80/80</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVEAL ===== -->
+<section class="section" id="reveal">
+  <div class="section-label">Reveal Experience</div>
+  <div class="section-heading">結果表示の暗転演出</div>
+  <div class="section-desc">ボタンをクリックして体験してください。</div>
+
+  <div class="reveal-stage" id="revealDemo">
+    <div class="reveal-stage__quiz">
+      <div class="reveal-stage__q">Q50 / 50</div>
+      <div class="reveal-stage__q-label">最後の質問に回答しました</div>
+    </div>
+    <div class="reveal-particles" id="revealParticles"></div>
+    <div class="reveal-card-wrap">
+      <div class="type-card">
+        <div class="type-card__bg type-card__bg--p"></div>
+        <div class="type-card__noise"></div>
+        <div class="type-card__bar type-card__bar--p"></div>
+        <div class="type-card__frame type-card__frame--p"></div>
+        <div class="type-card__content">
+          <div><div class="type-card__label">達成型PP</div><div class="type-card__name type-card__name--p">チームの太陽</div></div>
+          <div class="type-card__character">
+            <div class="type-card__aura type-card__aura--p"></div>
+            <img src="character/PP%20%E3%83%81%E3%83%BC%E3%83%A0%E3%81%AE%E5%A4%AA%E9%99%BD.png" alt="PP" style="width:140px;height:140px;">
+          </div>
+          <div class="type-card__catch" style="font-size:11px;">明るさで場を支配する、<br>生まれながらのムードメーカー</div>
+          <div class="type-card__footer"><div class="type-card__brand">80CARDS</div><div class="type-card__number">#01/80</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="reveal-btn" id="revealBtn" onclick="playReveal()">暗転 → カード出現を体験</button>
+</section>
+
+<!-- ===== COLLECTION (Light) ===== -->
+<section class="section" id="collection">
+  <div class="section-label">Collection</div>
+  <div class="section-heading">ライトギャラリー（確定）</div>
+  <div class="section-desc">推し棚感覚のコレクション画面。カード自体がカラフルなので白背景に映える。</div>
+
+  <div class="collection-wrap">
+    <div class="collection-header">
+      <div class="collection-progress">
+        <div style="display:flex;align-items:baseline;gap:4px;"><span class="cp-count">12</span><span class="cp-of">/ 80枚</span></div>
+        <div class="cp-bar-wrap"><div class="cp-bar-fill"></div></div>
+      </div>
+      <div class="unlock-teaser">
+        <div class="unlock-teaser__icon">🔓</div>
+        <div class="unlock-teaser__text">次の特典まであと <span>3枚</span> → 15枚特典「チーム相性ランキング」</div>
+      </div>
+      <div class="group-tabs">
+        <button class="g-tab active-all">ALL (80)</button>
+        <button class="g-tab active-p">P群</button>
+        <button class="g-tab">A群</button>
+        <button class="g-tab">I群</button>
+        <button class="g-tab">D群</button>
+      </div>
+    </div>
+    <div class="c-grid">
+      <div class="mc mc--got bg-p"><img class="mc__img" src="character/PP%20%E3%83%81%E3%83%BC%E3%83%A0%E3%81%AE%E5%A4%AA%E9%99%BD.png" alt=""><div class="mc__name mc__name--p">チームの太陽</div></div>
+      <div class="mc mc--got bg-p"><img class="mc__img" src="character/PA%20%E4%BA%8C%E9%9D%A2%E6%80%A7%E3%81%AE%E9%AD%94%E8%A1%93%E5%B8%AB.png" alt=""><div class="mc__name mc__name--p">二面性の魔術師</div></div>
+      <div class="mc mc--got bg-p"><img class="mc__img" src="character/PI%20%E6%84%9B%E3%81%95%E3%82%8C%E3%81%AE%E5%A4%A9%E6%89%8D2.png" alt=""><div class="mc__name mc__name--p">愛されの天才</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--got bg-a"><img class="mc__img" src="character/AA%20%E7%9F%A5%E3%81%AE%E7%95%AA%E4%BA%BA.png" alt=""><div class="mc__name mc__name--a">知の番人</div></div>
+      <div class="mc mc--got bg-a"><img class="mc__img" src="character/AD%20%E6%B0%B7%E3%81%AE%E9%A0%AD%E8%84%B3.png" alt=""><div class="mc__name mc__name--a">氷の頭脳</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+      <div class="mc mc--locked"><div class="mc__lock">???</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TAGLINE ===== -->
+<section class="section" id="tagline">
+  <div class="tg-glow tg-glow--1"></div>
+  <div class="tg-glow tg-glow--2"></div>
+  <div class="tg-glow tg-glow--3"></div>
+  <div class="tg-glow tg-glow--4"></div>
+  <div class="tg-text"><span class="tg-80">80</span>枚の中に、<br>あなたがいる。</div>
+  <div class="tg-sub">80CARDS — 80タイプの性格診断</div>
+</section>
+
+<script>
+function goTo(sel){
+  document.querySelector(sel).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Hero stars
+(function(){
+  const c=document.getElementById('heroStars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*70+'%';
+    const size=(1+Math.random()*2)+'px';
+    s.style.width=size;s.style.height=size;
+    s.style.animationDuration=(2+Math.random()*4)+'s';
+    s.style.animationDelay=Math.random()*5+'s';
+    c.appendChild(s);
+  }
+})();
+
+// Hero particles
+(function(){
+  const c=document.getElementById('heroParticles');
+  const colors=['#FF3B5C','#4D6CFA','#00D4AA','#8B5CF6','#F5C542'];
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='hero-particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.bottom='-10px';
+    p.style.width=p.style.height=(2+Math.random()*4)+'px';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration=(8+Math.random()*10)+'s';
+    p.style.animationDelay=Math.random()*12+'s';
+    c.appendChild(p);
+  }
+})();
+
+// Reveal particles
+(function(){
+  const c=document.getElementById('revealParticles');
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='rp';
+    p.style.left=Math.random()*100+'%';
+    p.style.top=Math.random()*100+'%';
+    p.style.setProperty('--tx',(Math.random()-.5)*80+'px');
+    p.style.setProperty('--ty',(Math.random()-.5)*80+'px');
+    p.style.animationDelay=Math.random()*2+'s';
+    p.style.animationDuration=(2+Math.random()*2)+'s';
+    c.appendChild(p);
+  }
+})();
+
+// Reveal demo
+let rs=0;
+function playReveal(){
+  const d=document.getElementById('revealDemo'),b=document.getElementById('revealBtn');
+  if(rs===0){d.classList.add('dark');b.textContent='カードを出現させる';rs=1;}
+  else if(rs===1){d.classList.add('revealed');b.textContent='リセット';rs=2;}
+  else{d.classList.remove('dark','revealed');b.textContent='暗転 → カード出現を体験';rs=0;}
+}
+
+// Nav observer
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.toggle('active',b.getAttribute('onclick')?.includes(id));});}});},{threshold:.35});
+document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
