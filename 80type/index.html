@@ -537,17 +537,18 @@
     .hero-char {
       position: absolute;
       object-fit: contain;
-      opacity: 0.75;
+      opacity: 0.8;
       filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.08));
       animation: charFloat 5s ease-in-out infinite;
+      mix-blend-mode: multiply;
     }
 
-    .hero-char:nth-child(1) { top: 8%; left: 5%; width: 72px; animation-delay: 0s; }
-    .hero-char:nth-child(2) { top: 12%; right: 8%; width: 64px; animation-delay: 1.2s; }
-    .hero-char:nth-child(3) { top: 50%; left: 3%; width: 68px; animation-delay: 0.6s; }
-    .hero-char:nth-child(4) { top: 55%; right: 5%; width: 72px; animation-delay: 1.8s; }
-    .hero-char:nth-child(5) { bottom: 18%; left: 8%; width: 60px; animation-delay: 2.4s; }
-    .hero-char:nth-child(6) { bottom: 12%; right: 10%; width: 64px; animation-delay: 0.3s; }
+    .hero-char:nth-child(1) { top: 6%; left: 3%; width: 120px; animation-delay: 0s; }
+    .hero-char:nth-child(2) { top: 8%; right: 5%; width: 110px; animation-delay: 1.2s; }
+    .hero-char:nth-child(3) { top: 48%; left: 1%; width: 115px; animation-delay: 0.6s; }
+    .hero-char:nth-child(4) { top: 52%; right: 2%; width: 120px; animation-delay: 1.8s; }
+    .hero-char:nth-child(5) { bottom: 14%; left: 4%; width: 100px; animation-delay: 2.4s; }
+    .hero-char:nth-child(6) { bottom: 10%; right: 6%; width: 110px; animation-delay: 0.3s; }
 
     @keyframes charFloat {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -556,13 +557,13 @@
     }
 
     @media (max-width: 767px) {
-      .hero-char { opacity: 0.6; }
-      .hero-char:nth-child(1) { width: 52px; }
-      .hero-char:nth-child(2) { width: 48px; }
-      .hero-char:nth-child(3) { width: 50px; }
-      .hero-char:nth-child(4) { width: 52px; }
-      .hero-char:nth-child(5) { width: 44px; }
-      .hero-char:nth-child(6) { width: 48px; }
+      .hero-char { opacity: 0.65; }
+      .hero-char:nth-child(1) { width: 80px; }
+      .hero-char:nth-child(2) { width: 72px; }
+      .hero-char:nth-child(3) { width: 76px; }
+      .hero-char:nth-child(4) { width: 80px; }
+      .hero-char:nth-child(5) { width: 68px; }
+      .hero-char:nth-child(6) { width: 72px; }
     }
 
     /* ===== PROGRESS BAR ===== */

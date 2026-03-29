@@ -88,10 +88,11 @@
     .type-card:hover .card-char { transform: scale(1.08); }
 
     .card-char {
-      width: 120px; height: 120px; object-fit: contain;
+      width: 180px; height: 180px; object-fit: contain;
       margin: 0 auto 16px; display: block;
       animation: charFloat 5s ease-in-out infinite;
       transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1);
+      mix-blend-mode: multiply;
     }
     @keyframes charFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
