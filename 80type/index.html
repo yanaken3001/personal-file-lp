@@ -4689,6 +4689,18 @@
       DI: '即決エンジン', DP: '大将気質', DA: '静かな司令塔', DD: 'ゲームチェンジャー'
     };
 
+    // キャラクター画像ファイル名マッピング（ファイル名にバージョン番号があるため）
+    const CHARACTER_FILES = {
+      PP: 'PP チームの太陽', PA: 'PA 二面性の魔術師', PI: 'PI 愛されの天才2', PD: 'PD 突破のカリスマ3',
+      AP: 'AP 頼れる右腕', AA: 'AA 知の番人', AI: 'AI 積み上げの達人', AD: 'AD 氷の頭脳',
+      IP: 'IP 助っ人ヒーロー', IA: 'IA 隠れ実力者2', II: 'II 共感マスター3', ID: 'ID 深掘りマニア',
+      DI: 'DI 即決エンジン2', DP: 'DP 大将気質', DA: 'DA 静かな司令塔', DD: 'DD ゲームチェンジャー'
+    };
+
+    function getCharacterImage(code) {
+      return `character/${CHARACTER_FILES[code] || code}.png`;
+    }
+
     // 16タイプのキャッチコピー
     const TYPE_CATCHCOPY = {
       PP: '明るさで場を支配する、生まれながらのムードメーカー',
@@ -5107,9 +5119,10 @@
                   <div key={i} style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '10px'
+                    gap: '10px',
+                    textAlign: 'left'
                   }}>
-                    <span style={{ fontSize: '24px' }}>{item.icon}</span>
+                    <span style={{ fontSize: '24px', flexShrink: 0 }}>{item.icon}</span>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A2E' }}>{item.title}</div>
                       <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.6)' }}>{item.desc}</div>
@@ -5840,12 +5853,21 @@
             </div>
 
             <div className="hero-emoji-area" style={{
-              fontSize: '80px',
               marginBottom: '16px',
               filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))',
               lineHeight: 1
             }}>
-              {typeMeta.emoji}
+              <img
+                src={getCharacterImage(personalityCode)}
+                alt={TYPE_NICKNAMES[personalityCode]}
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  objectFit: 'contain',
+                  mixBlendMode: 'multiply'
+                }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
             </div>
           </div>
         </div>
@@ -6455,7 +6477,17 @@
             textAlign: 'center',
             borderTop: `3px solid ${typeColor.primary}`
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '10px' }}>{typeMeta.emoji}</div>
+            <img
+              src={getCharacterImage(personalityCode)}
+              alt={TYPE_NICKNAMES[personalityCode]}
+              style={{
+                width: '80px',
+                height: '80px',
+                objectFit: 'contain',
+                marginBottom: '10px',
+                mixBlendMode: 'multiply'
+              }}
+            />
             <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{behaviorType}{personalityCode}</div>
             <div style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A2E', lineHeight: 1.4 }}>
               {TYPE_NICKNAMES[personalityCode]}
@@ -6543,7 +6575,17 @@
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  <div style={{ fontSize: '28px', marginBottom: '4px' }}>{meta.emoji}</div>
+                  <img
+                    src={getCharacterImage(code)}
+                    alt={TYPE_NICKNAMES[code] || meta.name}
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      objectFit: 'contain',
+                      marginBottom: '4px',
+                      mixBlendMode: 'multiply'
+                    }}
+                  />
                   <div style={{
                     fontSize: '12px',
                     fontWeight: '700',
@@ -6631,7 +6673,6 @@
         '行動タイプ分析',
         '適した職種',
         'あなたに合う働き方',
-        '転職意向',
       ];
 
       return (
@@ -6686,8 +6727,7 @@
                 personalityCode={personalityCode}
               />
 
-              {/* シェアカードプレビュー */}
-              <ShareCardPreview imageDataUrl={shareCardUrl} />
+              {/* シェアカードプレビュー（削除済み） */}
               {/* タイプ解説 */}
               {typeData && typeData.userDescription && (
                 <div style={{
@@ -6784,120 +6824,7 @@
                 <BlurredSection personalityCode={personalityCode} />
               </div>
 
-              {/* ⑥ 転職意向ヒアリング */}
-              <div data-section-index="4" id="section-4">
-                <CareerIntentQuestion
-                  personalityCode={personalityCode}
-                  onSelect={(opt) => {
-                    setCareerIntent(opt);
-                    try {
-                      if (typeof fbq === 'function') {
-                        fbq('trackCustom', 'CTA80TypeClick', {
-                          type: personalityCode,
-                          behavior: behavioralType.name,
-                          intent: opt.text,
-                          route: opt.route
-                        });
-                      }
-                    } catch (e) {}
-                  }}
-                />
-              </div>
-
-              {/* ⑦ CTA（転職意向に応じた分岐） */}
-              {careerIntent && (
-                <div style={{
-                  background: 'rgba(255,255,255,0.55)',
-                  borderRadius: '16px',
-                  padding: '32px 24px',
-                  margin: '24px 0',
-                  textAlign: 'center'
-                }}>
-                  {careerIntent.route === 'consultation' ? (
-                    <>
-                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
-                        あなたの80タイプを活かした転職相談
-                      </h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
-                        専門アドバイザーが診断結果をもとに、あなたに合った企業を提案します
-                      </p>
-                      <a
-                        href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_interview_${personalityCode}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-block',
-                          padding: '16px 40px',
-                          background: 'linear-gradient(135deg, #FF3B5C, #FF5A75)',
-                          color: '#fff',
-                          borderRadius: '28px',
-                          fontSize: '16px',
-                          fontWeight: '700',
-                          textDecoration: 'none',
-                          boxShadow: '0 4px 20px rgba(232,98,43,0.3)'
-                        }}
-                        onClick={() => {
-                          try {
-                            if (typeof fbq === 'function') {
-                              fbq('trackCustom', 'CTA80TypeClick', {
-                                content_name: '80type_cta_interview',
-                                content_category: personalityCode,
-                                full_type: typeName80,
-                                intent_level: careerIntent.id,
-                              });
-                            }
-                          } catch (e) {}
-                        }}
-                      >
-                        無料面談に申し込む
-                      </a>
-                      <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.4)', marginTop: '12px' }}>
-                        ※ 完全無料・オンライン対応・所要時間約30分
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
-                        あなたのタイプにおすすめのスキルアップ
-                      </h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
-                        {behavioralType.name}{personalityCode} {TYPE_NICKNAMES[personalityCode] || personalityName}のあなたに合ったスクールを厳選
-                      </p>
-                      <a
-                        href={`https://www.personal-file.jp/?from=${fromParam ? fromParam + '_' : ''}80type_future_${personalityCode}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-block',
-                          padding: '16px 40px',
-                          background: 'linear-gradient(135deg, #FF3B5C, #FF5A75)',
-                          color: '#fff',
-                          borderRadius: '28px',
-                          fontSize: '16px',
-                          fontWeight: '700',
-                          textDecoration: 'none'
-                        }}
-                        onClick={() => {
-                          try {
-                            if (typeof fbq === 'function') {
-                              fbq('trackCustom', 'CTA80TypeClick', {
-                                content_name: '80type_cta_affiliate',
-                                content_category: personalityCode,
-                                full_type: typeName80,
-                                intent_level: careerIntent.id,
-                              });
-                            }
-                          } catch (e) {}
-                        }}
-                      >
-                        無料面談に申し込む
-                      </a>
-                    </>
-                  )}
-                </div>
-              )}
-
-              {/* ⑧ LINE登録 */}
+              {/* LINE登録 */}
               <div style={{
                 background: 'rgba(255,255,255,0.55)',
                 borderRadius: '16px',
