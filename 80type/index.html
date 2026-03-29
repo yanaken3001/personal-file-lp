@@ -1608,27 +1608,7 @@
       .sticky-sidebar {
         display: block !important;
       }
-      .result-hero-inner {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 60px 48px 48px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        text-align: left !important;
-      }
-      .result-hero-inner .hero-text-area {
-        flex: 1;
-      }
-      .result-hero-inner .hero-emoji-area {
-        font-size: 140px !important;
-        margin-bottom: 0 !important;
-        margin-left: 40px;
-        flex-shrink: 0;
-      }
-      .result-hero-keywords {
-        justify-content: flex-start !important;
-      }
+      /* カードはPC/SPともにセンター配置（card-scene CSSで制御） */
       .result-main-content {
         display: flex;
         flex-direction: row-reverse;
@@ -1687,26 +1667,296 @@
       50% { transform: scale(1.05); }
     }
 
-    /* スマホ最適化（ResultHero） */
-    @media (max-width: 480px) {
-      .result-hero h1 {
-        font-size: 28px !important;
-      }
-      .hero-emoji-area {
-        font-size: 64px !important;
-      }
-    }
-
-    /* SP: ヒーローは縦レイアウト（emoji→テキスト） */
-    .result-hero-inner {
-      display: flex;
-      flex-direction: column-reverse;
-      align-items: center;
-    }
+    /* カード版ResultHeroに移行済み（card-scene CSSで制御） */
 
     /* セーフエリア対応（iPhone ノッチ / ホームバー） */
     body {
       padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* ===== CARD FLIP SYSTEM ===== */
+    .card-scene {
+      perspective: 1200px;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 24px;
+    }
+
+    .card-flipper {
+      width: 88vw;
+      max-width: 400px;
+      aspect-ratio: 3 / 4.5;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    .card-flipper.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.18),
+        0 2px 8px rgba(0,0,0,0.10),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+
+    /* --- カード裏面 --- */
+    .card-back {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #1A1A2E 0%, #2D1B4E 50%, #1A1A2E 100%);
+      border: 3px solid rgba(255,255,255,0.12);
+    }
+    .card-back::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+    .card-back::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.015) 20px,
+        rgba(255,255,255,0.015) 40px
+      );
+      pointer-events: none;
+    }
+    .card-back-logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: -2px;
+      position: relative;
+      z-index: 1;
+    }
+    .card-back-label {
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.10);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .card-back-glow {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* --- カード表面 --- */
+    .card-front {
+      z-index: 1;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 3px solid rgba(255,255,255,0.20);
+      position: relative;
+    }
+    .card-front-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .card-front-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 20px 20px 24px;
+    }
+    .card-front-char {
+      width: 72%;
+      max-width: 280px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
+      flex-shrink: 0;
+      margin-top: auto;
+      margin-bottom: 8px;
+    }
+    .card-front-info {
+      width: 100%;
+      margin-top: auto;
+    }
+    .card-front-behavior {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+    .card-front-nickname {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .card-front-catchcopy {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.7;
+      opacity: 0.9;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+    .card-front-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+    .card-front-keyword {
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* カード上部のグループカラーアクセントライン */
+    .card-front-accent-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      border-radius: 24px 24px 0 0;
+      z-index: 2;
+    }
+
+    /* カード底部のホログラフィック装飾 */
+    .card-front-holo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(255,255,255,0.08) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 紋章風装飾（裏面コーナー） */
+    .card-back-corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-color: rgba(255,255,255,0.06);
+      border-style: solid;
+      z-index: 1;
+    }
+    .card-back-corner--tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+    .card-back-corner--tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+    .card-back-corner--bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+    .card-back-corner--br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+
+    /* フリップ後のシャイン効果 */
+    @keyframes cardShine {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+    .card-shine {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.15) 40%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0.15) 60%,
+        transparent 100%
+      );
+      z-index: 10;
+      pointer-events: none;
+      border-radius: 24px;
+    }
+    .card-shine.animate {
+      animation: cardShine 0.7s ease-out forwards;
+    }
+
+    /* PC対応: カードシーン */
+    @media (min-width: 960px) {
+      .card-scene {
+        padding: 48px 24px 32px;
+      }
+      .card-flipper {
+        width: 380px;
+        max-width: 380px;
+      }
+      .card-front-nickname {
+        font-size: 32px;
+      }
+      .card-front-catchcopy {
+        font-size: 14px;
+      }
+      .card-front-keyword {
+        font-size: 12px;
+        padding: 5px 14px;
+      }
+      .card-front-char {
+        width: 65%;
+      }
+    }
+
+    /* 小画面最適化 */
+    @media (max-width: 380px) {
+      .card-flipper {
+        width: 92vw;
+      }
+      .card-front-nickname {
+        font-size: 24px;
+      }
+      .card-front-catchcopy {
+        font-size: 12px;
+      }
+      .card-front-keyword {
+        font-size: 10px;
+        padding: 3px 10px;
+      }
+      .card-front-content {
+        padding: 16px 16px 20px;
+      }
+      .card-back-logo {
+        font-size: 44px;
+      }
     }
   </style>
 
@@ -5751,125 +6001,96 @@
     // Phase 2 COMPONENTS — 結果ページ全面リデザイン
     // ===================================================================
 
-    // --- ResultHero ---
+    // --- ResultHero (Card Flip Version) ---
     function ResultHero({ personalityCode, behaviorType, keywords }) {
       const typeColor = getTypeColor(personalityCode);
       const typeMeta = TYPE_META[personalityCode];
+      const [isFlipped, setIsFlipped] = React.useState(false);
+      const [showShine, setShowShine] = React.useState(false);
+      const flipperRef = React.useRef(null);
+
       if (!typeMeta) return null;
 
+      // 初回表示時に自動フリップ
+      React.useEffect(() => {
+        const flipTimer = setTimeout(() => {
+          setIsFlipped(true);
+        }, 800);
+        const shineTimer = setTimeout(() => {
+          setShowShine(true);
+        }, 1700); // フリップ完了(0.9s) + 少し待ち
+        return () => {
+          clearTimeout(flipTimer);
+          clearTimeout(shineTimer);
+        };
+      }, []);
+
       return (
-        <div className="result-hero" style={{
-          background: typeColor.gradient,
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          {/* 装飾 */}
-          <div style={{
-            position: 'absolute',
-            top: '-80px',
-            right: '-80px',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'rgba(0,0,0,0.04)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '-60px',
-            left: '-60px',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'rgba(0,0,0,0.04)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            top: '30%',
-            right: '20%',
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.5)',
-          }} />
-
-          <div className="result-hero-inner" style={{
-            padding: '48px 24px 40px',
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 1
-          }}>
-            {/* SP: emoji上、PC: emoji右 */}
-            <div className="hero-text-area">
-              <p style={{
-                fontSize: '15px',
-                fontWeight: '600',
-                color: 'rgba(255,255,255,0.7)',
-                margin: '0 0 6px',
-                letterSpacing: '2px',
-              }}>
-                {behaviorType}{personalityCode}
-              </p>
-
-              <h1 style={{
-                fontSize: '36px',
-                fontWeight: '900',
-                color: '#fff',
-                margin: '0 0 10px',
-                textShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                lineHeight: 1.2
-              }}>
-                {TYPE_NICKNAMES[personalityCode]}
-              </h1>
-
-              <p style={{
-                fontSize: '15px',
-                fontWeight: '500',
-                color: 'rgba(255,255,255,0.9)',
-                margin: '0 0 20px',
-                lineHeight: 1.6
-              }}>
-                {TYPE_CATCHCOPY[personalityCode]}
-              </p>
-
-              <div className="result-hero-keywords" style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                gap: '8px',
-              }}>
-                {keywords.map((kw, i) => (
-                  <span key={i} style={{
-                    padding: '5px 16px',
-                    background: 'rgba(255,255,255,0.2)',
-                    backdropFilter: 'blur(10px)',
-                    borderRadius: '20px',
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    color: '#fff'
-                  }}>
-                    #{kw}
-                  </span>
-                ))}
-              </div>
+        <div className="card-scene" style={{ background: 'transparent' }}>
+          <div
+            ref={flipperRef}
+            className={'card-flipper' + (isFlipped ? ' is-flipped' : '')}
+          >
+            {/* === カード裏面 === */}
+            <div className="card-face card-back">
+              <div className="card-back-corner card-back-corner--tl" />
+              <div className="card-back-corner card-back-corner--tr" />
+              <div className="card-back-corner card-back-corner--bl" />
+              <div className="card-back-corner card-back-corner--br" />
+              <div className="card-back-glow" />
+              <div className="card-back-logo">80</div>
+              <div className="card-back-label">CARDS</div>
             </div>
 
-            <div className="hero-emoji-area" style={{
-              marginBottom: '16px',
-              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))',
-              lineHeight: 1
-            }}>
-              <img
-                src={getCharacterImage(personalityCode)}
-                alt={TYPE_NICKNAMES[personalityCode]}
-                className="result-hero-char-img"
-                style={{
-                  width: '80vw',
-                  maxWidth: '420px',
-                  height: 'auto',
-                  objectFit: 'contain',
-                }}
-                onError={(e) => { e.target.style.display = 'none'; }}
+            {/* === カード表面 === */}
+            <div className="card-face card-front">
+              {/* グループカラーのアクセントライン */}
+              <div
+                className="card-front-accent-line"
+                style={{ background: typeColor.gradient }}
               />
+
+              {/* 背景グラデーション */}
+              <div
+                className="card-front-bg"
+                style={{ background: typeColor.gradient }}
+              />
+
+              {/* ホログラフィック装飾 */}
+              <div className="card-front-holo" />
+
+              {/* シャイン効果 */}
+              <div className={'card-shine' + (showShine ? ' animate' : '')} />
+
+              <div className="card-front-content">
+                {/* キャラクター画像 */}
+                <img
+                  src={getCharacterImage(personalityCode)}
+                  alt={TYPE_NICKNAMES[personalityCode]}
+                  className="card-front-char"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+
+                {/* テキスト情報 */}
+                <div className="card-front-info">
+                  <p className="card-front-behavior" style={{ color: '#fff' }}>
+                    {behaviorType}{personalityCode}
+                  </p>
+                  <h1 className="card-front-nickname" style={{ color: '#fff' }}>
+                    {TYPE_NICKNAMES[personalityCode]}
+                  </h1>
+                  <p className="card-front-catchcopy" style={{ color: '#fff' }}>
+                    「{TYPE_CATCHCOPY[personalityCode]}」
+                  </p>
+                  <div className="card-front-keywords">
+                    {keywords.map((kw, i) => (
+                      <span key={i} className="card-front-keyword" style={{ color: '#fff' }}>
+                        #{kw}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
