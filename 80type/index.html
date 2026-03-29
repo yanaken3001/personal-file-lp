@@ -6852,6 +6852,20 @@
                   <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.7)', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                     {typeData.entryJobs}
                   </p>
+                  <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                    <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.5)', lineHeight: '1.7' }}>
+                      この診断結果を、1対1でもっと深掘りできます。{' '}
+                      <a
+                        href={`https://per-sonal.co.jp/personalfile/contact/?type=${personalityCode}&behavior=${behavioralType.name}&source=80cards_career`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => { try { if (typeof fbq === 'function') { fbq('trackCustom', 'CareerCTAClick', { content_name: '80cards_inline_career_cta', personality_type: personalityCode, behavior_type: behavioralType.name }); } } catch(e){} }}
+                        style={{ color: typeColor.primary, textDecoration: 'underline', textUnderlineOffset: '3px', fontWeight: '500' }}
+                      >
+                        あなたの適職データを詳しく見る
+                      </a>
+                    </p>
+                  </div>
                 </div>
               )}
 
