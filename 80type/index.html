@@ -277,6 +277,53 @@
       pointer-events: none;
     }
 
+    /* ===== SITE HEADER ===== */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(250, 245, 240, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .site-header-logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #1A1A2E;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .site-header-logo span {
+      color: var(--accent);
+    }
+
+    .site-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .site-header-link {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .site-header-link:hover {
+      color: var(--text-primary);
+    }
+
     /* ===== HOLOGRAPHIC GRADIENT BG ===== */
     .gradient-mesh {
       position: fixed;
@@ -309,7 +356,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 60px 20px 40px;
       text-align: center;
     }
 
@@ -4974,6 +5021,12 @@
 
       return (
         <div className="start-screen">
+          <header className="site-header">
+            <a href="index.html" className="site-header-logo"><span>80</span>CARDS</a>
+            <nav className="site-header-nav">
+              <a href="types.html" className="site-header-link">性格タイプ一覧</a>
+            </nav>
+          </header>
           <div className="gradient-mesh" />
           <Particles count={18} />
 
