@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>16タイプ一覧 | 80CARDS</title>
+  <meta name="description" content="80CARDSの16の性格タイプを一覧で紹介。あなたはどのタイプ？" />
+
+  <meta property="og:title" content="16タイプ一覧 | 80CARDS" />
+  <meta property="og:description" content="80CARDSの16の性格タイプを一覧で紹介。あなたはどのタイプ？" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="80CARDS" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/80type/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', 'Sora', sans-serif;
+      background: #FAF5F0;
+      color: #1A1A2E;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(250, 245, 240, 0.9);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .header-logo {
+      font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800;
+      color: #1A1A2E; text-decoration: none; letter-spacing: -0.02em;
+    }
+    .header-logo span { color: #FF3B5C; }
+    .header-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #FF3B5C, #FF5A75);
+      color: #fff; font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px; font-weight: 700; border: none; border-radius: 100px;
+      text-decoration: none; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 16px rgba(255, 59, 92, 0.3);
+    }
+    .header-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255, 59, 92, 0.4); }
+
+    .hero { text-align: center; padding: 64px 24px 48px; }
+    .hero h1 { font-size: 32px; font-weight: 900; line-height: 1.3; margin-bottom: 12px; }
+    .hero h1 span { font-family: 'Sora', sans-serif; }
+    .hero p { font-size: 16px; color: rgba(42,42,42,0.7); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+
+    .group-section { max-width: 1100px; margin: 0 auto; padding: 48px 24px 32px; }
+    .group-header {
+      margin-bottom: 32px; padding-left: 16px;
+      border-left: 4px solid var(--group-color);
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .group-header.visible { opacity: 1; transform: translateY(0); }
+    .group-name { font-size: 24px; font-weight: 900; color: var(--group-color); margin-bottom: 4px; }
+    .group-desc { font-size: 14px; color: rgba(42,42,42,0.6); }
+
+    .card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    @media (max-width: 900px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .card-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
+
+    .type-card {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.8); border-radius: 20px;
+      padding: 28px 20px 24px; text-align: center; text-decoration: none; color: inherit; display: block;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+      transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.3s ease, border-color 0.3s ease;
+      opacity: 0; transform: translateY(24px);
+    }
+    .type-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2,0.8,0.2,1); }
+    .type-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: var(--group-color); }
+    .type-card:hover .card-char { transform: scale(1.08); }
+
+    .card-char {
+      width: 120px; height: 120px; object-fit: contain;
+      margin: 0 auto 16px; display: block;
+      animation: charFloat 5s ease-in-out infinite;
+      transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1);
+    }
+    @keyframes charFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    .card-code { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; color: var(--group-color); letter-spacing: 0.05em; margin-bottom: 2px; }
+    .card-nickname { font-size: 18px; font-weight: 700; color: #1A1A2E; margin-bottom: 4px; line-height: 1.3; }
+    .card-formal { font-size: 13px; font-weight: 500; color: rgba(42,42,42,0.5); margin-bottom: 12px; }
+    .card-catch { font-size: 13px; color: rgba(42,42,42,0.65); line-height: 1.6; }
+
+    .group-divider { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .group-divider hr { border: none; height: 1px; background: rgba(0,0,0,0.06); }
+
+    .footer { text-align: center; padding: 64px 24px 80px; }
+    .footer-brand { font-size: 15px; color: rgba(42,42,42,0.5); margin-bottom: 32px; line-height: 1.7; }
+    .footer-cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 18px 48px;
+      background: linear-gradient(135deg, #FF3B5C, #FF5A75);
+      color: #fff; font-family: 'Noto Sans JP', sans-serif;
+      font-size: 17px; font-weight: 700; border: none; border-radius: 16px;
+      text-decoration: none; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 24px rgba(255,59,92,0.35); letter-spacing: 0.04em;
+    }
+    .footer-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 40px rgba(255,59,92,0.5); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-char { animation: none !important; }
+      .type-card, .group-header { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="header-logo"><span>80</span>CARDS</a>
+    <a href="index.html" class="header-cta">診断してみる</a>
+  </header>
+
+  <section class="hero">
+    <h1><span>16</span>の性格タイプ</h1>
+    <p>80CARDSの診断は、16の基本タイプ × 5つの行動スタイルで、あなたを80タイプに分類します</p>
+  </section>
+
+  <!-- P GROUP -->
+  <section class="group-section" style="--group-color: #FF3B5C;">
+    <div class="group-header">
+      <div class="group-name">P群 ― 情熱と行動のグループ</div>
+      <div class="group-desc">社交的・行動重視・ポジティブ・感覚重視</div>
+    </div>
+    <div class="card-grid">
+      <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0s;">
+        <img src="character/PP チームの太陽.png" alt="チームの太陽" class="card-char" loading="lazy" style="animation-delay: 0s;" />
+        <div class="card-code">PP</div>
+        <div class="card-nickname">チームの太陽</div>
+        <div class="card-formal">エンターテイナー</div>
+        <div class="card-catch">明るさで場を支配する、生まれながらのムードメーカー</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.1s;">
+        <img src="character/PA 二面性の魔術師.png" alt="二面性の魔術師" class="card-char" loading="lazy" style="animation-delay: 0.5s;" />
+        <div class="card-code">PA</div>
+        <div class="card-nickname">二面性の魔術師</div>
+        <div class="card-formal">アルチザン</div>
+        <div class="card-catch">社交と没頭を行き来する、ただものではない二刀流</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.2s;">
+        <img src="character/PI 愛されの天才2.png" alt="愛されの天才" class="card-char" loading="lazy" style="animation-delay: 1s;" />
+        <div class="card-code">PI</div>
+        <div class="card-nickname">愛されの天才</div>
+        <div class="card-formal">コラボレーター</div>
+        <div class="card-catch">人見知りの奥に隠された、人をつなぐ天性の力</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.3s;">
+        <img src="character/PD 突破のカリスマ3.png" alt="突破のカリスマ" class="card-char" loading="lazy" style="animation-delay: 1.5s;" />
+        <div class="card-code">PD</div>
+        <div class="card-nickname">突破のカリスマ</div>
+        <div class="card-formal">アントレプレナー</div>
+        <div class="card-catch">走りながら考え、考えながら結果を出す突破者</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="group-divider"><hr /></div>
+
+  <!-- A GROUP -->
+  <section class="group-section" style="--group-color: #4D6CFA;">
+    <div class="group-header">
+      <div class="group-name">A群 ― 知性と精度のグループ</div>
+      <div class="group-desc">慎重・精度重視・知識重視・論理重視</div>
+    </div>
+    <div class="card-grid">
+      <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0s;">
+        <img src="character/AP 頼れる右腕.png" alt="頼れる右腕" class="card-char" loading="lazy" style="animation-delay: 0.2s;" />
+        <div class="card-code">AP</div>
+        <div class="card-nickname">頼れる右腕</div>
+        <div class="card-formal">プラクティショナー</div>
+        <div class="card-catch">冷静な仮面の下に、情熱を隠し持つ実務の片腕</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.1s;">
+        <img src="character/AA 知の番人.png" alt="知の番人" class="card-char" loading="lazy" style="animation-delay: 0.7s;" />
+        <div class="card-code">AA</div>
+        <div class="card-nickname">知の番人</div>
+        <div class="card-formal">リサーチャー</div>
+        <div class="card-catch">知の深淵を泳ぎ、答えが出るまで浮上しない探究者</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.2s;">
+        <img src="character/AI 積み上げの達人.png" alt="継続の鬼" class="card-char" loading="lazy" style="animation-delay: 1.2s;" />
+        <div class="card-code">AI</div>
+        <div class="card-nickname">継続の鬼</div>
+        <div class="card-formal">ディリジェンサー</div>
+        <div class="card-catch">遅くに、正確に。気づけば誰より高い場所にいる</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.3s;">
+        <img src="character/AD 氷の頭脳.png" alt="氷の頭脳" class="card-char" loading="lazy" style="animation-delay: 1.7s;" />
+        <div class="card-code">AD</div>
+        <div class="card-nickname">氷の頭脳</div>
+        <div class="card-formal">アナリスト</div>
+        <div class="card-catch">論理の矛盾を一瞬で断つ、冷静なる分析の刃</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="group-divider"><hr /></div>
+
+  <!-- I GROUP -->
+  <section class="group-section" style="--group-color: #00D4AA;">
+    <div class="group-header">
+      <div class="group-name">I群 ― 調和とサポートのグループ</div>
+      <div class="group-desc">協調性・リスク回避・チーム愛好・平和志向</div>
+    </div>
+    <div class="card-grid">
+      <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0s;">
+        <img src="character/IP 助っ人ヒーロー.png" alt="助っ人ヒーロー" class="card-char" loading="lazy" style="animation-delay: 0.3s;" />
+        <div class="card-code">IP</div>
+        <div class="card-nickname">助っ人ヒーロー</div>
+        <div class="card-formal">コントリビューター</div>
+        <div class="card-catch">何でもこなす万能さで、組織のバランスを静かに保つ</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.1s;">
+        <img src="character/IA 隠れ実力者2.png" alt="隠れ実力者" class="card-char" loading="lazy" style="animation-delay: 0.8s;" />
+        <div class="card-code">IA</div>
+        <div class="card-nickname">隠れ実力者</div>
+        <div class="card-formal">サポーター</div>
+        <div class="card-catch">安心して仕事を任せられる、チームの守り神</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.2s;">
+        <img src="character/II 共感マスター3.png" alt="共感マスター" class="card-char" loading="lazy" style="animation-delay: 1.3s;" />
+        <div class="card-code">II</div>
+        <div class="card-nickname">共感マスター</div>
+        <div class="card-formal">ハーモナー</div>
+        <div class="card-catch">誰の痛みにも気づいてしまう、優しさという名の才能</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.3s;">
+        <img src="character/ID 深掘りマニア.png" alt="深掘りマニア" class="card-char" loading="lazy" style="animation-delay: 1.8s;" />
+        <div class="card-code">ID</div>
+        <div class="card-nickname">深掘りマニア</div>
+        <div class="card-formal">シンカー</div>
+        <div class="card-catch">即断の裏で何度も思考を巡らせ、静かに正解を探る</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="group-divider"><hr /></div>
+
+  <!-- D GROUP -->
+  <section class="group-section" style="--group-color: #8B5CF6;">
+    <div class="group-header">
+      <div class="group-name">D群 ― 決断と推進のグループ</div>
+      <div class="group-desc">合理性・即断即決・リスク愛好・個人主義</div>
+    </div>
+    <div class="card-grid">
+      <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0s;">
+        <img src="character/DI 即決エンジン2.png" alt="即決エンジン" class="card-char" loading="lazy" style="animation-delay: 0.4s;" />
+        <div class="card-code">DI</div>
+        <div class="card-nickname">即決エンジン</div>
+        <div class="card-formal">プロモーター</div>
+        <div class="card-catch">迷う前に決め、進む。力で答えを叩き出す行動者</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.1s;">
+        <img src="character/DP 大将気質.png" alt="大将気質" class="card-char" loading="lazy" style="animation-delay: 0.9s;" />
+        <div class="card-code">DP</div>
+        <div class="card-nickname">大将気質</div>
+        <div class="card-formal">リーダー</div>
+        <div class="card-catch">圧倒的なリーダーシップ。決断力と行動力は桁違い</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.2s;">
+        <img src="character/DA 静かな司令塔.png" alt="静かな司令塔" class="card-char" loading="lazy" style="animation-delay: 1.4s;" />
+        <div class="card-code">DA</div>
+        <div class="card-nickname">静かな司令塔</div>
+        <div class="card-formal">ファシリテーター</div>
+        <div class="card-catch">仕組みやルールを創る側に立つ、聡明な頭脳の持ち主</div>
+      </a>
+      <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.3s;">
+        <img src="character/DD ゲームチェンジャー.png" alt="ゲームチェンジャー" class="card-char" loading="lazy" style="animation-delay: 1.9s;" />
+        <div class="card-code">DD</div>
+        <div class="card-nickname">ゲームチェンジャー</div>
+        <div class="card-formal">イノベーター</div>
+        <div class="card-catch">全タイプ最強の決断力で「ルールごと」書き換える異端</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="footer">
+    <p class="footer-brand">あなたの個性に、名前をつけよう。 ― 80CARDS</p>
+    <a href="index.html" class="footer-cta">無料で診断してみる</a>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = parseFloat(entry.target.style.animationDelay || '0') * 1000;
+            setTimeout(() => entry.target.classList.add('visible'), delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.type-card, .group-header').forEach((el) => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
