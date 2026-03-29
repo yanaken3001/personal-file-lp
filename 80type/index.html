@@ -6675,60 +6675,29 @@
         'あなたに合う働き方',
       ];
 
+      // 相性TOP3を計算
+      const compatTop3 = React.useMemo(() => {
+        const allTypes = Object.keys(TYPE_META).filter(t => t !== personalityCode);
+        return allTypes
+          .map(t => ({ code: t, score: getCompatibility(personalityCode, t).score }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3);
+      }, [personalityCode]);
+
       return (
         <div style={{ minHeight: '100vh', background: 'transparent' }}>
-          {/* ヒーローセクション（全幅） */}
+          {/* ===== ファーストビュー：キャラ + タイプ名 + キャッチコピー ===== */}
           <ResultHero
             personalityCode={personalityCode}
             behaviorType={behavioralType.name}
             keywords={keywords}
           />
 
-          {/* メインコンテンツ（PC: 2カラム、SP: 1カラム） */}
+          {/* ===== メインコンテンツ ===== */}
           <div className="result-main-content">
             <div className="result-content-area">
 
-              {/* ★ 友達との相性を調べるボタン（最も目立つ位置） */}
-              <div style={{ textAlign: 'center', margin: '24px 0' }}>
-                <button
-                  onClick={() => setShowMatchModal(true)}
-                  style={{
-                    width: '100%',
-                    maxWidth: '400px',
-                    padding: '18px 32px',
-                    background: 'linear-gradient(135deg, #FF3B5C, #FF5A75)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '60px',
-                    fontSize: '17px',
-                    fontWeight: '800',
-                    cursor: 'pointer',
-                    boxShadow: '0 8px 32px rgba(232,98,43,0.3)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px'
-                  }}
-                >
-                  <span style={{ fontSize: '20px' }}>💕</span>
-                  友達との相性を調べる
-                </button>
-                <p style={{ fontSize: '12px', color: 'rgba(42,42,42,0.4)', marginTop: '8px' }}>
-                  リンクを送るだけで相性がわかる！
-                </p>
-              </div>
-
-              {/* シェアボタン */}
-              <ShareButtons
-                typeName={typeName80}
-                behaviorType={behavioralType.name}
-                personalityCode={personalityCode}
-              />
-
-              {/* シェアカードプレビュー（削除済み） */}
-              {/* タイプ解説 */}
+              {/* ▼ あなたの特徴 */}
               {typeData && typeData.userDescription && (
                 <div style={{
                   background: 'rgba(255,255,255,0.55)',
@@ -6736,39 +6705,16 @@
                   padding: '24px',
                   margin: '24px 0'
                 }}>
-                  <h2 style={{
-                    fontSize: '20px',
-                    fontWeight: '700',
-                    color: '#1A1A2E',
-                    marginBottom: '12px'
-                  }}>
-                    {typeMeta?.emoji} あなたのタイプ解説
+                  <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
+                    あなたの特徴
                   </h2>
-                  <p style={{
-                    fontSize: '14px',
-                    color: 'rgba(42,42,42,0.8)',
-                    lineHeight: '1.8',
-                    whiteSpace: 'pre-line'
-                  }}>
+                  <p style={{ fontSize: '14px', color: 'rgba(42,42,42,0.8)', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                     {typeData.userDescription}
                   </p>
                 </div>
               )}
 
-              {/* ① 性格特性スライダー */}
-              <div data-section-index="0" id="section-0">
-                <ScoreSliders scores={scores} />
-              </div>
-
-              {/* ② 行動タイプ レーダーチャート */}
-              <div data-section-index="1" id="section-1">
-                <RadarChart
-                  behaviorScores={behaviorScores}
-                  personalityCode={personalityCode}
-                />
-              </div>
-
-              {/* ③ 強み・注意点 */}
+              {/* ▲ あなたの強み / ▽ ここだけ気をつけて */}
               {(strengthsList.length > 0 || weaknessesList.length > 0) && (
                 <StrengthsWeaknesses
                   strengths={strengthsList}
@@ -6777,7 +6723,103 @@
                 />
               )}
 
-              {/* ④ 適した職種 */}
+              {/* 性格特性スライダー */}
+              <div data-section-index="0" id="section-0">
+                <ScoreSliders scores={scores} />
+              </div>
+
+              {/* 行動タイプ レーダーチャート */}
+              <div data-section-index="1" id="section-1">
+                <RadarChart
+                  behaviorScores={behaviorScores}
+                  personalityCode={personalityCode}
+                />
+              </div>
+
+              {/* この結果をシェアする（SNS一括シェア・LINE不要） */}
+              <div style={{
+                background: 'rgba(255,255,255,0.55)',
+                borderRadius: '16px',
+                padding: '24px',
+                margin: '24px 0',
+                textAlign: 'center'
+              }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1A1A2E', marginBottom: '16px' }}>
+                  この結果をシェアする
+                </h3>
+                <ShareButtons
+                  typeName={typeName80}
+                  behaviorType={behavioralType.name}
+                  personalityCode={personalityCode}
+                />
+              </div>
+
+              {/* ===== 相性チラ見せ → LINE CTA ===== */}
+              <div style={{
+                background: `linear-gradient(135deg, ${typeColor.light}, rgba(255,255,255,0.7))`,
+                borderRadius: '20px',
+                padding: '32px 24px',
+                margin: '32px 0',
+                textAlign: 'center',
+                border: `1px solid ${typeColor.primary}22`
+              }}>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#1A1A2E', marginBottom: '20px' }}>
+                  あなたと相性が良いタイプ
+                </h3>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '360px', margin: '0 auto 24px' }}>
+                  {compatTop3.map((item, i) => {
+                    const label = getCompatibility(personalityCode, item.code).label;
+                    return (
+                      <div key={i} style={{
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        background: 'rgba(255,255,255,0.7)', borderRadius: '12px', padding: '12px 16px',
+                        textAlign: 'left'
+                      }}>
+                        <img src={getCharacterImage(item.code)} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }} />
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A2E' }}>
+                            {TYPE_NICKNAMES[item.code]}
+                          </div>
+                          <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)' }}>
+                            {item.code}型
+                          </div>
+                        </div>
+                        <div style={{
+                          fontSize: '18px', fontWeight: '800', color: typeColor.primary
+                        }}>
+                          {item.score}%
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <p style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A2E', marginBottom: '8px' }}>
+                  あなたの友達は何タイプ？
+                </p>
+                <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.6)', marginBottom: '20px' }}>
+                  友達に診断を送って相性を確かめよう
+                </p>
+
+                <button
+                  onClick={() => setShowMatchModal(true)}
+                  style={{
+                    width: '100%', maxWidth: '360px', padding: '16px 32px',
+                    background: '#06C755', color: '#fff', border: 'none', borderRadius: '60px',
+                    fontSize: '16px', fontWeight: '800', cursor: 'pointer',
+                    boxShadow: '0 6px 24px rgba(6,199,85,0.3)',
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '10px'
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.39.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.096 14.395 24 12.458 24 10.304"/>
+                  </svg>
+                  LINEで友達に診断を送る
+                </button>
+              </div>
+
+              {/* 適した職種 */}
               {careers.length > 0 && (
                 <div data-section-index="2" id="section-2">
                   <CareerSection
@@ -6795,12 +6837,7 @@
                   padding: '24px',
                   margin: '24px 0'
                 }}>
-                  <h2 style={{
-                    fontSize: '20px',
-                    fontWeight: '700',
-                    color: '#1A1A2E',
-                    marginBottom: '12px'
-                  }}>
+                  <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '12px' }}>
                     未経験からチャレンジできる適職
                   </h2>
                   {typeData.entryJobCategories && (
@@ -6808,72 +6845,18 @@
                       {typeData.entryJobCategories.replace(/\n/g, ' / ')}
                     </div>
                   )}
-                  <p style={{
-                    fontSize: '13px',
-                    color: 'rgba(42,42,42,0.7)',
-                    lineHeight: '1.8',
-                    whiteSpace: 'pre-line'
-                  }}>
+                  <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.7)', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                     {typeData.entryJobs}
                   </p>
                 </div>
               )}
 
-              {/* ⑤ ぼかしセクション（働き方相性） */}
+              {/* 働き方相性（ぼかし） */}
               <div data-section-index="3" id="section-3">
                 <BlurredSection personalityCode={personalityCode} />
               </div>
 
-              {/* LINE登録 */}
-              <div style={{
-                background: 'rgba(255,255,255,0.55)',
-                borderRadius: '16px',
-                padding: '24px',
-                margin: '24px 0',
-                textAlign: 'center'
-              }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1A1A2E', marginBottom: '8px' }}>
-                  LINE公式アカウント
-                </h3>
-                <p style={{ fontSize: '13px', color: 'rgba(42,42,42,0.5)', marginBottom: '16px' }}>
-                  友だち追加で診断結果の詳細レポートをお届け
-                </p>
-                <a
-                  href="https://lin.ee/placeholder"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '14px 32px',
-                    background: '#06C755',
-                    color: '#fff',
-                    borderRadius: '28px',
-                    fontSize: '16px',
-                    fontWeight: '700',
-                    textDecoration: 'none'
-                  }}
-                  onClick={() => {
-                    try {
-                      if (typeof fbq === 'function') {
-                        fbq('trackCustom', 'CTA80TypeClick', {
-                          content_name: '80type_line_add',
-                          content_category: personalityCode,
-                          full_type: typeName80,
-                        });
-                      }
-                    } catch (e) {}
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
-                    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.39.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.096 14.395 24 12.458 24 10.304"/>
-                  </svg>
-                  友だち追加する
-                </a>
-              </div>
-
-              {/* ⑨ 全タイプ一覧グリッド */}
+              {/* 全タイプ一覧グリッド */}
               <TypeGrid currentType={personalityCode} />
 
               {/* ブランド */}
