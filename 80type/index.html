@@ -4646,6 +4646,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const fromParam = urlParams.get('from') || '';
     const matchParam = urlParams.get('match') || '';
+    const devScoresParam = urlParams.get('dev_scores') || '';
 
     // ===================================================================
     // 相性診断データ
@@ -7541,13 +7542,20 @@
     // ===================================================================
 
     function App() {
+      // DEV: dev_scoresがあれば直接結果画面を表示
+      const devScores = React.useMemo(() => {
+        if (!devScoresParam) return null;
+        try { return JSON.parse(devScoresParam); } catch(e) { return null; }
+      }, []);
+      const isDevMode = !!devScores;
+
       // 相性リンクから来た場合: matchLanding → quiz → loading → result + compatibility
       // 通常フロー: start → quiz → loading → result
-      const isMatchMode = !!matchCreator;
+      const isMatchMode = !isDevMode && !!matchCreator;
 
-      const [phase, setPhase] = React.useState(isMatchMode ? 'matchLanding' : 'start');
+      const [phase, setPhase] = React.useState(isDevMode ? 'result' : (isMatchMode ? 'matchLanding' : 'start'));
       const [qIndex, setQIndex] = React.useState(0);
-      const [scores, setScores] = React.useState({ P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
+      const [scores, setScores] = React.useState(devScores || { P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
       const [answerHistory, setAnswerHistory] = React.useState([]);
       const [nextChapter, setNextChapter] = React.useState(null);
       const [showCompatibility, setShowCompatibility] = React.useState(false);

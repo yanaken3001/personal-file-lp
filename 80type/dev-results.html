@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEV: 診断結果プレビュー | 80CARDS</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/80type/favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #1a1a2e;
+      color: #f5f5f7;
+      min-height: 100vh;
+    }
+    .dev-banner {
+      background: #FF3B5C;
+      color: #fff;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .controls {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 24px;
+    }
+    .controls h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .controls p {
+      font-size: 13px;
+      color: rgba(245,245,247,0.5);
+      margin-bottom: 20px;
+    }
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      background: transparent;
+      color: rgba(245,245,247,0.7);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+    .filter-btn.active { border-color: var(--c); color: #fff; background: var(--c); }
+
+    .grid-80 {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 900px) { .grid-80 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 520px) { .grid-80 { grid-template-columns: repeat(2, 1fr); } }
+
+    .type-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .type-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--c);
+      transform: translateY(-2px);
+    }
+    .type-btn img {
+      width: 64px; height: 64px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+    }
+    .type-btn .code {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c);
+    }
+    .type-btn .name {
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .type-btn .behavior {
+      font-size: 10px;
+      color: rgba(245,245,247,0.4);
+    }
+
+    /* Result iframe overlay */
+    .result-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.8);
+    }
+    .result-overlay.open { display: flex; flex-direction: column; }
+    .result-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #1a1a2e;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      flex-shrink: 0;
+    }
+    .result-toolbar .info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .result-toolbar .info img {
+      width: 36px; height: 36px; object-fit: contain;
+    }
+    .result-toolbar .type-label {
+      font-size: 14px; font-weight: 700;
+    }
+    .result-toolbar .nav-btns {
+      display: flex; gap: 8px;
+    }
+    .result-toolbar button {
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: transparent;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .result-toolbar button:hover { background: rgba(255,255,255,0.1); }
+    .result-toolbar .close-btn { background: #FF3B5C; border-color: #FF3B5C; }
+    .result-frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+      background: #FAF5F0;
+    }
+  </style>
+</head>
+<body>
+  <div class="dev-banner">DEV MODE — 本番には公開されません</div>
+
+  <div class="controls">
+    <h1>80CARDS 診断結果プレビュー</h1>
+    <p>タイプをクリックすると診断結果をプレビューできます。行動タイプ × 16性格 = 80パターン</p>
+
+    <div class="filter-row" id="groupFilter">
+      <button class="filter-btn active" style="--c: #fff;" data-group="all">ALL</button>
+      <button class="filter-btn" style="--c: #FF3B5C;" data-group="P">P群</button>
+      <button class="filter-btn" style="--c: #4D6CFA;" data-group="A">A群</button>
+      <button class="filter-btn" style="--c: #00D4AA;" data-group="I">I群</button>
+      <button class="filter-btn" style="--c: #8B5CF6;" data-group="D">D群</button>
+    </div>
+    <div class="filter-row" id="behaviorFilter">
+      <button class="filter-btn active" style="--c: #fff;" data-behavior="all">全行動型</button>
+      <button class="filter-btn" style="--c: #ccc;" data-behavior="達成型">達成型</button>
+      <button class="filter-btn" style="--c: #ccc;" data-behavior="調和型">調和型</button>
+      <button class="filter-btn" style="--c: #ccc;" data-behavior="効率型">効率型</button>
+      <button class="filter-btn" style="--c: #ccc;" data-behavior="演出型">演出型</button>
+      <button class="filter-btn" style="--c: #ccc;" data-behavior="情報型">情報型</button>
+    </div>
+  </div>
+
+  <div class="grid-80" id="typeGrid"></div>
+
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-toolbar">
+      <div class="info">
+        <img id="overlayImg" src="" alt="" />
+        <span class="type-label" id="overlayLabel"></span>
+      </div>
+      <div class="nav-btns">
+        <button id="prevBtn">← 前</button>
+        <button id="nextBtn">次 →</button>
+        <button class="close-btn" id="closeBtn">✕ 閉じる</button>
+      </div>
+    </div>
+    <iframe class="result-frame" id="resultFrame"></iframe>
+  </div>
+
+  <script>
+    const TYPES = [
+      'PP','PA','PI','PD',
+      'AP','AA','AI','AD',
+      'IP','IA','II','ID',
+      'DI','DP','DA','DD'
+    ];
+    const BEHAVIORS = ['達成型','調和型','効率型','演出型','情報型'];
+    const BEHAVIOR_CODES = { '達成型':'K', '調和型':'H', '情報型':'J', '演出型':'G', '効率型':'E' };
+    const NICKNAMES = {
+      PP:'チームの太陽', PA:'二面性の魔術師', PI:'愛されの天才', PD:'突破のカリスマ',
+      AP:'頼れる右腕', AA:'知の番人', AI:'継続の鬼', AD:'氷の頭脳',
+      IP:'助っ人ヒーロー', IA:'隠れ実力者', II:'共感マスター', ID:'深掘りマニア',
+      DI:'即決エンジン', DP:'大将気質', DA:'静かな司令塔', DD:'ゲームチェンジャー'
+    };
+    const CHAR_FILES = {
+      PP:'PP チームの太陽', PA:'PA 二面性の魔術師', PI:'PI 愛されの天才', PD:'PD 突破のカリスマ',
+      AP:'AP 頼れる右腕', AA:'AA 知の番人', AI:'AI 積み上げの達人', AD:'AD 氷の頭脳',
+      IP:'IP 助っ人ヒーロー', IA:'IA 隠れ実力者', II:'II 共感マスター', ID:'ID 深掘りマニア',
+      DI:'DI 即決エンジン', DP:'DP 大将気質', DA:'DA 静かな司令塔', DD:'DD ゲームチェンジャー'
+    };
+    const GROUP_COLORS = { P:'#FF3B5C', A:'#4D6CFA', I:'#00D4AA', D:'#8B5CF6' };
+
+    // Generate all 80 combinations
+    const all80 = [];
+    TYPES.forEach(type => {
+      BEHAVIORS.forEach(beh => {
+        all80.push({ type, behavior: beh, group: type[0] });
+      });
+    });
+
+    let currentFilter = { group: 'all', behavior: 'all' };
+    let visibleItems = [...all80];
+    let currentIdx = 0;
+
+    function getImgSrc(code) {
+      return `character/${CHAR_FILES[code]}.png`;
+    }
+
+    // Build scores that produce a specific type
+    function buildScores(typeCode, behaviorName) {
+      const first = typeCode[0];
+      const second = typeCode[1];
+      const scores = { P:15, A:15, I:15, D:15, K:10, H:10, J:10, G:10, E:10 };
+
+      if (first === second) {
+        // Same-letter type (PP, AA, etc): needs 12+ gap
+        scores[first] = 38;
+      } else {
+        scores[first] = 35;
+        scores[second] = 28;
+      }
+
+      const behCode = BEHAVIOR_CODES[behaviorName];
+      if (behCode) scores[behCode] = 22;
+
+      return scores;
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('typeGrid');
+      const filtered = all80.filter(item => {
+        if (currentFilter.group !== 'all' && item.group !== currentFilter.group) return false;
+        if (currentFilter.behavior !== 'all' && item.behavior !== currentFilter.behavior) return false;
+        return true;
+      });
+      visibleItems = filtered;
+
+      grid.innerHTML = filtered.map((item, i) => `
+        <a class="type-btn" style="--c: ${GROUP_COLORS[item.group]}" data-idx="${i}" href="#">
+          <img src="${getImgSrc(item.type)}" alt="${NICKNAMES[item.type]}" />
+          <span class="code">${item.behavior}${item.type}</span>
+          <span class="name">${NICKNAMES[item.type]}</span>
+          <span class="behavior">${item.behavior}</span>
+        </a>
+      `).join('');
+
+      grid.querySelectorAll('.type-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentIdx = parseInt(btn.dataset.idx);
+          openResult(currentIdx);
+        });
+      });
+    }
+
+    function openResult(idx) {
+      const item = visibleItems[idx];
+      if (!item) return;
+      const scores = buildScores(item.type, item.behavior);
+      const params = Object.entries(scores).map(([k,v]) => `${k}=${v}`).join('&');
+
+      document.getElementById('overlayImg').src = getImgSrc(item.type);
+      document.getElementById('overlayLabel').textContent = `${item.behavior}${item.type} ${NICKNAMES[item.type]}`;
+      document.getElementById('resultFrame').src = `index.html?dev_scores=${encodeURIComponent(JSON.stringify(scores))}#dev-result`;
+      document.getElementById('resultOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeResult() {
+      document.getElementById('resultOverlay').classList.remove('open');
+      document.getElementById('resultFrame').src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Filter buttons
+    document.getElementById('groupFilter').addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('#groupFilter .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter.group = btn.dataset.group;
+      renderGrid();
+    });
+
+    document.getElementById('behaviorFilter').addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('#behaviorFilter .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter.behavior = btn.dataset.behavior;
+      renderGrid();
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', closeResult);
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+      openResult(currentIdx);
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentIdx = (currentIdx + 1) % visibleItems.length;
+      openResult(currentIdx);
+    });
+
+    // ESC to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeResult();
+      if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; openResult(currentIdx); }
+      if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % visibleItems.length; openResult(currentIdx); }
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>
