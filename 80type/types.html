@@ -75,31 +75,42 @@
     @media (max-width: 520px) { .card-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
 
     .type-card {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.8); border-radius: 20px;
-      padding: 16px 16px 20px; text-align: center; text-decoration: none; color: inherit; display: block;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
-      transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.3s ease, border-color 0.3s ease;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.9); border-radius: 20px;
+      padding: 12px 10px 20px; text-align: center; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1);
       opacity: 0; transform: translateY(24px);
+      overflow: hidden; /* 画像のはみ出しを制御 */
     }
-    .type-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2,0.8,0.2,1); }
-    .type-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.1); border-color: var(--group-color); }
-    .type-card:hover .card-char { transform: scale(1.05); }
+    .type-card.visible { opacity: 1; transform: translateY(0); }
+    .type-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: var(--group-color); }
+    .type-card:hover .card-char { transform: scale(1.12); filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); }
 
+    .card-char-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px; /* 画像エリアを拡大 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
     .card-char {
-      width: 90%; height: auto; aspect-ratio: 1; object-fit: contain;
-      margin: 0 auto 12px; display: block;
+      width: 130%; /* さらに大きく */
+      height: 130%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+      transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1), filter 0.4s ease;
       animation: charFloat 5s ease-in-out infinite;
-      transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1);
-      mix-blend-mode: multiply;
     }
-    @keyframes charFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes charFloat { 0%, 100% { transform: translateY(2px); } 50% { transform: translateY(-8px); } }
 
-    .card-code { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; color: var(--group-color); letter-spacing: 0.05em; margin-bottom: 2px; }
-    .card-nickname { font-size: 18px; font-weight: 700; color: #1A1A2E; margin-bottom: 4px; line-height: 1.3; }
-    .card-formal { font-size: 13px; font-weight: 500; color: rgba(42,42,42,0.5); margin-bottom: 12px; }
-    .card-catch { font-size: 13px; color: rgba(42,42,42,0.65); line-height: 1.6; }
+    .card-code { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: var(--group-color); letter-spacing: 0.08em; margin-bottom: 2px; }
+    .card-nickname { font-size: 19px; font-weight: 900; color: #1A1A2E; margin-bottom: 5px; line-height: 1.25; }
+    .card-formal { font-size: 12px; font-weight: 600; color: rgba(42,42,42,0.45); margin-bottom: 12px; }
+    .card-catch { font-size: 13px; color: rgba(42,42,42,0.65); line-height: 1.6; padding: 0 10px; }
 
     .group-divider { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     .group-divider hr { border: none; height: 1px; background: rgba(0,0,0,0.06); }
@@ -147,28 +158,36 @@
     </div>
     <div class="card-grid">
       <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0s;">
-        <img src="character/PP チームの太陽.png" alt="チームの太陽" class="card-char" loading="lazy" style="animation-delay: 0s;" />
+        <div class="card-char-wrapper">
+          <img src="character/PP チームの太陽.png" alt="チームの太陽" class="card-char" loading="lazy" style="animation-delay: 0s;" />
+        </div>
         <div class="card-code">PP</div>
         <div class="card-nickname">チームの太陽</div>
         <div class="card-formal">エンターテイナー</div>
         <div class="card-catch">明るさで場を支配する、生まれながらのムードメーカー</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.1s;">
-        <img src="character/PA 二面性の魔術師.png" alt="二面性の魔術師" class="card-char" loading="lazy" style="animation-delay: 0.5s;" />
+        <div class="card-char-wrapper">
+          <img src="character/PA 二面性の魔術師.png" alt="二面性の魔術師" class="card-char" loading="lazy" style="animation-delay: 0.5s;" />
+        </div>
         <div class="card-code">PA</div>
         <div class="card-nickname">二面性の魔術師</div>
         <div class="card-formal">アルチザン</div>
         <div class="card-catch">社交と没頭を行き来する、ただものではない二刀流</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.2s;">
-        <img src="character/PI 愛されの天才.png" alt="愛されの天才" class="card-char" loading="lazy" style="animation-delay: 1s;" />
+        <div class="card-char-wrapper">
+          <img src="character/PI 愛されの天才.png" alt="愛されの天才" class="card-char" loading="lazy" style="animation-delay: 1s;" />
+        </div>
         <div class="card-code">PI</div>
         <div class="card-nickname">愛されの天才</div>
         <div class="card-formal">コラボレーター</div>
         <div class="card-catch">人見知りの奥に隠された、人をつなぐ天性の力</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #FF3B5C; animation-delay: 0.3s;">
-        <img src="character/PD 突破のカリスマ.png" alt="突破のカリスマ" class="card-char" loading="lazy" style="animation-delay: 1.5s;" />
+        <div class="card-char-wrapper">
+          <img src="character/PD 突破のカリスマ.png" alt="突破のカリスマ" class="card-char" loading="lazy" style="animation-delay: 1.5s;" />
+        </div>
         <div class="card-code">PD</div>
         <div class="card-nickname">突破のカリスマ</div>
         <div class="card-formal">アントレプレナー</div>
@@ -187,28 +206,36 @@
     </div>
     <div class="card-grid">
       <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0s;">
-        <img src="character/AP 頼れる右腕.png" alt="頼れる右腕" class="card-char" loading="lazy" style="animation-delay: 0.2s;" />
+        <div class="card-char-wrapper">
+          <img src="character/AP 頼れる右腕.png" alt="頼れる右腕" class="card-char" loading="lazy" style="animation-delay: 0.2s;" />
+        </div>
         <div class="card-code">AP</div>
         <div class="card-nickname">頼れる右腕</div>
         <div class="card-formal">プラクティショナー</div>
         <div class="card-catch">冷静な仮面の下に、情熱を隠し持つ実務の片腕</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.1s;">
-        <img src="character/AA 知の番人.png" alt="知の番人" class="card-char" loading="lazy" style="animation-delay: 0.7s;" />
+        <div class="card-char-wrapper">
+          <img src="character/AA 知の番人.png" alt="知の番人" class="card-char" loading="lazy" style="animation-delay: 0.7s;" />
+        </div>
         <div class="card-code">AA</div>
         <div class="card-nickname">知の番人</div>
         <div class="card-formal">リサーチャー</div>
         <div class="card-catch">知の深淵を泳ぎ、答えが出るまで浮上しない探究者</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.2s;">
-        <img src="character/AI 積み上げの達人.png" alt="継続の鬼" class="card-char" loading="lazy" style="animation-delay: 1.2s;" />
+        <div class="card-char-wrapper">
+          <img src="character/AI 積み上げの達人.png" alt="継続の鬼" class="card-char" loading="lazy" style="animation-delay: 1.2s;" />
+        </div>
         <div class="card-code">AI</div>
         <div class="card-nickname">継続の鬼</div>
         <div class="card-formal">ディリジェンサー</div>
         <div class="card-catch">遅くに、正確に。気づけば誰より高い場所にいる</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #4D6CFA; animation-delay: 0.3s;">
-        <img src="character/AD 氷の頭脳.png" alt="氷の頭脳" class="card-char" loading="lazy" style="animation-delay: 1.7s;" />
+        <div class="card-char-wrapper">
+          <img src="character/AD 氷の頭脳.png" alt="氷の頭脳" class="card-char" loading="lazy" style="animation-delay: 1.7s;" />
+        </div>
         <div class="card-code">AD</div>
         <div class="card-nickname">氷の頭脳</div>
         <div class="card-formal">アナリスト</div>
@@ -227,28 +254,36 @@
     </div>
     <div class="card-grid">
       <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0s;">
-        <img src="character/IP 助っ人ヒーロー.png" alt="助っ人ヒーロー" class="card-char" loading="lazy" style="animation-delay: 0.3s;" />
+        <div class="card-char-wrapper">
+          <img src="character/IP 助っ人ヒーロー.png" alt="助っ人ヒーロー" class="card-char" loading="lazy" style="animation-delay: 0.3s;" />
+        </div>
         <div class="card-code">IP</div>
         <div class="card-nickname">助っ人ヒーロー</div>
         <div class="card-formal">コントリビューター</div>
         <div class="card-catch">何でもこなす万能さで、組織のバランスを静かに保つ</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.1s;">
-        <img src="character/IA 隠れ実力者.png" alt="隠れ実力者" class="card-char" loading="lazy" style="animation-delay: 0.8s;" />
+        <div class="card-char-wrapper">
+          <img src="character/IA 隠れ実力者.png" alt="隠れ実力者" class="card-char" loading="lazy" style="animation-delay: 0.8s;" />
+        </div>
         <div class="card-code">IA</div>
         <div class="card-nickname">隠れ実力者</div>
         <div class="card-formal">サポーター</div>
         <div class="card-catch">安心して仕事を任せられる、チームの守り神</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.2s;">
-        <img src="character/II 共感マスター.png" alt="共感マスター" class="card-char" loading="lazy" style="animation-delay: 1.3s;" />
+        <div class="card-char-wrapper">
+          <img src="character/II 共感マスター.png" alt="共感マスター" class="card-char" loading="lazy" style="animation-delay: 1.3s;" />
+        </div>
         <div class="card-code">II</div>
         <div class="card-nickname">共感マスター</div>
         <div class="card-formal">ハーモナー</div>
         <div class="card-catch">誰の痛みにも気づいてしまう、優しさという名の才能</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #00D4AA; animation-delay: 0.3s;">
-        <img src="character/ID 深掘りマニア.png" alt="深掘りマニア" class="card-char" loading="lazy" style="animation-delay: 1.8s;" />
+        <div class="card-char-wrapper">
+          <img src="character/ID 深掘りマニア.png" alt="深掘りマニア" class="card-char" loading="lazy" style="animation-delay: 1.8s;" />
+        </div>
         <div class="card-code">ID</div>
         <div class="card-nickname">深掘りマニア</div>
         <div class="card-formal">シンカー</div>
@@ -267,28 +302,36 @@
     </div>
     <div class="card-grid">
       <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0s;">
-        <img src="character/DI 即決エンジン.png" alt="即決エンジン" class="card-char" loading="lazy" style="animation-delay: 0.4s;" />
+        <div class="card-char-wrapper">
+          <img src="character/DI 即決エンジン.png" alt="即決エンジン" class="card-char" loading="lazy" style="animation-delay: 0.4s;" />
+        </div>
         <div class="card-code">DI</div>
         <div class="card-nickname">即決エンジン</div>
         <div class="card-formal">プロモーター</div>
         <div class="card-catch">迷う前に決め、進む。力で答えを叩き出す行動者</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.1s;">
-        <img src="character/DP 大将気質.png" alt="大将気質" class="card-char" loading="lazy" style="animation-delay: 0.9s;" />
+        <div class="card-char-wrapper">
+          <img src="character/DP 大将気質.png" alt="大将気質" class="card-char" loading="lazy" style="animation-delay: 0.9s;" />
+        </div>
         <div class="card-code">DP</div>
         <div class="card-nickname">大将気質</div>
         <div class="card-formal">リーダー</div>
         <div class="card-catch">圧倒的なリーダーシップ。決断力と行動力は桁違い</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.2s;">
-        <img src="character/DA 静かな司令塔.png" alt="静かな司令塔" class="card-char" loading="lazy" style="animation-delay: 1.4s;" />
+        <div class="card-char-wrapper">
+          <img src="character/DA 静かな司令塔.png" alt="静かな司令塔" class="card-char" loading="lazy" style="animation-delay: 1.4s;" />
+        </div>
         <div class="card-code">DA</div>
         <div class="card-nickname">静かな司令塔</div>
         <div class="card-formal">ファシリテーター</div>
         <div class="card-catch">仕組みやルールを創る側に立つ、聡明な頭脳の持ち主</div>
       </a>
       <a href="index.html" class="type-card" style="--group-color: #8B5CF6; animation-delay: 0.3s;">
-        <img src="character/DD ゲームチェンジャー.png" alt="ゲームチェンジャー" class="card-char" loading="lazy" style="animation-delay: 1.9s;" />
+        <div class="card-char-wrapper">
+          <img src="character/DD ゲームチェンジャー.png" alt="ゲームチェンジャー" class="card-char" loading="lazy" style="animation-delay: 1.9s;" />
+        </div>
         <div class="card-code">DD</div>
         <div class="card-nickname">ゲームチェンジャー</div>
         <div class="card-formal">イノベーター</div>

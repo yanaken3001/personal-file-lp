@@ -1914,10 +1914,11 @@
     .card-front-char {
       position: relative;
       z-index: 1;
-      width: 85%;
-      max-height: 95%;
+      width: 115%; /* 枠いっぱいに拡大 */
+      max-height: 110%; /* 少しはみ出すくらいがダイナミック */
       object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.7));
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
+      transform: translateY(2%); /* 足元を接地させる */
     }
 
     /* --- ステータスバー（種族/タイプ表記） --- */
@@ -2064,7 +2065,8 @@
         padding: 3px 8px;
       }
       .card-front-char {
-        width: 80%;
+        width: 100%;
+        max-height: 105%;
       }
     }
 
