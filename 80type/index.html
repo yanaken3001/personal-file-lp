@@ -543,12 +543,12 @@
       mix-blend-mode: multiply;
     }
 
-    .hero-char:nth-child(1) { top: 6%; left: 3%; width: 120px; animation-delay: 0s; }
-    .hero-char:nth-child(2) { top: 8%; right: 5%; width: 110px; animation-delay: 1.2s; }
-    .hero-char:nth-child(3) { top: 48%; left: 1%; width: 115px; animation-delay: 0.6s; }
-    .hero-char:nth-child(4) { top: 52%; right: 2%; width: 120px; animation-delay: 1.8s; }
-    .hero-char:nth-child(5) { bottom: 14%; left: 4%; width: 100px; animation-delay: 2.4s; }
-    .hero-char:nth-child(6) { bottom: 10%; right: 6%; width: 110px; animation-delay: 0.3s; }
+    .hero-char:nth-child(1) { top: 4%; left: 2%; width: 160px; animation-delay: 0s; }
+    .hero-char:nth-child(2) { top: 6%; right: 3%; width: 148px; animation-delay: 1.2s; }
+    .hero-char:nth-child(3) { top: 44%; left: 0%; width: 152px; animation-delay: 0.6s; }
+    .hero-char:nth-child(4) { top: 48%; right: 1%; width: 160px; animation-delay: 1.8s; }
+    .hero-char:nth-child(5) { bottom: 10%; left: 3%; width: 136px; animation-delay: 2.4s; }
+    .hero-char:nth-child(6) { bottom: 6%; right: 4%; width: 148px; animation-delay: 0.3s; }
 
     @keyframes charFloat {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -557,13 +557,13 @@
     }
 
     @media (max-width: 767px) {
-      .hero-char { opacity: 0.65; }
-      .hero-char:nth-child(1) { width: 80px; }
-      .hero-char:nth-child(2) { width: 72px; }
-      .hero-char:nth-child(3) { width: 76px; }
-      .hero-char:nth-child(4) { width: 80px; }
-      .hero-char:nth-child(5) { width: 68px; }
-      .hero-char:nth-child(6) { width: 72px; }
+      .hero-char { opacity: 0.6; }
+      .hero-char:nth-child(1) { width: 100px; }
+      .hero-char:nth-child(2) { width: 92px; }
+      .hero-char:nth-child(3) { width: 96px; }
+      .hero-char:nth-child(4) { width: 100px; }
+      .hero-char:nth-child(5) { width: 88px; }
+      .hero-char:nth-child(6) { width: 92px; }
     }
 
     /* ===== PROGRESS BAR ===== */
@@ -4691,10 +4691,10 @@
 
     // キャラクター画像ファイル名マッピング（ファイル名にバージョン番号があるため）
     const CHARACTER_FILES = {
-      PP: 'PP チームの太陽', PA: 'PA 二面性の魔術師', PI: 'PI 愛されの天才2', PD: 'PD 突破のカリスマ3',
+      PP: 'PP チームの太陽', PA: 'PA 二面性の魔術師', PI: 'PI 愛されの天才', PD: 'PD 突破のカリスマ',
       AP: 'AP 頼れる右腕', AA: 'AA 知の番人', AI: 'AI 積み上げの達人', AD: 'AD 氷の頭脳',
-      IP: 'IP 助っ人ヒーロー', IA: 'IA 隠れ実力者2', II: 'II 共感マスター3', ID: 'ID 深掘りマニア',
-      DI: 'DI 即決エンジン2', DP: 'DP 大将気質', DA: 'DA 静かな司令塔', DD: 'DD ゲームチェンジャー'
+      IP: 'IP 助っ人ヒーロー', IA: 'IA 隠れ実力者', II: 'II 共感マスター', ID: 'ID 深掘りマニア',
+      DI: 'DI 即決エンジン', DP: 'DP 大将気質', DA: 'DA 静かな司令塔', DD: 'DD ゲームチェンジャー'
     };
 
     function getCharacterImage(code) {
@@ -5050,7 +5050,7 @@
             <img src="character/AA 知の番人.png" alt="" className="hero-char" data-group="A" loading="eager" />
             <img src="character/IP 助っ人ヒーロー.png" alt="" className="hero-char" data-group="I" loading="eager" />
             <img src="character/DP 大将気質.png" alt="" className="hero-char" data-group="D" loading="eager" />
-            <img src="character/DI 即決エンジン2.png" alt="" className="hero-char" data-group="D" loading="eager" />
+            <img src="character/DI 即決エンジン.png" alt="" className="hero-char" data-group="D" loading="eager" />
           </div>
 
           {/* Phase 1: Hero icon */}
@@ -5861,8 +5861,8 @@
                 src={getCharacterImage(personalityCode)}
                 alt={TYPE_NICKNAMES[personalityCode]}
                 style={{
-                  width: '160px',
-                  height: '160px',
+                  width: '220px',
+                  height: '220px',
                   objectFit: 'contain',
                   mixBlendMode: 'multiply'
                 }}
