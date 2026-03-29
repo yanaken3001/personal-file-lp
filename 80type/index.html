@@ -543,12 +543,12 @@
       mix-blend-mode: multiply;
     }
 
-    .hero-char:nth-child(1) { top: 4%; left: 2%; width: 160px; animation-delay: 0s; }
-    .hero-char:nth-child(2) { top: 6%; right: 3%; width: 148px; animation-delay: 1.2s; }
-    .hero-char:nth-child(3) { top: 44%; left: 0%; width: 152px; animation-delay: 0.6s; }
-    .hero-char:nth-child(4) { top: 48%; right: 1%; width: 160px; animation-delay: 1.8s; }
-    .hero-char:nth-child(5) { bottom: 10%; left: 3%; width: 136px; animation-delay: 2.4s; }
-    .hero-char:nth-child(6) { bottom: 6%; right: 4%; width: 148px; animation-delay: 0.3s; }
+    .hero-char:nth-child(1) { top: 2%; left: -2%; width: 220px; animation-delay: 0s; }
+    .hero-char:nth-child(2) { top: 4%; right: -2%; width: 200px; animation-delay: 1.2s; }
+    .hero-char:nth-child(3) { top: 40%; left: -4%; width: 210px; animation-delay: 0.6s; }
+    .hero-char:nth-child(4) { top: 42%; right: -3%; width: 220px; animation-delay: 1.8s; }
+    .hero-char:nth-child(5) { bottom: 6%; left: 0%; width: 190px; animation-delay: 2.4s; }
+    .hero-char:nth-child(6) { bottom: 2%; right: -1%; width: 200px; animation-delay: 0.3s; }
 
     @keyframes charFloat {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -557,13 +557,13 @@
     }
 
     @media (max-width: 767px) {
-      .hero-char { opacity: 0.6; }
-      .hero-char:nth-child(1) { width: 100px; }
-      .hero-char:nth-child(2) { width: 92px; }
-      .hero-char:nth-child(3) { width: 96px; }
-      .hero-char:nth-child(4) { width: 100px; }
-      .hero-char:nth-child(5) { width: 88px; }
-      .hero-char:nth-child(6) { width: 92px; }
+      .hero-char { opacity: 0.55; }
+      .hero-char:nth-child(1) { width: 140px; }
+      .hero-char:nth-child(2) { width: 128px; }
+      .hero-char:nth-child(3) { width: 132px; }
+      .hero-char:nth-child(4) { width: 140px; }
+      .hero-char:nth-child(5) { width: 120px; }
+      .hero-char:nth-child(6) { width: 128px; }
     }
 
     /* ===== PROGRESS BAR ===== */
@@ -5861,8 +5861,8 @@
                 src={getCharacterImage(personalityCode)}
                 alt={TYPE_NICKNAMES[personalityCode]}
                 style={{
-                  width: '220px',
-                  height: '220px',
+                  width: '280px',
+                  height: '280px',
                   objectFit: 'contain',
                   mixBlendMode: 'multiply'
                 }}
