@@ -1684,8 +1684,8 @@
 
     .card-flipper {
       width: 88vw;
-      max-width: 400px;
-      aspect-ratio: 3 / 4.5;
+      max-width: 360px;
+      aspect-ratio: 59 / 86; /* 遊戯王実寸比率 */
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -1699,12 +1699,11 @@
       inset: 0;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      border-radius: 24px;
+      border-radius: 14px;
       overflow: hidden;
       box-shadow:
-        0 8px 32px rgba(0,0,0,0.18),
-        0 2px 8px rgba(0,0,0,0.10),
-        inset 0 1px 0 rgba(255,255,255,0.25);
+        0 12px 40px rgba(0,0,0,0.35),
+        0 4px 12px rgba(0,0,0,0.25);
     }
 
     /* --- カード裏面 --- */
@@ -1770,7 +1769,9 @@
       pointer-events: none;
     }
 
-    /* --- カード表面（遊戯王風トレーディングカード） --- */
+    /* ============================================================
+       遊戯王風カード表面 — 本格デザイン
+       ============================================================ */
     .card-front {
       z-index: 1;
       transform: rotateY(180deg);
@@ -1778,175 +1779,192 @@
       flex-direction: column;
       text-align: center;
       position: relative;
-      background: var(--card-bg, #2A2A35);
-      background-image: var(--card-texture, none);
+      /* カード地の色はタイプ群ごとにJSから --card-hue で注入 */
+      background: var(--card-bg, #c9a24d);
       background-size: cover;
     }
-
-    /* 外枠（遊戯王の金枠 → ダークなテクスチャ枠） */
+    /* ゴールドのメタリック外枠（ベベル風） */
     .card-front-outer-border {
       position: absolute;
       inset: 0;
-      border-radius: 24px;
-      border: 6px solid var(--card-border, #444);
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      border-radius: 14px;
+      border: 6px solid;
+      border-color: #d4a84b #8b6914 #8b6914 #d4a84b; /* ベベルライト/シャドウ */
+      box-shadow:
+        inset 0 0 0 2px rgba(0,0,0,0.3),
+        inset 0 0 8px rgba(0,0,0,0.4);
       z-index: 0;
       pointer-events: none;
     }
-    /* 内枠（二重フレーム） */
     .card-front-outer-border::after {
       content: '';
       position: absolute;
-      inset: 2px;
-      border: 2px solid var(--card-border-inner, rgba(255,255,255,0.2));
-      border-radius: 17px;
+      inset: 0px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,220,120,0.35);
     }
 
-    /* カード名エリア（イラスト窓の上） */
+    /* --- カード名バー --- */
     .card-front-name-bar {
       position: relative;
       z-index: 1;
-      margin: 12px 12px 4px;
-      padding: 6px 12px;
+      margin: 10px 14px 0;
+      padding: 2px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.3) 100%);
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
+      border-bottom: 1px solid rgba(0,0,0,0.15);
     }
     .card-front-name-bar h1 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
-      color: #fff;
-      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 2px 2px 4px rgba(0,0,0,0.8);
+      /* ゴールドエンボス */
+      color: #1a1a1a;
+      background: linear-gradient(180deg, #f5e6a3 0%, #c9952a 40%, #a07818 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5));
       margin: 0;
-      line-height: 1.2;
-      letter-spacing: 0.5px;
-      font-family: 'Playfair Display', 'Noto Serif JP', serif;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      font-family: 'Noto Serif JP', serif;
     }
+    /* 属性アイコン（丸型） */
     .card-front-name-bar .card-type-badge {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
       font-family: 'Sora', sans-serif;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 100px;
       color: #fff;
-      letter-spacing: 1px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      box-shadow:
+        0 0 0 2px rgba(0,0,0,0.25),
+        inset 0 2px 4px rgba(255,255,255,0.4),
+        0 2px 6px rgba(0,0,0,0.5);
       flex-shrink: 0;
-      box-shadow: 0 0 4px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.4);
     }
 
-    /* レベルの星表示エリア */
+    /* --- レベル星 --- */
     .card-front-level {
       position: relative;
       z-index: 1;
       display: flex;
       justify-content: flex-end;
-      padding: 0 16px 4px;
-      gap: 3px;
+      padding: 4px 14px 4px;
+      gap: 2px;
     }
     .card-front-level .star {
       width: 16px;
       height: 16px;
-      background: #ffcc00;
-      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      background: radial-gradient(circle at 35% 35%, #fff7aa 0%, #e6b800 30%, #c98a00 70%, #7a4e00 100%);
       border-radius: 50%;
-      border: 1px solid #d97706;
+      border: 1.5px solid #5a2e00;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .card-front-level .star::after {
+      content: '★';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #5a2200;
+      font-size: 11px;
+      line-height: 1;
     }
 
-    /* イラスト窓（遊戯王風：上部の大部分を占める） */
+    /* --- イラスト窓 --- */
     .card-front-illust-window {
       position: relative;
       z-index: 1;
-      margin: 0 12px;
-      border-radius: 2px;
+      margin: 0 14px;
       overflow: hidden;
-      aspect-ratio: 4 / 3.4;
+      aspect-ratio: 1 / 0.88; /* 遊戯王は正方形に近いが若干横長 */
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 4px solid var(--card-border, #ccc);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
-      background: #000;
+      /* 3Dインセット枠（本物のカードの印刷風） */
+      border: 3px solid;
+      border-color: #555 #ccc #ccc #555;
+      box-shadow:
+        inset 0 0 12px rgba(0,0,0,0.7),
+        0 2px 6px rgba(0,0,0,0.4);
+      background: #111;
     }
     .card-front-illust-bg {
       position: absolute;
-      inset: 0;
-      background-size: cover;
+      inset: -5%;
+      background-size: 120%;
       background-position: center;
-      opacity: 0.85;
-      mix-blend-mode: screen;
+      /* ぼやけ修正: screenブレンドを廃止、通常描画 */
+      opacity: 1;
     }
     .card-front-illust-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%);
     }
     .card-front-char {
       position: relative;
       z-index: 1;
-      width: 80%;
-      height: auto;
+      width: 85%;
+      max-height: 95%;
       object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.7));
     }
 
-    /* ステータスバー（イラスト窓とテキストの間） */
+    /* --- ステータスバー（種族/タイプ表記） --- */
     .card-front-status-bar {
       position: relative;
       z-index: 1;
-      margin: 6px 16px 0;
-      padding: 2px 0;
+      margin: 4px 14px 2px;
+      padding: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     .card-front-status-bar .card-code-label {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: #111;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid #777;
-      padding: 1px 8px;
-    }
-    .card-front-status-bar .card-group-label {
-      font-size: 11px;
-      font-weight: 800;
-      color: #fff;
-      text-shadow: 1px 1px 2px #000;
-      font-family: 'Sora', sans-serif;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0px;
+      color: #1a1a1a;
     }
 
-    /* テキスト情報エリア（遊戯王のテキスト欄風・パーチメント風） */
+    /* --- テキストボックス（効果・フレーバーテキスト風） --- */
     .card-front-text-box {
       position: relative;
       z-index: 1;
-      margin: 4px 12px 0;
-      padding: 10px 12px;
-      background: linear-gradient(to bottom, #E8DEC6, #D4C1A3);
-      border: 2px solid rgba(0,0,0,0.4);
-      border-radius: 2px;
+      margin: 2px 14px;
+      padding: 8px 10px;
+      /* 遊戯王の羊皮紙テクスチャ風 */
+      background:
+        linear-gradient(180deg, #f5ecd5 0%, #e8d9b8 40%, #dcc9a0 100%);
+      border: 2px solid;
+      border-color: #b8a47a #d4c4a0 #d4c4a0 #b8a47a;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.5);
+      box-shadow:
+        inset 0 1px 4px rgba(0,0,0,0.12),
+        0 1px 3px rgba(0,0,0,0.3);
       text-align: left;
     }
     .card-front-catchcopy {
       font-size: 12px;
-      font-weight: 700;
-      line-height: 1.5;
-      color: #222;
+      font-weight: 500;
+      line-height: 1.55;
+      color: #1a1a1a;
       margin-bottom: 6px;
-      font-family: 'Noto Sans JP', serif;
+      font-family: 'Noto Sans JP', sans-serif;
     }
     .card-front-keywords {
       display: flex;
@@ -1960,21 +1978,21 @@
       border-radius: 2px;
       font-size: 10px;
       font-weight: 700;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid rgba(0,0,0,0.2);
-      color: #111;
+      background: rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.15);
+      color: #333;
     }
 
-    /* ブランドマーク（右下） */
+    /* --- ATK/DEF風ブランドマーク --- */
     .card-front-brand {
       position: relative;
       z-index: 1;
       text-align: right;
-      padding: 4px 14px 10px;
+      padding: 2px 14px 6px;
       font-family: 'Sora', sans-serif;
       font-size: 8px;
       font-weight: 700;
-      color: rgba(42,42,42,0.2);
+      color: rgba(0,0,0,0.25);
       letter-spacing: 1px;
     }
 
@@ -2032,21 +2050,21 @@
         padding: 48px 24px 32px;
       }
       .card-flipper {
-        width: 380px;
-        max-width: 380px;
+        width: 340px;
+        max-width: 340px;
       }
-      .card-front-nickname {
-        font-size: 32px;
+      .card-front-name-bar h1 {
+        font-size: 22px;
       }
       .card-front-catchcopy {
-        font-size: 14px;
+        font-size: 13px;
       }
       .card-front-keyword {
-        font-size: 12px;
-        padding: 5px 14px;
+        font-size: 11px;
+        padding: 3px 8px;
       }
       .card-front-char {
-        width: 65%;
+        width: 80%;
       }
     }
 
@@ -2055,18 +2073,15 @@
       .card-flipper {
         width: 92vw;
       }
-      .card-front-nickname {
-        font-size: 24px;
+      .card-front-name-bar h1 {
+        font-size: 17px;
       }
       .card-front-catchcopy {
-        font-size: 12px;
+        font-size: 11px;
       }
       .card-front-keyword {
-        font-size: 10px;
-        padding: 3px 10px;
-      }
-      .card-front-content {
-        padding: 16px 16px 20px;
+        font-size: 9px;
+        padding: 2px 5px;
       }
       .card-back-logo {
         font-size: 44px;
@@ -6157,15 +6172,21 @@
             </div>
 
             {/* === カード表面（遊戯王風） === */}
+            {(() => {
+              // 各群に遊戯王カードタイプの配色をマッピング
+              const CARD_FRAME = {
+                P: { bg: 'linear-gradient(160deg, #d4a84b 0%, #c9952a 30%, #b5822a 60%, #a07020 100%)', label: 'MONSTER' },
+                A: { bg: 'linear-gradient(160deg, #1a6b7a 0%, #1a5666 30%, #164e5b 60%, #0f3a45 100%)', label: 'RITUAL' },
+                I: { bg: 'linear-gradient(160deg, #2a7a4a 0%, #1d6b3d 30%, #1a5e36 60%, #145030 100%)', label: 'SPELL' },
+                D: { bg: 'linear-gradient(160deg, #7a2a8a 0%, #6b1d7a 30%, #5e1a6b 60%, #50145e 100%)', label: 'TRAP' }
+              };
+              const frame = CARD_FRAME[personalityCode[0]] || CARD_FRAME.P;
+              return (
             <div className="card-face card-front" style={{
-              '--card-bg': `radial-gradient(ellipse at 50% 20%, ${typeColor.light} 0%, #1a1a2e 100%)`,
-              '--card-border': typeColor.primary,
-              '--card-border-inner': typeColor.primary + 'AA'
+              '--card-bg': frame.bg
             }}>
-              {/* 外枠（二重フレーム） */}
-              <div className="card-front-outer-border" style={{
-                borderColor: typeColor.primary
-              }} />
+              {/* ゴールド外枠 */}
+              <div className="card-front-outer-border" />
 
               {/* シャイン効果 */}
               <div className={'card-shine' + (showShine ? ' animate' : '')} />
@@ -6184,7 +6205,7 @@
               </div>
 
               {/* イラスト窓 */}
-              <div className="card-front-illust-window" style={{ borderColor: typeColor.primary }}>
+              <div className="card-front-illust-window">
                 <div className="card-front-illust-bg" style={{ 
                   backgroundImage: `url('assets/bg_${personalityCode[0].toLowerCase()}.png')` 
                 }} />
@@ -6196,17 +6217,14 @@
                 />
               </div>
 
-              {/* ステータスバー */}
+              {/* ステータスバー（種族表記風） */}
               <div className="card-front-status-bar">
                 <span className="card-code-label">
-                  [{behaviorType} / {typeMeta.name}]
-                </span>
-                <span className="card-group-label" style={{ color: typeColor.light }}>
-                  {personalityCode[0]} Group
+                  【 {behaviorType}／{typeMeta.name} 】
                 </span>
               </div>
 
-              {/* テキスト欄 */}
+              {/* テキスト欄（効果テキスト風） */}
               <div className="card-front-text-box">
                 <p className="card-front-catchcopy">
                   {TYPE_CATCHCOPY[personalityCode]}
@@ -6221,8 +6239,10 @@
               </div>
 
               {/* ブランドマーク */}
-              <div className="card-front-brand">80CARDS FIRST EDITION</div>
+              <div className="card-front-brand">80CARDS 1st EDITION</div>
             </div>
+              );
+            })()}
           </div>
         </div>
       );
