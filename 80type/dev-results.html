@@ -61,7 +61,9 @@
       transition: all 0.2s;
     }
     .filter-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
-    .filter-btn.active { border-color: var(--c); color: #fff; background: var(--c); }
+    .filter-btn.active { border-color: var(--c); color: var(--c); background: rgba(255,255,255,0.1); font-weight: 800; }
+    .filter-btn.active[data-group="all"],
+    .filter-btn.active[data-behavior="all"] { border-color: rgba(255,255,255,0.6); color: #fff; background: rgba(255,255,255,0.15); }
 
     .grid-80 {
       max-width: 1200px;
@@ -94,7 +96,7 @@
       transform: translateY(-2px);
     }
     .type-btn img {
-      width: 64px; height: 64px;
+      width: 90%; height: auto; aspect-ratio: 1;
       object-fit: contain;
       mix-blend-mode: screen;
     }

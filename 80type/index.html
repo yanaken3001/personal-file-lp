@@ -6852,10 +6852,45 @@
                 </div>
               )}
 
-              {/* 働き方相性（ぼかし） */}
-              <div data-section-index="3" id="section-3">
-                <BlurredSection personalityCode={personalityCode} />
-              </div>
+              {/* 働き方相性（全公開） */}
+              {typeData && (
+                <div data-section-index="3" id="section-3" style={{
+                  background: 'rgba(255,255,255,0.55)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  margin: '24px 0'
+                }}>
+                  <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A2E', marginBottom: '20px' }}>
+                    あなたに合う働き方
+                  </h2>
+                  {[
+                    { label: '向いている仕事', good: typeData.goodWorkTitle, bad: typeData.badWorkTitle },
+                    { label: '合う社風', good: typeData.goodCultureTitle, bad: typeData.badCultureTitle },
+                    { label: '合う上司', good: typeData.goodBossTitle, bad: typeData.badBossTitle },
+                    { label: '合う部下', good: typeData.goodSubTitle, bad: typeData.badSubTitle },
+                    { label: '理想の働き方', good: typeData.goodWorkStyleTitle, bad: typeData.badWorkStyleTitle },
+                  ].map((item, i) => (
+                    <div key={i} style={{
+                      padding: '14px 0',
+                      borderBottom: i < 4 ? '1px solid rgba(0,0,0,0.06)' : 'none'
+                    }}>
+                      <div style={{ fontSize: '13px', fontWeight: '700', color: typeColor.primary, marginBottom: '6px' }}>
+                        {item.label}
+                      </div>
+                      {item.good && (
+                        <div style={{ fontSize: '14px', color: 'rgba(42,42,42,0.8)', marginBottom: '4px' }}>
+                          ◎ {item.good}
+                        </div>
+                      )}
+                      {item.bad && (
+                        <div style={{ fontSize: '14px', color: 'rgba(42,42,42,0.5)' }}>
+                          △ {item.bad}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* 全タイプ一覧グリッド */}
               <TypeGrid currentType={personalityCode} />
