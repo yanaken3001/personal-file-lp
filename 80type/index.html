@@ -5861,11 +5861,12 @@
               <img
                 src={getCharacterImage(personalityCode)}
                 alt={TYPE_NICKNAMES[personalityCode]}
+                className="result-hero-char-img"
                 style={{
-                  width: '280px',
-                  height: '280px',
+                  width: '80vw',
+                  maxWidth: '420px',
+                  height: 'auto',
                   objectFit: 'contain',
-                  mixBlendMode: 'multiply'
                 }}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
@@ -6482,8 +6483,9 @@
               src={getCharacterImage(personalityCode)}
               alt={TYPE_NICKNAMES[personalityCode]}
               style={{
-                width: '80px',
-                height: '80px',
+                width: '100%',
+                maxWidth: '200px',
+                height: 'auto',
                 objectFit: 'contain',
                 marginBottom: '10px',
                 mixBlendMode: 'multiply'
@@ -6580,8 +6582,9 @@
                     src={getCharacterImage(code)}
                     alt={TYPE_NICKNAMES[code] || meta.name}
                     style={{
-                      width: '56px',
-                      height: '56px',
+                      width: '90%',
+                      height: 'auto',
+                      aspectRatio: '1',
                       objectFit: 'contain',
                       marginBottom: '4px',
                       mixBlendMode: 'multiply'
@@ -6777,7 +6780,7 @@
                         background: 'rgba(255,255,255,0.7)', borderRadius: '12px', padding: '12px 16px',
                         textAlign: 'left'
                       }}>
-                        <img src={getCharacterImage(item.code)} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }} />
+                        <img src={getCharacterImage(item.code)} alt="" style={{ width: '72px', height: '72px', objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }} />
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A2E' }}>
                             {TYPE_NICKNAMES[item.code]}
