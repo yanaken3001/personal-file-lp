@@ -1770,106 +1770,134 @@
       pointer-events: none;
     }
 
-    /* --- カード表面 --- */
+    /* --- カード表面（トレーディングカード風） --- */
     .card-front {
       z-index: 1;
       transform: rotateY(180deg);
       display: flex;
       flex-direction: column;
-      align-items: center;
       text-align: center;
-      border: 3px solid rgba(255,255,255,0.20);
       position: relative;
+      background: #fff;
+      border: 3px solid #e0e0e0;
     }
-    .card-front-bg {
+
+    /* 外枠の中のカラーフレーム */
+    .card-front-frame {
+      position: absolute;
+      inset: 6px;
+      border-radius: 18px;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .card-front-frame::after {
+      content: '';
       position: absolute;
       inset: 0;
-      z-index: 0;
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 18px;
+      pointer-events: none;
     }
-    .card-front-content {
+
+    /* イラスト窓（キャラ表示エリア） */
+    .card-front-illust-window {
       position: relative;
       z-index: 1;
+      margin: 10px 10px 0;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      width: 100%;
-      height: 100%;
-      padding: 20px 20px 24px;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.3);
     }
+    .card-front-illust-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+    }
+
     .card-front-char {
-      width: 72%;
-      max-width: 280px;
+      position: relative;
+      z-index: 1;
+      width: 85%;
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
-      flex-shrink: 0;
-      margin-top: auto;
-      margin-bottom: 8px;
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.15));
     }
+
+    /* テキスト情報エリア（カード下部） */
     .card-front-info {
-      width: 100%;
-      margin-top: auto;
+      position: relative;
+      z-index: 1;
+      padding: 12px 14px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .card-front-behavior {
-      font-size: 13px;
-      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 2px;
-      opacity: 0.7;
       margin-bottom: 2px;
     }
     .card-front-nickname {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 900;
       line-height: 1.2;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      margin-bottom: 6px;
+      color: #1A1A2E;
     }
     .card-front-catchcopy {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 500;
-      line-height: 1.7;
-      opacity: 0.9;
-      margin-bottom: 12px;
+      line-height: 1.6;
+      color: rgba(42,42,42,0.6);
+      margin-bottom: 10px;
       padding: 0 4px;
     }
     .card-front-keywords {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
     }
     .card-front-keyword {
-      padding: 4px 12px;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 16px;
-      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 10px;
       font-weight: 600;
+      border: 1px solid currentColor;
+      opacity: 0.7;
     }
 
-    /* カード上部のグループカラーアクセントライン */
+    /* カード上端のグループカラーライン */
     .card-front-accent-line {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
+      top: 0; left: 0; right: 0;
+      height: 4px;
       border-radius: 24px 24px 0 0;
       z-index: 2;
     }
 
-    /* カード底部のホログラフィック装飾 */
-    .card-front-holo {
+    /* カード下部のブランドマーク */
+    .card-front-brand {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background: linear-gradient(to top, rgba(255,255,255,0.08) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 0;
+      bottom: 8px;
+      right: 12px;
+      font-family: 'Sora', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: rgba(42,42,42,0.2);
+      letter-spacing: 1px;
+      z-index: 2;
     }
+
+    /* ホログラフィック装飾（削除 → 不要） */
+    .card-front-holo { display: none; }
 
     /* 紋章風装飾（裏面コーナー） */
     .card-back-corner {
@@ -6042,55 +6070,50 @@
               <div className="card-back-label">CARDS</div>
             </div>
 
-            {/* === カード表面 === */}
+            {/* === カード表面（トレーディングカード風） === */}
             <div className="card-face card-front">
               {/* グループカラーのアクセントライン */}
-              <div
-                className="card-front-accent-line"
-                style={{ background: typeColor.gradient }}
-              />
+              <div className="card-front-accent-line" style={{ background: typeColor.gradient }} />
 
-              {/* 背景グラデーション */}
-              <div
-                className="card-front-bg"
-                style={{ background: typeColor.gradient }}
-              />
-
-              {/* ホログラフィック装飾 */}
-              <div className="card-front-holo" />
+              {/* カラーフレーム */}
+              <div className="card-front-frame" style={{ background: typeColor.light }} />
 
               {/* シャイン効果 */}
               <div className={'card-shine' + (showShine ? ' animate' : '')} />
 
-              <div className="card-front-content">
-                {/* キャラクター画像 */}
+              {/* イラスト窓 */}
+              <div className="card-front-illust-window">
+                <div className="card-front-illust-bg" style={{ background: typeColor.gradient }} />
                 <img
                   src={getCharacterImage(personalityCode)}
                   alt={TYPE_NICKNAMES[personalityCode]}
                   className="card-front-char"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
+              </div>
 
-                {/* テキスト情報 */}
-                <div className="card-front-info">
-                  <p className="card-front-behavior" style={{ color: '#fff' }}>
-                    {behaviorType}{personalityCode}
-                  </p>
-                  <h1 className="card-front-nickname" style={{ color: '#fff' }}>
-                    {TYPE_NICKNAMES[personalityCode]}
-                  </h1>
-                  <p className="card-front-catchcopy" style={{ color: '#fff' }}>
-                    「{TYPE_CATCHCOPY[personalityCode]}」
-                  </p>
-                  <div className="card-front-keywords">
-                    {keywords.map((kw, i) => (
-                      <span key={i} className="card-front-keyword" style={{ color: '#fff' }}>
-                        #{kw}
-                      </span>
-                    ))}
-                  </div>
+              {/* テキスト情報 */}
+              <div className="card-front-info">
+                <p className="card-front-behavior" style={{ color: typeColor.primary }}>
+                  {behaviorType}{personalityCode}
+                </p>
+                <h1 className="card-front-nickname">
+                  {TYPE_NICKNAMES[personalityCode]}
+                </h1>
+                <p className="card-front-catchcopy">
+                  {TYPE_CATCHCOPY[personalityCode]}
+                </p>
+                <div className="card-front-keywords">
+                  {keywords.map((kw, i) => (
+                    <span key={i} className="card-front-keyword" style={{ color: typeColor.primary }}>
+                      #{kw}
+                    </span>
+                  ))}
                 </div>
               </div>
+
+              {/* ブランドマーク */}
+              <div className="card-front-brand">80CARDS</div>
             </div>
           </div>
         </div>
