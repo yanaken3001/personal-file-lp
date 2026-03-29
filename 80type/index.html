@@ -1778,15 +1778,18 @@
       flex-direction: column;
       text-align: center;
       position: relative;
-      background: var(--card-bg, #FAF5F0);
+      background: var(--card-bg, #2A2A35);
+      background-image: var(--card-texture, none);
+      background-size: cover;
     }
 
-    /* 外枠（遊戯王の金枠 → タイプカラー枠） */
+    /* 外枠（遊戯王の金枠 → ダークなテクスチャ枠） */
     .card-front-outer-border {
       position: absolute;
       inset: 0;
       border-radius: 24px;
-      border: 4px solid var(--card-border, #ccc);
+      border: 6px solid var(--card-border, #444);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
       z-index: 0;
       pointer-events: none;
     }
@@ -1794,36 +1797,65 @@
     .card-front-outer-border::after {
       content: '';
       position: absolute;
-      inset: 4px;
-      border: 1px solid var(--card-border-inner, rgba(0,0,0,0.1));
-      border-radius: 19px;
+      inset: 2px;
+      border: 2px solid var(--card-border-inner, rgba(255,255,255,0.2));
+      border-radius: 17px;
     }
 
     /* カード名エリア（イラスト窓の上） */
     .card-front-name-bar {
       position: relative;
       z-index: 1;
-      padding: 14px 16px 8px;
+      margin: 12px 12px 4px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.3) 100%);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
     }
     .card-front-name-bar h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
-      color: #1A1A2E;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 2px 2px 4px rgba(0,0,0,0.8);
       margin: 0;
       line-height: 1.2;
+      letter-spacing: 0.5px;
+      font-family: 'Playfair Display', 'Noto Serif JP', serif;
     }
     .card-front-name-bar .card-type-badge {
       font-family: 'Sora', sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
-      padding: 3px 10px;
+      padding: 4px 10px;
       border-radius: 100px;
       color: #fff;
       letter-spacing: 1px;
       flex-shrink: 0;
+      box-shadow: 0 0 4px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    /* レベルの星表示エリア */
+    .card-front-level {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 16px 4px;
+      gap: 3px;
+    }
+    .card-front-level .star {
+      width: 16px;
+      height: 16px;
+      background: #ffcc00;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      border-radius: 50%;
+      border: 1px solid #d97706;
     }
 
     /* イラスト窓（遊戯王風：上部の大部分を占める） */
@@ -1831,85 +1863,106 @@
       position: relative;
       z-index: 1;
       margin: 0 12px;
-      border-radius: 4px;
+      border-radius: 2px;
       overflow: hidden;
-      aspect-ratio: 4 / 3.2;
+      aspect-ratio: 4 / 3.4;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid var(--card-border, #ccc);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.08);
+      border: 4px solid var(--card-border, #ccc);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
+      background: #000;
     }
     .card-front-illust-bg {
       position: absolute;
       inset: 0;
-      opacity: 0.12;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.85;
+      mix-blend-mode: screen;
+    }
+    .card-front-illust-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
     }
     .card-front-char {
       position: relative;
       z-index: 1;
-      width: 75%;
+      width: 80%;
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
     }
 
     /* ステータスバー（イラスト窓とテキストの間） */
     .card-front-status-bar {
       position: relative;
       z-index: 1;
-      margin: 6px 12px 0;
-      padding: 4px 8px;
+      margin: 6px 16px 0;
+      padding: 2px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
     }
     .card-front-status-bar .card-code-label {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1px;
+      color: #111;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid #777;
+      padding: 1px 8px;
     }
     .card-front-status-bar .card-group-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: rgba(42,42,42,0.4);
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+      font-family: 'Sora', sans-serif;
     }
 
-    /* テキスト情報エリア（遊戯王のテキスト欄風） */
+    /* テキスト情報エリア（遊戯王のテキスト欄風・パーチメント風） */
     .card-front-text-box {
       position: relative;
       z-index: 1;
-      margin: 6px 12px 0;
-      padding: 10px 10px 8px;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 4px;
+      margin: 4px 12px 0;
+      padding: 10px 12px;
+      background: linear-gradient(to bottom, #E8DEC6, #D4C1A3);
+      border: 2px solid rgba(0,0,0,0.4);
+      border-radius: 2px;
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.5);
+      text-align: left;
     }
     .card-front-catchcopy {
       font-size: 12px;
-      font-weight: 500;
-      line-height: 1.6;
-      color: rgba(42,42,42,0.7);
-      margin-bottom: 8px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #222;
+      margin-bottom: 6px;
+      font-family: 'Noto Sans JP', serif;
     }
     .card-front-keywords {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 4px;
+      margin-top: auto;
     }
     .card-front-keyword {
-      padding: 2px 8px;
-      border-radius: 3px;
+      padding: 2px 6px;
+      border-radius: 2px;
       font-size: 10px;
       font-weight: 700;
-      background: rgba(0,0,0,0.04);
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.2);
+      color: #111;
     }
 
     /* ブランドマーク（右下） */
@@ -6105,9 +6158,9 @@
 
             {/* === カード表面（遊戯王風） === */}
             <div className="card-face card-front" style={{
-              '--card-bg': typeColor.light,
+              '--card-bg': `radial-gradient(ellipse at 50% 20%, ${typeColor.light} 0%, #1a1a2e 100%)`,
               '--card-border': typeColor.primary,
-              '--card-border-inner': typeColor.primary + '33'
+              '--card-border-inner': typeColor.primary + 'AA'
             }}>
               {/* 外枠（二重フレーム） */}
               <div className="card-front-outer-border" style={{
@@ -6125,9 +6178,16 @@
                 </span>
               </div>
 
+              {/* レベル（星） */}
+              <div className="card-front-level">
+                {[...Array(6)].map((_, i) => <div key={i} className="star"></div>)}
+              </div>
+
               {/* イラスト窓 */}
               <div className="card-front-illust-window" style={{ borderColor: typeColor.primary }}>
-                <div className="card-front-illust-bg" style={{ background: typeColor.gradient }} />
+                <div className="card-front-illust-bg" style={{ 
+                  backgroundImage: `url('assets/bg_${personalityCode[0].toLowerCase()}.png')` 
+                }} />
                 <img
                   src={getCharacterImage(personalityCode)}
                   alt={TYPE_NICKNAMES[personalityCode]}
@@ -6138,11 +6198,11 @@
 
               {/* ステータスバー */}
               <div className="card-front-status-bar">
-                <span className="card-code-label" style={{ color: typeColor.primary }}>
-                  {behaviorType} / {typeMeta.name}
+                <span className="card-code-label">
+                  [{behaviorType} / {typeMeta.name}]
                 </span>
-                <span className="card-group-label">
-                  {personalityCode[0]}群
+                <span className="card-group-label" style={{ color: typeColor.light }}>
+                  {personalityCode[0]} Group
                 </span>
               </div>
 
@@ -6153,7 +6213,7 @@
                 </p>
                 <div className="card-front-keywords">
                   {keywords.map((kw, i) => (
-                    <span key={i} className="card-front-keyword" style={{ color: typeColor.primary }}>
+                    <span key={i} className="card-front-keyword">
                       #{kw}
                     </span>
                   ))}
@@ -6161,7 +6221,7 @@
               </div>
 
               {/* ブランドマーク */}
-              <div className="card-front-brand">80CARDS</div>
+              <div className="card-front-brand">80CARDS FIRST EDITION</div>
             </div>
           </div>
         </div>
