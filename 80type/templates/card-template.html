@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>80CARDS — カードテンプレート</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===================================================
+       Pentagram × Garden Eight — 80CARDS Card System
+       =================================================== */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0a0a0f;
+      color: #f5f5f7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ===== カード共通システム ===== */
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+        max-width: 380px;
+        gap: 40px;
+      }
+    }
+
+    /* ===== カード本体 ===== */
+
+    .card {
+      position: relative;
+      aspect-ratio: 3 / 4.5;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: default;
+
+      /* 微細なシャドウ — 浮遊感 */
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.15),
+        0 16px 48px rgba(0,0,0,0.25);
+
+      /* トランジション */
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 4px 12px rgba(0,0,0,0.15),
+        0 24px 64px rgba(0,0,0,0.35);
+    }
+
+    /* --- 背景レイヤー --- */
+    .card__bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+
+    /* ビネット効果 — 四隅・外周に深い色 */
+    .card__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 70% 65% at 50% 45%,
+        transparent 0%,
+        rgba(0,0,0,0.08) 50%,
+        rgba(0,0,0,0.30) 100%
+      );
+      z-index: 1;
+    }
+
+    /* --- キャラクター画像 --- */
+    .card__character {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: auto;
+      max-height: 55%;
+      object-fit: contain;
+      z-index: 2;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+    }
+
+    /* --- コンテンツオーバーレイ --- */
+    .card__content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 24px;
+    }
+
+    /* --- 上部：タイプコード --- */
+    .card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .card__code {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255, 0.60);
+      /* 控えめなtext-shadow */
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .card__edition {
+      font-family: 'Sora', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: rgba(255,255,255, 0.35);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* --- 下部：テキスト情報 --- */
+    .card__footer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* 行動タイプラベル */
+    .card__behavior {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: rgba(255,255,255, 0.55);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    /* ニックネーム（メインタイトル） */
+    .card__name {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: rgba(255,255,255, 1.0);
+      letter-spacing: 1px;
+      /* 極めて控えめなtext-shadow */
+      text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+    }
+
+    /* キャッチコピー */
+    .card__catch {
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: rgba(255,255,255, 0.75);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      max-width: 90%;
+    }
+
+    /* キーワードタグ */
+    .card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .card__tag {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255, 0.60);
+      /* 背景なし — タイポグラフィだけで成立させる */
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* ===================================================
+       グループ別 — 微細な差異
+       （背景画像のみで世界観を分ける。CSSは共通）
+       =================================================== */
+
+    .card--p .card__bg { background-image: url('../assets/bg_p.png'); }
+    .card--a .card__bg { background-image: url('../assets/bg_a.png'); }
+    .card--i .card__bg { background-image: url('../assets/bg_i.png'); }
+    .card--d .card__bg { background-image: url('../assets/bg_d.png'); }
+
+
+    /* ===================================================
+       セクションタイトル（デモ用）
+       =================================================== */
+    .demo-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255, 0.3);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .demo-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: rgba(255,255,255, 0.25);
+      text-align: center;
+      margin-top: 12px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="demo-title">80CARDS — Pentagram × Garden Eight</div>
+
+  <div class="card-grid">
+
+    <!-- P群（レッド系） -->
+    <div>
+      <div class="card card--p">
+        <div class="card__bg"></div>
+        <img
+          src="../character/PP チームの太陽.png"
+          alt="チームの太陽"
+          class="card__character"
+          loading="lazy"
+        />
+        <div class="card__content">
+          <div class="card__header">
+            <span class="card__code">PP</span>
+            <span class="card__edition">1st</span>
+          </div>
+          <div class="card__footer">
+            <span class="card__behavior">達成型</span>
+            <h2 class="card__name">チームの太陽</h2>
+            <p class="card__catch">明るさで場を支配する、<br/>生まれながらのムードメーカー</p>
+            <div class="card__tags">
+              <span class="card__tag">#社交的</span>
+              <span class="card__tag">#ポジティブ</span>
+              <span class="card__tag">#情熱家</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-label">P群 — 温かさが内側から滲む</div>
+    </div>
+
+    <!-- A群（インディゴ系） -->
+    <div>
+      <div class="card card--a">
+        <div class="card__bg"></div>
+        <img
+          src="../character/AA 知の番人.png"
+          alt="知の番人"
+          class="card__character"
+          loading="lazy"
+        />
+        <div class="card__content">
+          <div class="card__header">
+            <span class="card__code">AA</span>
+            <span class="card__edition">1st</span>
+          </div>
+          <div class="card__footer">
+            <span class="card__behavior">情報型</span>
+            <h2 class="card__name">知の番人</h2>
+            <p class="card__catch">知の深淵を泳ぎ、<br/>答えが出るまで浮上しない探究者</p>
+            <div class="card__tags">
+              <span class="card__tag">#分析力</span>
+              <span class="card__tag">#論理思考</span>
+              <span class="card__tag">#精密</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-label">A群 — 静謐な知性の空間</div>
+    </div>
+
+    <!-- I群（ティール系） -->
+    <div>
+      <div class="card card--i">
+        <div class="card__bg"></div>
+        <img
+          src="../character/II 共感マスター.png"
+          alt="共感マスター"
+          class="card__character"
+          loading="lazy"
+        />
+        <div class="card__content">
+          <div class="card__header">
+            <span class="card__code">II</span>
+            <span class="card__edition">1st</span>
+          </div>
+          <div class="card__footer">
+            <span class="card__behavior">調和型</span>
+            <h2 class="card__name">共感マスター</h2>
+            <p class="card__catch">誰の痛みにも気づいてしまう、<br/>優しさという名の才能</p>
+            <div class="card__tags">
+              <span class="card__tag">#共感力</span>
+              <span class="card__tag">#調和</span>
+              <span class="card__tag">#平和主義</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-label">I群 — 包み込む穏やかさ</div>
+    </div>
+
+    <!-- D群（パープル系） -->
+    <div>
+      <div class="card card--d">
+        <div class="card__bg"></div>
+        <img
+          src="../character/DD ゲームチェンジャー.png"
+          alt="ゲームチェンジャー"
+          class="card__character"
+          loading="lazy"
+        />
+        <div class="card__content">
+          <div class="card__header">
+            <span class="card__code">DD</span>
+            <span class="card__edition">1st</span>
+          </div>
+          <div class="card__footer">
+            <span class="card__behavior">効率型</span>
+            <h2 class="card__name">ゲームチェンジャー</h2>
+            <p class="card__catch">全タイプ最速の決断力で、<br/>ルールごと書き換える異端</p>
+            <div class="card__tags">
+              <span class="card__tag">#決断力</span>
+              <span class="card__tag">#変革者</span>
+              <span class="card__tag">#推進力</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-label">D群 — 凛とした決断の空気</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
