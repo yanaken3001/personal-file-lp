@@ -1762,14 +1762,13 @@
       z-index: 1;
       transform: rotateY(180deg);
       background: #111;
+      /* position: absoluteは.card-faceから継承。relativeで上書きしない */
     }
 
-    /* --- 背景画像レイヤー --- */
+    /* --- 背景レイヤー --- */
     .card-front-illust-bg {
       position: absolute;
       inset: 0;
-      background-size: cover;
-      background-position: center;
       z-index: 0;
     }
     /* ビネット効果 — 四隅・外周に深い色 */
@@ -6087,9 +6086,9 @@
               {/* シャイン効果 */}
               <div className={'card-shine' + (showShine ? ' animate' : '')} />
 
-              {/* 背景画像（全面） */}
-              <div className="card-front-illust-bg" style={{ 
-                backgroundImage: `url('assets/bg_${personalityCode[0].toLowerCase()}.png')` 
+              {/* 背景グラデーション（全面） */}
+              <div className="card-front-illust-bg" style={{
+                background: typeColor.gradient
               }} />
 
               {/* キャラクター画像 */}
@@ -6105,7 +6104,7 @@
                 {/* 上部ヘッダー */}
                 <div className="card-front-header">
                   <span className="card-front-code">{personalityCode}</span>
-                  <span className="card-front-brand">1st</span>
+                  <span className="card-front-brand">80CARDS</span>
                 </div>
 
                 {/* 下部フッター */}
