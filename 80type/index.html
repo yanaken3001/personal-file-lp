@@ -1756,153 +1756,172 @@
     }
 
     /* ============================================================
-       Pentagram × Garden Eight — プレミアムカード表面
+       80CARDS — コレクティブルカード表面
+       キャラが主役。ポケカSAR/原神風に画面いっぱいに溢れる
        ============================================================ */
     .card-front {
       z-index: 1;
       transform: rotateY(180deg);
-      background: #111;
-      /* position: absoluteは.card-faceから継承。relativeで上書きしない */
+      background: #0a0a12;
     }
 
-    /* --- 背景レイヤー --- */
+    /* --- ダーク背景 + タイプカラーのオーロラ --- */
     .card-front-illust-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
+      opacity: 0.5;
     }
-    /* ビネット効果 — 四隅・外周に深い色 */
+    .card-front-illust-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% 30%, var(--card-glow, rgba(255,59,92,0.35)) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 100% at 20% 80%, var(--card-glow2, rgba(255,59,92,0.15)) 0%, transparent 50%);
+    }
     .card-front-illust-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(
-        ellipse 70% 65% at 50% 45%,
-        transparent 0%,
-        rgba(0,0,0,0.08) 50%,
-        rgba(0,0,0,0.30) 100%
-      );
+      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%);
       z-index: 1;
     }
 
-    /* --- キャラクター画像 --- */
-    .card-front-char {
+    /* --- ホログラフィック枠（虹色ボーダー） --- */
+    .card-front-holo-border {
       position: absolute;
-      bottom: 22%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 72%;
-      height: auto;
-      max-height: 50%;
-      object-fit: contain;
-      z-index: 2;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+      inset: 0;
+      border-radius: 12px;
+      padding: 2px;
+      z-index: 5;
+      pointer-events: none;
+      background: conic-gradient(from 0deg,
+        rgba(255,59,92,0.6),
+        rgba(77,108,250,0.6),
+        rgba(0,212,170,0.6),
+        rgba(139,92,246,0.6),
+        rgba(255,59,92,0.6)
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: holoRotate 6s linear infinite;
+    }
+    @keyframes holoRotate {
+      to { filter: hue-rotate(360deg); }
     }
 
-    /* --- コンテンツオーバーレイ --- */
+    /* --- キャラクター画像（巨大。カードの主役） --- */
+    .card-front-char {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      height: auto;
+      max-height: 65%;
+      object-fit: contain;
+      z-index: 2;
+      filter: drop-shadow(0 0 40px var(--card-glow, rgba(255,59,92,0.4)))
+              drop-shadow(0 12px 32px rgba(0,0,0,0.5));
+    }
+
+    /* --- コンテンツオーバーレイ（下部に情報を集約） --- */
     .card-front-content {
       position: absolute;
       inset: 0;
       z-index: 3;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 28px 24px;
+      justify-content: flex-end;
+      padding: 0 24px 24px;
     }
 
-    /* --- 上部ヘッダー --- */
+    /* 上部ヘッダー */
     .card-front-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
+      padding: 16px 20px;
+    }
+    .card-front-code {
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .card-front-brand {
+      font-family: 'Sora', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
     }
 
-    .card-front-code {
+    /* 下部フッター（グラデーション暗部の上に白テキスト） */
+    .card-front-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .card-front-behavior-label {
       font-family: 'Sora', sans-serif;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(255,255,255, 0.60);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      color: var(--card-accent, #FF3B5C);
     }
-
-    .card-front-brand {
-      font-family: 'Sora', sans-serif;
-      font-size: 9px;
-      font-weight: 400;
-      letter-spacing: 1px;
-      color: rgba(255,255,255, 0.35);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    }
-
-    /* --- 下部フッター --- */
-    .card-front-footer {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    /* 行動タイプラベル */
-    .card-front-behavior-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      color: rgba(255,255,255, 0.55);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
-
-    /* ニックネーム（メインタイトル） */
     .card-front-name-bar h1 {
       font-family: 'Noto Sans JP', sans-serif;
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 900;
-      line-height: 1.2;
-      color: rgba(255,255,255, 1.0);
-      letter-spacing: 1px;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.35);
-      margin: 0;
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 4px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
     }
-
-    /* キャッチコピー */
     .card-front-catchcopy {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 400;
-      line-height: 1.6;
-      color: rgba(255,255,255, 0.75);
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-      max-width: 90%;
-      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 10px;
     }
-
-    /* キーワードタグ */
     .card-front-keywords {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
+      gap: 6px;
     }
     .card-front-keyword {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      color: rgba(255,255,255, 0.60);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-      /* 背景なし — タイポグラフィだけで成立 */
-      background: none;
-      border: none;
-      padding: 0;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
-    /* 不要な旧要素を非表示 */
+    /* 不要な旧要素 */
     .card-front-outer-border { display: none; }
     .card-front-accent-line { display: none; }
-    .card-front-holo { display: none; }
     .card-front-frame { display: none; }
     .card-front-info { display: none; }
     .card-front-level { display: none; }
     .card-front-text-box { display: none; }
     .card-type-badge { display: none; }
+    .card-front-holo { display: none; }
+    .card-front-status-bar { display: none; }
+    .card-front-illust-window { display: none; }
 
     /* 紋章風装飾（裏面コーナー — ミニマルに） */
     .card-back-corner {
@@ -1955,7 +1974,7 @@
         max-width: 420px;
       }
       .card-front-name-bar h1 {
-        font-size: 26px;
+        font-size: 32px;
       }
       .card-front-catchcopy {
         font-size: 13px;
@@ -1965,8 +1984,8 @@
         font-size: 11px;
       }
       .card-front-char {
-        width: 75%;
-        max-height: 52%;
+        width: 95%;
+        max-height: 65%;
       }
       .card-face {
         border-radius: 16px;
@@ -6081,17 +6100,24 @@
               <div className="card-back-label">CARDS</div>
             </div>
 
-            {/* === カード表面（Pentagram × Garden Eight） === */}
-            <div className="card-face card-front">
+            {/* === カード表面 === */}
+            <div className="card-face card-front" style={{
+              '--card-glow': typeColor.primary + '55',
+              '--card-glow2': typeColor.primary + '25',
+              '--card-accent': typeColor.primary
+            }}>
+              {/* ホログラフィック枠 */}
+              <div className="card-front-holo-border" />
+
               {/* シャイン効果 */}
               <div className={'card-shine' + (showShine ? ' animate' : '')} />
 
-              {/* 背景グラデーション（全面） */}
+              {/* ダーク背景 + タイプカラーのオーロラ */}
               <div className="card-front-illust-bg" style={{
                 background: typeColor.gradient
               }} />
 
-              {/* キャラクター画像 */}
+              {/* キャラクター画像（巨大） */}
               <img
                 src={getCharacterImage(personalityCode)}
                 alt={TYPE_NICKNAMES[personalityCode]}
@@ -6099,15 +6125,13 @@
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
 
-              {/* コンテンツオーバーレイ */}
+              {/* コンテンツ */}
               <div className="card-front-content">
-                {/* 上部ヘッダー */}
                 <div className="card-front-header">
                   <span className="card-front-code">{personalityCode}</span>
                   <span className="card-front-brand">80CARDS</span>
                 </div>
 
-                {/* 下部フッター */}
                 <div className="card-front-footer">
                   <span className="card-front-behavior-label">{behaviorType}</span>
                   <div className="card-front-name-bar">
