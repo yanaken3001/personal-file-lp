@@ -1893,32 +1893,30 @@
       border: 3px solid;
       border-color: #555 #ccc #ccc #555;
       box-shadow:
-        inset 0 0 12px rgba(0,0,0,0.7),
+        inset 0 0 8px rgba(0,0,0,0.3),
         0 2px 6px rgba(0,0,0,0.4);
-      background: #111;
+      background: #f8f4ec;
     }
     .card-front-illust-bg {
       position: absolute;
-      inset: -5%;
-      background-size: 120%;
-      background-position: center;
-      /* ぼやけ修正: screenブレンドを廃止、通常描画 */
-      opacity: 1;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.15;
     }
     .card-front-illust-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%);
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.08) 100%);
     }
     .card-front-char {
       position: relative;
       z-index: 1;
-      width: 115%; /* 枠いっぱいに拡大 */
-      max-height: 110%; /* 少しはみ出すくらいがダイナミック */
+      width: 85%;
+      max-height: 90%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
-      transform: translateY(2%); /* 足元を接地させる */
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.15));
+      mix-blend-mode: multiply;
     }
 
     /* --- ステータスバー（種族/タイプ表記） --- */
@@ -6208,8 +6206,8 @@
 
               {/* イラスト窓 */}
               <div className="card-front-illust-window">
-                <div className="card-front-illust-bg" style={{ 
-                  backgroundImage: `url('assets/bg_${personalityCode[0].toLowerCase()}.png')` 
+                <div className="card-front-illust-bg" style={{
+                  background: typeColor.gradient
                 }} />
                 <img
                   src={getCharacterImage(personalityCode)}
