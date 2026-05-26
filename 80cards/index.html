@@ -10160,8 +10160,8 @@
       const isCompatDemoCard = variant === 'compatDemo';
       const isResultCard = variant === 'result';
       const fullCode = getCard80FullCode(type);
-      const infoTop = h * (isHeroCard ? 0.600 : isResultCard ? 0.596 : showBehavior ? 0.574 : 0.590);
-      const infoBottom = h * (isHeroCard ? 0.080 : isResultCard ? 0.050 : isCompactCard ? 0.074 : 0.068);
+      const infoTop = h * (isHeroCard ? 0.600 : isResultCard ? 0.588 : showBehavior ? 0.574 : 0.590);
+      const infoBottom = h * (isHeroCard ? 0.080 : isResultCard ? 0.048 : isCompactCard ? 0.074 : 0.068);
       const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : 0.010);
       const tags = (type.traits || []).slice(0, 3);
       const showTags = w >= 168 && tags.length > 0;
@@ -10183,10 +10183,10 @@
           <span key={tag} style={{
             fontFamily: 'var(--font-display)',
             fontWeight: 900,
-            fontSize: w * (isHeroCard ? (isLong ? 0.028 : 0.035) : isResultCard ? (isLong ? 0.030 : 0.036) : isLong ? (isCompactCard ? 0.030 : 0.032) : (isCompactCard ? 0.036 : 0.039)),
+            fontSize: w * (isHeroCard ? (isLong ? 0.028 : 0.035) : isResultCard ? (isLong ? 0.032 : 0.040) : isLong ? (isCompactCard ? 0.030 : 0.032) : (isCompactCard ? 0.036 : 0.039)),
             lineHeight: 1,
-            padding: `${w * (isHeroCard ? 0.013 : isResultCard ? 0.016 : isCompactCard ? 0.017 : 0.019)}px ${w * (isHeroCard ? (isLong ? 0.026 : 0.038) : isResultCard ? (isLong ? 0.030 : 0.042) : isLong ? (isCompactCard ? 0.030 : 0.036) : (isCompactCard ? 0.042 : 0.048))}px`,
-            minWidth: w * (isHeroCard ? (isLong ? 0.23 : 0.18) : isResultCard ? (isLong ? 0.23 : 0.19) : isLong ? (isCompactCard ? 0.25 : 0.28) : (isCompactCard ? 0.20 : 0.22)),
+            padding: `${w * (isHeroCard ? 0.013 : isResultCard ? 0.018 : isCompactCard ? 0.017 : 0.019)}px ${w * (isHeroCard ? (isLong ? 0.026 : 0.038) : isResultCard ? (isLong ? 0.034 : 0.046) : isLong ? (isCompactCard ? 0.030 : 0.036) : (isCompactCard ? 0.042 : 0.048))}px`,
+            minWidth: w * (isHeroCard ? (isLong ? 0.23 : 0.18) : isResultCard ? (isLong ? 0.24 : 0.20) : isLong ? (isCompactCard ? 0.25 : 0.28) : (isCompactCard ? 0.20 : 0.22)),
             background: theme.chipBg,
             borderRadius: 999,
             color: '#fff8ec',
@@ -10320,15 +10320,15 @@
             position: 'absolute',
             left: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
             right: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
-            top: infoTop + (isHeroCard ? h * 0.012 : isResultCard ? h * 0.004 : showBehavior ? h * 0.010 : h * 0.018),
+            top: infoTop + (isHeroCard ? h * 0.012 : isResultCard ? h * 0.002 : showBehavior ? h * 0.010 : h * 0.018),
             bottom: infoBottom,
             zIndex: 6,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: isResultCard ? 'flex-start' : 'center',
             alignItems: 'center',
-            gap: w * (isHeroCard ? 0.006 : isResultCard ? 0.004 : isCompactCard ? 0.006 : 0.010),
-            padding: `0 ${w * (isHeroCard ? 0.034 : isResultCard ? 0.020 : isCompactCard ? 0.032 : 0.042)}px`,
+            gap: w * (isHeroCard ? 0.006 : isResultCard ? 0.007 : isCompactCard ? 0.006 : 0.010),
+            padding: `${isResultCard ? w * 0.034 : 0}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px 0`,
             boxSizing: 'border-box',
             overflow: isResultCard ? 'visible' : 'hidden',
             borderRadius: 0,
@@ -10340,7 +10340,7 @@
             {showBehavior && (
               <div className="jp-display" style={{
                 color: theme.ink,
-                fontSize: w * (isHeroCard ? 0.057 : isResultCard ? 0.060 : isCompactCard ? 0.056 : 0.066),
+                fontSize: w * (isHeroCard ? 0.057 : isResultCard ? 0.068 : isCompactCard ? 0.056 : 0.066),
                 lineHeight: 1,
                 fontWeight: 900,
                 letterSpacing: '0.04em',
@@ -10350,37 +10350,39 @@
 
             <div className="jp-display" style={{
               color: theme.ink,
-              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.084 : 0.101) : isResultCard ? (type.nickname.length > 8 ? 0.086 : 0.100) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
-              lineHeight: isResultCard ? 1.04 : 1.08,
+              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.084 : 0.101) : isResultCard ? (type.nickname.length > 8 ? 0.094 : 0.112) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
+              lineHeight: isResultCard ? 1 : 1.08,
               fontWeight: 900,
               whiteSpace: 'nowrap',
               textShadow: '0 2px 0 rgba(255,255,255,0.6)',
             }}>{type.nickname}</div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: w * 0.014,
-              width: '86%',
-              margin: `${w * (isHeroCard ? 0.001 : isResultCard ? 0.001 : isCompactCard ? 0.002 : 0.004)}px 0 ${w * (isHeroCard ? 0.003 : isResultCard ? 0.002 : isCompactCard ? 0.004 : 0.008)}px`,
-              opacity: 0.62,
-            }}>
-              <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, transparent, ${theme.line})` }} />
-              <span style={{
-                width: w * 0.024,
-                height: w * 0.024,
-                transform: 'rotate(45deg)',
-                background: theme.line,
-                boxShadow: `0 0 ${w * 0.018}px ${theme.glow}`,
-              }} />
-              <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, ${theme.line}, transparent)` }} />
-            </div>
+            {!isResultCard && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: w * 0.014,
+                width: '86%',
+                margin: `${w * (isHeroCard ? 0.001 : isCompactCard ? 0.002 : 0.004)}px 0 ${w * (isHeroCard ? 0.003 : isCompactCard ? 0.004 : 0.008)}px`,
+                opacity: 0.62,
+              }}>
+                <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, transparent, ${theme.line})` }} />
+                <span style={{
+                  width: w * 0.024,
+                  height: w * 0.024,
+                  transform: 'rotate(45deg)',
+                  background: theme.line,
+                  boxShadow: `0 0 ${w * 0.018}px ${theme.glow}`,
+                }} />
+                <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, ${theme.line}, transparent)` }} />
+              </div>
+            )}
 
             {catchText && (
               <div className="jp-serif" style={{
                 color: '#684330',
-                fontSize: w * (isHeroCard ? 0.038 : isResultCard ? 0.039 : isCompactCard ? 0.038 : 0.043),
-                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.20 : isCompactCard ? 1.28 : 1.34,
+                fontSize: w * (isHeroCard ? 0.038 : isResultCard ? 0.043 : isCompactCard ? 0.038 : 0.043),
+                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompactCard ? 1.28 : 1.34,
                 fontWeight: 900,
                 wordBreak: 'keep-all',
                 overflowWrap: 'anywhere',
@@ -10400,9 +10402,9 @@
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: w * (isHeroCard ? 0.007 : isResultCard ? 0.006 : isCompactCard ? 0.009 : 0.011),
+                gap: w * (isHeroCard ? 0.007 : isResultCard ? 0.008 : isCompactCard ? 0.009 : 0.011),
                 justifyContent: 'flex-start',
-                marginTop: w * (isHeroCard ? 0.003 : isResultCard ? 0.003 : isCompactCard ? 0.004 : 0.007),
+                marginTop: w * (isHeroCard ? 0.003 : isResultCard ? 0.004 : isCompactCard ? 0.004 : 0.007),
                 width: '100%',
               }}>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: w * (isHeroCard ? 0.018 : isResultCard ? 0.017 : isCompactCard ? 0.020 : 0.026), width: '100%' }}>
@@ -10418,7 +10420,7 @@
           </div>
 
           {/* パネル装飾の小さな星 */}
-          {[{ left: pad + inner * 1.8, top: infoTop + w * 0.04 }, { right: pad + inner * 1.8, top: infoTop + w * 0.04 }].map((p, i) => (
+          {!isResultCard && [{ left: pad + inner * 1.8, top: infoTop + w * 0.04 }, { right: pad + inner * 1.8, top: infoTop + w * 0.04 }].map((p, i) => (
             <div key={i} style={{
               position: 'absolute',
               ...p,
