@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/80cards", "destination": "/80cards/", "permanent": true },
+    { "source": "/80type", "destination": "/80cards/", "permanent": true },
+    { "source": "/80type/", "destination": "/80cards/", "permanent": true },
+    { "source": "/80type/:path*", "destination": "/80cards/:path*", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/80cards/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/80cards/character/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}
