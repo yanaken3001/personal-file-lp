@@ -1,0 +1,23 @@
+{
+  "version": "20260523",
+  "sourceDirectory": "_card_gen",
+  "publicDirectory": "80cards/card-background",
+  "types": {
+    "PI": { "file": "PI.webp", "source": "lovart_07.png", "color": "コーラルピンク" },
+    "PA": { "file": "PA.webp", "source": "lovart_06.png", "color": "サンセット・オレンジ" },
+    "PP": { "file": "PP.webp", "source": "lovart_02.png", "color": "朱赤" },
+    "PD": { "file": "PD.webp", "source": "lovart_05.png", "color": "ディープクリムゾン" },
+    "AI": { "file": "AI.webp", "source": "lovart_12.png", "color": "ライトスカイ" },
+    "AA": { "file": "AA.webp", "source": "lovart_09.png", "color": "スカイブルー" },
+    "AP": { "file": "AP.webp", "source": "lovart_10.png", "color": "ロイヤルブルー" },
+    "AD": { "file": "AD.webp", "source": "lovart_08.png", "color": "ミッドナイト・アイス" },
+    "II": { "file": "II.webp", "source": "lovart_13.png", "color": "ペールミント" },
+    "IA": { "file": "IA.webp", "source": "lovart_14.png", "color": "フレッシュグリーン" },
+    "IP": { "file": "IP.webp", "source": "lovart_15.png", "color": "エメラルド" },
+    "ID": { "file": "ID.webp", "source": "lovart_16.png", "color": "ディープフォレスト" },
+    "DI": { "file": "DI.webp", "source": "lovart_17.png", "color": "ラベンダー" },
+    "DA": { "file": "DA.webp", "source": "lovart_18.png", "color": "バイオレット" },
+    "DP": { "file": "DP.webp", "source": "lovart_19.png", "color": "ロイヤルパープル" },
+    "DD": { "file": "DD.webp", "source": "lovart_20.png", "color": "ディープインディゴ" }
+  }
+}
