@@ -4254,6 +4254,12 @@
       flex-wrap: wrap;
       margin: 20px 0;
     }
+    .result-share-stack-clean {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
     .result-share-button-clean {
       display: flex;
       align-items: center;
@@ -4278,6 +4284,19 @@
       background: #FFFBF5;
       color: #1A1A1A;
       border: 1px solid rgba(26,26,26,0.12);
+    }
+    .result-share-toast-clean {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.92);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(26, 26, 46, 0.18);
     }
     @media (min-width: 768px) {
       .result-share-buttons-clean {
@@ -9913,19 +9932,37 @@
 
     // --- ShareButtons ---
     function ShareButtons({ typeName, behaviorType, personalityCode, resultUrl }) {
-      const typeColor = getTypeColor(personalityCode);
+      const [copied, setCopied] = React.useState(false);
       const typeMeta = TYPE_META[personalityCode];
 
       const nickname = TYPE_NICKNAMES[personalityCode] || typeName;
       const threeLetter = getThreeLetterCode(behaviorType, personalityCode);
+      const catchCopy = TYPE_CATCHCOPY[personalityCode] || '';
+      const shareUrl = resultUrl || `https://www.personal-file.jp/80cards/share/${threeLetter.toLowerCase()}`;
+      const formatCatchForShare = (text) => {
+        if (!text) return '';
+        const parts = text.split('、');
+        if (parts.length >= 2) {
+          return `${parts[0]}、\n${parts.slice(1).join('、')}。`;
+        }
+        return `${text}。`;
+      };
+      const shareShortComment = (() => {
+        const behaviorComments = {
+          '達成型': '結果にこだわるところ、普通にバレてた。',
+          '効率型': '効率型なの、普通にバレてた。',
+          '演出型': '見せ方まで診断されてて少し悔しい。',
+          '情報型': '考えすぎるところ、ちゃんと出てた。',
+        };
+        return behaviorComments[behaviorType] || '';
+      })();
+      const shareShortCommentBlock = shareShortComment ? `\n\n${shareShortComment}` : '';
       const shareText = typeMeta
-        ? `私は「${threeLetter}」/ ${behaviorType} × ${nickname} でした！\n${typeMeta.emoji} ${TYPE_CATCHCOPY[personalityCode] || ''}\n\n`
-        : `私は「${typeName}」タイプでした！\n`;
-      const shareUrl = resultUrl || 'https://www.personal-file.jp/80cards/';
-      const hashtags = '80タイプ診断,パーソナルファイル';
+        ? `私は「${threeLetter}｜${nickname}」でした。\n\n${formatCatchForShare(catchCopy)}${shareShortCommentBlock}\n\nあなたは何タイプ？\n${shareUrl}\n\n#80タイプ診断`
+        : `私は「${typeName}」タイプでした。\n\nあなたは何タイプ？\n${shareUrl}\n\n#80タイプ診断`;
 
       const shareToX = () => {
-        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=${encodeURIComponent(hashtags)}`;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
         window.open(url, '_blank', 'width=550,height=420');
         try {
           if (typeof fbq === 'function') {
@@ -9938,9 +9975,13 @@
       };
 
       const copyLink = async () => {
+        const showCopied = () => {
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 2200);
+        };
         try {
           await navigator.clipboard.writeText(shareUrl);
-          alert('リンクをコピーしました！');
+          showCopied();
         } catch {
           const textArea = document.createElement('textarea');
           textArea.value = shareUrl;
@@ -9948,25 +9989,32 @@
           textArea.select();
           document.execCommand('copy');
           document.body.removeChild(textArea);
-          alert('リンクをコピーしました！');
+          showCopied();
         }
       };
 
       return (
-        <div className="result-share-buttons-clean">
-          <button
-            onClick={shareToX}
-            className="result-share-button-clean result-share-button-clean--x"
-          >
-            Xでシェア
-          </button>
+        <div className="result-share-stack-clean">
+          <div className="result-share-buttons-clean">
+            <button
+              onClick={shareToX}
+              className="result-share-button-clean result-share-button-clean--x"
+            >
+              Xでシェア
+            </button>
 
-          <button
-            onClick={copyLink}
-            className="result-share-button-clean result-share-button-clean--copy"
-          >
-            リンクコピー
-          </button>
+            <button
+              onClick={copyLink}
+              className="result-share-button-clean result-share-button-clean--copy"
+            >
+              結果リンクをコピー
+            </button>
+          </div>
+          {copied && (
+            <div className="result-share-toast-clean" role="status" aria-live="polite">
+              診断結果のリンクをコピーしました
+            </div>
+          )}
         </div>
       );
     }
