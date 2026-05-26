@@ -4127,33 +4127,32 @@
       border: 1px solid var(--line);
       border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     .stats-cell-clean {
       background: var(--surface);
-      padding: 18px;
+      min-height: 94px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .stats-cell-label {
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 0.2em;
       color: var(--ink3);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .stats-cell-val {
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: 20px;
+      font-size: 22px;
       color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .stats-cell-sub {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink3);
+      line-height: 1.15;
     }
     .result-structure-jump {
-      margin: -16px 0 30px;
+      margin: -6px 0 28px;
     }
     .result-structure-jump-link {
       display: inline-flex;
@@ -4378,17 +4377,8 @@
 
     /* --- Pattern Code Badge (3文字コード) --- */
     .pattern-code-block {
-      margin: 0 0 20px;
+      margin: 0 0 18px;
       padding: 0;
-    }
-    .pattern-code-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.32em;
-      color: var(--ink3);
-      text-transform: uppercase;
-      margin-bottom: 8px;
     }
     .pattern-code {
       display: inline-flex;
@@ -10946,7 +10936,6 @@
                 const patternColor = card.groupColor || 'var(--ink)';
                 return (
                   <div className="pattern-code-block" style={{ '--pattern-code-color': patternColor }}>
-                    <div className="pattern-code-eyebrow">No.{String(card.patternNo).padStart(3, '0')} / PATTERN CODE</div>
                     <div className="pattern-code">
                       <span className="pattern-code-letter pattern-code-letter--behavior">{behaviorLetter}</span>
                       <span className="pattern-code-letter">{personalityCode?.[0] || ''}</span>
@@ -10974,15 +10963,14 @@
               {/* ステータスグリッド 2x2 */}
               <div className="stats-grid-clean">
                 {[
-                  { label: 'パターンコード', val: getThreeLetterCode(behavioralType, personalityCode), sub: '3-letter code' },
-                  { label: 'タイプコード', val: card.code, sub: '2-letter code' },
-                  { label: '行動類型', val: card.behaviorType, sub: 'BEHAVIOR' },
-                  { label: 'グループ', val: groupName, sub: 'GROUP' },
+                  { label: 'パターンコード', val: getThreeLetterCode(behavioralType, personalityCode) },
+                  { label: 'タイプコード', val: card.code },
+                  { label: '行動類型', val: card.behaviorType },
+                  { label: 'グループ', val: groupName },
                 ].map((s, i) => (
                   <div key={i} className="stats-cell-clean">
                     <div className="stats-cell-label mono">{s.label}</div>
                     <div className="stats-cell-val jp-display">{s.val}</div>
-                    <div className="stats-cell-sub mono">{s.sub}</div>
                   </div>
                 ))}
               </div>
