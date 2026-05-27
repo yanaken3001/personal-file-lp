@@ -21,7 +21,9 @@
   <meta name="twitter:image" content="https://www.personal-file.jp/80cards/ogp.png" />
 
   <!-- Favicon -->
-  <link rel="icon" href="/80cards/logo/favicon.png" type="image/png" />
+  <link rel="icon" href="/80cards/logo/favicon.png?v=20260527b" type="image/png" />
+  <link rel="preload" as="image" href="/80cards/card-background/PP.webp?v=20260527" fetchpriority="high" />
+  <link rel="preload" as="image" href="/80cards/character/PP.png?v=20260527" fetchpriority="high" />
 
   <!-- Google Fonts (Holographic theme: Serif + Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -8925,12 +8927,12 @@
     // 相対パス 'character/xx.png' は /80cards（スラッシュなし）アクセス時に /character/xx.png へ
     // 解決され 404 になる。過去10回近いバグの根本原因。絶対パスで固定する。
     function getCharacterImage(code) {
-      return `/80cards/character/${code}.png?v=20260421`;
+      return `/80cards/character/${code}.png?v=20260527`;
     }
 
     function getCardBackgroundImage(code) {
       if (!code) return '';
-      return `/80cards/card-background/${code}.webp?v=20260523`;
+      return `/80cards/card-background/${code}.webp?v=20260527`;
     }
 
     // 16タイプ 一覧グリッド用の一言特徴（7〜9文字、1行で収める）
@@ -9657,11 +9659,13 @@
             <a href="/80cards/" className="lp-logo-clean" style={{ animationDelay: '0s' }}>
               <img
                 className="lp-logo-image-clean"
-                src="/80cards/logo/80cards-logo-full.png"
+                src="/80cards/logo/80cards-logo-full.png?v=20260527"
                 alt="80CARDS - EIGHTY TYPES DIAGNOSIS"
-                width="1865"
-                height="486"
+                width="998"
+                height="260"
+                loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </a>
             <nav className="lp-header-nav-clean">
@@ -9815,8 +9819,12 @@
       return (
         <img
           className="brand-mini-logo"
-          src="/80cards/logo/80cards-logo-compact.png"
+          src="/80cards/logo/80cards-logo-compact.png?v=20260527"
           alt=""
+          width="700"
+          height="182"
+          loading="lazy"
+          decoding="async"
           draggable="false"
         />
       );
@@ -10475,6 +10483,8 @@
       const isCompatDemoCard = variant === 'compatDemo';
       const isLandingCard = isHeroCard || isCompatDemoCard;
       const isResultCard = variant === 'result';
+      const characterLoading = isHeroCard || isResultCard ? 'eager' : 'lazy';
+      const characterFetchPriority = isHeroCard ? 'high' : 'auto';
       const fullCode = getCard80FullCode(type);
       const infoTop = h * (isHeroCard ? 0.592 : isResultCard ? 0.588 : isCompatDemoCard ? 0.584 : showBehavior ? 0.574 : 0.590);
       const infoBottom = h * (isHeroCard ? 0.066 : isResultCard ? 0.048 : isCompatDemoCard ? 0.062 : isCompactCard ? 0.074 : 0.068);
@@ -10616,8 +10626,9 @@
             <img
               src={type.characterImage}
               alt={type.nickname}
-              loading="eager"
+              loading={characterLoading}
               decoding="async"
+              fetchPriority={characterFetchPriority}
               style={{
                 position: 'absolute',
                 zIndex: 1,
@@ -11198,8 +11209,12 @@
               </div>
               <img
                 className="result-brand-logo"
-                src="/80cards/logo/80cards-logo-full.png"
+                src="/80cards/logo/80cards-logo-full.png?v=20260527"
                 alt="80CARDS - EIGHTY TYPES DIAGNOSIS"
+                width="998"
+                height="260"
+                loading="lazy"
+                decoding="async"
               />
             </div>
 
@@ -12364,6 +12379,8 @@
               src={getCharacterImage(personalityCode)}
               alt={TYPE_NICKNAMES[personalityCode]}
               className="sticky-sidebar-char"
+              loading="lazy"
+              decoding="async"
             />
             <div className="sticky-sidebar-sub">{behaviorType} {personalityCode}</div>
             <div className="sticky-sidebar-name">
@@ -12418,6 +12435,8 @@
                   <img
                     src={getCharacterImage(code)}
                     alt={TYPE_NICKNAMES[code] || meta.name}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="type-grid-card-code">{code}</div>
                   <div
@@ -12978,6 +12997,8 @@
                 <img
                   src={cardUrl}
                   alt="相性カード"
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     width: '100%',
                     maxWidth: '400px',
