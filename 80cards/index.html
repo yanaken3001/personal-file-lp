@@ -4958,43 +4958,19 @@
       margin: 0 auto;
     }
     .lp-logo-clean {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
       text-decoration: none;
       color: var(--ink);
-    }
-    .lp-logo-mark-clean {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      background: var(--holo-clean);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 16px;
-      color: #fff;
+      width: clamp(210px, 18vw, 250px);
       flex-shrink: 0;
     }
-    .lp-logo-text-clean {
-      display: flex;
-      flex-direction: column;
-    }
-    .lp-logo-name-clean {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 22px;
-      line-height: 1;
-      letter-spacing: 0.02em;
-    }
-    .lp-logo-sub-clean {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink3);
-      letter-spacing: 0.25em;
-      margin-top: 3px;
+    .lp-logo-image-clean {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: left center;
     }
     .lp-header-nav-clean {
       display: flex;
@@ -5816,14 +5792,9 @@
         gap: 8px;
         flex-wrap: nowrap;
       }
-      .lp-logo-mark-clean {
-        width: 32px;
-        height: 32px;
-        font-size: 13px;
-        border-radius: 7px;
+      .lp-logo-clean {
+        width: min(42vw, 164px);
       }
-      .lp-logo-name-clean { font-size: 17px; }
-      .lp-logo-sub-clean { display: none; }
       .lp-header-nav-clean { gap: 6px; flex-shrink: 0; }
       .lp-type-mega-clean { display: none; }
       .lp-header-nav-clean .btn-ghost-clean {
@@ -9639,11 +9610,14 @@
           {/* ── HEADER ── */}
           <header className={`lp-header-clean lp-phase-clean${phases[0] ? ' visible' : ''}`}>
             <a href="/80cards/" className="lp-logo-clean" style={{ animationDelay: '0s' }}>
-              <div className="lp-logo-mark-clean">80</div>
-              <div className="lp-logo-text-clean">
-                <span className="lp-logo-name-clean jp-display">80CARDS</span>
-                <span className="lp-logo-sub-clean mono">EIGHTY TYPES DIAGNOSIS</span>
-              </div>
+              <img
+                className="lp-logo-image-clean"
+                src="/80cards/logo/80cards-logo-full.png"
+                alt="80CARDS - EIGHTY TYPES DIAGNOSIS"
+                width="1865"
+                height="486"
+                decoding="async"
+              />
             </a>
             <nav className="lp-header-nav-clean">
               <TypeMenuDropdown />
@@ -10427,12 +10401,13 @@
       const isCompactCard = w < 210;
       const isHeroCard = variant === 'hero';
       const isCompatDemoCard = variant === 'compatDemo';
+      const isLandingCard = isHeroCard || isCompatDemoCard;
       const isResultCard = variant === 'result';
       const fullCode = getCard80FullCode(type);
-      const infoTop = h * (isHeroCard ? 0.600 : isResultCard ? 0.588 : showBehavior ? 0.574 : 0.590);
-      const infoBottom = h * (isHeroCard ? 0.080 : isResultCard ? 0.048 : isCompactCard ? 0.074 : 0.068);
-      const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompactCard ? 0.006 : 0.008);
-      const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.010 : isCompactCard ? 0.012 : 0.012);
+      const infoTop = h * (isHeroCard ? 0.592 : isResultCard ? 0.588 : isCompatDemoCard ? 0.584 : showBehavior ? 0.574 : 0.590);
+      const infoBottom = h * (isHeroCard ? 0.066 : isResultCard ? 0.048 : isCompatDemoCard ? 0.062 : isCompactCard ? 0.074 : 0.068);
+      const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompatDemoCard ? 0.004 : isCompactCard ? 0.006 : 0.008);
+      const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.014 : isCompatDemoCard ? 0.016 : isCompactCard ? 0.012 : 0.012);
       const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : 0.010);
       const tags = (type.traits || []).slice(0, 3);
       const showTags = w >= 168 && tags.length > 0;
@@ -10454,10 +10429,10 @@
           <span key={tag} style={{
             fontFamily: 'var(--font-display)',
             fontWeight: 900,
-            fontSize: w * (isHeroCard ? (isLong ? 0.028 : 0.035) : isResultCard ? (isLong ? 0.032 : 0.040) : isLong ? (isCompactCard ? 0.030 : 0.032) : (isCompactCard ? 0.036 : 0.039)),
+            fontSize: w * (isHeroCard ? (isLong ? 0.031 : 0.039) : isCompatDemoCard ? (isLong ? 0.034 : 0.041) : isResultCard ? (isLong ? 0.032 : 0.040) : isLong ? (isCompactCard ? 0.030 : 0.032) : (isCompactCard ? 0.036 : 0.039)),
             lineHeight: 1,
-            padding: `${w * (isHeroCard ? 0.013 : isResultCard ? 0.018 : isCompactCard ? 0.017 : 0.019)}px ${w * (isHeroCard ? (isLong ? 0.026 : 0.038) : isResultCard ? (isLong ? 0.034 : 0.046) : isLong ? (isCompactCard ? 0.030 : 0.036) : (isCompactCard ? 0.042 : 0.048))}px`,
-            minWidth: w * (isHeroCard ? (isLong ? 0.23 : 0.18) : isResultCard ? (isLong ? 0.24 : 0.20) : isLong ? (isCompactCard ? 0.25 : 0.28) : (isCompactCard ? 0.20 : 0.22)),
+            padding: `${w * (isHeroCard ? 0.016 : isCompatDemoCard ? 0.020 : isResultCard ? 0.018 : isCompactCard ? 0.017 : 0.019)}px ${w * (isHeroCard ? (isLong ? 0.030 : 0.044) : isCompatDemoCard ? (isLong ? 0.036 : 0.050) : isResultCard ? (isLong ? 0.034 : 0.046) : isLong ? (isCompactCard ? 0.030 : 0.036) : (isCompactCard ? 0.042 : 0.048))}px`,
+            minWidth: w * (isHeroCard ? (isLong ? 0.25 : 0.20) : isCompatDemoCard ? (isLong ? 0.30 : 0.23) : isResultCard ? (isLong ? 0.24 : 0.20) : isLong ? (isCompactCard ? 0.25 : 0.28) : (isCompactCard ? 0.20 : 0.22)),
             background: theme.chipBg,
             borderRadius: 999,
             color: '#fff8ec',
@@ -10541,29 +10516,31 @@
             overflow: 'hidden',
             pointerEvents: 'none',
           }}>
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                left: '50%',
-                bottom: h * (isHeroCard ? 0.030 : isCompatDemoCard ? 0.040 : isResultCard ? 0.042 : 0.012),
-                zIndex: 0,
-                width: w * (isHeroCard ? 0.40 : isResultCard ? 0.40 : 0.46),
-                height: w * (isHeroCard ? 0.070 : isResultCard ? 0.074 : 0.085),
-                borderRadius: '50%',
-                transform: 'translateX(-50%)',
-                background: `
-                  radial-gradient(ellipse at center,
-                    rgba(38, 18, 10, 0.36) 0%,
-                    rgba(38, 18, 10, 0.22) 38%,
-                    rgba(38, 18, 10, 0.08) 66%,
-                    transparent 78%)
-                `,
-                filter: `blur(${Math.max(2, w * 0.01)}px)`,
-                opacity: 0.78,
-                mixBlendMode: 'multiply',
-              }}
-            />
+            {!isLandingCard && (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  bottom: h * (isResultCard ? 0.042 : 0.012),
+                  zIndex: 0,
+                  width: w * (isResultCard ? 0.40 : 0.46),
+                  height: w * (isResultCard ? 0.074 : 0.085),
+                  borderRadius: '50%',
+                  transform: 'translateX(-50%)',
+                  background: `
+                    radial-gradient(ellipse at center,
+                      rgba(38, 18, 10, 0.36) 0%,
+                      rgba(38, 18, 10, 0.22) 38%,
+                      rgba(38, 18, 10, 0.08) 66%,
+                      transparent 78%)
+                  `,
+                  filter: `blur(${Math.max(2, w * 0.01)}px)`,
+                  opacity: 0.78,
+                  mixBlendMode: 'multiply',
+                }}
+              />
+            )}
             <img
               src={type.characterImage}
               alt={type.nickname}
@@ -10578,10 +10555,12 @@
                 maxWidth: 'none',
                 height: 'auto',
                 transform: 'translateX(-50%)',
-                filter: `
-                  drop-shadow(0 ${w * 0.035}px ${w * 0.045}px rgba(78, 28, 14, 0.34))
-                  saturate(1.08)
-                `,
+                filter: isLandingCard
+                  ? 'saturate(1.08)'
+                  : `
+                    drop-shadow(0 ${w * 0.035}px ${w * 0.045}px rgba(78, 28, 14, 0.34))
+                    saturate(1.08)
+                  `,
               }}
             />
           </div>
@@ -10591,14 +10570,14 @@
             position: 'absolute',
             left: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
             right: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
-            top: infoTop + (isHeroCard ? h * 0.012 : isResultCard ? h * 0.002 : showBehavior ? h * 0.010 : h * 0.018),
+            top: infoTop + (isHeroCard ? h * 0.006 : isResultCard ? h * 0.002 : isCompatDemoCard ? h * 0.010 : showBehavior ? h * 0.010 : h * 0.018),
             bottom: infoBottom,
             zIndex: 6,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: isResultCard ? 'flex-start' : 'center',
             alignItems: 'center',
-            gap: w * (isHeroCard ? 0.006 : isResultCard ? 0.007 : isCompactCard ? 0.006 : 0.010),
+            gap: w * (isHeroCard ? 0.007 : isCompatDemoCard ? 0.007 : isResultCard ? 0.007 : isCompactCard ? 0.006 : 0.010),
             padding: `${infoPadTop}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px ${infoPadBottom}px`,
             boxSizing: 'border-box',
             overflow: isResultCard ? 'visible' : 'hidden',
@@ -10611,7 +10590,7 @@
             {showBehavior && (
               <div className="jp-display" style={{
                 color: theme.ink,
-                fontSize: w * (isHeroCard ? 0.057 : isResultCard ? 0.068 : isCompactCard ? 0.056 : 0.066),
+                fontSize: w * (isHeroCard ? 0.064 : isResultCard ? 0.068 : isCompactCard ? 0.056 : 0.066),
                 lineHeight: 1,
                 fontWeight: 900,
                 letterSpacing: '0.04em',
@@ -10621,7 +10600,7 @@
 
             <div className="jp-display" style={{
               color: theme.ink,
-              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.084 : 0.101) : isResultCard ? (type.nickname.length > 8 ? 0.094 : 0.112) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
+              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.092 : 0.108) : isCompatDemoCard ? (type.nickname.length > 8 ? 0.091 : 0.112) : isResultCard ? (type.nickname.length > 8 ? 0.094 : 0.112) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
               lineHeight: isResultCard ? 1 : 1.08,
               fontWeight: 900,
               whiteSpace: 'nowrap',
@@ -10642,7 +10621,7 @@
             {catchText && (
               <div className="jp-serif" style={{
                 color: '#684330',
-                fontSize: w * (isHeroCard ? 0.038 : isResultCard ? 0.043 : isCompactCard ? 0.038 : 0.043),
+                fontSize: w * (isHeroCard ? 0.043 : isCompatDemoCard ? 0.041 : isResultCard ? 0.043 : isCompactCard ? 0.038 : 0.043),
                 lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompactCard ? 1.28 : 1.34,
                 fontWeight: 900,
                 wordBreak: 'keep-all',
@@ -10663,12 +10642,12 @@
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: w * (isHeroCard ? 0.007 : isResultCard ? 0.008 : isCompactCard ? 0.009 : 0.011),
+                gap: w * (isHeroCard ? 0.008 : isCompatDemoCard ? 0.010 : isResultCard ? 0.008 : isCompactCard ? 0.009 : 0.011),
                 justifyContent: 'flex-start',
-                marginTop: w * (isHeroCard ? 0.003 : isResultCard ? 0.004 : isCompactCard ? 0.004 : 0.007),
+                marginTop: w * (isHeroCard ? 0.004 : isCompatDemoCard ? 0.006 : isResultCard ? 0.004 : isCompactCard ? 0.004 : 0.007),
                 width: '100%',
               }}>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: w * (isHeroCard ? 0.018 : isResultCard ? 0.017 : isCompactCard ? 0.020 : 0.026), width: '100%' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: w * (isHeroCard ? 0.020 : isCompatDemoCard ? 0.022 : isResultCard ? 0.017 : isCompactCard ? 0.020 : 0.026), width: '100%' }}>
                   {tags.slice(0, 2).map(renderTagPill)}
                 </div>
                 {tags[2] && (
