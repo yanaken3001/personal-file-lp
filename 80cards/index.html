@@ -1960,41 +1960,29 @@
       align-items: center;
       justify-content: center;
     }
-    .quiz-brand-signature--fixed,
-    .quiz-brand-signature--inline {
+    .quiz-brand-signature--fixed {
       display: none;
+    }
+    .quiz-brand-signature--inline {
+      display: flex;
+      width: clamp(108px, 11vw, 130px);
+      margin: 20px auto 0;
+      opacity: 1;
     }
     .brand-mini-logo {
       display: block;
       width: 100%;
       height: auto;
     }
-    @media (min-width: 768px) {
-      .question-inner {
-        padding-bottom: 96px;
-      }
-      .quiz-brand-signature--fixed {
-        position: fixed;
-        left: 50%;
-        bottom: 28px;
-        z-index: 30;
-        display: flex;
-        width: 148px;
-        opacity: 0.62;
-        transform: translateX(-50%);
-      }
-    }
     @media (max-width: 767px) {
       .quiz-brand-signature--inline {
-        display: flex;
-        width: 104px;
+        width: 110px;
         margin: 18px auto 0;
-        opacity: 0.6;
       }
     }
     @media (max-width: 380px) {
       .quiz-brand-signature--inline {
-        width: 96px;
+        width: 102px;
         margin-top: 16px;
       }
     }
@@ -9883,7 +9871,6 @@
       return (
         <div className="question-screen">
           <ProgressBar80 current={qIndex + 1} total={TOTAL_QUESTIONS} />
-          <QuizBrandSignature mode="fixed" />
 
           <div
             className={isExiting ? 'question-inner question-slide-out' : 'question-inner question-slide-in'}
