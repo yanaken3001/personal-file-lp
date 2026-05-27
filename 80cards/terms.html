@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>利用規約 | 80CARDS</title>
+  <meta name="description" content="80CARDSの利用規約です。無料診断サービスの利用条件、禁止事項、知的財産権、免責事項等について定めています。" />
+  <meta property="og:title" content="利用規約 | 80CARDS" />
+  <meta property="og:description" content="80CARDSの利用規約です。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="80CARDS" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="/80cards/logo/favicon.png?v=20260527b" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f5ff;
+      --ink: #17171f;
+      --muted: #666776;
+      --soft: #8a8c9b;
+      --line: rgba(23, 23, 31, 0.1);
+      --accent: #6b42f4;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    }
+    body {
+      min-height: 100vh;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(107, 66, 244, 0.12), transparent 34%),
+        radial-gradient(circle at 88% 12%, rgba(239, 90, 99, 0.1), transparent 32%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .header {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; padding: 12px 24px;
+      background: rgba(247, 245, 255, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    }
+    .header-logo { display: inline-flex; width: clamp(210px, 18vw, 250px); flex-shrink: 0; }
+    .header-logo img { display: block; width: 100%; height: auto; }
+    .header-nav { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 12px; }
+    .header-nav a { color: var(--muted); font-size: 12px; font-weight: 800; text-decoration: none; }
+    .header-nav a:hover { color: var(--ink); }
+    .page { width: min(960px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 56px; }
+    .hero { margin-bottom: 28px; }
+    .eyebrow {
+      margin-bottom: 14px;
+      color: var(--soft);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+    }
+    h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.12; font-weight: 900; letter-spacing: 0; }
+    .lead { max-width: 720px; margin-top: 18px; color: var(--muted); font-size: 15px; line-height: 1.9; font-weight: 500; }
+    .doc {
+      padding: clamp(28px, 5vw, 48px);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(23, 23, 31, 0.08);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(51, 39, 92, 0.08);
+    }
+    .doc section + section { margin-top: 34px; padding-top: 30px; border-top: 1px solid var(--line); }
+    h2 { margin-bottom: 14px; font-size: 20px; line-height: 1.45; font-weight: 900; }
+    p, li { color: #3f4050; font-size: 14px; line-height: 1.95; font-weight: 500; }
+    ul, ol { padding-left: 1.35em; }
+    li + li { margin-top: 6px; }
+    a { color: var(--accent); font-weight: 800; text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
+    .meta { display: grid; gap: 8px; margin-top: 24px; color: var(--soft); font-size: 12px; font-weight: 700; }
+    .site-footer {
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+      gap: 12px 16px;
+      padding: 28px 24px 40px;
+      color: rgba(23, 23, 31, 0.46);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--line);
+    }
+    .site-footer a { color: inherit; text-decoration: none; }
+    .site-footer a:hover { color: var(--ink); }
+    @media (max-width: 767px) {
+      .header { padding: 10px 14px; gap: 10px; }
+      .header-logo { width: min(42vw, 164px); }
+      .header-nav { gap: 10px; }
+      .header-nav a { font-size: 11px; }
+      .page { width: min(100% - 28px, 960px); padding: 48px 0 44px; }
+      .doc { border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="/80cards/" class="header-logo" aria-label="80CARDS トップへ">
+      <img src="/80cards/logo/80cards-logo-full.png?v=20260527" alt="80CARDS - EIGHTY TYPES DIAGNOSIS" width="998" height="260" loading="eager" decoding="async" fetchpriority="high" />
+    </a>
+    <nav class="header-nav" aria-label="主要ナビゲーション">
+      <a href="/80cards/types.html">タイプ一覧</a>
+      <a href="/80cards/compatibility.html">相性を見る</a>
+      <a href="/80cards/?start=1">診断する</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="hero">
+      <div class="eyebrow">TERMS OF USE</div>
+      <h1>利用規約</h1>
+      <p class="lead">
+        本利用規約は、株式会社Personalが提供する80CARDSの利用条件を定めるものです。
+        本サービスを利用する方は、本規約に同意したものとみなされます。
+      </p>
+    </div>
+
+    <article class="doc">
+      <section>
+        <h2>1. 適用</h2>
+        <p>
+          本利用規約（以下「本規約」といいます。）は、株式会社Personal（以下「当社」といいます。）が運営する
+          「80CARDS」（https://www.personal-file.jp/80cards/ 配下のページを含み、以下「本サービス」といいます。）の利用に適用されます。
+          当社が本サービス上に掲載する注意事項、ガイドライン、プライバシーポリシー等は、本規約の一部を構成します。
+        </p>
+      </section>
+
+      <section>
+        <h2>2. 本サービスの内容</h2>
+        <p>
+          本サービスは、質問への回答にもとづき、利用者の行動スタイルや性格傾向を80タイプのカードとして表示する無料診断サービスです。
+          診断結果、相性スコア、タイプ説明、シェア機能、パーソナルファイルの面談案内等を含む場合があります。
+        </p>
+        <p>
+          本サービス内で課金、決済、有料コンテンツ販売は行いません。面談登録や当社の別サービスの利用については、遷移先ページで定める条件が適用される場合があります。
+        </p>
+      </section>
+
+      <section>
+        <h2>3. 診断結果の性質</h2>
+        <p>
+          本サービスの診断結果は、自己理解、キャリアの整理、コミュニケーションのきっかけとして提供されるものです。
+          医学的、心理学的、精神医学的な診断、治療、助言、または就職・転職・採用・人事評価・職業適性の保証を目的とするものではありません。
+        </p>
+        <p>
+          当社は、診断結果の正確性、完全性、特定の職業・企業・働き方との適合、面談や就職・転職の成果を保証しません。
+          重要な意思決定を行う場合は、必要に応じて専門家または信頼できる第三者に相談してください。
+        </p>
+      </section>
+
+      <section>
+        <h2>4. 利用者の責任</h2>
+        <p>
+          利用者は、自身の責任において本サービスを利用するものとします。
+          利用者が入力・選択・送信した情報、診断結果の解釈、診断結果にもとづく行動、SNS等での共有により生じた結果について、当社は本規約で定める範囲を超えて責任を負いません。
+        </p>
+      </section>
+
+      <section>
+        <h2>5. 禁止事項</h2>
+        <p>利用者は、本サービスの利用にあたり、以下の行為を行ってはなりません。</p>
+        <ul>
+          <li>法令または公序良俗に反する行為</li>
+          <li>当社または第三者の著作権、商標権、肖像権、プライバシー、名誉、信用その他の権利または利益を侵害する行為</li>
+          <li>本サービスのコンテンツ、カード、キャラクター、画像、文章、ロゴ、プログラム等を無断で複製、転載、改変、販売、商用利用、AI学習素材化する行為</li>
+          <li>当社の許可なく、本サービスまたは診断結果を営業、広告、採用、人事評価、選考、商用サービス提供の目的で利用する行為</li>
+          <li>過度なアクセス、スクレイピング、クローリング、リバースエンジニアリング、解析、改変、脆弱性調査等、本サービスの運営を妨げる行為</li>
+          <li>虚偽の情報を入力し、または第三者になりすます行為</li>
+          <li>不正アクセス、スパム、マルウェア送信、セキュリティを害する行為</li>
+          <li>診断結果や当社の表示を改ざんし、誤認を招く形で公開・共有する行為</li>
+          <li>その他、当社が不適切と判断する行為</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. 知的財産権</h2>
+        <p>
+          本サービスに含まれる文章、画像、カードデザイン、キャラクター、ロゴ、UI、プログラム、診断ロジック、データ、その他一切のコンテンツに関する知的財産権は、当社または正当な権利者に帰属します。
+          本規約に基づく本サービスの利用は、これらの権利の譲渡または利用許諾を意味するものではありません。
+        </p>
+        <p>
+          利用者は、当社が本サービス上で用意したシェア機能を利用する範囲で、自己の診断結果を個人的・非商用目的で共有できます。
+          ただし、当社または第三者の権利を侵害する態様、誤認を招く態様、商用利用、改変利用はできません。
+        </p>
+      </section>
+
+      <section>
+        <h2>7. 個人情報の取扱い</h2>
+        <p>
+          当社は、本サービスの利用に関連して取得する情報を、別途定める
+          <a href="/80cards/privacy.html">プライバシーポリシー</a>に従って取り扱います。
+        </p>
+      </section>
+
+      <section>
+        <h2>8. 外部サービス・リンク</h2>
+        <p>
+          本サービスには、SNS、広告配信サービス、アクセス解析サービス、当社の別サービス、外部サイトへのリンクまたは連携機能が含まれる場合があります。
+          外部サービスの利用については、各事業者の規約およびプライバシーポリシーが適用されます。
+          当社は、外部サービスの内容、可用性、情報の取扱い、損害等について責任を負いません。
+        </p>
+      </section>
+
+      <section>
+        <h2>9. サービスの変更・中断・終了</h2>
+        <p>
+          当社は、事前の通知なく、本サービスの内容、診断ロジック、表示、機能、URL、提供条件を変更し、または本サービスの全部もしくは一部を中断・終了することがあります。
+          当社は、これにより利用者に生じた損害について、当社の故意または重過失がある場合を除き責任を負いません。
+        </p>
+      </section>
+
+      <section>
+        <h2>10. 免責事項</h2>
+        <p>
+          当社は、本サービスについて、正確性、完全性、有用性、特定目的適合性、継続性、セキュリティ、エラーや不具合がないことを保証しません。
+          通信環境、端末、ブラウザ、外部サービスの仕様変更等により、本サービスの全部または一部が利用できない場合があります。
+        </p>
+        <p>
+          当社は、本サービスの利用または利用不能により生じた損害について、当社の故意または重過失がある場合を除き責任を負いません。
+          消費者契約法その他の法令により当社の責任を免除または制限できない場合、当社の責任は、現実に発生した直接かつ通常の損害に限られます。
+        </p>
+      </section>
+
+      <section>
+        <h2>11. 損害賠償</h2>
+        <p>
+          利用者が本規約に違反し、または本サービスの利用に関連して当社または第三者に損害を与えた場合、利用者はその損害を賠償するものとします。
+        </p>
+      </section>
+
+      <section>
+        <h2>12. 規約の変更</h2>
+        <p>
+          当社は、必要に応じて本規約を変更することがあります。
+          変更後の規約は、本サービス上に掲載した時点から効力を生じます。ただし、法令上利用者の同意が必要な変更については、当社所定の方法で同意を取得します。
+        </p>
+      </section>
+
+      <section>
+        <h2>13. 準拠法・管轄</h2>
+        <p>
+          本規約は日本法に準拠します。本サービスに関して当社と利用者との間で紛争が生じた場合、東京地方裁判所を第一審の専属的合意管轄裁判所とします。
+        </p>
+      </section>
+
+      <section>
+        <h2>14. お問い合わせ</h2>
+        <p>本規約に関するお問い合わせは、当社コーポレートサイトのお問い合わせフォームよりご連絡ください。</p>
+        <p>
+          運営会社：株式会社Personal<br />
+          コーポレートサイト：<a href="https://per-sonal.co.jp/" target="_blank" rel="noopener noreferrer">https://per-sonal.co.jp/</a><br />
+          お問い合わせ：<a href="https://per-sonal.co.jp/contact/contact-form/" target="_blank" rel="noopener noreferrer">https://per-sonal.co.jp/contact/contact-form/</a>
+        </p>
+      </section>
+
+      <div class="meta">
+        <span>制定日：2026年5月27日</span>
+        <span>株式会社Personal</span>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Personal Inc.</span>
+    <a href="/80cards/privacy.html">プライバシーポリシー</a>
+    <a href="/80cards/terms.html">利用規約</a>
+  </footer>
+</body>
+</html>
