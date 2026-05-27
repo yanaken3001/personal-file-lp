@@ -1955,6 +1955,49 @@
     .quiz-back-btn:active {
       transform: scale(0.98) !important;
     }
+    .quiz-brand-signature {
+      pointer-events: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .quiz-brand-signature--fixed,
+    .quiz-brand-signature--inline {
+      display: none;
+    }
+    .brand-mini-logo {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    @media (min-width: 768px) {
+      .question-inner {
+        padding-bottom: 96px;
+      }
+      .quiz-brand-signature--fixed {
+        position: fixed;
+        left: 50%;
+        bottom: 28px;
+        z-index: 30;
+        display: flex;
+        width: 148px;
+        opacity: 0.62;
+        transform: translateX(-50%);
+      }
+    }
+    @media (max-width: 767px) {
+      .quiz-brand-signature--inline {
+        display: flex;
+        width: 104px;
+        margin: 18px auto 0;
+        opacity: 0.6;
+      }
+    }
+    @media (max-width: 380px) {
+      .quiz-brand-signature--inline {
+        width: 96px;
+        margin-top: 16px;
+      }
+    }
 
     /* レスポンシブ: タブレット */
     @media (min-width: 768px) and (max-width: 1023px) {
@@ -4473,6 +4516,14 @@
       display: flex;
       justify-content: center;
     }
+    .result-brand-logo {
+      display: block;
+      width: 206px;
+      max-width: 72%;
+      height: auto;
+      margin: 18px auto 0;
+      opacity: 1;
+    }
     .detail-right-clean {}
     .mobile-result-actions-fixed {
       display: none;
@@ -4542,6 +4593,12 @@
     @media (max-width: 767px) {
       .detail-main-clean {
         padding-bottom: 128px;
+      }
+      .result-brand-logo {
+        width: 148px;
+        max-width: 58%;
+        margin-top: 18px;
+        margin-bottom: 4px;
       }
       .mobile-result-actions-fixed {
         position: fixed;
@@ -9766,6 +9823,25 @@
       return '#8B5CF6';
     };
 
+    function BrandMiniLogo80() {
+      return (
+        <img
+          className="brand-mini-logo"
+          src="/80cards/logo/80cards-logo-compact.png"
+          alt=""
+          draggable="false"
+        />
+      );
+    }
+
+    function QuizBrandSignature({ mode }) {
+      return (
+        <div className={`quiz-brand-signature quiz-brand-signature--${mode}`} aria-hidden="true">
+          <BrandMiniLogo80 />
+        </div>
+      );
+    }
+
     function QuestionScreen80({ qIndex, onAnswer, onBack, answerHistory }) {
       const question = ORDERED_QUESTIONS[qIndex];
       const [selectedValue, setSelectedValue] = React.useState(null);
@@ -9807,6 +9883,7 @@
       return (
         <div className="question-screen">
           <ProgressBar80 current={qIndex + 1} total={TOTAL_QUESTIONS} />
+          <QuizBrandSignature mode="fixed" />
 
           <div
             className={isExiting ? 'question-inner question-slide-out' : 'question-inner question-slide-in'}
@@ -9864,6 +9941,7 @@
                 );
               })}
             </div>
+            <QuizBrandSignature mode="inline" />
 
             {/* 前の質問に戻る */}
             {qIndex > 0 && (
@@ -11131,6 +11209,11 @@
                   相性診断
                 </button>
               </div>
+              <img
+                className="result-brand-logo"
+                src="/80cards/logo/80cards-logo-full.png"
+                alt="80CARDS - EIGHTY TYPES DIAGNOSIS"
+              />
             </div>
 
             {/* 右カラム: 詳細情報 */}
