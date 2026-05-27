@@ -10367,25 +10367,32 @@
     // CardFrame — 完成形トレカのコード表示
     function Card80Frame({ w, h, type, variant = 'default' }) {
       const isResultCard = variant === 'result';
+      const isLandingCard = variant === 'hero' || variant === 'compatDemo';
       const pad = w * (isResultCard ? 0.084 : 0.07);
+      const landingCodeFontSize = Math.max(24, Math.min(w * 0.13, 42));
       const fullCode = getCard80FullCode(type);
       return (
         <>
           <div style={{
             position: 'absolute',
-            top: pad,
-            left: pad,
+            top: isLandingCard ? h * 0.068 : pad,
+            left: isLandingCard ? w * 0.09 : pad,
             zIndex: 8,
-            fontFamily: 'var(--font-display)',
-            fontSize: w * (isResultCard ? 0.142 : 0.15),
+            fontFamily: isLandingCard ? '"Arial Black", var(--font-sans)' : 'var(--font-display)',
+            fontSize: isLandingCard ? landingCodeFontSize : w * (isResultCard ? 0.142 : 0.15),
             fontWeight: 900,
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-            color: '#fff8e8',
-            textShadow: `
-              0 ${w * 0.008}px ${w * 0.012}px rgba(74, 32, 20, 0.42),
-              ${w * 0.006}px ${w * 0.006}px 0 rgba(107, 46, 26, 0.22)
-            `,
+            lineHeight: isLandingCard ? 0.9 : 1,
+            letterSpacing: isLandingCard ? '-0.03em' : '-0.02em',
+            color: isLandingCard ? '#fff' : '#fff8e8',
+            textShadow: isLandingCard
+              ? `
+                0 3px 0 rgba(45, 22, 12, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.24)
+              `
+              : `
+                0 ${w * 0.008}px ${w * 0.012}px rgba(74, 32, 20, 0.42),
+                ${w * 0.006}px ${w * 0.006}px 0 rgba(107, 46, 26, 0.22)
+              `,
           }}>{fullCode}</div>
         </>
       );
