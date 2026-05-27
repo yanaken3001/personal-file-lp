@@ -1811,6 +1811,183 @@
     }
 
     /* === CLEAN テーマ: QuestionScreen80 === */
+    /* === Rare branch intro for adaptive questions === */
+    @keyframes rarePanelIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes rareSweep {
+      from { transform: translateX(-140%) rotate(12deg); }
+      to { transform: translateX(140%) rotate(12deg); }
+    }
+    @keyframes rareRingTurn {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes rarePulse {
+      0%, 100% { transform: scale(1); opacity: 0.88; }
+      50% { transform: scale(1.035); opacity: 1; }
+    }
+    .adaptive-intro-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 22px;
+      background:
+        linear-gradient(90deg, rgba(125, 82, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(125, 82, 255, 0.04) 1px, transparent 1px),
+        var(--bg);
+      background-size: 42px 42px, 42px 42px, auto;
+      overflow: hidden;
+      text-align: center;
+    }
+    .adaptive-intro-panel {
+      position: relative;
+      width: min(100%, 520px);
+      padding: clamp(34px, 6vw, 52px) clamp(24px, 6vw, 48px);
+      border: 1px solid rgba(125, 82, 255, 0.22);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 24px 70px rgba(56, 38, 120, 0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow: hidden;
+      animation: rarePanelIn 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .adaptive-intro-panel::before {
+      content: "";
+      position: absolute;
+      inset: -30% auto -30% -22%;
+      width: 36%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.78), transparent);
+      animation: rareSweep 2.4s ease-in-out 0.45s both;
+      pointer-events: none;
+    }
+    .adaptive-intro-panel::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(125, 82, 255, 0.12);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .adaptive-intro-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.34em;
+      color: #7c4dff;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+    .adaptive-intro-symbol {
+      position: relative;
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 24px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: 0;
+      animation: rarePulse 2.6s ease-in-out infinite;
+    }
+    .adaptive-intro-symbol::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background: conic-gradient(from 120deg, #6d39f2, #d94fb0, #ff8a00, #6d39f2);
+      animation: rareRingTurn 7s linear infinite;
+    }
+    .adaptive-intro-symbol::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #6d39f2 0%, #d94fb0 50%, #ff8a00 100%);
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.84), 0 14px 32px rgba(125,82,255,0.25);
+    }
+    .adaptive-intro-symbol span {
+      position: relative;
+      z-index: 1;
+    }
+    .adaptive-intro-title {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-display-jp);
+      font-size: clamp(25px, 6.2vw, 40px);
+      font-weight: 900;
+      line-height: 1.25;
+      color: var(--ink);
+      letter-spacing: 0;
+      margin: 0 0 8px;
+      white-space: nowrap;
+    }
+    .adaptive-intro-subtitle {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-display-jp);
+      font-size: clamp(14px, 3.4vw, 16px);
+      font-weight: 800;
+      line-height: 1.4;
+      color: #7c4dff;
+      margin: 0 0 20px;
+      letter-spacing: 0.04em;
+    }
+    .adaptive-intro-body {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-display-jp);
+      font-size: clamp(15px, 3.8vw, 17px);
+      font-weight: 600;
+      line-height: 1.95;
+      color: var(--ink2);
+      margin: 0 auto 28px;
+      max-width: 420px;
+    }
+    .adaptive-intro-button {
+      position: relative;
+      z-index: 1;
+      min-width: min(100%, 260px);
+      padding: 16px 30px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6d39f2 0%, #b64ac2 52%, #ff6f3c 100%);
+      color: #fff;
+      font-family: var(--font-display-jp);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 34px rgba(125, 82, 255, 0.24);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+    .adaptive-intro-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 42px rgba(125, 82, 255, 0.28);
+    }
+    .adaptive-intro-button:active {
+      transform: scale(0.98);
+    }
+    @media (max-width: 560px) {
+      .adaptive-intro-screen {
+        align-items: flex-start;
+        padding-top: 74px;
+      }
+      .adaptive-intro-panel {
+        border-radius: 20px;
+      }
+      .adaptive-intro-symbol {
+        width: 78px;
+        height: 78px;
+        margin-bottom: 20px;
+        font-size: 21px;
+      }
+    }
+
     @keyframes slideOutLeft {
       0%   { transform: translateX(0);    opacity: 1; }
       100% { transform: translateX(-32px); opacity: 0; }
@@ -8704,7 +8881,53 @@
     QUESTIONS_80.forEach(q => { QUESTION_MAP[q.id] = q; });
 
     const ORDERED_QUESTIONS = QUESTION_ORDER.map(id => QUESTION_MAP[id]);
-    const TOTAL_QUESTIONS = ORDERED_QUESTIONS.length; // 57 (+ 性格連動タイブレーク修正で実データ最適化)
+    const BASE_TOTAL_QUESTIONS = ORDERED_QUESTIONS.length;
+    const TOTAL_QUESTIONS = BASE_TOTAL_QUESTIONS; // Base flow remains 57 questions.
+    const PERSONALITY_TIE_THRESHOLD = 2;
+    const BEHAVIOR_TIE_THRESHOLD = 1;
+    const MAX_ADAPTIVE_QUESTIONS = 8;
+
+    const PERSONALITY_TIE_ITEMS = {
+      P: [
+        "考え込むより、まず動いてみて流れを作るほうだ",
+        "場の空気を明るくしながら、前向きに進めるほうだ",
+      ],
+      A: [
+        "勢いよりも、正確さや筋道を確認してから進めたい",
+        "判断するときは、感覚よりも根拠や整合性を重視する",
+      ],
+      I: [
+        "自分だけで決めるより、周囲の気持ちや意見を踏まえたい",
+        "人との関係性を大切にしながら、無理のない結論を選びたい",
+      ],
+      D: [
+        "迷ったときは、早く結論を出して次の行動に移りたい",
+        "難しい場面でも、自分で決めて前に進むほうだ",
+      ],
+    };
+
+    const BEHAVIOR_TIE_ITEMS = {
+      K: [
+        "目標を達成するためなら、多少の負荷があっても前に出る",
+        "結果を出すことが、行動の一番の原動力になりやすい",
+      ],
+      H: [
+        "周囲との安心感や調和を崩さない進め方を選びたい",
+        "誰かが置いていかれないように、全体の温度感を見ながら動く",
+      ],
+      J: [
+        "判断する前に情報を集め、根拠をそろえてから動きたい",
+        "物事を進めるときは、背景や理由まで理解しておきたい",
+      ],
+      G: [
+        "どう見えるか、どう伝わるかを整えてから行動したい",
+        "周囲を巻き込むために、表現や見せ方にも力を入れる",
+      ],
+      E: [
+        "できるだけ少ない手間で、成果に近づく方法を選びたい",
+        "時間や労力のムダを減らし、効率よく進めたい",
+      ],
+    };
 
     // Encouraging messages at milestones
     const ENCOURAGE_MESSAGES = {
@@ -8874,6 +9097,114 @@
       return types[0];
     }
 
+    function getRankedPersonalityAxes(scores) {
+      const priority = { D: 0, P: 1, A: 2, I: 3 };
+      return ["D", "P", "A", "I"]
+        .map(code => ({ code, score: scores[code] || 0 }))
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return priority[a.code] - priority[b.code];
+        });
+    }
+
+    function getRankedBehaviorAxes(scores, personalityCode) {
+      const personalityFirst = personalityCode ? personalityCode[0] : '';
+      const preferredForTie = { A: 'J', I: 'H', D: 'K', P: 'K' }[personalityFirst];
+      const priority = { K: 0, H: 1, J: 2, G: 3, E: 4 };
+      return ["K", "H", "J", "G", "E"]
+        .map(code => ({ code, score: scores[code] || 0 }))
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          if (preferredForTie && (a.code === preferredForTie || b.code === preferredForTie)) {
+            return a.code === preferredForTie ? -1 : 1;
+          }
+          return priority[a.code] - priority[b.code];
+        });
+    }
+
+    function createTieBreakQuestions(domain, firstCode, secondCode, itemMap) {
+      const order = [firstCode, secondCode, firstCode, secondCode];
+      return order.map((agreeAxis, index) => {
+        const disagreeAxis = agreeAxis === firstCode ? secondCode : firstCode;
+        const statementIndex = index < 2 ? 0 : 1;
+        return {
+          id: `${domain}-TB-${firstCode}${secondCode}-${index + 1}`,
+          axis: agreeAxis,
+          agreeAxis,
+          disagreeAxis,
+          scoring: "pair",
+          adaptive: true,
+          text: itemMap[agreeAxis][statementIndex],
+        };
+      });
+    }
+
+    function buildAdaptiveQuestions(scores) {
+      const adaptiveQuestions = [];
+      const personalityRanked = getRankedPersonalityAxes(scores);
+      const personalityGap = personalityRanked[0].score - personalityRanked[1].score;
+      if (personalityGap <= PERSONALITY_TIE_THRESHOLD) {
+        adaptiveQuestions.push(
+          ...createTieBreakQuestions(
+            "PERSONALITY",
+            personalityRanked[0].code,
+            personalityRanked[1].code,
+            PERSONALITY_TIE_ITEMS
+          )
+        );
+      }
+
+      const provisionalPersonalityCode = determinePersonalityType(scores);
+      const behaviorRanked = getRankedBehaviorAxes(scores, provisionalPersonalityCode);
+      const behaviorGap = behaviorRanked[0].score - behaviorRanked[1].score;
+      if (behaviorGap <= BEHAVIOR_TIE_THRESHOLD) {
+        adaptiveQuestions.push(
+          ...createTieBreakQuestions(
+            "BEHAVIOR",
+            behaviorRanked[0].code,
+            behaviorRanked[1].code,
+            BEHAVIOR_TIE_ITEMS
+          )
+        );
+      }
+
+      return adaptiveQuestions.slice(0, MAX_ADAPTIVE_QUESTIONS);
+    }
+
+    function createEmptyScoreDelta() {
+      return { P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 };
+    }
+
+    function getScoredValue(question, rawValue) {
+      return question.reverse ? (6 - rawValue) : rawValue;
+    }
+
+    function getQuestionScoreDelta(question, rawValue) {
+      const delta = createEmptyScoreDelta();
+      if (!question || rawValue == null) return delta;
+
+      const scoredValue = getScoredValue(question, rawValue);
+      if (question.scoring === "pair" && question.agreeAxis && question.disagreeAxis) {
+        delta[question.agreeAxis] += scoredValue;
+        delta[question.disagreeAxis] += 6 - scoredValue;
+        return delta;
+      }
+
+      if (question.axis) {
+        delta[question.axis] += scoredValue;
+      }
+      return delta;
+    }
+
+    function applyQuestionScore(scores, question, rawValue, multiplier = 1) {
+      const delta = getQuestionScoreDelta(question, rawValue);
+      const nextScores = { ...scores };
+      Object.keys(delta).forEach(axis => {
+        nextScores[axis] = (nextScores[axis] || 0) + delta[axis] * multiplier;
+      });
+      return nextScores;
+    }
+
     // ===================================================================
     // URL PARAMS
     // ===================================================================
@@ -8882,8 +9213,30 @@
     const fromParam = urlParams.get('from') || '';
     const matchParam = urlParams.get('match') || '';
     const devScoresParam = urlParams.get('dev_scores') || '';
+    const devAdaptiveParam = urlParams.get('dev_adaptive') || '';
     const autoStart = urlParams.get('start') === '1';
     const DEBUG_MODE = urlParams.get('debug') === '1';
+    const IS_LOCAL_PREVIEW = ['localhost', '127.0.0.1', ''].includes(window.location.hostname) || window.location.protocol === 'file:';
+
+    function getDevAdaptivePreset(mode) {
+      if (!IS_LOCAL_PREVIEW) return null;
+      const answerHistory = Array(BASE_TOTAL_QUESTIONS - 1).fill(3);
+      if (mode === 'both') {
+        return {
+          qIndex: BASE_TOTAL_QUESTIONS - 1,
+          scores: { P: 24, A: 24, I: 20, D: 18, K: 15, H: 15, J: 11, G: 10, E: 9 },
+          answerHistory,
+        };
+      }
+      if (mode === 'standard') {
+        return {
+          qIndex: BASE_TOTAL_QUESTIONS - 1,
+          scores: { P: 40, A: 10, I: 10, D: 10, K: 30, H: 6, J: 6, G: 6, E: 6 },
+          answerHistory,
+        };
+      }
+      return null;
+    }
 
     // ===================================================================
     // 相性診断データ
@@ -9194,10 +9547,10 @@
     }
 
     // --- ProgressBar80 (CLEAN テーマ) ---
-    function ProgressBar80({ current, total }) {
+    function ProgressBar80({ current, total, isAdaptive = false, adaptiveCurrent = 0, adaptiveTotal = 0 }) {
       const progress = (current / total) * 100;
       // セクション境界 (質問インデックスベース: 15問/17問/13問/12問)
-      const sectionMarks = [15/total*100, 32/total*100, 45/total*100];
+      const sectionMarks = isAdaptive ? [] : [15/total*100, 32/total*100, 45/total*100];
       // 現在のセクション番号を算出
       const currentSection =
         current <= 15 ? 1 :
@@ -9207,8 +9560,12 @@
       return (
         <div className="quiz-progress-bar">
           <div className="quiz-progress-info">
-            <span className="quiz-progress-qnum">Q.{current} / {total}</span>
-            <span className="quiz-progress-section-label">SECTION {currentSection} / 4</span>
+            <span className="quiz-progress-qnum">
+              {isAdaptive ? `追加確認 ${adaptiveCurrent} / ${adaptiveTotal}` : `Q.${current} / ${total}`}
+            </span>
+            <span className="quiz-progress-section-label">
+              {isAdaptive ? 'RARE BRANCH' : `SECTION ${currentSection} / 4`}
+            </span>
           </div>
           <div className="quiz-progress-track">
             {sectionMarks.map((pos, i) => (
@@ -9255,6 +9612,30 @@
 
             <button className="chapter-continue-btn" onClick={onComplete}>
               次へ
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function AdaptiveIntroScreen({ additionalCount, onContinue }) {
+      return (
+        <div className="adaptive-intro-screen">
+          <div className="adaptive-intro-panel">
+            <div className="adaptive-intro-kicker">RARE BRANCH</div>
+            <div className="adaptive-intro-symbol" aria-hidden="true">
+              <span>80</span>
+            </div>
+            <h2 className="adaptive-intro-title">レアな分岐に入りました</h2>
+            <div className="adaptive-intro-subtitle">10人に1人の分岐</div>
+            <p className="adaptive-intro-body">
+              あなたの傾向は、<br />
+              ひとつに決めきれないほど近く出ています。<br />
+              よりあなたらしい1枚にするために、<br />
+              特別にあと数問だけ教えてください。
+            </p>
+            <button type="button" className="adaptive-intro-button" onClick={onContinue}>
+              より正確な1枚を出す
             </button>
           </div>
         </div>
@@ -9860,10 +10241,14 @@
       );
     }
 
-    function QuestionScreen80({ qIndex, onAnswer, onBack, answerHistory }) {
-      const question = ORDERED_QUESTIONS[qIndex];
+    function QuestionScreen80({ qIndex, questions, totalQuestions, onAnswer, onBack, answerHistory }) {
+      const question = questions[qIndex];
+      if (!question) return null;
       const [selectedValue, setSelectedValue] = React.useState(null);
       const [isExiting, setIsExiting] = React.useState(false);
+      const isAdaptiveQuestion = !!question.adaptive || qIndex >= BASE_TOTAL_QUESTIONS;
+      const adaptiveCurrent = isAdaptiveQuestion ? qIndex - BASE_TOTAL_QUESTIONS + 1 : 0;
+      const adaptiveTotal = Math.max(totalQuestions - BASE_TOTAL_QUESTIONS, 0);
 
       const options = [
         { value: 1, label: 'まったく当てはまらない' },
@@ -9900,7 +10285,13 @@
 
       return (
         <div className="question-screen">
-          <ProgressBar80 current={qIndex + 1} total={TOTAL_QUESTIONS} />
+          <ProgressBar80
+            current={qIndex + 1}
+            total={totalQuestions}
+            isAdaptive={isAdaptiveQuestion}
+            adaptiveCurrent={adaptiveCurrent}
+            adaptiveTotal={adaptiveTotal}
+          />
 
           <div
             className={isExiting ? 'question-inner question-slide-out' : 'question-inner question-slide-in'}
@@ -9908,7 +10299,7 @@
           >
             {/* セクション情報 */}
             <div className="quiz-section-info">
-              <div className="quiz-section-number">SECTION{sectionInfo.num}</div>
+              <div className="quiz-section-number">{isAdaptiveQuestion ? 'RARE BRANCH' : `SECTION${sectionInfo.num}`}</div>
             </div>
 
             {/* 設問テキスト — 句読点(、。)の直後で明示改行して可読性を確保 */}
@@ -13246,17 +13637,24 @@
         try { return JSON.parse(devScoresParam); } catch(e) { return null; }
       }, []);
       const isDevMode = !!devScores;
+      const devAdaptivePreset = React.useMemo(() => getDevAdaptivePreset(devAdaptiveParam), []);
 
       // 相性リンクから来た場合: matchLanding → quiz → loading → result + compatibility
       // 通常フロー: start → quiz → loading → result
       const isMatchMode = !isDevMode && !!matchCreator;
 
-      const [phase, setPhase] = React.useState(isDevMode ? 'result' : (isMatchMode ? 'matchLanding' : (autoStart ? 'quiz' : 'start')));
-      const [qIndex, setQIndex] = React.useState(0);
-      const [scores, setScores] = React.useState(devScores || { P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
-      const [answerHistory, setAnswerHistory] = React.useState([]);
+      const [phase, setPhase] = React.useState(isDevMode ? 'result' : (devAdaptivePreset ? 'quiz' : (isMatchMode ? 'matchLanding' : (autoStart ? 'quiz' : 'start'))));
+      const [qIndex, setQIndex] = React.useState(devAdaptivePreset?.qIndex || 0);
+      const [scores, setScores] = React.useState(devScores || devAdaptivePreset?.scores || { P: 0, A: 0, I: 0, D: 0, K: 0, H: 0, J: 0, G: 0, E: 0 });
+      const [answerHistory, setAnswerHistory] = React.useState(devAdaptivePreset?.answerHistory || []);
+      const [adaptiveQuestions, setAdaptiveQuestions] = React.useState([]);
       const [nextChapter, setNextChapter] = React.useState(null);
       const [showCompatibility, setShowCompatibility] = React.useState(false);
+      const activeQuestions = React.useMemo(
+        () => [...ORDERED_QUESTIONS, ...adaptiveQuestions],
+        [adaptiveQuestions]
+      );
+      const activeTotalQuestions = activeQuestions.length;
 
       const handleStart = () => {
         setPhase('quiz');
@@ -13269,31 +13667,51 @@
       };
 
       const handleAnswer = (value) => {
-        const question = ORDERED_QUESTIONS[qIndex];
-        const axis = question.axis;
+        const question = activeQuestions[qIndex];
+        if (!question) return;
 
         // Update scores
         const newScores = { ...scores };
 
         // If re-answering a question, subtract previous answer first
         if (answerHistory[qIndex] !== undefined && answerHistory[qIndex] !== null) {
-          const prevQuestion = ORDERED_QUESTIONS[qIndex];
+          const prevQuestion = activeQuestions[qIndex];
           const prevRaw = answerHistory[qIndex];
-          const prevScored = prevQuestion.reverse ? (6 - prevRaw) : prevRaw;
-          newScores[prevQuestion.axis] -= prevScored;
+          Object.assign(newScores, applyQuestionScore(newScores, prevQuestion, prevRaw, -1));
         }
 
-        const scoredValue = question.reverse ? (6 - value) : value;
-        newScores[axis] += scoredValue;
-        setScores(newScores);
+        const updatedScores = applyQuestionScore(newScores, question, value, 1);
+        setScores(updatedScores);
 
         // Update answer history
-        const newHistory = [...answerHistory];
+        let newHistory = [...answerHistory];
         newHistory[qIndex] = value;
+
+        if (qIndex < BASE_TOTAL_QUESTIONS - 1 && adaptiveQuestions.length > 0) {
+          setAdaptiveQuestions([]);
+          newHistory = newHistory.slice(0, BASE_TOTAL_QUESTIONS);
+        }
+
+        if (qIndex === BASE_TOTAL_QUESTIONS - 1) {
+          const extraQuestions = buildAdaptiveQuestions(updatedScores);
+          setAdaptiveQuestions(extraQuestions);
+          newHistory = newHistory.slice(0, BASE_TOTAL_QUESTIONS);
+          setAnswerHistory(newHistory);
+
+          if (extraQuestions.length > 0) {
+            setPhase('adaptiveIntro');
+          } else {
+            setPhase('loading');
+          }
+          window.scrollTo(0, 0);
+          return;
+        }
+
         setAnswerHistory(newHistory);
 
         // Advance
-        if (qIndex + 1 < TOTAL_QUESTIONS) {
+        const totalForAdvance = qIndex < BASE_TOTAL_QUESTIONS - 1 ? BASE_TOTAL_QUESTIONS : activeTotalQuestions;
+        if (qIndex + 1 < totalForAdvance) {
           const nextIdx = qIndex + 1;
           const currentCh = getChapterForQuestion(qIndex);
           const nextCh = getChapterForQuestion(nextIdx);
@@ -13316,19 +13734,21 @@
 
       const handleBack = () => {
         if (qIndex > 0) {
+          let newHistory = [...answerHistory];
           // Subtract the current question's answer from scores if it exists
           if (answerHistory[qIndex] !== undefined && answerHistory[qIndex] !== null) {
-            const question = ORDERED_QUESTIONS[qIndex];
-            const newScores = { ...scores };
+            const question = activeQuestions[qIndex];
             const rawVal = answerHistory[qIndex];
-            const scoredVal = question.reverse ? (6 - rawVal) : rawVal;
-            newScores[question.axis] -= scoredVal;
+            const newScores = applyQuestionScore(scores, question, rawVal, -1);
             setScores(newScores);
 
-            const newHistory = [...answerHistory];
             newHistory[qIndex] = null;
-            setAnswerHistory(newHistory);
           }
+          if (qIndex === BASE_TOTAL_QUESTIONS) {
+            setAdaptiveQuestions([]);
+            newHistory = newHistory.slice(0, BASE_TOTAL_QUESTIONS);
+          }
+          setAnswerHistory(newHistory);
           setQIndex(qIndex - 1);
           window.scrollTo(0, 0);
         }
@@ -13337,6 +13757,12 @@
       const handleChapterTransitionComplete = () => {
         setPhase('quiz');
         setNextChapter(null);
+      };
+
+      const handleAdaptiveIntroContinue = () => {
+        setQIndex(BASE_TOTAL_QUESTIONS);
+        setPhase('quiz');
+        window.scrollTo(0, 0);
       };
 
       const handleLoadingComplete = () => {
@@ -13372,6 +13798,8 @@
           {phase === 'quiz' && (
             <QuestionScreen80
               qIndex={qIndex}
+              questions={activeQuestions}
+              totalQuestions={activeTotalQuestions}
               onAnswer={handleAnswer}
               onBack={handleBack}
               answerHistory={answerHistory}
@@ -13379,6 +13807,12 @@
           )}
           {phase === 'chapterTransition' && nextChapter && (
             <ChapterTransition chapter={nextChapter} onComplete={handleChapterTransitionComplete} />
+          )}
+          {phase === 'adaptiveIntro' && (
+            <AdaptiveIntroScreen
+              additionalCount={adaptiveQuestions.length}
+              onContinue={handleAdaptiveIntroContinue}
+            />
           )}
           {phase === 'loading' && (
             <LoadingScreen80 onComplete={handleLoadingComplete} />
