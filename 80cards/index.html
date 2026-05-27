@@ -5815,10 +5815,10 @@
     /* LP フッター */
     .lp-footer-clean {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px 16px;
+      gap: 9px;
       border-top: 1px solid var(--line);
       padding: 28px 24px;
       text-align: center;
@@ -5827,6 +5827,13 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       color: var(--ink3);
+    }
+    .lp-footer-links-clean {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px 18px;
     }
     .lp-footer-clean a {
       color: inherit;
@@ -9812,9 +9819,11 @@
 
           {/* ── FOOTER ── */}
           <footer className="lp-footer-clean">
+            <nav className="lp-footer-links-clean" aria-label="フッターリンク">
+              <a href="/80cards/privacy.html">プライバシーポリシー</a>
+              <a href="/80cards/terms.html">利用規約</a>
+            </nav>
             <span>© 2026 Personal Inc.</span>
-            <a href="/80cards/privacy.html">プライバシーポリシー</a>
-            <a href="/80cards/terms.html">利用規約</a>
           </footer>
         </div>
       );
