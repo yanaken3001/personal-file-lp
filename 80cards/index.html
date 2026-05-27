@@ -10431,6 +10431,8 @@
       const fullCode = getCard80FullCode(type);
       const infoTop = h * (isHeroCard ? 0.600 : isResultCard ? 0.588 : showBehavior ? 0.574 : 0.590);
       const infoBottom = h * (isHeroCard ? 0.080 : isResultCard ? 0.048 : isCompactCard ? 0.074 : 0.068);
+      const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompactCard ? 0.006 : 0.008);
+      const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.010 : isCompactCard ? 0.012 : 0.012);
       const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : 0.010);
       const tags = (type.traits || []).slice(0, 3);
       const showTags = w >= 168 && tags.length > 0;
@@ -10597,7 +10599,7 @@
             justifyContent: isResultCard ? 'flex-start' : 'center',
             alignItems: 'center',
             gap: w * (isHeroCard ? 0.006 : isResultCard ? 0.007 : isCompactCard ? 0.006 : 0.010),
-            padding: `${isResultCard ? w * 0.034 : 0}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px 0`,
+            padding: `${infoPadTop}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px ${infoPadBottom}px`,
             boxSizing: 'border-box',
             overflow: isResultCard ? 'visible' : 'hidden',
             borderRadius: 0,
@@ -10628,23 +10630,13 @@
 
             {!isResultCard && (
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: w * 0.014,
-                width: '86%',
-                margin: `${w * (isHeroCard ? 0.001 : isCompactCard ? 0.002 : 0.004)}px 0 ${w * (isHeroCard ? 0.003 : isCompactCard ? 0.004 : 0.008)}px`,
-                opacity: 0.62,
-              }}>
-                <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, transparent, ${theme.line})` }} />
-                <span style={{
-                  width: w * 0.024,
-                  height: w * 0.024,
-                  transform: 'rotate(45deg)',
-                  background: theme.line,
-                  boxShadow: `0 0 ${w * 0.018}px ${theme.glow}`,
-                }} />
-                <span style={{ flex: 1, height: Math.max(1, w * 0.003), background: `linear-gradient(90deg, ${theme.line}, transparent)` }} />
-              </div>
+                width: '74%',
+                height: Math.max(1, w * 0.003),
+                margin: `${w * (isHeroCard ? 0.004 : isCompactCard ? 0.005 : 0.006)}px 0 ${w * (isHeroCard ? 0.004 : isCompactCard ? 0.006 : 0.008)}px`,
+                borderRadius: 999,
+                opacity: 0.48,
+                background: `linear-gradient(90deg, transparent 0%, ${theme.line} 28%, ${theme.line} 72%, transparent 100%)`,
+              }} />
             )}
 
             {catchText && (
@@ -10687,19 +10679,6 @@
               </div>
             )}
           </div>
-
-          {/* パネル装飾の小さな星 */}
-          {!isResultCard && [{ left: pad + inner * 1.8, top: infoTop + w * 0.04 }, { right: pad + inner * 1.8, top: infoTop + w * 0.04 }].map((p, i) => (
-            <div key={i} style={{
-              position: 'absolute',
-              ...p,
-              zIndex: 7,
-              color: theme.line,
-              fontSize: w * 0.06,
-              lineHeight: 1,
-              opacity: 0.7,
-            }}>✦</div>
-          ))}
         </>
       );
     }
