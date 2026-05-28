@@ -4915,12 +4915,25 @@
 
     .compat-scroll-clean {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      align-items: flex-start;
+      padding: 2px 2px 10px;
       scrollbar-width: none;
     }
     .compat-scroll-clean::-webkit-scrollbar { display: none; }
+    .compat-result-item {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 154px;
+    }
+    @media (min-width: 768px) {
+      .compat-scroll-clean {
+        gap: 16px;
+      }
+    }
 
     /* --- Strengths Shadows grid (CLEAN) --- */
     .sw-grid-clean {
@@ -10894,16 +10907,17 @@
       const isCompactCard = w < 210;
       const isHeroCard = variant === 'hero';
       const isCompatDemoCard = variant === 'compatDemo';
+      const isCompatResultCard = variant === 'compatResult';
       const isLandingCard = isHeroCard || isCompatDemoCard;
       const isResultCard = variant === 'result';
       const characterLoading = isHeroCard || isResultCard ? 'eager' : 'lazy';
       const characterFetchPriority = isHeroCard ? 'high' : 'auto';
       const fullCode = getCard80FullCode(type);
-      const infoTop = h * (isHeroCard ? 0.592 : isResultCard ? 0.588 : isCompatDemoCard ? 0.584 : showBehavior ? 0.574 : 0.590);
-      const infoBottom = h * (isHeroCard ? 0.066 : isResultCard ? 0.048 : isCompatDemoCard ? 0.062 : isCompactCard ? 0.074 : 0.068);
+      const infoTop = h * (isHeroCard ? 0.592 : isResultCard ? 0.588 : isCompatDemoCard ? 0.584 : isCompatResultCard ? 0.548 : showBehavior ? 0.574 : 0.590);
+      const infoBottom = h * (isHeroCard ? 0.066 : isResultCard ? 0.048 : isCompatDemoCard ? 0.062 : isCompatResultCard ? 0.064 : isCompactCard ? 0.074 : 0.068);
       const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompatDemoCard ? 0.004 : isCompactCard ? 0.006 : 0.008);
       const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.014 : isCompatDemoCard ? 0.016 : isCompactCard ? 0.012 : 0.012);
-      const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : 0.010);
+      const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : isCompatResultCard ? 0.018 : 0.010);
       const tags = (type.traits || []).slice(0, 3);
       const showTags = w >= 168 && tags.length > 0;
       const catchText = type.catch || '';
@@ -11046,8 +11060,8 @@
                 position: 'absolute',
                 zIndex: 1,
                 left: '50%',
-                bottom: h * (isHeroCard ? (fullCode === 'APP' ? 0.035 : 0.060) : isCompatDemoCard ? 0.050 : isResultCard ? 0.040 : -0.006),
-                width: w * theme.charWidth * (isHeroCard ? 0.83 : isCompatDemoCard ? 0.88 : isResultCard ? 0.88 : 1),
+                bottom: h * (isHeroCard ? (fullCode === 'APP' ? 0.035 : 0.060) : isCompatDemoCard ? 0.050 : isResultCard ? 0.040 : isCompatResultCard ? 0.038 : -0.006),
+                width: w * theme.charWidth * (isHeroCard ? 0.83 : isCompatDemoCard ? 0.88 : isResultCard ? 0.88 : isCompatResultCard ? 0.84 : 1),
                 maxWidth: 'none',
                 height: 'auto',
                 transform: 'translateX(-50%)',
@@ -11064,16 +11078,16 @@
           {/* 下部情報パネル */}
           <div style={{
             position: 'absolute',
-            left: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
-            right: isResultCard ? pad + inner * 0.78 : pad + inner * 1.55,
-            top: infoTop + (isHeroCard ? h * 0.006 : isResultCard ? h * 0.002 : isCompatDemoCard ? h * 0.010 : showBehavior ? h * 0.010 : h * 0.018),
+            left: isResultCard ? pad + inner * 0.78 : isCompatResultCard ? pad + inner * 1.16 : pad + inner * 1.55,
+            right: isResultCard ? pad + inner * 0.78 : isCompatResultCard ? pad + inner * 1.16 : pad + inner * 1.55,
+            top: infoTop + (isHeroCard ? h * 0.006 : isResultCard ? h * 0.002 : isCompatDemoCard ? h * 0.010 : isCompatResultCard ? h * 0.004 : showBehavior ? h * 0.010 : h * 0.018),
             bottom: infoBottom,
             zIndex: 6,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: isResultCard ? 'flex-start' : 'center',
             alignItems: 'center',
-            gap: w * (isHeroCard ? 0.007 : isCompatDemoCard ? 0.007 : isResultCard ? 0.007 : isCompactCard ? 0.006 : 0.010),
+            gap: w * (isHeroCard ? 0.007 : isCompatDemoCard ? 0.007 : isResultCard ? 0.007 : isCompatResultCard ? 0.006 : isCompactCard ? 0.006 : 0.010),
             padding: `${infoPadTop}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px ${infoPadBottom}px`,
             boxSizing: 'border-box',
             overflow: isResultCard ? 'visible' : 'hidden',
@@ -11096,7 +11110,7 @@
 
             <div className="jp-display" style={{
               color: theme.ink,
-              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.092 : 0.108) : isCompatDemoCard ? (type.nickname.length > 8 ? 0.091 : 0.112) : isResultCard ? (type.nickname.length > 8 ? 0.094 : 0.112) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
+              fontSize: w * (isHeroCard ? (type.nickname.length > 8 ? 0.092 : 0.108) : isCompatDemoCard ? (type.nickname.length > 8 ? 0.091 : 0.112) : isResultCard ? (type.nickname.length > 8 ? 0.094 : 0.112) : isCompatResultCard ? (type.nickname.length > 8 ? 0.107 : 0.125) : type.nickname.length > 8 ? (isCompactCard ? 0.083 : 0.090) : (isCompactCard ? 0.104 : 0.108)),
               lineHeight: isResultCard ? 1 : 1.08,
               fontWeight: 900,
               whiteSpace: 'nowrap',
@@ -11107,7 +11121,7 @@
               <div style={{
                 width: '74%',
                 height: Math.max(1, w * 0.003),
-                margin: `${w * (isHeroCard ? 0.004 : isCompactCard ? 0.005 : 0.006)}px 0 ${w * (isHeroCard ? 0.004 : isCompactCard ? 0.006 : 0.008)}px`,
+                margin: `${w * (isHeroCard ? 0.004 : isCompatResultCard ? 0.003 : isCompactCard ? 0.005 : 0.006)}px 0 ${w * (isHeroCard ? 0.004 : isCompatResultCard ? 0.003 : isCompactCard ? 0.006 : 0.008)}px`,
                 borderRadius: 999,
                 opacity: 0.48,
                 background: `linear-gradient(90deg, transparent 0%, ${theme.line} 28%, ${theme.line} 72%, transparent 100%)`,
@@ -11117,8 +11131,8 @@
             {catchText && (
               <div className="jp-serif" style={{
                 color: '#684330',
-                fontSize: w * (isHeroCard ? 0.043 : isCompatDemoCard ? 0.041 : isResultCard ? 0.043 : isCompactCard ? 0.038 : 0.043),
-                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompactCard ? 1.28 : 1.34,
+                fontSize: w * (isHeroCard ? 0.043 : isCompatDemoCard ? 0.041 : isResultCard ? 0.043 : isCompatResultCard ? 0.055 : isCompactCard ? 0.038 : 0.043),
+                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompatResultCard ? 1.22 : isCompactCard ? 1.28 : 1.34,
                 fontWeight: 900,
                 wordBreak: 'keep-all',
                 overflowWrap: 'anywhere',
@@ -11166,6 +11180,7 @@
 
       const SIZES = {
         sm: { w: 140, h: 210 },
+        compatResult: { w: 154, h: 231 },
         smPlus: { w: 190, h: 285 },
         md: { w: 230, h: 345 },
         lg: { w: 290, h: 435 },
@@ -11721,13 +11736,13 @@
                         patternNo: 1,
                       };
                       return (
-                        <div key={item.code} style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <Card80Clean type={compatCard} size="sm" tilt={false} />
+                        <div key={item.code} className="compat-result-item">
+                          <Card80Clean type={compatCard} size="compatResult" tilt={false} variant="compatResult" />
                           <div className="compat-score-block">
                             <div className="compat-score-label">相性スコア</div>
                             <div className="compat-score-value">
                               <span className="compat-score-num">{item.score}</span>
-                              <span className="compat-score-unit">%</span>
+                              <span className="compat-score-unit">点</span>
                             </div>
                           </div>
                         </div>
