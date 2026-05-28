@@ -11085,7 +11085,7 @@
             zIndex: 6,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: isResultCard ? 'flex-start' : 'center',
+            justifyContent: isResultCard ? 'flex-start' : isCompatResultCard ? 'space-evenly' : 'center',
             alignItems: 'center',
             gap: w * (isHeroCard ? 0.007 : isCompatDemoCard ? 0.007 : isResultCard ? 0.007 : isCompatResultCard ? 0.006 : isCompactCard ? 0.006 : 0.010),
             padding: `${infoPadTop}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px ${infoPadBottom}px`,
@@ -11132,7 +11132,7 @@
               <div className="jp-serif" style={{
                 color: '#684330',
                 fontSize: w * (isHeroCard ? 0.043 : isCompatDemoCard ? 0.041 : isResultCard ? 0.043 : isCompatResultCard ? 0.062 : isCompactCard ? 0.038 : 0.043),
-                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompatResultCard ? 1.22 : isCompactCard ? 1.28 : 1.34,
+                lineHeight: isHeroCard ? 1.24 : isResultCard ? 1.16 : isCompatResultCard ? 1.32 : isCompactCard ? 1.28 : 1.34,
                 fontWeight: 900,
                 wordBreak: 'keep-all',
                 overflowWrap: 'anywhere',
