@@ -10915,8 +10915,8 @@
       const fullCode = getCard80FullCode(type);
       const infoTop = h * (isHeroCard ? 0.592 : isResultCard ? 0.588 : isCompatDemoCard ? 0.584 : isCompatResultCard ? 0.548 : showBehavior ? 0.574 : 0.590);
       const infoBottom = h * (isHeroCard ? 0.066 : isResultCard ? 0.048 : isCompatDemoCard ? 0.062 : isCompatResultCard ? 0.064 : isCompactCard ? 0.074 : 0.068);
-      const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompatDemoCard ? 0.004 : isCompactCard ? 0.006 : 0.008);
-      const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.014 : isCompatDemoCard ? 0.016 : isCompactCard ? 0.012 : 0.012);
+      const infoPadTop = isResultCard ? w * 0.034 : w * (isHeroCard ? 0.006 : isCompatDemoCard ? 0.004 : isCompatResultCard ? 0.026 : isCompactCard ? 0.006 : 0.008);
+      const infoPadBottom = isResultCard ? 0 : w * (isHeroCard ? 0.014 : isCompatDemoCard ? 0.016 : isCompatResultCard ? 0.026 : isCompactCard ? 0.012 : 0.012);
       const artBottom = infoTop - h * (isHeroCard ? 0.026 : isResultCard ? 0.030 : isCompatResultCard ? 0.018 : 0.010);
       const tags = (type.traits || []).slice(0, 3);
       const showTags = w >= 168 && tags.length > 0;
@@ -11085,7 +11085,7 @@
             zIndex: 6,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: isResultCard ? 'flex-start' : isCompatResultCard ? 'space-evenly' : 'center',
+            justifyContent: isResultCard ? 'flex-start' : 'center',
             alignItems: 'center',
             gap: w * (isHeroCard ? 0.007 : isCompatDemoCard ? 0.007 : isResultCard ? 0.007 : isCompatResultCard ? 0.006 : isCompactCard ? 0.006 : 0.010),
             padding: `${infoPadTop}px ${w * (isHeroCard ? 0.034 : isResultCard ? 0.018 : isCompactCard ? 0.032 : 0.042)}px ${infoPadBottom}px`,
