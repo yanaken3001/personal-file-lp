@@ -6055,6 +6055,84 @@
     }
 
     /* LP フッター */
+    .lp-value-clean {
+      position: relative;
+      z-index: 2;
+      margin: -6px 0 34px;
+      padding: 22px 24px;
+      border-top: 1px solid rgba(91,60,240,0.08);
+      border-bottom: 1px solid rgba(91,60,240,0.08);
+      background:
+        radial-gradient(ellipse at 24% 50%, rgba(91,60,240,0.08) 0%, transparent 48%),
+        radial-gradient(ellipse at 82% 50%, rgba(240,104,60,0.07) 0%, transparent 44%),
+        rgba(255,255,255,0.38);
+    }
+    .lp-value-inner-clean {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+      gap: 28px;
+      align-items: center;
+    }
+    .lp-value-kicker-clean {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      color: var(--ink3);
+      margin-bottom: 7px;
+    }
+    .lp-value-title-clean {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .lp-value-lead-clean {
+      margin: 8px 0 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--ink2);
+    }
+    .lp-value-list-clean {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .lp-value-item-clean {
+      min-height: 92px;
+      padding: 14px 14px 13px;
+      border-radius: 14px;
+      border: 1px solid rgba(26,26,26,0.08);
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 10px 26px rgba(36,28,58,0.05);
+    }
+    .lp-value-item-code-clean {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      color: var(--accent-clean);
+      margin-bottom: 8px;
+    }
+    .lp-value-item-title-clean {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .lp-value-item-desc-clean {
+      margin: 6px 0 0;
+      font-size: 11px;
+      line-height: 1.55;
+      color: var(--ink2);
+    }
+
     .lp-footer-clean {
       display: flex;
       flex-direction: column;
@@ -6094,6 +6172,41 @@
 
     /* レスポンシブ（モバイル最適化: ファーストビュー内に全要素収める） */
     @media (max-width: 767px) {
+      .lp-value-clean {
+        margin: -4px 0 24px;
+        padding: 20px 20px;
+      }
+      .lp-value-inner-clean {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        text-align: center;
+      }
+      .lp-value-title-clean {
+        font-size: 21px;
+      }
+      .lp-value-lead-clean {
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .lp-value-list-clean {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+      .lp-value-item-clean {
+        min-height: 66px;
+        padding: 10px 10px 9px;
+        text-align: left;
+      }
+      .lp-value-item-code-clean {
+        margin-bottom: 5px;
+      }
+      .lp-value-item-title-clean {
+        font-size: 12px;
+      }
+      .lp-value-item-desc-clean {
+        display: none;
+      }
       .lp-header-clean {
         padding: 10px 14px;
         gap: 8px;
@@ -10241,6 +10354,40 @@
           </section>
 
           {/* ── COMPATIBILITY SCAN ── */}
+          <section className={`lp-value-clean lp-phase-clean${phases[3] ? ' visible' : ''}`} style={{ animationDelay: '0.04s' }} aria-label="診断結果でわかること">
+            <div className="lp-value-inner-clean">
+              <div>
+                <div className="lp-value-kicker-clean">RESULT PREVIEW</div>
+                <h2 className="lp-value-title-clean">診断結果で、何がわかる？</h2>
+                <p className="lp-value-lead-clean">
+                  ただ楽しいだけで終わらず、あなたの強みや人との相性を、カードとして見返せる形にします。
+                </p>
+              </div>
+              <div className="lp-value-list-clean">
+                <div className="lp-value-item-clean">
+                  <div className="lp-value-item-code-clean">01</div>
+                  <h3 className="lp-value-item-title-clean">あなたの80タイプ</h3>
+                  <p className="lp-value-item-desc-clean">基本タイプと行動スタイルから、あなた専用の1枚を発行。</p>
+                </div>
+                <div className="lp-value-item-clean">
+                  <div className="lp-value-item-code-clean">02</div>
+                  <h3 className="lp-value-item-title-clean">強みとつまずき方</h3>
+                  <p className="lp-value-item-desc-clean">得意な場面と、無理が出やすいパターンを整理。</p>
+                </div>
+                <div className="lp-value-item-clean">
+                  <div className="lp-value-item-code-clean">03</div>
+                  <h3 className="lp-value-item-title-clean">相性のヒント</h3>
+                  <p className="lp-value-item-desc-clean">友達やチームとの関係性を、スコアで見やすく。</p>
+                </div>
+                <div className="lp-value-item-clean">
+                  <div className="lp-value-item-code-clean">04</div>
+                  <h3 className="lp-value-item-title-clean">仕事で活きる傾向</h3>
+                  <p className="lp-value-item-desc-clean">向いている環境や、力を出しやすい役割のヒントに。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <CompatibilityScanSection phasesIn={phases[3]} />
 
           {/* ── HOW IT WORKS ── */}
