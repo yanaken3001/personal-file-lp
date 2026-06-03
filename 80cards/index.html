@@ -5377,13 +5377,23 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+      gap: 3px;
       min-height: 54px;
       padding: 8px 10px;
       border-radius: 10px;
-      background: var(--group-color);
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(18,12,38,0.26) 100%),
+        var(--type-card-bg, var(--group-color));
+      background-color: var(--group-color);
+      background-size: 100% 100%, cover;
+      background-position: center, center 22%;
+      background-repeat: no-repeat;
       color: #fff;
       text-align: center;
       text-decoration: none;
+      border: 1px solid color-mix(in srgb, var(--group-color) 32%, rgba(255,255,255,0.64));
       box-shadow: 0 8px 18px color-mix(in srgb, var(--group-color) 24%, transparent);
       transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
     }
@@ -5401,14 +5411,16 @@
       letter-spacing: 0;
       white-space: normal;
       overflow-wrap: anywhere;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.28);
     }
     .lp-type-menu-type-code-clean {
-      margin-top: 4px;
+      margin-top: 0;
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.08em;
       opacity: 0.88;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.26);
     }
     .lp-type-code-note-clean {
       position: relative;
@@ -9989,6 +10001,7 @@
                         key={code}
                         href="/80cards/types.html"
                         className="lp-type-menu-type-clean"
+                        style={{ '--type-card-bg': `url(${getCardBackgroundImage(code)})` }}
                       >
                         <span className="lp-type-menu-type-name-clean">
                           {TYPE_NICKNAMES[code] || code}
