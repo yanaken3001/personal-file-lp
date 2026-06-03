@@ -5413,6 +5413,12 @@
       overflow-wrap: anywhere;
       text-shadow: 0 1px 5px rgba(0,0,0,0.28);
     }
+    .lp-type-menu-type-name-clean.is-nowrap-compact-clean {
+      font-size: 10px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow-wrap: normal;
+    }
     .lp-type-menu-type-code-clean {
       margin-top: 0;
       font-family: var(--font-mono);
@@ -10003,7 +10009,7 @@
                         className="lp-type-menu-type-clean"
                         style={{ '--type-card-bg': `url(${getCardBackgroundImage(code)})` }}
                       >
-                        <span className="lp-type-menu-type-name-clean">
+                        <span className={`lp-type-menu-type-name-clean${code === 'DD' ? ' is-nowrap-compact-clean' : ''}`}>
                           {TYPE_NICKNAMES[code] || code}
                         </span>
                         <span className="lp-type-menu-type-code-clean">{code}</span>
