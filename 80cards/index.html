@@ -5478,17 +5478,32 @@
     .lp-how-clean {
       position: relative;
       z-index: 2;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px 40px;
+      padding: 8px 24px 48px;
+    }
+    .lp-how-head-clean {
+      max-width: 720px;
+      margin-bottom: 22px;
     }
     .lp-how-label-clean {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
       font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.3em;
       color: var(--ink3);
       margin-bottom: 10px;
       text-transform: uppercase;
+    }
+    .lp-how-label-clean::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-clean), rgba(255,59,92,0.5));
+      opacity: 0.7;
     }
     .lp-how-title-clean {
       font-family: var(--font-display);
@@ -5497,51 +5512,112 @@
       line-height: 1.2;
       letter-spacing: -0.02em;
       color: var(--ink);
-      margin: 0 0 24px;
+      margin: 0 0 9px;
+    }
+    .lp-how-lead-clean {
+      max-width: 620px;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink2);
     }
     .lp-how-grid-clean {
+      position: relative;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+    .lp-how-grid-clean::before {
+      content: '';
+      position: absolute;
+      z-index: 0;
+      top: 32px;
+      left: calc(16.666% + 18px);
+      right: calc(16.666% + 18px);
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(91,60,240,0), rgba(91,60,240,0.24), rgba(255,59,92,0.18), rgba(91,60,240,0));
+      pointer-events: none;
     }
     .lp-how-card-clean {
       position: relative;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px 22px;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72)),
+        radial-gradient(circle at 18% 0%, rgba(91,60,240,0.08) 0%, transparent 34%),
+        radial-gradient(circle at 100% 100%, rgba(255,59,92,0.08) 0%, transparent 38%);
+      border: 1px solid rgba(26,26,26,0.08);
+      border-radius: 18px;
+      padding: 18px 18px 17px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      min-height: 140px;
+      box-shadow:
+        0 16px 34px rgba(36,28,58,0.07),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      min-height: 164px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
     }
-    .lp-how-card-num-clean {
+    .lp-how-card-clean::after {
+      content: '';
       position: absolute;
-      top: -8px;
-      right: 16px;
+      left: 18px;
+      right: 18px;
+      bottom: 0;
+      height: 3px;
+      border-radius: 999px 999px 0 0;
+      background: var(--holo-clean);
+      opacity: 0.58;
+    }
+    .lp-how-card-num-clean {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: max-content;
+      min-width: 42px;
+      height: 28px;
+      padding: 0 10px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      background: var(--holo-clean);
+      box-shadow: 0 10px 22px rgba(91,60,240,0.22);
       font-family: var(--font-mono);
-      font-size: 88px;
+      font-size: 12px;
       font-weight: 900;
-      color: var(--line2);
-      letter-spacing: -0.04em;
+      color: #fff;
+      letter-spacing: 0.12em;
       line-height: 1;
-      pointer-events: none;
-      user-select: none;
+      white-space: nowrap;
+    }
+    .lp-how-card-num-clean::before {
+      content: 'STEP';
+      margin-right: 6px;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      opacity: 0.8;
     }
     .lp-how-card-icon-clean {
-      width: 28px;
-      height: 28px;
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 34px;
+      height: 34px;
+      padding: 8px;
+      box-sizing: border-box;
+      border-radius: 13px;
       color: var(--accent-clean);
-      margin-bottom: 12px;
+      background: rgba(91,60,240,0.08);
+      border: 1px solid rgba(91,60,240,0.11);
+      margin: 0;
     }
     .lp-how-card-title-clean {
       font-family: var(--font-display);
-      font-weight: 800;
+      font-weight: 900;
       font-size: 17px;
       color: var(--ink);
-      margin: 0 0 6px;
+      margin: 0 0 7px;
       letter-spacing: -0.01em;
       position: relative;
       z-index: 1;
@@ -5555,21 +5631,62 @@
       z-index: 1;
     }
     @media (max-width: 767px) {
-      .lp-how-clean { padding: 0 20px 32px; }
-      .lp-how-title-clean { font-size: 22px; margin-bottom: 16px; }
+      .lp-how-clean { padding: 4px 18px 34px; }
+      .lp-how-head-clean { margin-bottom: 16px; }
+      .lp-how-label-clean { font-size: 10px; margin-bottom: 9px; }
+      .lp-how-label-clean::before { width: 18px; }
+      .lp-how-title-clean { font-size: 23px; margin-bottom: 8px; }
+      .lp-how-lead-clean { font-size: 13px; line-height: 1.65; }
       .lp-how-grid-clean {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
+      }
+      .lp-how-grid-clean::before {
+        display: none;
       }
       .lp-how-card-clean {
         min-height: auto;
-        padding: 18px 20px;
+        padding: 16px 16px 16px 58px;
+        border-radius: 16px;
       }
-      .lp-how-card-num-clean { font-size: 72px; top: -4px; }
+      .lp-how-card-clean::after {
+        left: 58px;
+        right: 16px;
+      }
+      .lp-how-card-num-clean {
+        position: absolute;
+        top: 18px;
+        left: 16px;
+        min-width: 34px;
+        height: 24px;
+        padding: 0 7px;
+        margin: 0;
+        font-size: 10px;
+      }
+      .lp-how-card-num-clean::before {
+        display: none;
+      }
+      .lp-how-card-icon-clean {
+        top: 15px;
+        right: 16px;
+        width: 30px;
+        height: 30px;
+        padding: 7px;
+      }
+      .lp-how-card-title-clean {
+        padding-right: 38px;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+      .lp-how-card-desc-clean {
+        font-size: 12.5px;
+        line-height: 1.55;
+      }
     }
     @media (min-width: 768px) and (max-width: 1023px) {
       .lp-how-title-clean { font-size: 26px; }
-      .lp-how-card-num-clean { font-size: 76px; }
+      .lp-how-card-clean { min-height: 158px; padding: 17px 16px 16px; }
+      .lp-how-card-icon-clean { right: 16px; }
     }
 
     /* === 相性スキャンセクション === */
@@ -10392,8 +10509,13 @@
 
           {/* ── HOW IT WORKS ── */}
           <section className={`lp-how-clean lp-phase-clean${phases[3] ? ' visible' : ''}`} style={{ animationDelay: '0.1s' }}>
-            <div className="lp-how-label-clean">HOW IT WORKS</div>
-            <h2 className="lp-how-title-clean">3ステップで、カード発行</h2>
+            <div className="lp-how-head-clean">
+              <div className="lp-how-label-clean">HOW IT WORKS</div>
+              <h2 className="lp-how-title-clean">3ステップで、カード発行</h2>
+              <p className="lp-how-lead-clean">
+                質問に答えるだけで、あなた専用の1枚を発行。相性診断まで楽しめます。
+              </p>
+            </div>
             <div className="lp-how-grid-clean">
               <div className="lp-how-card-clean">
                 <div className="lp-how-card-num-clean">01</div>
