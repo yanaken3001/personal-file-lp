@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>16タイプ一覧 | 80CARDS</title>
-  <meta name="description" content="80CARDSの16の性格タイプを一覧で紹介。あなたはどのタイプ？" />
+  <title>80タイプの仕組みと16タイプ一覧 | 80CARDS</title>
+  <meta name="description" content="80CARDSは16の性格タイプと5つの行動スタイルで、あなたを80タイプに分類します。80CODEの仕組みと16タイプ一覧を紹介。" />
 
-  <meta property="og:title" content="16タイプ一覧 | 80CARDS" />
-  <meta property="og:description" content="80CARDSの16の性格タイプを一覧で紹介。あなたはどのタイプ？" />
+  <meta property="og:title" content="80タイプの仕組みと16タイプ一覧 | 80CARDS" />
+  <meta property="og:description" content="16の性格タイプ × 5つの行動スタイル。80CARDSの80CODEの仕組みと16タイプ一覧を紹介。" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="80CARDS" />
   <meta property="og:locale" content="ja_JP" />
@@ -162,9 +162,9 @@
     }
     .type-mega-kicker {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.2em;
       color: var(--ink3);
       margin-bottom: 7px;
     }
@@ -179,7 +179,7 @@
     }
     .type-mega-lead {
       margin: 6px 0 0;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.6;
       color: var(--ink2);
     }
@@ -246,9 +246,9 @@
     }
     .type-menu-group-desc {
       margin: 0;
-      font-size: 11px;
-      line-height: 1.55;
-      color: var(--ink2);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #454653;
     }
     .type-menu-type-grid {
       display: grid;
@@ -307,9 +307,9 @@
       text-align: left;
     }
     .type-code-note-text {
-      font-size: 11px;
-      line-height: 1.55;
-      color: var(--ink2);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #454653;
     }
     .type-code-note-text strong {
       color: var(--ink);
@@ -339,8 +339,8 @@
     }
     .hero-eyebrow {
       font-family: var(--font-mono);
-      font-size: 11px; font-weight: 500;
-      letter-spacing: 0.28em;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.18em;
       color: var(--ink3);
       margin-bottom: 20px;
     }
@@ -349,7 +349,7 @@
       font-size: clamp(36px, 6vw, 72px);
       font-weight: 900;
       line-height: 1.05;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
       color: var(--ink);
       margin-bottom: 24px;
     }
@@ -364,6 +364,329 @@
       line-height: 1.9;
       color: var(--ink2);
       max-width: 560px;
+    }
+    .sp-only { display: none; }
+    .nowrap { white-space: nowrap; }
+
+    /* ===== 80CODE STRUCTURE ===== */
+    .structure-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 72px;
+    }
+    .structure-band {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(390px, 0.86fr);
+      gap: clamp(28px, 3vw, 40px);
+      align-items: center;
+      padding: 42px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .structure-band::before {
+      content: "";
+      display: none;
+    }
+    .structure-copy,
+    .code-breakdown {
+      position: relative;
+      z-index: 1;
+    }
+    .section-kicker {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--ink3);
+      margin-bottom: 14px;
+    }
+    .structure-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .structure-lead {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.9;
+      color: var(--ink2);
+      max-width: 650px;
+    }
+    .formula-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: 28px;
+      max-width: 610px;
+    }
+    .formula-cell {
+      min-height: 108px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 18px 42px rgba(23,23,26,0.06);
+      text-align: center;
+    }
+    .formula-number {
+      font-family: var(--font-display);
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .formula-label {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink2);
+    }
+    .formula-sub {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--ink3);
+    }
+    .formula-operator {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ink3);
+    }
+    .formula-cell.result {
+      border-color: rgba(91,60,240,0.24);
+      background: linear-gradient(135deg, rgba(91,60,240,0.08), rgba(240,104,60,0.08));
+    }
+    .formula-cell.result .formula-number {
+      background: var(--holo-clean);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .code-breakdown {
+      justify-self: start;
+      width: min(100%, 480px);
+      padding: 30px;
+      border: 1px solid rgba(91,60,240,0.16);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.86);
+      box-shadow: 0 22px 58px rgba(23,23,26,0.08);
+    }
+    .code-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--ink3);
+      margin-bottom: 10px;
+    }
+    .code-sample {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: clamp(44px, 5vw, 72px);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+    .code-sample-prefix {
+      color: #5b3cf0;
+    }
+    .code-sample-base {
+      color: #2272f2;
+    }
+    .code-parts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .code-part {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(250,249,247,0.86);
+    }
+    .code-part-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 30px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+    .code-part-title {
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+    .code-part-text {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink2);
+    }
+    .behavior-section {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 40px 78px;
+    }
+    .behavior-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 26px;
+    }
+    .behavior-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.2vw, 42px);
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+    .behavior-lead {
+      max-width: 560px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--ink2);
+    }
+    .behavior-table {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      border: 0;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+      box-shadow: none;
+    }
+    .behavior-row {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 246px;
+      padding: 24px 20px 22px;
+      border: 1px solid rgba(23,23,26,0.08);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 22% 10%, color-mix(in srgb, var(--behavior-color, #fff) 16%, transparent) 0%, transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.96) 0%, color-mix(in srgb, var(--behavior-color, #fff) 5%, #fff) 100%);
+      box-shadow: 0 20px 46px rgba(23,23,26,0.07);
+      overflow: hidden;
+    }
+    .behavior-row::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      width: auto;
+      height: 5px;
+      background: var(--behavior-color, var(--ink));
+      opacity: 0.92;
+    }
+    .behavior-row:last-child { border-bottom: 1px solid rgba(23,23,26,0.08); }
+    .behavior-row.head {
+      display: none;
+    }
+    .behavior-cell {
+      width: 100%;
+      padding: 0;
+      font-family: var(--font-sans);
+      font-size: 15.5px;
+      line-height: 1.65;
+      color: #30313a;
+    }
+    .behavior-cell:first-child { margin-bottom: 20px; }
+    .behavior-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 56px;
+      height: 42px;
+      border-radius: 999px;
+      background: var(--behavior-color, var(--ink));
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 16px 30px var(--behavior-shadow, rgba(23,23,26,0.12));
+    }
+    .behavior-name,
+    .behavior-en {
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .behavior-name {
+      font-size: 20px;
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+    .behavior-en {
+      font-size: 15.5px;
+      letter-spacing: 0;
+      color: color-mix(in srgb, var(--behavior-color, var(--ink)) 56%, var(--ink));
+    }
+    .behavior-cell:last-child {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid rgba(23,23,26,0.08);
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.75;
+      color: #454754;
+      text-wrap: balance;
+    }
+    .type-list-intro {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 24px;
+    }
+    .type-list-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.4vw, 44px);
+      font-weight: 900;
+      letter-spacing: 0;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .type-list-title span {
+      background: var(--holo-clean);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .type-list-copy {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.9;
+      color: #3f404b;
     }
 
     /* ===== DIVIDER ===== */
@@ -439,18 +762,18 @@
     }
     .group-keywords {
       font-family: var(--font-sans);
-      font-size: clamp(12px, 1.8vw, 14px);
-      font-weight: 400;
-      color: var(--ink3);
-      letter-spacing: 0.04em;
+      font-size: clamp(15px, 1.8vw, 16px);
+      font-weight: 500;
+      color: var(--ink2);
+      letter-spacing: 0.02em;
       line-height: 1.6;
       word-break: normal;
       overflow-wrap: anywhere;
     }
     .group-label {
       font-family: var(--font-mono);
-      font-size: 10px; font-weight: 500;
-      letter-spacing: 0.3em;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.18em;
       color: var(--ink3);
       margin-left: auto;
       flex-shrink: 0;
@@ -618,6 +941,10 @@
       width: 100%;
       font-size: clamp(22px, 9.3cqw, 38px);
     }
+    .type-card-nickname-clean.long-name {
+      font-size: clamp(18px, 7.4cqw, 30px);
+      letter-spacing: -0.04em;
+    }
     .type-card-nickname-clean::after {
       content: "";
       display: block;
@@ -636,10 +963,10 @@
       right: 12%;
       bottom: 14.8%;
       font-family: var(--font-serif);
-      font-size: clamp(10px, 3.9cqw, 16px);
+      font-size: clamp(11.2px, 4.08cqw, 16.5px);
       font-weight: 900;
       color: var(--ink2);
-      line-height: 1.45;
+      line-height: 1.42;
       word-break: keep-all;
       overflow-wrap: anywhere;
       text-align: center;
@@ -658,8 +985,8 @@
       margin-left: -4%;
       margin-right: -4%;
       width: 108%;
-      font-size: clamp(12.8px, 5.05cqw, 19.4px);
-      line-height: 1.18;
+      font-size: clamp(12.4px, 4.92cqw, 19px);
+      line-height: 1.2;
     }
 
     .type-card-tags-clean {
@@ -889,13 +1216,147 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1023px) {
       .hero { padding: 56px 24px 48px; }
+      .structure-section,
+      .behavior-section,
+      .type-list-intro { padding-left: 24px; padding-right: 24px; }
+      .structure-band { grid-template-columns: 1fr; gap: 28px; }
+      .code-breakdown { justify-self: stretch; width: 100%; max-width: none; }
+      .behavior-table {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+      .behavior-row {
+        grid-column: span 3;
+        min-height: 208px;
+      }
+      .behavior-row:nth-child(6) {
+        grid-column: 2 / span 4;
+      }
       .group-section { padding: 56px 24px 48px; }
       .section-divider { padding: 0 24px; }
+    }
+    @media (min-width: 1024px) and (max-width: 1120px) {
+      .behavior-table {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .behavior-row {
+        grid-column: span 2;
+        min-height: 236px;
+      }
+      .behavior-row:nth-child(5) {
+        grid-column: 2 / span 2;
+      }
+      .behavior-row:nth-child(6) {
+        grid-column: 4 / span 2;
+      }
     }
     @media (max-width: 767px) {
       .card-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
       .type-card-clean { width: min(100%, 290px); justify-self: center; }
       .hero { padding: 48px 20px 40px; }
+      .sp-only { display: block; }
+      .structure-section,
+      .behavior-section { padding: 0 20px 52px; }
+      .type-list-intro { padding: 0 20px 20px; }
+      .structure-band { padding: 28px 0 32px; }
+      .formula-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .formula-cell { min-height: 94px; }
+      .formula-operator {
+        font-size: 22px;
+        line-height: 1;
+        text-align: center;
+      }
+      .code-breakdown { padding: 22px; border-radius: 18px; }
+      .code-parts { grid-template-columns: 1fr; }
+      .behavior-header {
+        display: block;
+        margin-bottom: 20px;
+      }
+      .behavior-lead {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 1.85;
+      }
+      .behavior-table {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        border-radius: 18px;
+        background: transparent;
+        box-shadow: none;
+        border: 0;
+      }
+      .behavior-row.head { display: none; }
+      .behavior-row {
+        display: grid;
+        grid-template-columns: 66px 1fr;
+        gap: 0;
+        grid-column: auto;
+        min-height: 0;
+        margin-bottom: 12px;
+        border: 1px solid rgba(23,23,26,0.08);
+        border-radius: 18px;
+        background:
+          linear-gradient(90deg, color-mix(in srgb, var(--behavior-color, #fff) 10%, #fff) 0%, rgba(255,255,255,0.9) 58%, rgba(255,255,255,0.8) 100%);
+        box-shadow: 0 14px 34px rgba(23,23,26,0.055);
+        overflow: hidden;
+      }
+      .behavior-row::before {
+        width: 4px;
+        height: auto;
+        inset: 0 auto 0 0;
+      }
+      .behavior-row:last-child { border-bottom: 1px solid rgba(23,23,26,0.08); }
+      .behavior-row:nth-child(5),
+      .behavior-row:nth-child(6) {
+        grid-column: auto;
+      }
+      .behavior-cell {
+        padding: 13px 16px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .behavior-cell:first-child {
+        grid-row: span 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        margin-bottom: 0;
+        padding: 14px 12px 14px 16px;
+      }
+      .behavior-cell:nth-child(2) {
+        padding-bottom: 3px;
+      }
+      .behavior-cell:nth-child(3) {
+        padding-top: 0;
+        padding-bottom: 5px;
+        margin-bottom: 0;
+      }
+      .behavior-cell:nth-child(4) {
+        grid-column: 2;
+        margin-top: 0;
+        border-top: 0;
+        padding-top: 0;
+        font-size: 14.5px;
+        line-height: 1.65;
+      }
+      .behavior-code {
+        min-width: 44px;
+        height: 34px;
+        font-size: 14px;
+      }
+      .behavior-name {
+        font-size: 16px;
+      }
+      .behavior-en {
+        font-size: 15px;
+        color: rgba(23,23,26,0.76);
+      }
       .group-section { padding: 48px 20px 40px; }
       .section-divider { padding: 0 20px; }
       .header { padding: 10px 14px; gap: 8px; }
@@ -945,8 +1406,8 @@
           <div class="type-mega-header">
             <div>
               <div class="type-mega-kicker">PERSONALITY TYPES</div>
-              <h2 class="type-mega-title">16の基本タイプ</h2>
-              <p class="type-mega-lead">まずは4つのグループから、自分に近い基本タイプを眺められます。</p>
+              <h2 class="type-mega-title">16の性格タイプ</h2>
+              <p class="type-mega-lead">まずは4つのグループから、自分に近い性格タイプを眺められます。</p>
             </div>
             <a href="/80cards/types.html" class="type-mega-all">一覧ページへ</a>
           </div>
@@ -1009,7 +1470,7 @@
             </section>
           </div>
           <div class="type-code-note">
-            <div class="type-code-note-text">80タイプコードは <strong>行動スタイル1文字 + 基本タイプ2文字</strong>。例: APP = 達成型 + チームの太陽。</div>
+            <div class="type-code-note-text">80CODEは <strong>行動スタイル2文字 + 性格タイプ2文字</strong>。例: EFAP = Efficiency + 頼れる右腕。</div>
           </div>
         </div>
       </div>
@@ -1020,12 +1481,126 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow">PERSONALITY TYPES</div>
-    <h1 class="hero-title"><span>16</span>の性格タイプ</h1>
+    <div class="hero-eyebrow">80 TYPE STRUCTURE</div>
+    <h1 class="hero-title"><span>80タイプ</span>は、<br>16タイプ × <span class="nowrap">5スタイル</span></h1>
     <p class="hero-desc">
       80CARDSの診断は、<br>
-      16の基本タイプ × 5つの行動スタイルで、<br>
-      あなたを80タイプに分類します。
+      16の性格タイプ × 5つの行動スタイルで、<br>
+      あなたを80タイプに分類します。<br>
+      診断結果では、その組み合わせを4文字の80CODEで表示します。
+    </p>
+  </section>
+
+  <!-- 80CODE STRUCTURE -->
+  <section class="structure-section" aria-labelledby="structure-title">
+    <div class="structure-band">
+      <div class="structure-copy">
+        <div class="section-kicker">HOW 80CODE WORKS</div>
+        <h2 class="structure-title" id="structure-title">前半2文字が行動スタイル、<br>後半2文字が性格タイプ。</h2>
+        <p class="structure-lead">
+          80CODEは、5つの行動スタイルと16の性格タイプを組み合わせて、診断結果を4文字で表す分類コードです。
+          たとえば「EFAP」は、Efficiency（効率型）の行動傾向と、「頼れる右腕」の性格タイプが重なった結果を示します。
+        </p>
+        <div class="formula-row" aria-label="80タイプの分類式">
+          <div class="formula-cell">
+            <div class="formula-number">16</div>
+            <div class="formula-label">性格タイプ</div>
+            <div class="formula-sub">MAIN</div>
+          </div>
+          <div class="formula-operator">×</div>
+          <div class="formula-cell">
+            <div class="formula-number">5</div>
+            <div class="formula-label">行動スタイル</div>
+            <div class="formula-sub">STYLE</div>
+          </div>
+          <div class="formula-operator">=</div>
+          <div class="formula-cell result">
+            <div class="formula-number">80</div>
+            <div class="formula-label">80CODE</div>
+            <div class="formula-sub">YOU ARE</div>
+          </div>
+        </div>
+      </div>
+      <div class="code-breakdown" aria-label="80CODEの読み方例">
+        <div class="code-label">CODE EXAMPLE</div>
+        <div class="code-sample">
+          <span class="code-sample-prefix">EF</span><span class="code-sample-base">AP</span>
+        </div>
+        <div class="code-parts">
+          <div class="code-part">
+            <div class="code-part-mark">EF</div>
+            <div class="code-part-title">Efficiency</div>
+            <div class="code-part-text">無駄を減らし、最短ルートで進めたい行動スタイル。</div>
+          </div>
+          <div class="code-part">
+            <div class="code-part-mark">AP</div>
+            <div class="code-part-title">頼れる右腕</div>
+            <div class="code-part-text">16の性格タイプのひとつ。結果コードの後半2文字。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEHAVIOR STYLES -->
+  <section class="behavior-section" aria-labelledby="behavior-title">
+    <div class="behavior-header">
+      <div>
+        <div class="section-kicker">5 BEHAVIOR STYLES</div>
+        <h2 class="behavior-title" id="behavior-title">5つの行動スタイル</h2>
+      </div>
+      <p class="behavior-lead">
+        同じ性格タイプでも、行動の出方が変わると印象や強みの見え方が変わります。
+        80CODEの前半2文字は、この行動スタイルを表します。
+      </p>
+    </div>
+    <div class="behavior-table" role="table" aria-label="80CODEの行動スタイル一覧">
+      <div class="behavior-row head" role="row">
+        <div class="behavior-cell" role="columnheader">CODE</div>
+        <div class="behavior-cell" role="columnheader">行動類型</div>
+        <div class="behavior-cell" role="columnheader">正式英語</div>
+        <div class="behavior-cell" role="columnheader">タイプ説明</div>
+      </div>
+      <div class="behavior-row" role="row" style="--behavior-color:#ff3b5c; --behavior-shadow:rgba(255,59,92,0.22);">
+        <div class="behavior-cell" role="cell"><span class="behavior-code">AC</span></div>
+        <div class="behavior-cell behavior-name" role="cell">達成型</div>
+        <div class="behavior-cell behavior-en" role="cell">Achievement</div>
+        <div class="behavior-cell" role="cell">目標達成や結果にこだわるタイプ</div>
+      </div>
+      <div class="behavior-row" role="row" style="--behavior-color:#11bfa8; --behavior-shadow:rgba(17,191,168,0.22);">
+        <div class="behavior-cell" role="cell"><span class="behavior-code">HM</span></div>
+        <div class="behavior-cell behavior-name" role="cell">調和型</div>
+        <div class="behavior-cell behavior-en" role="cell">Harmony</div>
+        <div class="behavior-cell" role="cell">人間関係や場のバランスを大切にするタイプ</div>
+      </div>
+      <div class="behavior-row" role="row" style="--behavior-color:#2272f2; --behavior-shadow:rgba(34,114,242,0.22);">
+        <div class="behavior-cell" role="cell"><span class="behavior-code">EF</span></div>
+        <div class="behavior-cell behavior-name" role="cell">効率型</div>
+        <div class="behavior-cell behavior-en" role="cell">Efficiency</div>
+        <div class="behavior-cell" role="cell">無駄を減らし、最短ルートで進めたいタイプ</div>
+      </div>
+      <div class="behavior-row" role="row" style="--behavior-color:#9b57f2; --behavior-shadow:rgba(155,87,242,0.22);">
+        <div class="behavior-cell" role="cell"><span class="behavior-code">SH</span></div>
+        <div class="behavior-cell behavior-name" role="cell">演出型</div>
+        <div class="behavior-cell behavior-en" role="cell">Show</div>
+        <div class="behavior-cell" role="cell">自分の見せ方や表現を大切にするタイプ</div>
+      </div>
+      <div class="behavior-row" role="row" style="--behavior-color:#4f5968; --behavior-shadow:rgba(79,89,104,0.2);">
+        <div class="behavior-cell" role="cell"><span class="behavior-code">IN</span></div>
+        <div class="behavior-cell behavior-name" role="cell">情報型</div>
+        <div class="behavior-cell behavior-en" role="cell">Information</div>
+        <div class="behavior-cell" role="cell">情報を集め、納得してから動くタイプ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE LIST INTRO -->
+  <section class="type-list-intro" aria-labelledby="type-list-title">
+    <div class="section-kicker">16 PERSONALITY TYPES</div>
+    <h2 class="type-list-title" id="type-list-title"><span>後半2文字</span>になる<br class="sp-only">16の性格タイプ</h2>
+    <p class="type-list-copy">
+      ここからは、80CODEの後半2文字を決める16タイプの一覧です。
+      まずは4つのグループから、自分に近い性格タイプを眺められます。
     </p>
   </section>
 
@@ -1238,7 +1813,7 @@
         <div class="type-card-art-clean">
           <div class="type-card-char-clean" style="background-image: url('/80cards/character/DD.png?v=20260527');"></div>
         </div>
-        <div class="type-card-nickname-clean">ゲームチェンジャー</div>
+        <div class="type-card-nickname-clean long-name">ゲームチェンジャー</div>
         <div class="type-card-catch-clean">全タイプ最速の決断力で、<br>ルールごと書き換える異端</div>
       </article>
 

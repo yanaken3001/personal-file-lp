@@ -4837,7 +4837,7 @@
       .result-nickname-clean { font-size: 60px; }
     }
 
-    /* --- Pattern Code Badge (3文字コード) --- */
+    /* --- 80CODE Badge (4文字コード) --- */
     .pattern-code-block {
       margin: 0 0 18px;
       padding: 0;
@@ -4845,12 +4845,12 @@
     .pattern-code {
       display: inline-flex;
       align-items: baseline;
-      gap: 0.08em;
+      gap: 0.045em;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 48px;
+      font-size: 42px;
       line-height: 1;
-      letter-spacing: 0.02em;
+      letter-spacing: 0;
       color: var(--pattern-code-color, var(--ink));
       text-shadow: 0 1px 0 rgba(255,255,255,0.4);
     }
@@ -4859,15 +4859,16 @@
     }
     .pattern-code-letter--behavior {
       color: var(--pattern-code-color, var(--ink));
+      margin-right: 0.02em;
     }
     @media (min-width: 480px) {
-      .pattern-code { font-size: 56px; }
+      .pattern-code { font-size: 50px; }
     }
     @media (min-width: 768px) {
-      .pattern-code { font-size: 64px; }
+      .pattern-code { font-size: 58px; }
     }
     @media (min-width: 1024px) {
-      .pattern-code { font-size: 72px; }
+      .pattern-code { font-size: 66px; }
     }
 
     /* --- Compat scroll --- */
@@ -9584,17 +9585,40 @@
       DI: '即決エンジン', DP: '大将気質', DA: '静かな司令塔', DD: 'ゲームチェンジャー'
     };
 
-    // 行動類型 → 1文字コード（80パターンを3文字で一意識別するためのIDレイヤー）
-    // ポジション規則: 1文字目=行動型、2-3文字目=性格タイプ。例 APP = 達成型 × チームの太陽
-    const BEHAVIOR_LETTER = {
-      '達成型': 'A', // Achievement
-      '調和型': 'H', // Harmony
-      '効率型': 'E', // Efficient
-      '演出型': 'S', // Show
-      '情報型': 'I', // Information
+    // 80CODE表示用: 行動スタイル2文字 + 基本タイプ2文字
+    // 例: EFAP = Efficiency（効率型） + AP（頼れる右腕）
+    const BEHAVIOR_CODE_PREFIX = {
+      '達成型': 'AC', // Achievement
+      '調和型': 'HM', // Harmony
+      '効率型': 'EF', // Efficiency
+      '演出型': 'SH', // Show
+      '情報型': 'IN', // Information
     };
-    function getThreeLetterCode(behaviorName, typeCode) {
-      const letter = BEHAVIOR_LETTER[behaviorName] || '?';
+    const BEHAVIOR_CODE_META = {
+      '達成型': { code: 'AC', en: 'Achievement', desc: '目標達成や結果にこだわるタイプ' },
+      '調和型': { code: 'HM', en: 'Harmony', desc: '人間関係や場のバランスを大切にするタイプ' },
+      '効率型': { code: 'EF', en: 'Efficiency', desc: '無駄を減らし、最短ルートで進めたいタイプ' },
+      '演出型': { code: 'SH', en: 'Show', desc: '自分の見せ方や表現を大切にするタイプ' },
+      '情報型': { code: 'IN', en: 'Information', desc: '情報を集め、納得してから動くタイプ' },
+    };
+    // 既存 /share/eap などを壊さないための旧URL用コード
+    const LEGACY_SHARE_PREFIX = {
+      '達成型': 'A',
+      '調和型': 'H',
+      '効率型': 'E',
+      '演出型': 'S',
+      '情報型': 'I',
+    };
+    const BEHAVIOR_PREFIX_TO_NAME = {
+      AC: '達成型', HM: '調和型', EF: '効率型', SH: '演出型', IN: '情報型',
+      A: '達成型', H: '調和型', E: '効率型', S: '演出型', I: '情報型',
+    };
+    function get80Code(behaviorName, typeCode) {
+      const prefix = BEHAVIOR_CODE_PREFIX[behaviorName] || '??';
+      return prefix + (typeCode || '');
+    }
+    function getLegacyShareCode(behaviorName, typeCode) {
+      const letter = LEGACY_SHARE_PREFIX[behaviorName] || '?';
       return letter + (typeCode || '');
     }
 
@@ -9753,9 +9777,8 @@
 
     function getMatchBehaviorName(behaviorCode) {
       if (!behaviorCode) return '';
-      if (BEHAVIOR_LETTER[behaviorCode]) return behaviorCode;
-      const letterMap = { A: '達成型', H: '調和型', E: '効率型', S: '演出型', I: '情報型' };
-      return BEHAVIORAL_NAMES[behaviorCode] || letterMap[behaviorCode] || '';
+      if (BEHAVIOR_CODE_PREFIX[behaviorCode]) return behaviorCode;
+      return BEHAVIORAL_NAMES[behaviorCode] || BEHAVIOR_PREFIX_TO_NAME[behaviorCode] || '';
     }
 
     function buildMatchCreatorCard(typeCode, behaviorCode) {
@@ -9996,33 +10019,33 @@
 
     // LP ヒーローカルーセル: 完成カードデザインの4色代表（赤/青/緑/紫）
     const LP_FEATURED_PAIRS = [
-      { code: 'PP', behavior: '達成型' }, // APP — 達成型 × チームの太陽
-      { code: 'AP', behavior: '効率型' }, // EAP — 効率型 × 頼れる右腕
-      { code: 'ID', behavior: '演出型' }, // SID — 演出型 × 深掘りマニア
-      { code: 'DA', behavior: '達成型' }, // ADA — 達成型 × 静かな司令塔
+      { code: 'PP', behavior: '達成型' }, // ACPP — 達成型 × チームの太陽
+      { code: 'AP', behavior: '効率型' }, // EFAP — 効率型 × 頼れる右腕
+      { code: 'ID', behavior: '演出型' }, // SHID — 演出型 × 深掘りマニア
+      { code: 'DA', behavior: '達成型' }, // ACDA — 達成型 × 静かな司令塔
     ];
 
     // === LP 相性スキャンセクション 用デモペア ===
     // 実データ: AA × DA = 86%（最強コンビ）
-    // 行動レター: 効率型(E)×演出型(S) → EAA × SDA
+    // 80CODE: 効率型(EF)×演出型(SH) → EFAA × SHDA
     // LP 相性スキャンセクション 用ペア — ローテーション表示
     // 設計: 6スコア帯すべて + 6色組み合わせすべて + 行動レター A/E/H/S/I を均等配分
     // 全ペア「異群間」（同じ群同士は除外）。実スコアは getCompatibility() で MAX 算出。
     const LP_COMPAT_DEMO_PAIRS = [
       // 運命の相棒 (90-98)
-      { a: { code: 'PP', behaviorType: '達成型' }, b: { code: 'AA', behaviorType: '効率型' } }, // APP × EAA = 98 / P×A
+      { a: { code: 'PP', behaviorType: '達成型' }, b: { code: 'AA', behaviorType: '効率型' } }, // ACPP × EFAA = 98 / P×A
       { a: { code: 'PD', behaviorType: '調和型' }, b: { code: 'AD', behaviorType: '演出型' } }, // HPD × SAD = 93 / P×A
       // 最強コンビ (82-89)
       { a: { code: 'PP', behaviorType: '情報型' }, b: { code: 'DA', behaviorType: '達成型' } }, // IPP × ADA = 89 / P×D
-      { a: { code: 'AA', behaviorType: '効率型' }, b: { code: 'DP', behaviorType: '演出型' } }, // EAA × SDP = 89 / A×D
+      { a: { code: 'AA', behaviorType: '効率型' }, b: { code: 'DP', behaviorType: '演出型' } }, // EFAA × SHDP = 89 / A×D
       // 好相性 (72-81)
-      { a: { code: 'PP', behaviorType: '達成型' }, b: { code: 'IA', behaviorType: '調和型' } }, // APP × HIA = 79 / P×I
+      { a: { code: 'PP', behaviorType: '達成型' }, b: { code: 'IA', behaviorType: '調和型' } }, // ACPP × HMIA = 79 / P×I
       // 伸びしろあり (64-71)
-      { a: { code: 'ID', behaviorType: '演出型' }, b: { code: 'DI', behaviorType: '調和型' } }, // SID × HDI = 70 / I×D
+      { a: { code: 'ID', behaviorType: '演出型' }, b: { code: 'DI', behaviorType: '調和型' } }, // SHID × HMDI = 70 / I×D
       // 意外な組み合わせ (57-63)
       { a: { code: 'PP', behaviorType: '調和型' }, b: { code: 'DD', behaviorType: '効率型' } }, // HPP × EDD = 62 / P×D
       // 正反対タイプ (50-56)
-      { a: { code: 'AP', behaviorType: '効率型' }, b: { code: 'ID', behaviorType: '情報型' } }, // EAP × IID = 56 / A×I
+      { a: { code: 'AP', behaviorType: '効率型' }, b: { code: 'ID', behaviorType: '情報型' } }, // EFAP × INID = 56 / A×I
     ];
 
     // ラベル別 LP 用トーンコピー（COMPATIBILITY_LABELS の tone を LP 向けに整えたもの）
@@ -10046,7 +10069,7 @@
         characterImage: getCharacterImage(code),
         traits: LP_TRAITS[code] || ['行動力', '情熱', '個性'],
         patternNo: null,
-        hideBehavior: true, // カード本体の行動類型ラベルは非表示（ヘッダーの3文字コードは維持）
+        hideBehavior: true, // カード本体の行動類型ラベルは非表示（ヘッダーの80CODEは維持）
       };
     }
 
@@ -10295,8 +10318,8 @@
 
             <div className="lp-type-code-note-clean">
               <div className="lp-type-code-note-text-clean">
-                80タイプコードは <strong>行動スタイル1文字 + 基本タイプ2文字</strong>。
-                例: APP = 達成型 + チームの太陽。
+                80CODEは <strong>行動スタイル2文字 + 基本タイプ2文字</strong>。
+                例: EFAP = Efficiency + 頼れる右腕。
               </div>
             </div>
           </div>
@@ -10827,9 +10850,9 @@
       const typeMeta = TYPE_META[personalityCode];
       if (!typeMeta) return;
       const nickname = TYPE_NICKNAMES[personalityCode] || typeMeta.name;
-      const threeLetter = getThreeLetterCode(behaviorType, personalityCode);
-      const title = `${threeLetter} ${nickname}（${behaviorType}） | 80CARDS`;
-      const description = `あなたは80タイプの中で「${threeLetter} / ${behaviorType} × ${nickname}」でした。あなたのタイプは？`;
+      const resultCode = get80Code(behaviorType, personalityCode);
+      const title = `${resultCode} ${nickname}（${behaviorType}） | 80CARDS`;
+      const description = `あなたは80タイプの中で「${resultCode} / ${behaviorType} × ${nickname}」でした。あなたの80CODEは？`;
 
       const setMeta = (property, content) => {
         let meta = document.querySelector(`meta[property="${property}"]`) ||
@@ -10892,17 +10915,16 @@
       ctx.fillStyle = 'rgba(42,42,42,0.6)';
       ctx.fillText('あなたは', 80, 145);
 
-      // 3文字パターンコード（巨大表示）
-      const threeLetter = getThreeLetterCode(behaviorType, personalityCode);
-      const behaviorLetter = (BEHAVIOR_LETTER[behaviorType] || '?');
-      ctx.font = '900 132px "JetBrains Mono", "SF Mono", "Helvetica Neue", monospace';
-      // 行動レター部分（タイプカラー）
-      const behLetterWidth = ctx.measureText(behaviorLetter).width;
+      // 80CODE（巨大表示）
+      const behaviorPrefix = (BEHAVIOR_CODE_PREFIX[behaviorType] || '??');
+      ctx.font = '900 118px "JetBrains Mono", "SF Mono", "Helvetica Neue", monospace';
+      // 行動スタイル2文字（タイプカラー）
+      const behaviorPrefixWidth = ctx.measureText(behaviorPrefix).width;
       ctx.fillStyle = typeColor.primary;
-      ctx.fillText(behaviorLetter, 80, 270);
+      ctx.fillText(behaviorPrefix, 80, 270);
       // 残り2文字（ダーク）
       ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(personalityCode, 80 + behLetterWidth + 4, 270);
+      ctx.fillText(personalityCode, 80 + behaviorPrefixWidth + 4, 270);
 
       // 行動型 × あだ名
       const nickname = TYPE_NICKNAMES[personalityCode] || typeMeta.name;
@@ -10966,9 +10988,10 @@
       const typeMeta = TYPE_META[personalityCode];
 
       const nickname = TYPE_NICKNAMES[personalityCode] || typeName;
-      const threeLetter = getThreeLetterCode(behaviorType, personalityCode);
+      const resultCode = get80Code(behaviorType, personalityCode);
+      const legacyShareCode = getLegacyShareCode(behaviorType, personalityCode);
       const catchCopy = TYPE_CATCHCOPY[personalityCode] || '';
-      const shareUrl = resultUrl || `https://www.personal-file.jp/80cards/share/${threeLetter.toLowerCase()}`;
+      const shareUrl = resultUrl || `https://www.personal-file.jp/80cards/share/${legacyShareCode.toLowerCase()}`;
       const formatCatchForShare = (text) => {
         if (!text) return '';
         const parts = text.split('、');
@@ -10988,7 +11011,7 @@
       })();
       const shareShortCommentBlock = shareShortComment ? `\n\n${shareShortComment}` : '';
       const shareText = typeMeta
-        ? `私は「${threeLetter}｜${nickname}」でした。\n\n${formatCatchForShare(catchCopy)}${shareShortCommentBlock}\n\nあなたは何タイプ？\n${shareUrl}\n\n#80タイプ診断`
+        ? `私は「${resultCode}｜${nickname}」でした。\n\n${formatCatchForShare(catchCopy)}${shareShortCommentBlock}\n\nあなたの80CODEは？\n${shareUrl}\n\n#80タイプ診断`
         : `私は「${typeName}」タイプでした。\n\nあなたは何タイプ？\n${shareUrl}\n\n#80タイプ診断`;
 
       const shareToX = () => {
@@ -11150,8 +11173,8 @@
     }
 
     function getCard80FullCode(type) {
-      const behaviorLetter = type.behaviorType && !type.hideBehavior ? (BEHAVIOR_LETTER[type.behaviorType] || '') : '';
-      return `${behaviorLetter}${type.code || ''}`;
+      const behaviorPrefix = type.behaviorType && !type.hideBehavior ? (BEHAVIOR_CODE_PREFIX[type.behaviorType] || '') : '';
+      return `${behaviorPrefix}${type.code || ''}`;
     }
 
     // パターン番号計算
@@ -11204,8 +11227,9 @@
       const isResultCard = variant === 'result';
       const isLandingCard = variant === 'hero' || variant === 'compatDemo';
       const pad = w * (isResultCard ? 0.084 : 0.07);
-      const landingCodeFontSize = Math.max(24, Math.min(w * 0.13, 42));
       const fullCode = getCard80FullCode(type);
+      const is80Code = fullCode.length >= 4;
+      const landingCodeFontSize = Math.max(22, Math.min(w * (is80Code ? 0.112 : 0.13), is80Code ? 36 : 42));
       return (
         <>
           <div style={{
@@ -11214,7 +11238,7 @@
             left: isLandingCard ? w * 0.09 : pad,
             zIndex: 8,
             fontFamily: isLandingCard ? '"Arial Black", var(--font-sans)' : 'var(--font-display)',
-            fontSize: isLandingCard ? landingCodeFontSize : w * (isResultCard ? 0.142 : 0.15),
+            fontSize: isLandingCard ? landingCodeFontSize : w * (is80Code ? (isResultCard ? 0.118 : 0.126) : (isResultCard ? 0.142 : 0.15)),
             fontWeight: 900,
             lineHeight: isLandingCard ? 0.9 : 1,
             letterSpacing: isLandingCard ? '-0.03em' : '-0.02em',
@@ -11396,7 +11420,7 @@
                 position: 'absolute',
                 zIndex: 1,
                 left: '50%',
-                bottom: h * (isHeroCard ? (fullCode === 'APP' ? 0.035 : 0.060) : isCompatDemoCard ? 0.050 : isResultCard ? 0.040 : isCompatResultCard ? 0.038 : -0.006),
+                bottom: h * (isHeroCard ? (fullCode === 'ACPP' ? 0.035 : 0.060) : isCompatDemoCard ? 0.050 : isResultCard ? 0.040 : isCompatResultCard ? 0.038 : -0.006),
                 width: w * theme.charWidth * (isHeroCard ? 0.83 : isCompatDemoCard ? 0.88 : isResultCard ? 0.88 : isCompatResultCard ? 0.84 : 1),
                 maxWidth: 'none',
                 height: 'auto',
@@ -11661,8 +11685,8 @@
       const subKey = (currentCode || '')[1] || '';
       const groupColorMap = { P: '#FF3B5C', A: '#4D6CFA', I: '#00D4AA', D: '#8B5CF6' };
       const currentColor = groupColorMap[groupKey] || 'var(--accent-clean)';
-      const resultCode = getThreeLetterCode(currentBehavior, currentCode);
-      const behaviorLetter = BEHAVIOR_LETTER[currentBehavior] || '';
+      const resultCode = get80Code(currentBehavior, currentCode);
+      const behaviorPrefix = BEHAVIOR_CODE_PREFIX[currentBehavior] || '';
       return (
         <SectionBlock80 title="この診断の仕組み" en="80 TYPE STRUCTURE" id="diagnosis-structure">
           <div className="struct80-intro">
@@ -11681,7 +11705,7 @@
               <div className="struct80-sub mono">STYLE</div>
               {currentBehavior && (
                 <div className="struct80-you mono" style={{ background: currentColor }}>
-                  YOU: {currentBehavior}{behaviorLetter && `「${behaviorLetter}」`}
+                  YOU: {currentBehavior}{behaviorPrefix && `「${behaviorPrefix}」`}
                 </div>
               )}
             </div>
@@ -11803,11 +11827,11 @@
     // BehaviorStylesBlock — 5行動バリエーションの解説
     function BehaviorStylesBlock({ currentBehavior }) {
       const styles = [
-        { name: '達成型', letter: 'A', feature: '目標達成志向。結果にこだわる' },
-        { name: '調和型', letter: 'H', feature: '人間関係重視。平和を保つ' },
-        { name: '効率型', letter: 'E', feature: '最短ルート志向。無駄を嫌う' },
-        { name: '演出型', letter: 'S', feature: '自己表現重視。見せ方にこだわる' },
-        { name: '情報型', letter: 'I', feature: 'データ重視。納得してから動く' },
+        { name: '達成型', letter: 'AC', feature: '目標達成や結果にこだわるタイプ' },
+        { name: '調和型', letter: 'HM', feature: '人間関係や場のバランスを大切にするタイプ' },
+        { name: '効率型', letter: 'EF', feature: '無駄を減らし、最短ルートで進めたいタイプ' },
+        { name: '演出型', letter: 'SH', feature: '自分の見せ方や表現を大切にするタイプ' },
+        { name: '情報型', letter: 'IN', feature: '情報を集め、納得してから動くタイプ' },
       ];
       return (
         <SectionBlock80 title="5つの行動スタイル" en="BEHAVIOR STYLES">
@@ -11883,7 +11907,7 @@
         ? typeData.suitableJobs.split(/[、,，\n]/).filter(s => s.trim()).map(j => j.trim().replace(/など$/, ''))
         : [];
       const [showPersonalFileModal, setShowPersonalFileModal] = React.useState(false);
-      const resultTypeCode = getThreeLetterCode(behavioralType, personalityCode);
+      const resultTypeCode = get80Code(behavioralType, personalityCode);
       const personalFileContactUrl = React.useMemo(() => buildPersonalFileContactUrl({
         typeCode: resultTypeCode,
         type16Code: personalityCode,
@@ -11984,14 +12008,14 @@
 
             {/* 右カラム: 詳細情報 */}
             <div className="detail-right-clean" style={{ minWidth: 0 }}>
-              {/* 3文字パターンコードバッジ */}
+              {/* 80CODEバッジ */}
               {(() => {
-                const behaviorLetter = BEHAVIOR_LETTER[behavioralType] || '?';
+                const behaviorPrefix = BEHAVIOR_CODE_PREFIX[behavioralType] || '??';
                 const patternColor = card.groupColor || 'var(--ink)';
                 return (
                   <div className="pattern-code-block" style={{ '--pattern-code-color': patternColor }}>
                     <div className="pattern-code">
-                      <span className="pattern-code-letter pattern-code-letter--behavior">{behaviorLetter}</span>
+                      <span className="pattern-code-letter pattern-code-letter--behavior">{behaviorPrefix}</span>
                       <span className="pattern-code-letter">{personalityCode?.[0] || ''}</span>
                       <span className="pattern-code-letter">{personalityCode?.[1] || ''}</span>
                     </div>
@@ -12017,7 +12041,7 @@
               {/* ステータスグリッド 2x2 */}
               <div className="stats-grid-clean">
                 {[
-                  { label: 'パターンコード', val: getThreeLetterCode(behavioralType, personalityCode) },
+                  { label: '80CODE', val: get80Code(behavioralType, personalityCode) },
                   { label: 'タイプコード', val: card.code },
                   { label: '行動類型', val: card.behaviorType },
                   { label: 'グループ', val: groupName },
@@ -13978,7 +14002,7 @@
     }
 
     // ===================================================================
-    // APP (ROOT)
+    // ACPP (ROOT)
     // ===================================================================
 
     function App() {

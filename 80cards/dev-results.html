@@ -254,8 +254,8 @@
     ];
     const BEHAVIORS = ['達成型','調和型','効率型','演出型','情報型'];
     const BEHAVIOR_CODES = { '達成型':'K', '調和型':'H', '情報型':'J', '演出型':'G', '効率型':'E' };
-    // 3文字パターンコード用 行動型レター（A=Achievement, H=Harmony, E=Efficient, S=Show, I=Information）
-    const BEHAVIOR_LETTER = { '達成型':'A', '調和型':'H', '効率型':'E', '演出型':'S', '情報型':'I' };
+    // 80CODE表示用 行動スタイル2文字（診断ロジックは変更しない）
+    const BEHAVIOR_CODE_PREFIX = { '達成型':'AC', '調和型':'HM', '効率型':'EF', '演出型':'SH', '情報型':'IN' };
     const NICKNAMES = {
       PP:'チームの太陽', PA:'二面性の魔術師', PI:'愛されの天才', PD:'突破のカリスマ',
       AP:'頼れる右腕', AA:'知の番人', AI:'継続の鬼', AD:'氷の頭脳',
@@ -316,11 +316,11 @@
       visibleItems = filtered;
 
       grid.innerHTML = filtered.map((item, i) => {
-        const threeLetter = (BEHAVIOR_LETTER[item.behavior] || '?') + item.type;
+        const resultCode = (BEHAVIOR_CODE_PREFIX[item.behavior] || '??') + item.type;
         return `
         <a class="type-btn" style="--c: ${GROUP_COLORS[item.group]}" data-idx="${i}" href="#">
           <img src="${getImgSrc(item.type)}" alt="${NICKNAMES[item.type]}" loading="lazy" decoding="async" />
-          <span class="code" style="font-family: 'JetBrains Mono', 'SF Mono', monospace; font-weight: 800; font-size: 14px; letter-spacing: 0.05em;">${threeLetter}</span>
+          <span class="code" style="font-family: 'JetBrains Mono', 'SF Mono', monospace; font-weight: 800; font-size: 14px; letter-spacing: 0.02em;">${resultCode}</span>
           <span class="name">${NICKNAMES[item.type]}</span>
           <span class="behavior">${item.behavior}${item.type}</span>
         </a>
@@ -342,8 +342,8 @@
       const params = Object.entries(scores).map(([k,v]) => `${k}=${v}`).join('&');
 
       document.getElementById('overlayImg').src = getImgSrc(item.type);
-      const threeLetter = (BEHAVIOR_LETTER[item.behavior] || '?') + item.type;
-      document.getElementById('overlayLabel').textContent = `${threeLetter} · ${item.behavior}${item.type} ${NICKNAMES[item.type]}`;
+      const resultCode = (BEHAVIOR_CODE_PREFIX[item.behavior] || '??') + item.type;
+      document.getElementById('overlayLabel').textContent = `${resultCode} · ${item.behavior}${item.type} ${NICKNAMES[item.type]}`;
       document.getElementById('resultFrame').src = `index.html?dev_scores=${encodeURIComponent(JSON.stringify(scores))}#dev-result`;
       document.getElementById('resultOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
