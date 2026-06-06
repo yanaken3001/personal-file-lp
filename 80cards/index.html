@@ -14017,24 +14017,14 @@
       const [copied, setCopied] = React.useState(false);
       const matchData = encodeMatchData(personalityCode, behaviorCode);
       const matchUrl = `https://www.personal-file.jp/80cards/?match=${matchData}`;
-      const nickname = TYPE_NICKNAMES[personalityCode];
+      const matrixUrl = 'https://www.personal-file.jp/80cards/compatibility.html';
       const meta = TYPE_META[personalityCode];
-
-      const shareText = `あなたとの相性を調べてみませんか？\n${meta?.emoji} ${nickname}の私と、あなたの相性は…？\n`;
 
       const copyLink = () => {
         navigator.clipboard.writeText(matchUrl).then(() => {
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         });
-      };
-
-      const shareToLine = () => {
-        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(matchUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
-      };
-
-      const shareToX = () => {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(matchUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
       };
 
       return (
@@ -14069,48 +14059,32 @@
               }}>
                 友達に相性リンクを送ろう
               </h3>
-              <p style={{ fontSize: '13px', color: '#9A9284' }}>
-                リンクを受け取った人が診断すると、<br />あなたとの相性結果が表示されます
+              <p style={{ fontSize: '13px', color: '#6F687C', lineHeight: 1.75, margin: 0 }}>
+                リンクを受け取った人が診断すると、<br />
+                あなたとの相性が以下からわかります。
               </p>
+              <a
+                href={matrixUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  marginTop: '14px',
+                  color: '#6638F0',
+                  fontSize: '14px',
+                  fontWeight: '800',
+                  lineHeight: 1.55,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '4px'
+                }}
+              >
+                256通りの相性マトリクス<br />
+                を探してみる
+              </a>
             </div>
 
-            {/* リンク表示 */}
-            <div style={{
-              background: 'rgba(26,26,26,0.04)',
-              border: '1px solid rgba(26,26,26,0.08)',
-              borderRadius: '12px',
-              padding: '12px',
-              marginBottom: '20px',
-              fontSize: '11px',
-              color: '#9A9284',
-              wordBreak: 'break-all',
-              lineHeight: 1.5,
-              textAlign: 'center'
-            }}>
-              {matchUrl}
-            </div>
-
-            {/* シェアボタン群 */}
+            {/* リンクコピーボタン */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <button onClick={shareToLine} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                padding: '14px', background: '#06C755', color: '#fff',
-                border: 'none', borderRadius: '14px', fontSize: '15px',
-                fontWeight: '700', cursor: 'pointer', width: '100%'
-              }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.39.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.096 14.395 24 12.458 24 10.304"/></svg>
-                LINEで送る
-              </button>
-
-              <button onClick={shareToX} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                padding: '14px', background: '#1A1A2E', color: '#fff',
-                border: 'none', borderRadius: '14px', fontSize: '15px',
-                fontWeight: '700', cursor: 'pointer', width: '100%'
-              }}>
-                𝕏 でシェア
-              </button>
-
               <button onClick={copyLink} style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                 padding: '14px', background: copied ? '#FF3B5C' : 'rgba(26,26,26,0.05)',
