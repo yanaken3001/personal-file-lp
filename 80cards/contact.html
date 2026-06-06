@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>80CARDS 登録フォーム | PERSONAL FILE</title>
+  <meta name="description" content="80CARDSの診断結果を引き継いで、パーソナルファイルの登録に進むためのフォームです。" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta property="og:title" content="80CARDS 登録フォーム | PERSONAL FILE" />
+  <meta property="og:description" content="80CARDSの診断結果を引き継いで登録できます。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.personal-file.jp/80cards/contact.html" />
+  <meta property="og:image" content="https://www.personal-file.jp/80cards/ogp.png" />
+  <meta name="theme-color" content="#faf9f7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Zen+Kaku+Gothic+New:wght@700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1b22;
+      --ink-2: #4b4954;
+      --ink-3: #73707c;
+      --line: rgba(34, 31, 42, 0.12);
+      --paper: #fffdfb;
+      --soft: #f7f4f1;
+      --violet: #6638f0;
+      --rose: #ff3b5c;
+      --mint: #00a886;
+      --amber: #b86b00;
+      --shadow: 0 20px 56px rgba(39, 31, 66, 0.12);
+      --font-sans: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(135deg, rgba(255, 248, 250, 0.92), rgba(248, 246, 255, 0.86) 42%, rgba(255, 253, 248, 0.96)),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-underline-offset: 3px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .topbar {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-link img {
+      width: 152px;
+      height: auto;
+      display: block;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--ink-2);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .layout {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 18px 0 56px;
+      display: grid;
+      grid-template-columns: minmax(270px, 360px) minmax(0, 1fr);
+      gap: 26px;
+      align-items: start;
+    }
+
+    .result-panel,
+    .form-panel {
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .result-panel {
+      position: sticky;
+      top: 18px;
+      padding: 24px;
+      border-radius: 22px;
+    }
+
+    .result-kicker,
+    .form-kicker,
+    .done-kicker {
+      margin: 0 0 10px;
+      color: var(--violet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+    }
+
+    .result-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .result-copy {
+      margin: 14px 0 0;
+      color: var(--ink-2);
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    .result-chip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .result-chip {
+      min-height: 76px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .result-chip span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink-3);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .result-chip strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 900;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .result-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(102, 56, 240, 0.07);
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .form-panel {
+      min-height: 640px;
+      padding: 28px;
+      border-radius: 24px;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+      color: var(--ink-3);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .progress-count {
+      font-family: var(--font-mono);
+      letter-spacing: 0.08em;
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(28, 27, 34, 0.08);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .progress-bar {
+      width: 12.5%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--violet), var(--rose));
+      transition: width 0.22s ease;
+    }
+
+    .step {
+      display: none;
+      animation: stepIn 0.22s ease both;
+    }
+
+    .step.is-active {
+      display: block;
+    }
+
+    @keyframes stepIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-title {
+      margin: 0 0 18px;
+      font-family: var(--font-display);
+      font-size: 27px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .service-notice {
+      margin: 0 0 22px;
+      padding: 16px 18px;
+      border: 1px solid rgba(102, 56, 240, 0.16);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    .service-notice strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .service-notice p {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-grid.is-two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 58px;
+      padding: 14px 16px 14px 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.45;
+      cursor: pointer;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(102, 56, 240, 0.32);
+      box-shadow: 0 10px 22px rgba(39, 31, 66, 0.08);
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      width: 17px;
+      height: 17px;
+      border: 2px solid rgba(102, 56, 240, 0.42);
+      border-radius: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+    }
+
+    .option:has(input:checked) {
+      border-color: rgba(102, 56, 240, 0.6);
+      box-shadow: 0 0 0 4px rgba(102, 56, 240, 0.1);
+    }
+
+    .option:has(input:checked)::before {
+      border-color: var(--violet);
+      background:
+        radial-gradient(circle, var(--violet) 0 42%, transparent 45%),
+        #fff;
+    }
+
+    .student-message {
+      display: none;
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(184, 107, 0, 0.18);
+      background: rgba(255, 248, 234, 0.9);
+      color: #5c3d09;
+      font-size: 14px;
+      line-height: 1.75;
+      font-weight: 700;
+    }
+
+    .student-message.is-visible {
+      display: block;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .input-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .input-group.is-full {
+      grid-column: 1 / -1;
+    }
+
+    .input-label {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .input-control {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .input-control:focus {
+      border-color: rgba(102, 56, 240, 0.62);
+      box-shadow: 0 0 0 4px rgba(102, 56, 240, 0.1);
+    }
+
+    .hint {
+      margin: 14px 0 0;
+      color: var(--ink-3);
+      font-size: 12px;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .terms-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(28, 27, 34, 0.04);
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.75;
+      font-weight: 700;
+    }
+
+    .error-box {
+      display: none;
+      margin: 18px 0 0;
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 59, 92, 0.24);
+      background: rgba(255, 59, 92, 0.08);
+      color: #7a1526;
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .error-box.is-visible {
+      display: block;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .auto-advance-status {
+      display: none;
+      margin-left: auto;
+      color: var(--ink-3);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .auto-advance-status.is-visible {
+      display: block;
+    }
+
+    .btn {
+      min-height: 50px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 22px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      min-width: 190px;
+      background: linear-gradient(135deg, var(--violet), #b244a5);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(102, 56, 240, 0.24);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink-3);
+    }
+
+    .loading-layer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      place-items: center;
+      padding: 22px;
+      background: rgba(25, 22, 34, 0.48);
+      backdrop-filter: blur(10px);
+    }
+
+    .loading-layer.is-visible {
+      display: grid;
+    }
+
+    .loading-card {
+      width: min(100%, 360px);
+      padding: 24px;
+      border-radius: 18px;
+      background: #fff;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .loading-dot {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 14px;
+      border: 4px solid rgba(102, 56, 240, 0.16);
+      border-top-color: var(--violet);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-card p {
+      margin: 0;
+      color: var(--ink);
+      font-weight: 900;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .result-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        width: min(100% - 24px, 1120px);
+        padding-top: 16px;
+      }
+
+      .brand-link img {
+        width: 132px;
+      }
+
+      .back-link {
+        min-height: 34px;
+        padding: 0 11px;
+        font-size: 12px;
+      }
+
+      .layout {
+        width: min(100% - 24px, 1120px);
+        padding-top: 8px;
+      }
+
+      .result-panel,
+      .form-panel {
+        border-radius: 18px;
+      }
+
+      .result-panel {
+        padding: 18px;
+      }
+
+      .result-title {
+        font-size: 21px;
+      }
+
+      .result-chip-grid,
+      .input-grid,
+      .option-grid.is-two {
+        grid-template-columns: 1fr;
+      }
+
+      .form-panel {
+        min-height: auto;
+        padding: 20px;
+      }
+
+      .step-title {
+        font-size: 22px;
+      }
+
+      .form-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+      .btn-secondary {
+        order: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand-link" href="index.html">
+      <img src="logo/80cards-logo-full.png?v=20260527" alt="80CARDS" width="998" height="260" />
+    </a>
+    <a class="back-link" href="index.html">診断ページへ戻る</a>
+  </header>
+
+  <main class="layout">
+    <aside class="result-panel" aria-label="80CARDSの診断結果">
+      <p class="result-kicker">80CARDS RESULT</p>
+      <h1 class="result-title">診断結果を引き継いで登録できます</h1>
+      <p class="result-copy">
+        80CARDSの結果をもとに、パーソナルファイルの登録に進めます。
+      </p>
+      <div class="result-chip-grid" id="resultChipGrid">
+        <div class="result-chip">
+          <span>80CODE</span>
+          <strong id="chipTypeCode">引き継ぎ中</strong>
+        </div>
+        <div class="result-chip">
+          <span>タイプ</span>
+          <strong id="chipTypeName">80CARDS</strong>
+        </div>
+        <div class="result-chip">
+          <span>タイプコード</span>
+          <strong id="chipType16">--</strong>
+        </div>
+        <div class="result-chip">
+          <span>行動類型</span>
+          <strong id="chipBehavior">--</strong>
+        </div>
+      </div>
+      <div class="result-note">
+        このフォームは80CARDS専用です。入力項目は通常登録フォームの内容に合わせています。
+      </div>
+    </aside>
+
+    <section class="form-panel" aria-label="登録フォーム">
+      <p class="form-kicker">PERSONAL FILE</p>
+      <div class="progress-row">
+        <span id="remainingText">残り 7 問</span>
+        <span class="progress-count" id="progressCount">1 / 8</span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <form id="entryForm" novalidate>
+        <section class="step is-active" data-step="0" data-required="employment_status">
+          <div class="service-notice">
+            <strong>ご利用前にご確認ください</strong>
+            <p>
+              本サービスは20代特化の就職・転職支援サービスです。<br />
+              学生の方はご利用できません。
+            </p>
+          </div>
+          <h2 class="step-title">現在の就業状況について教えてください。</h2>
+          <div class="option-grid">
+            <label class="option">
+              <input type="radio" name="employment_status" value="2" />
+              在職中
+            </label>
+            <label class="option">
+              <input type="radio" name="employment_status" value="3" />
+              離職中 ※現在アルバイト・派遣を含む
+            </label>
+            <label class="option">
+              <input type="radio" name="employment_status" value="4" />
+              在学中
+            </label>
+          </div>
+          <div class="student-message" id="studentMessage">
+            申し訳ありません。現在学生の方は本サービスをご利用いただけません。
+            卒業後または就職・転職活動を開始されるタイミングでご利用ください。
+          </div>
+        </section>
+
+        <section class="step" data-step="1" data-required="desired_employment_timeframe">
+          <h2 class="step-title">次に、ご希望の就職時期を教えてください。</h2>
+          <div class="option-grid">
+            <label class="option"><input type="radio" name="desired_employment_timeframe" value="1" />できるだけ早く</label>
+            <label class="option"><input type="radio" name="desired_employment_timeframe" value="2" />1～3ヶ月以内</label>
+            <label class="option"><input type="radio" name="desired_employment_timeframe" value="3" />3～6か月以内</label>
+            <label class="option"><input type="radio" name="desired_employment_timeframe" value="5" />6ヶ月以上先</label>
+            <label class="option"><input type="radio" name="desired_employment_timeframe" value="4" />相談したい</label>
+          </div>
+          <p class="hint">選択肢は通常登録フォームと同じです。追加の相談内容入力はありません。</p>
+        </section>
+
+        <section class="step" data-step="2" data-required="desired_work_location">
+          <h2 class="step-title">次は、ご希望の勤務地を教えてください。</h2>
+          <div class="option-grid is-two">
+            <label class="option"><input type="radio" name="desired_work_location" value="1" />北海道（札幌）</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="4" />宮城県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="13" />東京都</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="14" />神奈川県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="11" />埼玉県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="12" />千葉県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="23" />愛知県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="27" />大阪府</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="34" />広島県</label>
+            <label class="option"><input type="radio" name="desired_work_location" value="40" />福岡県</label>
+          </div>
+          <p class="hint">選択肢にあるエリア（県）のみ求人のご紹介が可能となります。北海道は札幌のみ対応となります。</p>
+        </section>
+
+        <section class="step" data-step="3" data-required="last_educational_background">
+          <h2 class="step-title">次は、あなたの最終学歴を教えてください。</h2>
+          <div class="option-grid is-two">
+            <label class="option"><input type="radio" name="last_educational_background" value="1" />中卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="2" />高卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="3" />専門卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="4" />高専卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="5" />短大卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="6" />大卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="7" />大学院卒</label>
+            <label class="option"><input type="radio" name="last_educational_background" value="8" />その他</label>
+          </div>
+        </section>
+
+        <section class="step" data-step="4" data-required="name">
+          <h2 class="step-title">次は、あなたのお名前を教えてください。</h2>
+          <div class="input-grid">
+            <label class="input-group">
+              <span class="input-label">氏名 ※正式な漢字(旧字体など)でご入力ください。</span>
+              <input class="input-control" type="text" name="last_name" placeholder="例）山田" autocomplete="family-name" />
+            </label>
+            <label class="input-group">
+              <span class="input-label">名</span>
+              <input class="input-control" type="text" name="first_name" placeholder="例）太郎" autocomplete="given-name" />
+            </label>
+            <label class="input-group">
+              <span class="input-label">フリガナ</span>
+              <input class="input-control" type="text" name="last_name_kana" placeholder="例）ヤマダ" autocomplete="off" />
+            </label>
+            <label class="input-group">
+              <span class="input-label">メイ</span>
+              <input class="input-control" type="text" name="first_name_kana" placeholder="例）タロウ" autocomplete="off" />
+            </label>
+          </div>
+        </section>
+
+        <section class="step" data-step="5" data-required="birthday">
+          <h2 class="step-title">次は、お誕生日を教えてください。</h2>
+          <div class="input-grid">
+            <label class="input-group is-full">
+              <span class="input-label">生年月日</span>
+              <input class="input-control" type="text" name="birthday" placeholder="例）19940404" inputmode="numeric" autocomplete="bday" maxlength="8" />
+            </label>
+          </div>
+          <p class="hint">半角数字8桁で入力してください。</p>
+        </section>
+
+        <section class="step" data-step="6" data-required="contact">
+          <h2 class="step-title">ご連絡先を教えてください。</h2>
+          <div class="input-grid">
+            <label class="input-group is-full">
+              <span class="input-label">電話番号</span>
+              <input class="input-control" type="tel" name="tel" placeholder="例）09012345678" inputmode="tel" autocomplete="tel" />
+            </label>
+            <label class="input-group is-full">
+              <span class="input-label">メールアドレス</span>
+              <input class="input-control" type="email" name="email" placeholder="例）sample@kouten.work" autocomplete="email" />
+            </label>
+          </div>
+        </section>
+
+        <section class="step" data-step="7" data-required="others">
+          <h2 class="step-title">最後に以下の項目に当てはまるものがある場合は教えてください。</h2>
+          <div class="option-grid">
+            <label class="option"><input type="checkbox" name="others" value="1" />体調面で不安がある</label>
+            <label class="option"><input type="checkbox" name="others" value="2" />外国籍である</label>
+            <label class="option"><input type="checkbox" name="others" value="3" />上記に該当するものはない</label>
+          </div>
+          <div class="terms-box">
+            「<a href="terms.html" target="_blank" rel="noopener noreferrer">利用規約</a>」及び
+            「<a href="privacy.html" target="_blank" rel="noopener noreferrer">個人情報の取り扱い</a>」を
+            ご確認、ご同意の上、登録を完了するを押してください。
+          </div>
+        </section>
+
+        <div class="error-box" id="errorBox" role="alert"></div>
+
+        <div class="form-actions">
+          <button class="btn btn-secondary" type="button" id="backButton">戻る</button>
+          <div class="auto-advance-status" id="autoAdvanceStatus">選択すると自動で次へ進みます</div>
+          <button class="btn btn-primary" type="button" id="nextButton">回答する</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="loading-layer" id="loadingLayer" aria-live="polite" aria-hidden="true">
+    <div class="loading-card">
+      <div class="loading-dot" aria-hidden="true"></div>
+      <p>登録内容を送信中です<br />そのままお待ちください</p>
+    </div>
+  </div>
+
+  <script>
+    const RESULT_CONTEXT_KEY = 'pf80cardsResultContext';
+    const SUBMISSION_CONTEXT_KEY = 'pf80cardsSubmission';
+    const API_URL = 'https://api.personalfile.tech/api/exam/register';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzTi52Z86dPAeiJkS1_ntKoNXucI2Ekqv0YYKWyZDgG3zj-wovdl6XXOJBxQTBsA-E-KA/exec';
+
+    const state = {
+      step: 0,
+      totalSteps: 8,
+      resultContext: null,
+      submitting: false,
+    };
+
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const entryForm = document.getElementById('entryForm');
+    const nextButton = document.getElementById('nextButton');
+    const backButton = document.getElementById('backButton');
+    const autoAdvanceStatus = document.getElementById('autoAdvanceStatus');
+    const errorBox = document.getElementById('errorBox');
+    const progressBar = document.getElementById('progressBar');
+    const progressCount = document.getElementById('progressCount');
+    const remainingText = document.getElementById('remainingText');
+    const studentMessage = document.getElementById('studentMessage');
+    const loadingLayer = document.getElementById('loadingLayer');
+    let autoAdvanceTimer = null;
+
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function getFormValue(name) {
+      const data = new FormData(entryForm);
+      return data.get(name);
+    }
+
+    function getCheckedValues(name) {
+      return Array.from(entryForm.querySelectorAll('input[name="' + name + '"]:checked')).map((input) => input.value);
+    }
+
+    function isAutoAdvanceStep(stepIndex = state.step) {
+      const required = steps[stepIndex]?.dataset.required;
+      return [
+        'employment_status',
+        'desired_employment_timeframe',
+        'desired_work_location',
+        'last_educational_background',
+      ].includes(required);
+    }
+
+    function setError(message) {
+      if (!message) {
+        errorBox.classList.remove('is-visible');
+        errorBox.textContent = '';
+        return;
+      }
+      errorBox.textContent = message;
+      errorBox.classList.add('is-visible');
+    }
+
+    function safeParseSession(key) {
+      try {
+        const raw = window.sessionStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function loadResultContext() {
+      state.resultContext = safeParseSession(RESULT_CONTEXT_KEY);
+      const context = state.resultContext || {};
+      document.getElementById('chipTypeCode').textContent = context.typeCode || '引き継ぎ中';
+      document.getElementById('chipTypeName').textContent = context.typeName || '80CARDS';
+      document.getElementById('chipType16').textContent = context.type16Code || '--';
+      document.getElementById('chipBehavior').textContent = context.behaviorType || '--';
+    }
+
+    function updateView() {
+      steps.forEach((step, index) => {
+        step.classList.toggle('is-active', index === state.step);
+      });
+
+      const progress = ((state.step + 1) / state.totalSteps) * 100;
+      progressBar.style.width = progress + '%';
+      progressCount.textContent = (state.step + 1) + ' / ' + state.totalSteps;
+      remainingText.textContent = '残り ' + Math.max(state.totalSteps - state.step - 1, 0) + ' 問';
+      backButton.style.visibility = state.step === 0 ? 'hidden' : 'visible';
+      nextButton.textContent = state.step === state.totalSteps - 1 ? '登録して次へ' : '回答する';
+      const autoStep = isAutoAdvanceStep();
+      nextButton.style.display = autoStep ? 'none' : '';
+      autoAdvanceStatus.classList.toggle('is-visible', autoStep);
+      setError('');
+      updateStudentState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateStudentState() {
+      const isStudent = getFormValue('employment_status') === '4';
+      studentMessage.classList.toggle('is-visible', isStudent);
+      nextButton.disabled = isStudent || state.submitting;
+    }
+
+    function validateCurrentStep() {
+      const current = steps[state.step];
+      const required = current.dataset.required;
+
+      if (required === 'employment_status') {
+        const value = getFormValue('employment_status');
+        if (!value) return '現在の就業状況を選択してください。';
+        if (value === '4') return '学生の方は本サービスをご利用できません。';
+      }
+
+      if (required === 'desired_employment_timeframe' && !getFormValue('desired_employment_timeframe')) {
+        return 'ご希望の就職時期を選択してください。';
+      }
+
+      if (required === 'desired_work_location' && !getFormValue('desired_work_location')) {
+        return 'ご希望の勤務地を選択してください。';
+      }
+
+      if (required === 'last_educational_background' && !getFormValue('last_educational_background')) {
+        return '最終学歴を選択してください。';
+      }
+
+      if (required === 'name') {
+        const fields = ['last_name', 'first_name', 'last_name_kana', 'first_name_kana'];
+        const missing = fields.some((name) => !getFormValue(name)?.trim());
+        if (missing) return '氏名とフリガナを入力してください。';
+      }
+
+      if (required === 'birthday') {
+        const birthday = getFormValue('birthday')?.trim() || '';
+        if (!/^\d{8}$/.test(birthday)) return '生年月日は半角数字8桁で入力してください。';
+        const year = Number(birthday.slice(0, 4));
+        const month = Number(birthday.slice(4, 6));
+        const day = Number(birthday.slice(6, 8));
+        const date = new Date(year, month - 1, day);
+        if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+          return '生年月日が正しくありません。';
+        }
+      }
+
+      if (required === 'contact') {
+        const tel = getFormValue('tel')?.trim() || '';
+        const email = getFormValue('email')?.trim() || '';
+        if (!/^(080|070|090)\d{8}$/.test(tel)) return '電話番号が正しくありません。';
+        if (!/^([a-zA-Z0-9._+-])+@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+$/.test(email)) {
+          return 'メールアドレスが正しくありません。';
+        }
+      }
+
+      if (required === 'others' && getCheckedValues('others').length === 0) {
+        return '最後の確認項目を選択してください。';
+      }
+
+      return '';
+    }
+
+    function advanceStep() {
+      const validation = validateCurrentStep();
+      if (validation) {
+        setError(validation);
+        return false;
+      }
+
+      if (state.step === state.totalSteps - 1) {
+        submitForm();
+        return true;
+      }
+
+      state.step += 1;
+      updateView();
+      return true;
+    }
+
+    function scheduleAutoAdvance() {
+      window.clearTimeout(autoAdvanceTimer);
+      if (!isAutoAdvanceStep()) return;
+
+      autoAdvanceTimer = window.setTimeout(() => {
+        if (!isAutoAdvanceStep() || state.submitting) return;
+        advanceStep();
+      }, 220);
+    }
+
+    function cleanPayload(obj) {
+      const cleaned = {};
+      Object.keys(obj).forEach((key) => {
+        const value = obj[key];
+        if (value === null || value === undefined || value === '') return;
+        if (Array.isArray(value) && value.length === 0) return;
+        cleaned[key] = value;
+      });
+      return cleaned;
+    }
+
+    function buildPayload() {
+      const data = new FormData(entryForm);
+      const others = getCheckedValues('others');
+      const route = getQueryParam('route') || '80cards_result';
+      const payload = {
+        employment_experience: 1,
+        employment_status: Number(data.get('employment_status')),
+        is_student: 0,
+        desired_employment_timeframe: Number(data.get('desired_employment_timeframe')),
+        advice: null,
+        advice_other_text: null,
+        desired_work_location: Number(data.get('desired_work_location')),
+        last_educational_background: Number(data.get('last_educational_background')),
+        school_category: null,
+        expected_graduation_year: null,
+        last_name: String(data.get('last_name') || '').trim(),
+        first_name: String(data.get('first_name') || '').trim(),
+        last_name_kana: String(data.get('last_name_kana') || '').trim(),
+        first_name_kana: String(data.get('first_name_kana') || '').trim(),
+        birthday: String(data.get('birthday') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        tel: String(data.get('tel') || '').trim(),
+        route,
+      };
+
+      others.forEach((value) => {
+        if (value === '1') payload.has_health_concerns = true;
+        if (value === '2') payload.is_foreign_national = true;
+        if (value === '3') payload.is_none_of_the_above = true;
+      });
+
+      return cleanPayload(payload);
+    }
+
+    function buildSpreadsheetPayload(apiPayload, userId) {
+      const data = new FormData(entryForm);
+      const result = state.resultContext || {};
+      return cleanPayload({
+        employment_experience: '1',
+        employment_status: data.get('employment_status'),
+        is_student: '0',
+        desired_employment_timeframe: data.get('desired_employment_timeframe'),
+        desired_work_location: data.get('desired_work_location'),
+        last_educational_background: data.get('last_educational_background'),
+        school_category: null,
+        expected_graduation_year: null,
+        last_name: apiPayload.last_name,
+        first_name: apiPayload.first_name,
+        last_name_kana: apiPayload.last_name_kana,
+        first_name_kana: apiPayload.first_name_kana,
+        birthday: apiPayload.birthday,
+        email: apiPayload.email,
+        tel: apiPayload.tel,
+        others: getCheckedValues('others'),
+        route: apiPayload.route,
+        source: '80cards',
+        cta: getQueryParam('cta') || '80cards_contact',
+        user_id: userId || null,
+        result_type_code: result.typeCode || null,
+        result_type16_code: result.type16Code || null,
+        result_type_name: result.typeName || null,
+        result_behavior_type: result.behaviorType || null,
+        result_group_name: result.groupName || null,
+      });
+    }
+
+    async function postWithTimeout(url, body, timeoutMs = 10000) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+        return response;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
+    async function postSpreadsheetLog(body, timeoutMs = 8000) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        await fetch(GAS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
+    async function submitForm() {
+      const validation = validateCurrentStep();
+      if (validation) {
+        setError(validation);
+        return;
+      }
+
+      const payload = buildPayload();
+      state.submitting = true;
+      nextButton.disabled = true;
+      loadingLayer.classList.add('is-visible');
+      loadingLayer.setAttribute('aria-hidden', 'false');
+
+      try {
+        const response = await postWithTimeout(API_URL, payload, 15000);
+        const responseData = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const apiError = responseData?.errors?.email?.[0]
+            || responseData?.errors?.tel?.[0]
+            || responseData?.message
+            || 'エラーが発生しました。入力内容をご確認ください。';
+          throw new Error(apiError);
+        }
+
+        const userId = responseData?.data?.user_id || responseData?.user_id || null;
+        const gasPayload = buildSpreadsheetPayload(payload, userId);
+        postSpreadsheetLog(gasPayload).catch(() => {});
+
+        const submission = {
+          userId: userId || '',
+          resultContext: state.resultContext || null,
+          submittedAt: new Date().toISOString(),
+        };
+        try {
+          window.sessionStorage.setItem(SUBMISSION_CONTEXT_KEY, JSON.stringify(submission));
+        } catch (error) {}
+
+        const thanksUrl = new URL('/80cards/contact-thanks.html', window.location.origin);
+        if (submission.userId) thanksUrl.searchParams.set('user_id', submission.userId);
+        window.location.href = thanksUrl.toString();
+      } catch (error) {
+        state.submitting = false;
+        loadingLayer.classList.remove('is-visible');
+        loadingLayer.setAttribute('aria-hidden', 'true');
+        nextButton.disabled = false;
+        setError(error.message || '送信に失敗しました。時間をおいて再度お試しください。');
+      }
+    }
+
+    nextButton.addEventListener('click', () => {
+      advanceStep();
+    });
+
+    backButton.addEventListener('click', () => {
+      window.clearTimeout(autoAdvanceTimer);
+      if (state.step === 0) return;
+      state.step -= 1;
+      updateView();
+    });
+
+    entryForm.addEventListener('change', (event) => {
+      if (event.target.name === 'employment_status') {
+        updateStudentState();
+        if (event.target.value !== '4') {
+          scheduleAutoAdvance();
+        }
+        return;
+      }
+
+      if (event.target.type === 'radio') {
+        scheduleAutoAdvance();
+      }
+
+      if (event.target.name === 'others') {
+        const target = event.target;
+        const noneCheckbox = entryForm.querySelector('input[name="others"][value="3"]');
+        const otherCheckboxes = Array.from(entryForm.querySelectorAll('input[name="others"]:not([value="3"])'));
+
+        if (target.value === '3' && target.checked) {
+          otherCheckboxes.forEach((checkbox) => { checkbox.checked = false; });
+        }
+        if (target.value !== '3' && target.checked && noneCheckbox) {
+          noneCheckbox.checked = false;
+        }
+      }
+    });
+
+    document.querySelectorAll('input[name="birthday"]').forEach((input) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^\d]/g, '').slice(0, 8);
+      });
+    });
+
+    loadResultContext();
+    updateView();
+  </script>
+</body>
+</html>

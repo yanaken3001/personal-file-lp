@@ -29,6 +29,20 @@
       ]
     },
     {
+      "source": "/80cards/contact.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/80cards/contact-thanks.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
       "source": "/80cards/og/:path*",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, noimageindex" },

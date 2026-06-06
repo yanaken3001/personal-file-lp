@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登録完了 | 80CARDS</title>
+  <meta name="description" content="80CARDSからのパーソナルファイル登録が完了しました。" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="theme-color" content="#faf9f7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Zen+Kaku+Gothic+New:wght@700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1b22;
+      --ink-2: #4b4954;
+      --ink-3: #73707c;
+      --line: rgba(34, 31, 42, 0.12);
+      --paper: #fffdfb;
+      --violet: #6638f0;
+      --rose: #ff3b5c;
+      --shadow: 0 20px 56px rgba(39, 31, 66, 0.12);
+      --font-sans: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        linear-gradient(135deg, rgba(255, 248, 250, 0.92), rgba(248, 246, 255, 0.86) 42%, rgba(255, 253, 248, 0.96)),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      letter-spacing: 0;
+    }
+
+    .done-card {
+      width: min(100%, 720px);
+      padding: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo {
+      width: 168px;
+      height: auto;
+      display: block;
+      margin-bottom: 28px;
+    }
+
+    .done-kicker {
+      margin: 0 0 10px;
+      color: var(--violet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 32px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      color: var(--ink-2);
+      font-size: 16px;
+      line-height: 1.9;
+      font-weight: 700;
+    }
+
+    .result-box {
+      display: none;
+      margin-top: 24px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .result-box.is-visible {
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-box span {
+      color: var(--ink-3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+    }
+
+    .result-box strong {
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .notice {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(102, 56, 240, 0.07);
+      color: var(--ink-2);
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet), #b244a5);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(102, 56, 240, 0.24);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink-2);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px;
+      }
+
+      .done-card {
+        padding: 24px 20px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .actions {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="done-card">
+    <img class="logo" src="logo/80cards-logo-full.png?v=20260527" alt="80CARDS" width="998" height="260" />
+    <p class="done-kicker">PERSONAL FILE</p>
+    <h1>登録が完了しました</h1>
+    <p class="lead">
+      ご入力いただいた内容を受け付けました。<br />
+      担当者が内容を確認し、<br />
+      パーソナルファイルよりご連絡いたします。
+    </p>
+
+    <div class="result-box" id="resultBox">
+      <span>引き継いだ診断結果</span>
+      <strong id="resultText"></strong>
+    </div>
+
+    <div class="notice">
+      80CARDSの診断結果は登録内容の確認用として扱われます。
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="index.html">80CARDSへ戻る</a>
+      <a class="btn btn-secondary" href="../">PERSONAL FILEトップへ</a>
+    </div>
+  </main>
+
+  <script>
+    const submission = (() => {
+      try {
+        const raw = window.sessionStorage.getItem('pf80cardsSubmission');
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        return null;
+      }
+    })();
+
+    const context = submission?.resultContext;
+    if (context?.typeCode || context?.typeName) {
+      const resultBox = document.getElementById('resultBox');
+      const resultText = document.getElementById('resultText');
+      resultText.textContent = [context.typeCode, context.typeName].filter(Boolean).join(' / ');
+      resultBox.classList.add('is-visible');
+    }
+  </script>
+</body>
+</html>

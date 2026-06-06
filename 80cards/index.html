@@ -12012,13 +12012,17 @@
         : [];
       const [showPersonalFileModal, setShowPersonalFileModal] = React.useState(false);
       const resultTypeCode = get80Code(behavioralType, personalityCode);
-      const personalFileContactUrl = React.useMemo(() => buildPersonalFileContactUrl({
+      const personalFileResultContext = React.useMemo(() => ({
         typeCode: resultTypeCode,
         type16Code: personalityCode,
         typeName: card.nickname,
         behaviorType: card.behaviorType || behavioralType,
+        groupName,
         cta: 'career_section_modal',
-      }), [resultTypeCode, personalityCode, card.nickname, card.behaviorType, behavioralType]);
+      }), [resultTypeCode, personalityCode, card.nickname, card.behaviorType, behavioralType, groupName]);
+      const personalFileContactUrl = React.useMemo(() => buildPersonalFileContactUrl({
+        cta: 'career_section_modal',
+      }), []);
 
       React.useEffect(() => {
         let frameId = null;
@@ -12363,6 +12367,7 @@
           {showPersonalFileModal && (
             <PersonalFileResultModal
               contactUrl={personalFileContactUrl}
+              resultContext={personalFileResultContext}
               onClose={() => setShowPersonalFileModal(false)}
             />
           )}
@@ -12372,14 +12377,26 @@
 
     // ===================================================================
 
-    function buildPersonalFileContactUrl({ typeCode, type16Code, typeName, behaviorType, cta }) {
-      const url = new URL('https://per-sonal.co.jp/personalfile/contact/');
+    const PERSONAL_FILE_RESULT_CONTEXT_KEY = 'pf80cardsResultContext';
+
+    function savePersonalFileResultContext(resultContext) {
+      if (typeof window === 'undefined' || !resultContext) return;
+      try {
+        window.sessionStorage.setItem(PERSONAL_FILE_RESULT_CONTEXT_KEY, JSON.stringify({
+          ...resultContext,
+          source: '80cards',
+          savedAt: new Date().toISOString(),
+        }));
+      } catch (error) {
+        // sessionStorageが使えない環境でもフォーム遷移は継続する。
+      }
+    }
+
+    function buildPersonalFileContactUrl({ cta }) {
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.personal-file.jp';
+      const url = new URL('/80cards/contact.html', origin);
       const params = url.searchParams;
       params.set('route', '80cards_result');
-      if (typeCode) params.set('typeCode', typeCode);
-      if (type16Code) params.set('type16Code', type16Code);
-      if (typeName) params.set('typeName', typeName);
-      if (behaviorType) params.set('behaviorType', behaviorType);
       params.set('source', '80cards');
       params.set('cta', cta || 'career_section_modal');
 
@@ -12398,22 +12415,22 @@
       return (
         <div className="personalfile-result-cta">
           <div className="personalfile-result-cta-label">PERSONAL FILE</div>
-          <h3 className="personalfile-result-cta-title">この結果を、もう少し自分向けに見てみる</h3>
+          <h3 className="personalfile-result-cta-title">80CARDSの結果を引き継いで登録する</h3>
           <p className="personalfile-result-cta-body">
-            向いている職種はわかっても、実際に「自分の経歴で狙えるか」「どんな社風なら合うか」は人によって変わります。
-            80CARDSの結果をもとに、あなたに合う仕事選びの方向性を確認できます。
+            診断結果を引き継いだまま、パーソナルファイルの登録に進めます。
+            現在の就業状況から順に入力してください。
           </p>
           <div className="personalfile-result-cta-action">
             <button type="button" className="personalfile-result-cta-button" onClick={onOpen}>
-              診断結果をもとに詳しく見る
+              登録に進む
             </button>
-            <span className="personalfile-result-cta-sub">無料で確認できます</span>
+            <span className="personalfile-result-cta-sub">無料で利用できます</span>
           </div>
         </div>
       );
     }
 
-    function PersonalFileResultModal({ contactUrl, onClose }) {
+    function PersonalFileResultModal({ contactUrl, resultContext, onClose }) {
       React.useEffect(() => {
         const originalOverflow = document.body.style.overflow;
         const handleKeyDown = (event) => {
@@ -12441,28 +12458,30 @@
             </button>
             <div className="personalfile-modal-label">PERSONAL FILE</div>
             <h2 id="personalfile-modal-title" className="personalfile-modal-title">
-              80CARDSの結果を、仕事選びに使ってみませんか？
+              80CARDSの結果を引き継いで登録します
             </h2>
             <p className="personalfile-modal-lead">
-              80CARDSは、パーソナルファイルが提供している無料診断です。
+              ここから先は、パーソナルファイルの登録フォームです。
             </p>
             <p className="personalfile-modal-text">
-              パーソナルファイルでは、80CARDSの診断結果をもとに、あなたに合う職種、働き方、社風、避けた方がいい環境をさらに詳しく解説します。
-              今すぐ転職したい人だけでなく、転職するか決まっていなくても大丈夫です。
-              まずは、診断結果をもとに自分に合う仕事選びのヒントを確認できます。
+              80CARDSの診断結果を引き継いだ状態で、通常登録に必要な項目を入力できます。
+              現在の就業状況から順に回答してください。
             </p>
             <ul className="personalfile-modal-list">
-              <li>診断結果をもとに、向いている職種を整理</li>
-              <li>未経験からチャレンジしやすい仕事を確認</li>
-              <li>合う社風や避けた方がいい職場を確認</li>
-              <li>希望があれば、実際の求人も紹介</li>
+              <li>本サービスは20代特化の就職・転職支援サービスです</li>
+              <li>学生の方はご利用できません</li>
+              <li>登録は無料で行えます</li>
             </ul>
             <p className="personalfile-modal-reassurance">
-              求人を無理にすすめるのではなく、まずは診断結果をもとに仕事選びの方向性を整理します。
+              診断結果は、登録フォームの引き継ぎ情報としてのみ扱われます。
             </p>
             <div className="personalfile-modal-actions">
-              <a className="personalfile-modal-primary" href={contactUrl}>
-                無料で詳しく見てみる
+              <a
+                className="personalfile-modal-primary"
+                href={contactUrl}
+                onClick={() => savePersonalFileResultContext(resultContext)}
+              >
+                登録フォームへ進む
               </a>
               <button type="button" className="personalfile-modal-secondary" onClick={onClose}>
                 あとで見る
