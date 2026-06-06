@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -9,68 +9,48 @@
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
   <link rel="canonical" href="https://www.personal-file.jp/80cards/share/hip" />
   <link rel="icon" href="/80cards/logo/favicon.png?v=20260527b" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Noto+Serif+JP:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="80CARDS" />
   <meta property="og:title" content="HMIP｜助っ人ヒーロー｜80CARDS" />
   <meta property="og:description" content="何でもこなせる万能さで、組織のバランスを静かに保つ。あなたは80タイプのうち何タイプ？" />
   <meta property="og:url" content="https://www.personal-file.jp/80cards/share/hip" />
-  <meta property="og:image" content="https://www.personal-file.jp/80cards/og/ip.png" />
+  <meta property="og:image" content="https://www.personal-file.jp/80cards/og-80/hmip.jpg?v=20260606c" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="HMIP｜助っ人ヒーロー｜80CARDS" />
   <meta name="twitter:description" content="何でもこなせる万能さで、組織のバランスを静かに保つ。あなたは80タイプのうち何タイプ？" />
-  <meta name="twitter:image" content="https://www.personal-file.jp/80cards/og/ip.png" />
-  <meta name="twitter:image:alt" content="80CARDS診断結果。HMIP、助っ人ヒーロータイプ。何でもこなせる万能さで、組織のバランスを静かに保つ。" />
+  <meta name="twitter:image" content="https://www.personal-file.jp/80cards/og-80/hmip.jpg?v=20260606c" />
+  <meta name="twitter:image:alt" content="80CARDS。HMIP、助っ人ヒーロータイプ。あなたは何タイプ？" />
   <style>
-    * { box-sizing: border-box; }
     :root { --theme: #00BFA6; --theme-deep: #007B71; --theme-soft: #D9FFF8; }
-    body { margin: 0; min-height: 100vh; font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", system-ui, sans-serif; color: #18181f; background: linear-gradient(115deg, var(--theme-soft) 0%, #fffaf6 48%, #f7f3ff 100%); }
-    body::before { content:""; position: fixed; inset: 0; pointer-events: none; background: linear-gradient(100deg, color-mix(in srgb, var(--theme) 16%, transparent) 0%, transparent 42%, rgba(255,255,255,.35) 100%); }
-    .page { position: relative; min-height: 100vh; display: grid; place-items: center; padding: 44px 22px; overflow: hidden; }
-    .shell { width: min(1120px, 100%); display: grid; grid-template-columns: 438px minmax(0,1fr); gap: 66px; align-items: center; }
-    .mobile-brand { display: none; }
-    .card-stage { position: relative; display: grid; justify-items: center; }
-    .card-stage::before { content:""; position: absolute; width: 88%; height: 72%; left: 4%; bottom: -5%; border-radius: 999px; background: color-mix(in srgb, var(--theme) 22%, transparent); filter: blur(38px); opacity: .75; }
-    .pf-card { position: relative; width: min(420px, 100%); aspect-ratio: 2 / 3; border-radius: 34px; background: #fff6df; box-shadow: 0 30px 80px rgba(31,24,38,.18), inset 0 1px 0 rgba(255,255,255,.9); border: 3px solid rgba(255,255,255,.86); overflow: hidden; }
-    .pf-card::before { content:""; position: absolute; inset: 23px; border-radius: 24px; background: url("/80cards/card-background/IP.webp?v=20260527") center/cover no-repeat; box-shadow: inset 0 0 0 2px rgba(255,255,255,.72); }
-    .pf-card::after { content:""; position: absolute; inset: 0; background: linear-gradient(130deg, rgba(255,255,255,.34) 0%, transparent 22%, transparent 70%, rgba(255,255,255,.18) 100%); pointer-events:none; }
-    .character { position: absolute; left: 50%; top: 15%; width: 76%; transform: translateX(-50%); filter: drop-shadow(0 24px 26px rgba(50,20,20,.28)); }
-    .plate { position: absolute; left: 48px; right: 48px; bottom: 42px; padding: 24px 16px 26px; text-align: center; border-radius: 24px; background: rgba(255,247,224,.92); border: 1px solid rgba(150,87,28,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
-    .plate-code { margin: 0 0 8px; color: var(--theme); font-weight: 950; font-size: 33px; line-height: 1; }
-    .plate-name { margin: 0; color: var(--theme-deep); font-weight: 950; font-size: 27px; line-height: 1.16; }
-    .copy { min-width: 0; }
-    .brand { margin: 0 0 16px; font-size: 15px; font-weight: 950; letter-spacing: .42em; color: #777985; }
-    .kicker { display: inline-flex; align-items: center; min-height: 34px; margin-bottom: 18px; padding: 5px 14px; border-radius: 999px; color: var(--theme-deep); background: rgba(255,255,255,.74); border: 1px solid color-mix(in srgb, var(--theme) 42%, transparent); font-size: 13px; font-weight: 900; }
-    h1 { margin: 0 0 12px; color: var(--theme); font-size: clamp(64px, 7.4vw, 104px); line-height: .92; font-weight: 950; letter-spacing: .02em; }
-    h2 { margin: 0 0 20px; font-size: clamp(31px, 4vw, 52px); line-height: 1.1; font-weight: 950; letter-spacing: 0; }
-    .catch { margin: 0 0 20px; max-width: 620px; font-size: 22px; line-height: 1.75; font-weight: 760; }
-    .desc { margin: 0 0 22px; max-width: 620px; color: #50515c; font-size: 15.5px; line-height: 1.9; font-weight: 500; }
-    .meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 190px)); gap: 10px; margin: 0 0 22px; }
-    .meta-cell { min-height: 70px; padding: 13px 15px; border-radius: 16px; background: rgba(255,255,255,.66); border: 1px solid rgba(24,24,31,.08); }
-    .meta-cell span { display: block; margin-bottom: 6px; color: #8b8d99; font-size: 11px; font-weight: 850; letter-spacing: .08em; }
-    .meta-cell strong { display: block; color: #17171f; font-size: 18px; font-weight: 950; }
-    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 24px; }
-    .badges span { display: inline-flex; align-items: center; min-height: 34px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.76); border: 1px solid rgba(24,24,31,.08); color: #31313b; font-weight: 850; font-size: 13px; }
-    .note { margin: 0 0 26px; color: #17171f; font-size: 17px; line-height: 1.65; font-weight: 900; }
-    .cta { display: inline-flex; min-height: 58px; align-items: center; justify-content: center; padding: 0 30px; border-radius: 18px; color: #fff; background: linear-gradient(120deg, #5b3cf0, var(--theme)); text-decoration: none; font-weight: 950; box-shadow: 0 16px 34px color-mix(in srgb, var(--theme) 32%, transparent); }
-    .sub { display:block; margin-top: 15px; color: #7d7f8b; font-size: 12px; }
-    .site-footer { position: relative; width: 100%; margin: 28px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; color: #8b8d99; font-size: 11px; font-weight: 800; letter-spacing: .08em; }
-    .site-footer-links { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 16px; }
-    .site-footer a { color: inherit; text-decoration: none; }
-    .site-footer a:hover { color: #18181f; }
-    @media (max-width: 860px) { .page { padding: 22px 18px 36px; place-items: start center; } .shell { grid-template-columns: 1fr; gap: 26px; } .mobile-brand { display: block; width: 100%; margin: 2px 0 18px; text-align: left; } .desktop-brand { display: none; } .pf-card { width: min(360px, 100%); } .character { width: 74%; } .copy { width: min(620px, 100%); margin: 0 auto; } h1 { font-size: 64px; } h2 { font-size: 30px; } .catch { font-size: 18px; line-height: 1.8; } .meta-grid { grid-template-columns: 1fr 1fr; } .plate-code { font-size: 29px; } .plate-name { font-size: 23px; } }
-    @media (max-width: 420px) { .pf-card { width: min(330px, 100%); } .plate { left: 36px; right: 36px; bottom: 34px; } .meta-grid { grid-template-columns: 1fr; } .cta { width: 100%; } }
   </style>
+  <link rel="stylesheet" href="/80cards/share-card.css?v=20260606a" />
 </head>
 <body>
   <main class="page">
     <section class="shell">
       <div class="card-stage">
         <p class="brand mobile-brand">80CARDS</p>
-        <div class="pf-card" aria-label="HMIP 助っ人ヒーロー">
-          <img class="character" src="/80cards/share-character/ip.png?v=20260527" alt="助っ人ヒーロー" loading="eager" decoding="async" fetchpriority="high" />
-          <div class="plate"><p class="plate-code">私は HMIP</p><p class="plate-name">助っ人ヒーロー タイプ</p></div>
+        <div class="pf-card" aria-label="HMIP 助っ人ヒーロー" style="--card-bg: url('/80cards/card-background/IP.webp?v=20260527'); --card-ink: #078875; --card-line: #119b83; --card-chip-bg: linear-gradient(180deg, #31d6a7 0%, #07987a 100%); --char-scale: 1.21;">
+          <div class="pf-card-surface">
+            <div class="pf-card-bg" aria-hidden="true"></div>
+            <div class="pf-card-code">HMIP</div>
+            <div class="pf-card-art">
+              <div class="pf-card-shadow" aria-hidden="true"></div>
+              <img class="character" src="/80cards/character/IP.png?v=20260527" alt="助っ人ヒーロー" loading="eager" decoding="async" fetchpriority="high" />
+            </div>
+            <div class="pf-card-info">
+              <p class="pf-card-behavior">調和型</p>
+              <p class="pf-card-name">助っ人ヒーロー</p>
+              <p class="pf-card-catch">何でもこなせる万能さで、<br />組織のバランスを静かに保つ</p>
+              <div class="pf-card-tags"><div class="pf-card-tag-row"><span class="pf-card-tag">#人間関係</span><span class="pf-card-tag">#信頼</span></div><div class="pf-card-tag-row"><span class="pf-card-tag">#貢献</span></div></div>
+            </div>
+            <div class="pf-card-shine" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
       <div class="copy">
@@ -84,7 +64,7 @@
           <div class="meta-cell"><span>16タイプコード</span><strong>IP</strong></div>
         </div>
         <p class="desc">この人は、80CARDSで「HMIP｜助っ人ヒーロー」タイプでした。<br />80CARDSは、16タイプでは捉えきれない性格の違いを、80タイプのカードで診断する性格診断です。</p>
-        <div class="badges"><span>#協調性</span><span>#柔軟な対応力</span><span>#縁の下の力持ち</span></div>
+        <div class="badges"><span>#人間関係</span><span>#信頼</span><span>#貢献</span></div>
         <p class="note">あなたは何タイプ？</p>
         <a class="cta" href="/80cards/?start=1">自分のタイプを診断する</a>
         <span class="sub">診断結果はカードとしてシェアできます。</span>
