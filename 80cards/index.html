@@ -9602,12 +9602,27 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const IS_LOCAL_PREVIEW = ['localhost', '127.0.0.1', ''].includes(window.location.hostname) || window.location.protocol === 'file:';
+    function isDevResultsPreviewFrame() {
+      try {
+        if (window.self === window.top) return false;
+        const parentPath = window.parent?.location?.pathname || '';
+        return /\/80cards\/dev-results\.html$/.test(parentPath);
+      } catch (error) {
+        try {
+          const referrer = document.referrer ? new URL(document.referrer) : null;
+          return !!referrer && referrer.origin === window.location.origin && /\/80cards\/dev-results\.html$/.test(referrer.pathname);
+        } catch (_) {
+          return false;
+        }
+      }
+    }
+    const ALLOW_DEV_RESULT_PREVIEW = IS_LOCAL_PREVIEW || isDevResultsPreviewFrame();
     const fromParam = urlParams.get('from') || '';
     const matchParam = urlParams.get('match') || '';
-    const devScoresParam = IS_LOCAL_PREVIEW ? (urlParams.get('dev_scores') || '') : '';
-    const devAdaptiveParam = IS_LOCAL_PREVIEW ? (urlParams.get('dev_adaptive') || '') : '';
+    const devScoresParam = ALLOW_DEV_RESULT_PREVIEW ? (urlParams.get('dev_scores') || '') : '';
+    const devAdaptiveParam = ALLOW_DEV_RESULT_PREVIEW ? (urlParams.get('dev_adaptive') || '') : '';
     const autoStart = urlParams.get('start') === '1';
-    const DEBUG_MODE = IS_LOCAL_PREVIEW && urlParams.get('debug') === '1';
+    const DEBUG_MODE = ALLOW_DEV_RESULT_PREVIEW && urlParams.get('debug') === '1';
     const NOINDEX_DIRECTIVES = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
 
     function setRobotsDirectives(content) {
@@ -9627,7 +9642,7 @@
     }
 
     function getDevAdaptivePreset(mode) {
-      if (!IS_LOCAL_PREVIEW) return null;
+      if (!ALLOW_DEV_RESULT_PREVIEW) return null;
       const answerHistory = Array(BASE_TOTAL_QUESTIONS - 1).fill(3);
       if (mode === 'both') {
         return {
