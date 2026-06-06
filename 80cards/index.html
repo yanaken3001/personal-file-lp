@@ -11108,9 +11108,9 @@
 
       const nickname = TYPE_NICKNAMES[personalityCode] || typeName;
       const resultCode = get80Code(behaviorType, personalityCode);
-      const legacyShareCode = getLegacyShareCode(behaviorType, personalityCode);
       const catchCopy = TYPE_CATCHCOPY[personalityCode] || '';
-      const shareUrl = resultUrl || `https://www.personal-file.jp/80cards/share/${legacyShareCode.toLowerCase()}/`;
+      const shareCode = resultCode.toLowerCase();
+      const shareUrl = resultUrl || `https://www.personal-file.jp/80cards/share/${shareCode}/`;
       const formatCatchForShare = (text) => {
         if (!text) return '';
         const parts = text.split('、');
