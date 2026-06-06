@@ -256,13 +256,14 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0;
       margin-top: 12px;
-      padding-top: 12px;
+      padding-top: 11px;
       border-top: 1px solid rgba(34, 31, 42, 0.08);
     }
 
     .result-proof-item {
       display: block;
-      padding: 0 9px;
+      min-width: 0;
+      padding: 0 5px;
       text-align: center;
     }
 
@@ -273,29 +274,31 @@
     .result-proof-label {
       display: block;
       color: var(--ink-2);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.35;
       font-weight: 900;
+      white-space: nowrap;
     }
 
     .result-proof-value {
       display: block;
-      margin-top: 5px;
+      margin-top: 6px;
       color: var(--violet);
       background: linear-gradient(135deg, var(--violet), var(--rose));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-size: 17px;
-      line-height: 1.25;
+      font-size: 16px;
+      line-height: 1.16;
       font-weight: 900;
-      white-space: nowrap;
+      white-space: normal;
       word-break: keep-all;
-      overflow-wrap: anywhere;
+      overflow-wrap: normal;
     }
 
     .result-proof-value span {
-      display: inline;
+      display: block;
+      min-width: 0;
     }
 
     .form-panel {
@@ -694,18 +697,13 @@
         display: none;
       }
 
-      .result-proof-value span {
-        display: block;
-      }
-
-      .result-proof-value {
-        white-space: normal;
-      }
-
-      .result-chip-grid,
       .input-grid,
       .option-grid.is-two {
         grid-template-columns: 1fr;
+      }
+
+      .result-chip-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .form-panel {
@@ -978,6 +976,7 @@
     };
 
     const steps = Array.from(document.querySelectorAll('.step'));
+    const formPanel = document.querySelector('.form-panel');
     const entryForm = document.getElementById('entryForm');
     const nextButton = document.getElementById('nextButton');
     const backButton = document.getElementById('backButton');
@@ -1041,7 +1040,28 @@
       document.getElementById('chipBehavior').textContent = context.behaviorType || '--';
     }
 
-    function updateView() {
+    function keepFormPanelInView() {
+      if (!formPanel) return;
+
+      const isStackedLayout = window.matchMedia('(max-width: 860px)').matches;
+      const formRect = formPanel.getBoundingClientRect();
+      const offset = isStackedLayout ? 10 : 18;
+      const targetTop = Math.max(window.scrollY + formRect.top - offset, 0);
+      const formIsAlreadySet = Math.abs(formRect.top - offset) <= 16;
+
+      if (isStackedLayout) {
+        if (!formIsAlreadySet) {
+          window.scrollTo({ top: targetTop, behavior: 'auto' });
+        }
+        return;
+      }
+
+      if (formRect.top < offset || formRect.top > window.innerHeight * 0.35) {
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    }
+
+    function updateView(options = {}) {
       steps.forEach((step, index) => {
         step.classList.toggle('is-active', index === state.step);
       });
@@ -1057,7 +1077,9 @@
       autoAdvanceStatus.classList.toggle('is-visible', autoStep);
       setError('');
       updateStudentState();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (options.keepFormInView) {
+        keepFormPanelInView();
+      }
     }
 
     function updateStudentState() {
@@ -1135,7 +1157,7 @@
       }
 
       state.step += 1;
-      updateView();
+      updateView({ keepFormInView: true });
       return true;
     }
 
@@ -1317,7 +1339,7 @@
       window.clearTimeout(autoAdvanceTimer);
       if (state.step === 0) return;
       state.step -= 1;
-      updateView();
+      updateView({ keepFormInView: true });
     });
 
     entryForm.addEventListener('change', (event) => {
