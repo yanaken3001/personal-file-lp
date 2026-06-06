@@ -4,21 +4,107 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>80CARDS | 80タイプの性格診断</title>
-  <meta name="description" content="16タイプじゃ、まだ足りない。80タイプの性格診断で、本当のあなたを見つけよう。" />
+  <meta name="description" content="80CARDSは、16タイプだけでは見えにくい性格の違いを80タイプのカードで診断する無料の性格診断です。約3分・57問であなたの80CODEを発行します。" />
   <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.personal-file.jp/80cards/" />
+  <link rel="alternate" hreflang="ja-JP" href="https://www.personal-file.jp/80cards/" />
 
   <!-- OGP -->
   <meta property="og:title" content="80CARDS | 80タイプの性格診断" />
-  <meta property="og:description" content="16タイプじゃ、まだ足りない。80タイプの性格診断で、本当のあなたを見つけよう。" />
+  <meta property="og:description" content="16タイプだけでは見えにくい性格の違いを、80タイプのカードで診断。約3分・57問であなたの80CODEを発行します。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.personal-file.jp/80cards/" />
   <meta property="og:image" content="https://www.personal-file.jp/80cards/ogp.png" />
+  <meta property="og:image:width" content="2752" />
+  <meta property="og:image:height" content="1536" />
+  <meta property="og:image:alt" content="80CARDS 80タイプの性格診断" />
   <meta property="og:site_name" content="80CARDS" />
   <meta property="og:locale" content="ja_JP" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="80CARDS | 80タイプの性格診断" />
-  <meta name="twitter:description" content="16タイプじゃ、まだ足りない。80タイプの性格診断で、本当のあなたを見つけよう。" />
+  <meta name="twitter:description" content="16タイプだけでは見えにくい性格の違いを、80タイプのカードで診断。約3分・57問であなたの80CODEを発行します。" />
   <meta name="twitter:image" content="https://www.personal-file.jp/80cards/ogp.png" />
+  <meta name="twitter:image:alt" content="80CARDS 80タイプの性格診断" />
+  <meta name="theme-color" content="#faf9f7" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.personal-file.jp/#organization",
+        "name": "Personal Inc.",
+        "url": "https://www.personal-file.jp/"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.personal-file.jp/#website",
+        "url": "https://www.personal-file.jp/",
+        "name": "PERSONAL FILE",
+        "publisher": {
+          "@id": "https://www.personal-file.jp/#organization"
+        },
+        "inLanguage": "ja-JP"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.personal-file.jp/80cards/#webpage",
+        "url": "https://www.personal-file.jp/80cards/",
+        "name": "80CARDS | 80タイプの性格診断",
+        "description": "80CARDSは、16タイプだけでは見えにくい性格の違いを80タイプのカードで診断する無料の性格診断です。",
+        "isPartOf": {
+          "@id": "https://www.personal-file.jp/#website"
+        },
+        "about": {
+          "@id": "https://www.personal-file.jp/80cards/#app"
+        },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://www.personal-file.jp/80cards/ogp.png",
+          "width": 2752,
+          "height": 1536
+        },
+        "breadcrumb": {
+          "@id": "https://www.personal-file.jp/80cards/#breadcrumb"
+        },
+        "inLanguage": "ja-JP"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.personal-file.jp/80cards/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "PERSONAL FILE",
+            "item": "https://www.personal-file.jp/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "80CARDS",
+            "item": "https://www.personal-file.jp/80cards/"
+          }
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://www.personal-file.jp/80cards/#app",
+        "name": "80CARDS",
+        "url": "https://www.personal-file.jp/80cards/",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "description": "16タイプと5つの行動スタイルから80タイプの性格カードを発行する無料診断サービスです。",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "JPY"
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon -->
   <link rel="icon" href="/80cards/logo/favicon.png?v=20260527b" type="image/png" />
@@ -9515,13 +9601,30 @@
     // ===================================================================
 
     const urlParams = new URLSearchParams(window.location.search);
+    const IS_LOCAL_PREVIEW = ['localhost', '127.0.0.1', ''].includes(window.location.hostname) || window.location.protocol === 'file:';
     const fromParam = urlParams.get('from') || '';
     const matchParam = urlParams.get('match') || '';
-    const devScoresParam = urlParams.get('dev_scores') || '';
-    const devAdaptiveParam = urlParams.get('dev_adaptive') || '';
+    const devScoresParam = IS_LOCAL_PREVIEW ? (urlParams.get('dev_scores') || '') : '';
+    const devAdaptiveParam = IS_LOCAL_PREVIEW ? (urlParams.get('dev_adaptive') || '') : '';
     const autoStart = urlParams.get('start') === '1';
-    const DEBUG_MODE = urlParams.get('debug') === '1';
-    const IS_LOCAL_PREVIEW = ['localhost', '127.0.0.1', ''].includes(window.location.hostname) || window.location.protocol === 'file:';
+    const DEBUG_MODE = IS_LOCAL_PREVIEW && urlParams.get('debug') === '1';
+    const NOINDEX_DIRECTIVES = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
+
+    function setRobotsDirectives(content) {
+      ['robots', 'googlebot'].forEach((name) => {
+        let meta = document.querySelector(`meta[name="${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute('name', name);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      });
+    }
+
+    if (matchParam || urlParams.has('dev_scores') || urlParams.has('dev_adaptive') || urlParams.has('debug')) {
+      setRobotsDirectives(NOINDEX_DIRECTIVES);
+    }
 
     function getDevAdaptivePreset(mode) {
       if (!IS_LOCAL_PREVIEW) return null;
@@ -10866,6 +10969,7 @@
       };
 
       document.title = title;
+      setRobotsDirectives(NOINDEX_DIRECTIVES);
       setMeta('og:title', title);
       setMeta('og:description', description);
       setMeta('og:type', 'website');

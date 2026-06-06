@@ -8,6 +8,41 @@
   ],
   "headers": [
     {
+      "source": "/80cards/share/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/80cards/dev-results.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/80cards/og/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, noimageindex" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/80cards/share-character/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, noimageindex" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/80cards/card-background/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, noimageindex" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
       "source": "/80cards/(.*).html",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
@@ -16,6 +51,7 @@
     {
       "source": "/80cards/character/(.*)",
       "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, noimageindex" },
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
