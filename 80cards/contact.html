@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>80CARDS 登録フォーム | PERSONAL FILE</title>
-  <meta name="description" content="80CARDSの診断結果を引き継いで、パーソナルファイルの登録に進むためのフォームです。" />
+  <meta name="description" content="80CARDSの診断結果をもとに、さらに詳しい診断説明と相性のいい仕事紹介へ進むためのフォームです。" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
   <meta property="og:title" content="80CARDS 登録フォーム | PERSONAL FILE" />
-  <meta property="og:description" content="80CARDSの診断結果を引き継いで登録できます。" />
+  <meta property="og:description" content="80CARDSの診断結果をもとに、さらに詳しい診断説明と相性のいい仕事紹介へ進めます。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.personal-file.jp/80cards/contact.html" />
   <meta property="og:image" content="https://www.personal-file.jp/80cards/ogp.png" />
@@ -148,6 +148,14 @@
       font-weight: 600;
     }
 
+    .desktop-copy-break {
+      display: block;
+    }
+
+    .mobile-title-break {
+      display: none;
+    }
+
     .result-chip-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -180,6 +188,7 @@
       font-size: 18px;
       line-height: 1.25;
       font-weight: 900;
+      white-space: nowrap;
       word-break: keep-all;
       overflow-wrap: anywhere;
     }
@@ -193,6 +202,100 @@
       font-size: 13px;
       line-height: 1.7;
       font-weight: 700;
+    }
+
+    .result-note strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .result-note ul {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .result-note li {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .result-note li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      transform: translateY(-50%);
+    }
+
+    .result-proof {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .result-proof-head {
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 900;
+    }
+
+    .result-proof-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(34, 31, 42, 0.08);
+    }
+
+    .result-proof-item {
+      display: block;
+      padding: 0 9px;
+      text-align: center;
+    }
+
+    .result-proof-item + .result-proof-item {
+      border-left: 1px solid rgba(34, 31, 42, 0.08);
+    }
+
+    .result-proof-label {
+      display: block;
+      color: var(--ink-2);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .result-proof-value {
+      display: block;
+      margin-top: 5px;
+      color: var(--violet);
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 900;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .result-proof-value span {
+      display: inline;
     }
 
     .form-panel {
@@ -583,6 +686,22 @@
         font-size: 21px;
       }
 
+      .mobile-title-break {
+        display: block;
+      }
+
+      .desktop-copy-break {
+        display: none;
+      }
+
+      .result-proof-value span {
+        display: block;
+      }
+
+      .result-proof-value {
+        white-space: normal;
+      }
+
       .result-chip-grid,
       .input-grid,
       .option-grid.is-two {
@@ -625,9 +744,10 @@
   <main class="layout">
     <aside class="result-panel" aria-label="80CARDSの診断結果">
       <p class="result-kicker">80CARDS RESULT</p>
-      <h1 class="result-title">診断結果を引き継いで登録できます</h1>
+      <h1 class="result-title">診断結果をもとに、<br class="mobile-title-break" />転職サポートへ進む</h1>
       <p class="result-copy">
-        80CARDSの結果をもとに、パーソナルファイルの登録に進めます。
+        登録すると、80CARDSでわかったあなたのタイプをさらに詳しく解説します。<br class="desktop-copy-break" />
+        強みや向いている職種を整理したうえで、相性のいいお仕事をご紹介します。
       </p>
       <div class="result-chip-grid" id="resultChipGrid">
         <div class="result-chip">
@@ -648,7 +768,37 @@
         </div>
       </div>
       <div class="result-note">
-        このフォームは80CARDS専用です。入力項目は通常登録フォームの内容に合わせています。
+        <strong>登録後にできること</strong>
+        <ul>
+          <li>さらに詳しい診断結果を確認</li>
+          <li>あなたに合う職種・働き方を整理</li>
+          <li>相性のいいお仕事紹介へ進める</li>
+        </ul>
+      </div>
+      <div class="result-proof" aria-label="Personal Fileだからできること">
+        <div class="result-proof-head">
+          <span>Personal Fileだからできること</span>
+        </div>
+        <div class="result-proof-list">
+          <div class="result-proof-item">
+            <span>
+              <span class="result-proof-label">就職成功者の</span>
+              <strong class="result-proof-value"><span>95%</span><span>が未経験</span></strong>
+            </span>
+          </div>
+          <div class="result-proof-item">
+            <span>
+              <span class="result-proof-label">入社半年後</span>
+              <strong class="result-proof-value"><span>定着率</span><span>98%</span></strong>
+            </span>
+          </div>
+          <div class="result-proof-item">
+            <span>
+              <span class="result-proof-label">診断結果</span>
+              <strong class="result-proof-value"><span>納得度</span><span>94%以上</span></strong>
+            </span>
+          </div>
+        </div>
       </div>
     </aside>
 
@@ -701,7 +851,7 @@
             <label class="option"><input type="radio" name="desired_employment_timeframe" value="5" />6ヶ月以上先</label>
             <label class="option"><input type="radio" name="desired_employment_timeframe" value="4" />相談したい</label>
           </div>
-          <p class="hint">選択肢は通常登録フォームと同じです。追加の相談内容入力はありません。</p>
+          <p class="hint">迷う場合は「相談したい」を選んでください。登録後に、あなたの状況に合う進め方を確認します。</p>
         </section>
 
         <section class="step" data-step="2" data-required="desired_work_location">
