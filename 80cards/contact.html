@@ -967,7 +967,6 @@
     const SUBMISSION_CONTEXT_KEY = 'pf80cardsSubmission';
     const API_URL = 'https://api.personalfile.tech/api/exam/register';
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzTi52Z86dPAeiJkS1_ntKoNXucI2Ekqv0YYKWyZDgG3zj-wovdl6XXOJBxQTBsA-E-KA/exec';
-    const RESULT_NOTIFICATION_URL = '/api/80cards-result-notification';
 
     const state = {
       step: 0,
@@ -1249,40 +1248,6 @@
       });
     }
 
-    function buildResultNotificationPayload(apiPayload, userId, submittedAt) {
-      const data = new FormData(entryForm);
-      const result = state.resultContext || {};
-      return cleanPayload({
-        notification_type: '80cards_result_registration',
-        submitted_at: submittedAt,
-        user_id: userId || null,
-        route: apiPayload.route,
-        source: '80cards',
-        cta: getQueryParam('cta') || '80cards_contact',
-        lead: {
-          last_name: apiPayload.last_name,
-          first_name: apiPayload.first_name,
-          last_name_kana: apiPayload.last_name_kana,
-          first_name_kana: apiPayload.first_name_kana,
-          birthday: apiPayload.birthday,
-          email: apiPayload.email,
-          tel: apiPayload.tel,
-          employment_status: data.get('employment_status'),
-          desired_employment_timeframe: data.get('desired_employment_timeframe'),
-          desired_work_location: data.get('desired_work_location'),
-          last_educational_background: data.get('last_educational_background'),
-          others: getCheckedValues('others'),
-        },
-        result: {
-          type_code: result.typeCode || null,
-          type16_code: result.type16Code || null,
-          type_name: result.typeName || null,
-          behavior_type: result.behaviorType || null,
-          group_name: result.groupName || null,
-        },
-      });
-    }
-
     async function postWithTimeout(url, body, timeoutMs = 10000) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -1317,13 +1282,6 @@
       }
     }
 
-    async function postResultNotification(body, timeoutMs = 3500) {
-      const response = await postWithTimeout(RESULT_NOTIFICATION_URL, body, timeoutMs);
-      if (!response.ok) {
-        throw new Error('80CARDS result notification failed');
-      }
-    }
-
     async function submitForm() {
       const validation = validateCurrentStep();
       if (validation) {
@@ -1349,16 +1307,13 @@
         }
 
         const userId = responseData?.data?.user_id || responseData?.user_id || null;
-        const submittedAt = new Date().toISOString();
         const gasPayload = buildSpreadsheetPayload(payload, userId);
         postSpreadsheetLog(gasPayload).catch(() => {});
-        const resultNotificationPayload = buildResultNotificationPayload(payload, userId, submittedAt);
-        await postResultNotification(resultNotificationPayload).catch(() => {});
 
         const submission = {
           userId: userId || '',
           resultContext: state.resultContext || null,
-          submittedAt,
+          submittedAt: new Date().toISOString(),
         };
         try {
           window.sessionStorage.setItem(SUBMISSION_CONTEXT_KEY, JSON.stringify(submission));
