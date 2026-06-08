@@ -1,5 +1,5 @@
 const DEFAULT_TO = 'register@per-sonal.co.jp';
-const DEFAULT_FROM = 'PERSONAL FILE <noreply@personal-file.jp>';
+const DEFAULT_FROM = 'パーソナルファイル事務局 <noreply@per-sonal.co.jp>';
 
 const EMPLOYMENT_STATUS = {
   2: '在職中',
