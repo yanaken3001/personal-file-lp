@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4XQS4E3G0');
+  </script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('set', 'autoConfig', false, '519412346829983');
+    fbq('init', '519412346829983');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1" />
+  </noscript>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>登録完了 | 80CARDS</title>
@@ -212,6 +240,64 @@
       }
     })();
 
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function getMarketingParams() {
+      const params = new URLSearchParams(window.location.search);
+      return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'gclid', 'fbclid'].reduce((carry, key) => {
+        const value = params.get(key);
+        if (value) carry[key] = value;
+        return carry;
+      }, {});
+    }
+
+    function getLeadEventParams() {
+      const context = submission?.resultContext || {};
+      const params = {
+        content_name: '80cards_contact_complete',
+        route: getQueryParam('route') || submission?.route || '80cards_result',
+        source: getQueryParam('source') || submission?.source || '80cards',
+        cta: getQueryParam('cta') || submission?.cta || '80cards_contact',
+        ...getMarketingParams(),
+      };
+      const userId = getQueryParam('user_id') || submission?.userId;
+      if (userId) params.user_id = userId;
+      if (context.typeCode) params.full_type = context.typeCode;
+      if (context.type16Code) params.personality_type = context.type16Code;
+      if (context.behaviorType) params.behavioral_type = context.behaviorType;
+      return params;
+    }
+
+    function trackLeadComplete() {
+      const eventId = getQueryParam('event_id') || submission?.leadEventId || '';
+      const userId = getQueryParam('user_id') || submission?.userId || '';
+      if (!eventId && !userId && !submission?.submittedAt) return;
+      const dedupeKey = 'pf80cardsLeadTracked:' + (eventId || userId || window.location.pathname);
+      try {
+        if (window.sessionStorage.getItem(dedupeKey)) return;
+        window.sessionStorage.setItem(dedupeKey, '1');
+      } catch (error) {}
+
+      const eventParams = getLeadEventParams();
+      try {
+        if (typeof fbq === 'function') {
+          if (eventId) {
+            fbq('track', 'Lead', eventParams, { eventID: eventId });
+          } else {
+            fbq('track', 'Lead', eventParams);
+          }
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            form_name: '80cards_contact',
+            ...eventParams,
+          });
+        }
+      } catch (error) {}
+    }
+
     const context = submission?.resultContext;
     if (context?.typeCode || context?.typeName) {
       const resultBox = document.getElementById('resultBox');
@@ -219,6 +305,8 @@
       resultText.textContent = [context.typeCode, context.typeName].filter(Boolean).join(' / ');
       resultBox.classList.add('is-visible');
     }
+
+    trackLeadComplete();
   </script>
 </body>
 </html>

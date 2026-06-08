@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4XQS4E3G0');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>80CARDS | 80タイプの性格診断</title>
@@ -10485,6 +10494,11 @@
           if (typeof fbq === 'function') {
             fbq('trackCustom', 'Diagnosis80Start', { content_name: '80cards_start' });
           }
+          if (typeof gtag === 'function') {
+            gtag('event', 'diagnosis_80_start', {
+              content_name: '80cards_start',
+            });
+          }
         } catch (e) {}
         onStart();
       };
@@ -11140,6 +11154,12 @@
         try {
           if (typeof fbq === 'function') {
             fbq('trackCustom', 'CTA80TypeClick', {
+              content_name: '80cards_share_x',
+              full_type: typeName,
+            });
+          }
+          if (typeof gtag === 'function') {
+            gtag('event', 'cta_80_type_click', {
               content_name: '80cards_share_x',
               full_type: typeName,
             });
@@ -12304,7 +12324,25 @@
                   <p className="jp-serif" style={{ fontSize: 15, lineHeight: 1.9, color: 'var(--ink2)', whiteSpace: 'pre-line' }}>
                     {typeData.entryJobs}
                   </p>
-                  <CareerPersonalFileCta onOpen={() => setShowPersonalFileModal(true)} />
+                  <CareerPersonalFileCta onOpen={() => {
+                    try {
+                      if (typeof fbq === 'function') {
+                        fbq('trackCustom', 'CTA80TypeClick', {
+                          content_name: '80cards_career_modal_open',
+                          personality_type: personalityCode,
+                          behavioral_type: behavioralType.name,
+                        });
+                      }
+                      if (typeof gtag === 'function') {
+                        gtag('event', 'cta_80_type_click', {
+                          content_name: '80cards_career_modal_open',
+                          personality_type: personalityCode,
+                          behavioral_type: behavioralType.name,
+                        });
+                      }
+                    } catch (e) {}
+                    setShowPersonalFileModal(true);
+                  }} />
                 </SectionBlock80>
               )}
 
@@ -12418,7 +12456,7 @@
 
       if (typeof window !== 'undefined') {
         const currentParams = new URLSearchParams(window.location.search);
-        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach((key) => {
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'gclid', 'fbclid'].forEach((key) => {
           const value = currentParams.get(key);
           if (value) params.set(key, value);
         });
@@ -12498,7 +12536,25 @@
               <a
                 className="personalfile-modal-primary"
                 href={contactUrl}
-                onClick={() => savePersonalFileResultContext(resultContext)}
+                onClick={() => {
+                  savePersonalFileResultContext(resultContext);
+                  try {
+                    if (typeof fbq === 'function') {
+                      fbq('trackCustom', 'CTA80TypeClick', {
+                        content_name: '80cards_contact_form_click',
+                        personality_type: resultContext?.type16Code,
+                        full_type: resultContext?.typeCode,
+                      });
+                    }
+                    if (typeof gtag === 'function') {
+                      gtag('event', 'cta_80_type_click', {
+                        content_name: '80cards_contact_form_click',
+                        personality_type: resultContext?.type16Code,
+                        full_type: resultContext?.typeCode,
+                      });
+                    }
+                  } catch (e) {}
+                }}
               >
                 無料で詳しく見てみる
               </a>
@@ -13189,6 +13245,11 @@
                           content_name: '80cards_blurred_cta',
                         });
                       }
+                      if (typeof gtag === 'function') {
+                        gtag('event', 'cta_80_type_click', {
+                          content_name: '80cards_blurred_cta',
+                        });
+                      }
                     } catch (e) {}
                   }}
                 >
@@ -13417,6 +13478,14 @@
         try {
           if (typeof fbq === 'function') {
             fbq('trackCustom', 'Diagnosis80Complete', {
+              content_name: '80cards_result',
+              personality_type: personalityCode,
+              behavioral_type: behavioralType.name,
+              full_type: typeName80,
+            });
+          }
+          if (typeof gtag === 'function') {
+            gtag('event', 'diagnosis_80_complete', {
               content_name: '80cards_result',
               personality_type: personalityCode,
               behavioral_type: behavioralType.name,

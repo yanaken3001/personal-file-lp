@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4XQS4E3G0');
+  </script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('set', 'autoConfig', false, '519412346829983');
+    fbq('init', '519412346829983');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1" />
+  </noscript>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>80CARDS 登録フォーム | PERSONAL FILE</title>
@@ -967,6 +995,7 @@
     const SUBMISSION_CONTEXT_KEY = 'pf80cardsSubmission';
     const API_URL = 'https://api.personalfile.tech/api/exam/register';
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzTi52Z86dPAeiJkS1_ntKoNXucI2Ekqv0YYKWyZDgG3zj-wovdl6XXOJBxQTBsA-E-KA/exec';
+    const MARKETING_PARAM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'gclid', 'fbclid'];
 
     const state = {
       step: 0,
@@ -991,6 +1020,63 @@
 
     function getQueryParam(name) {
       return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function getMarketingParams() {
+      const params = new URLSearchParams(window.location.search);
+      return MARKETING_PARAM_KEYS.reduce((carry, key) => {
+        const value = params.get(key);
+        if (value) carry[key] = value;
+        return carry;
+      }, {});
+    }
+
+    function buildLeadEventId(userId) {
+      const suffix = userId || Math.random().toString(36).slice(2);
+      return 'pf80cards_' + Date.now() + '_' + suffix;
+    }
+
+    function trackFormStart() {
+      const eventParams = {
+        content_name: '80cards_contact_form',
+        route: getQueryParam('route') || '80cards_result',
+        source: getQueryParam('source') || '80cards',
+        cta: getQueryParam('cta') || '80cards_contact',
+        ...getMarketingParams(),
+      };
+      try {
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'PF80CardsContactFormStart', eventParams);
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_start', {
+            form_name: '80cards_contact',
+            ...eventParams,
+          });
+        }
+      } catch (error) {}
+    }
+
+    function trackContactSubmit(userId, eventId, route) {
+      const eventParams = {
+        content_name: '80cards_contact_submit',
+        route: route || '80cards_result',
+        source: getQueryParam('source') || '80cards',
+        cta: getQueryParam('cta') || '80cards_contact',
+        ...getMarketingParams(),
+      };
+      if (userId) eventParams.user_id = userId;
+      try {
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'PF80CardsContactSubmit', eventParams, { eventID: eventId });
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_submit', {
+            form_name: '80cards_contact',
+            ...eventParams,
+          });
+        }
+      } catch (error) {}
     }
 
     function getFormValue(name) {
@@ -1307,13 +1393,21 @@
         }
 
         const userId = responseData?.data?.user_id || responseData?.user_id || null;
+        const leadEventId = buildLeadEventId(userId);
+        const submittedAt = new Date().toISOString();
+        trackContactSubmit(userId, leadEventId, payload.route);
         const gasPayload = buildSpreadsheetPayload(payload, userId);
         postSpreadsheetLog(gasPayload).catch(() => {});
 
         const submission = {
           userId: userId || '',
+          leadEventId,
+          route: payload.route,
+          source: getQueryParam('source') || '80cards',
+          cta: getQueryParam('cta') || '80cards_contact',
+          marketingParams: getMarketingParams(),
           resultContext: state.resultContext || null,
-          submittedAt: new Date().toISOString(),
+          submittedAt,
         };
         try {
           window.sessionStorage.setItem(SUBMISSION_CONTEXT_KEY, JSON.stringify(submission));
@@ -1321,6 +1415,13 @@
 
         const thanksUrl = new URL('/80cards/contact-thanks.html', window.location.origin);
         if (submission.userId) thanksUrl.searchParams.set('user_id', submission.userId);
+        thanksUrl.searchParams.set('event_id', leadEventId);
+        thanksUrl.searchParams.set('route', submission.route);
+        thanksUrl.searchParams.set('source', submission.source);
+        thanksUrl.searchParams.set('cta', submission.cta);
+        Object.entries(submission.marketingParams).forEach(([key, value]) => {
+          thanksUrl.searchParams.set(key, value);
+        });
         window.location.href = thanksUrl.toString();
       } catch (error) {
         state.submitting = false;
@@ -1377,6 +1478,7 @@
 
     loadResultContext();
     updateView();
+    trackFormStart();
   </script>
 </body>
 </html>
