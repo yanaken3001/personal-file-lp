@@ -1335,6 +1335,83 @@
       });
     }
 
+    const resultNotificationLabels = {
+      employmentStatus: {
+        2: '在職中',
+        3: '離職中 ※現在アルバイト・派遣を含む',
+        4: '在学中',
+      },
+      desiredEmploymentTimeframe: {
+        1: 'できるだけ早く',
+        2: '1～3ヶ月以内',
+        3: '3～6ヶ月以内',
+        4: '相談したい',
+        5: '6ヶ月以上先',
+      },
+      desiredWorkLocation: {
+        1: '北海道（札幌）',
+        4: '宮城県',
+        11: '埼玉県',
+        12: '千葉県',
+        13: '東京都',
+        14: '神奈川県',
+        23: '愛知県',
+        27: '大阪府',
+        34: '広島県',
+        40: '福岡県',
+      },
+      lastEducationalBackground: {
+        1: '中卒',
+        2: '高卒',
+        3: '専門卒',
+        4: '高専卒',
+        5: '短大卒',
+        6: '大卒',
+        7: '大学院卒',
+        8: 'その他',
+      },
+      others: {
+        1: '体調面で不安がある',
+        2: '外国籍である',
+        3: '上記に該当するものはない',
+      },
+    };
+
+    function getNotificationLabel(map, value) {
+      if (value === null || value === undefined || value === '') return '';
+      return map[String(value)] || String(value);
+    }
+
+    function getNotificationCheckedLabels(name, map) {
+      return getCheckedValues(name)
+        .map((value) => getNotificationLabel(map, value))
+        .filter(Boolean)
+        .join('、');
+    }
+
+    function formatJapanDateTime(date) {
+      const parts = new Intl.DateTimeFormat('ja-JP', {
+        timeZone: 'Asia/Tokyo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).formatToParts(date);
+      const values = {};
+      parts.forEach((part) => {
+        if (part.type !== 'literal') values[part.type] = part.value;
+      });
+      return `${values.year}-${values.month}-${values.day}　${values.hour}：${values.minute}`;
+    }
+
+    function formatBirthday(value) {
+      const digits = String(value || '').replace(/\D/g, '');
+      if (digits.length !== 8) return String(value || '');
+      return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+    }
+
     async function postWithTimeout(url, body, timeoutMs = 10000) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -1370,13 +1447,22 @@
     }
 
     function buildResultNotificationPayload(apiPayload, userId, submittedAt) {
+      const data = new FormData(entryForm);
       const result = state.resultContext || {};
       return cleanPayload({
         registered_at: submittedAt,
         user_id: userId || '',
         name: [apiPayload.last_name, apiPayload.first_name].filter(Boolean).join(' '),
+        name_kana: [apiPayload.last_name_kana, apiPayload.first_name_kana].filter(Boolean).join(' '),
         email: apiPayload.email,
         tel: apiPayload.tel,
+        birthday: formatBirthday(apiPayload.birthday),
+        employment_experience_label: '就職経験あり',
+        employment_status_label: getNotificationLabel(resultNotificationLabels.employmentStatus, data.get('employment_status')),
+        desired_employment_timeframe_label: getNotificationLabel(resultNotificationLabels.desiredEmploymentTimeframe, data.get('desired_employment_timeframe')),
+        desired_work_location_label: getNotificationLabel(resultNotificationLabels.desiredWorkLocation, data.get('desired_work_location')),
+        last_educational_background_label: getNotificationLabel(resultNotificationLabels.lastEducationalBackground, data.get('last_educational_background')),
+        others_label: getNotificationCheckedLabels('others', resultNotificationLabels.others),
         result_type_code: result.typeCode || '',
         result_behavior_type: result.behaviorType || '',
         result_type16_code: result.type16Code || '',
@@ -1427,11 +1513,13 @@
 
         const userId = responseData?.data?.user_id || responseData?.user_id || null;
         const leadEventId = buildLeadEventId(userId);
-        const submittedAt = new Date().toISOString();
+        const submittedDate = new Date();
+        const submittedAt = submittedDate.toISOString();
+        const resultNotificationSubmittedAt = formatJapanDateTime(submittedDate);
         trackContactSubmit(userId, leadEventId, payload.route);
         const gasPayload = buildSpreadsheetPayload(payload, userId);
         postSpreadsheetLog(gasPayload).catch(() => {});
-        const resultNotificationPayload = buildResultNotificationPayload(payload, userId, submittedAt);
+        const resultNotificationPayload = buildResultNotificationPayload(payload, userId, resultNotificationSubmittedAt);
         postResultNotification(resultNotificationPayload).catch(() => {});
 
         const submission = {
