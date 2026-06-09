@@ -1530,6 +1530,11 @@
           cta: getQueryParam('cta') || '80cards_contact',
           marketingParams: getMarketingParams(),
           resultContext: state.resultContext || null,
+          contact: {
+            name: [payload.last_name, payload.first_name].filter(Boolean).join(' '),
+            email: payload.email || '',
+            tel: payload.tel || '',
+          },
           submittedAt,
         };
         try {
