@@ -348,6 +348,8 @@
       const email = String(contact.email || '').trim();
       const tel = String(contact.tel || '').replace(/[^\d+]/g, '');
 
+      url.searchParams.set('location', 'googleMeet');
+      url.searchParams.set('timezone', 'Asia/Tokyo');
       if (name) url.searchParams.set('name', name);
       if (email) url.searchParams.set('email', email);
       if (tel) url.searchParams.set('携帯番号（お電話がつながる番号をご記入ください）', tel);
