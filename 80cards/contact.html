@@ -995,6 +995,7 @@
     const SUBMISSION_CONTEXT_KEY = 'pf80cardsSubmission';
     const API_URL = 'https://api.personalfile.tech/api/exam/register';
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzTi52Z86dPAeiJkS1_ntKoNXucI2Ekqv0YYKWyZDgG3zj-wovdl6XXOJBxQTBsA-E-KA/exec';
+    const RESULT_NOTIFICATION_GAS_URL = 'https://script.google.com/macros/s/AKfycbwvszUqZI1XDMNFBt6UG3hb8hoE3g4zUKglmEpVGAhAw3e4WIKbF9_4Db5VaSLrkh-E/exec';
     const MARKETING_PARAM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'gclid', 'fbclid'];
 
     const state = {
@@ -1368,6 +1369,38 @@
       }
     }
 
+    function buildResultNotificationPayload(apiPayload, userId, submittedAt) {
+      const result = state.resultContext || {};
+      return cleanPayload({
+        registered_at: submittedAt,
+        user_id: userId || '',
+        name: [apiPayload.last_name, apiPayload.first_name].filter(Boolean).join(' '),
+        email: apiPayload.email,
+        tel: apiPayload.tel,
+        result_type_code: result.typeCode || '',
+        result_behavior_type: result.behaviorType || '',
+        result_type16_code: result.type16Code || '',
+        result_type_name: result.typeName || '',
+        route: apiPayload.route || '80cards_result',
+      });
+    }
+
+    async function postResultNotification(body, timeoutMs = 8000) {
+      if (!RESULT_NOTIFICATION_GAS_URL) return;
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        await fetch(RESULT_NOTIFICATION_GAS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
     async function submitForm() {
       const validation = validateCurrentStep();
       if (validation) {
@@ -1398,6 +1431,8 @@
         trackContactSubmit(userId, leadEventId, payload.route);
         const gasPayload = buildSpreadsheetPayload(payload, userId);
         postSpreadsheetLog(gasPayload).catch(() => {});
+        const resultNotificationPayload = buildResultNotificationPayload(payload, userId, submittedAt);
+        postResultNotification(resultNotificationPayload).catch(() => {});
 
         const submission = {
           userId: userId || '',
