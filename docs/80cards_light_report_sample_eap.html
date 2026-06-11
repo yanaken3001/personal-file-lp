@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>80CARDS Light Report Sample - EAP</title>
+  <style>
+    @page { size: 600px 842px; margin: 0; }
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #11131a;
+      --body: #454957;
+      --muted: #8b90a1;
+      --line: rgba(28, 30, 40, .12);
+      --panel: rgba(255,255,255,.82);
+      --blue: #166df2;
+      --pink: #ff3b67;
+      --violet: #6d45ff;
+      --green: #00bfa6;
+      --paper: #f7f4ee;
+    }
+    html, body {
+      width: 600px;
+      margin: 0;
+      background: #f3f0fb;
+      color: var(--ink);
+      font-family: "Yu Gothic", "YuGothic", "Noto Sans JP", "Meiryo", system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      counter-reset: page;
+    }
+    .page {
+      position: relative;
+      width: 600px;
+      height: 842px;
+      overflow: hidden;
+      padding: 30px 44px 28px;
+      page-break-after: always;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(120, 56, 238, .08), transparent 26%),
+        radial-gradient(circle at 96% 10%, rgba(255, 59, 103, .07), transparent 28%),
+        linear-gradient(180deg, #fff 0%, #fbfaf7 100%);
+    }
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .34;
+      background-image:
+        linear-gradient(rgba(95, 86, 130, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(95, 86, 130, .035) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .page > * { position: relative; z-index: 1; }
+    h1, h2, h3, p { margin: 0; }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .logo { width: 160px; height: auto; display: block; }
+    .kicker {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 0 0 16px;
+    }
+    .section-head h2 {
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 950;
+      letter-spacing: -.01em;
+    }
+    .section-head span {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .44em;
+    }
+    .footer {
+      position: absolute;
+      left: 44px;
+      right: 44px;
+      bottom: 19px;
+      display: flex;
+      justify-content: space-between;
+      color: #8d91a2;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+    .page-no::after {
+      counter-increment: page;
+      content: "0" counter(page);
+    }
+    .panel {
+      padding: 17px 18px;
+      border-radius: 9px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 26px rgba(31, 24, 38, .04);
+    }
+    .text {
+      color: var(--body);
+      font-size: 11.4px;
+      line-height: 1.78;
+      font-weight: 650;
+      white-space: pre-line;
+    }
+    .cover-grid {
+      display: grid;
+      grid-template-columns: 238px 1fr;
+      gap: 26px;
+      align-items: start;
+      margin-top: 8px;
+    }
+    .result-card {
+      width: 238px;
+      display: block;
+      filter: drop-shadow(0 18px 28px rgba(45, 39, 78, .2));
+    }
+    .result-code {
+      margin: 0 0 4px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .24em;
+    }
+    .cover-title {
+      font-size: 43px;
+      line-height: 1.02;
+      font-weight: 950;
+      letter-spacing: -.025em;
+    }
+    .quote {
+      margin-top: 12px;
+      color: var(--body);
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 780;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .stat {
+      padding: 10px 8px;
+      min-height: 58px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .stat span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 7.5px;
+      font-weight: 900;
+      letter-spacing: .18em;
+    }
+    .stat strong {
+      color: var(--blue);
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 15px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(120deg, var(--violet), var(--pink));
+      font-size: 9.6px;
+      font-weight: 900;
+    }
+    .mini-title {
+      margin: 18px 0 8px;
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 950;
+    }
+    .compat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .compat {
+      min-height: 122px;
+      padding: 13px 10px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .compat h3 {
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.28;
+      font-weight: 950;
+    }
+    .compat p {
+      margin-top: 6px;
+      color: #5e6370;
+      font-size: 8.3px;
+      line-height: 1.45;
+      font-weight: 700;
+      white-space: pre-line;
+    }
+    .compat .score {
+      margin-top: 8px;
+      color: var(--pink);
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .sw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .sw-col {
+      padding: 14px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+    }
+    .sw-label {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 10px;
+      font-weight: 900;
+    }
+    .sw-label.warn { background: #ff5b6e; }
+    .sw-item + .sw-item { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(28,30,40,.08); }
+    .sw-item b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11.2px;
+      line-height: 1.35;
+      font-weight: 950;
+    }
+    .sw-item span {
+      display: block;
+      color: var(--body);
+      font-size: 8.6px;
+      line-height: 1.58;
+      font-weight: 650;
+    }
+    .career-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .career {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(22,109,242,.2);
+      font-size: 8.7px;
+      font-weight: 850;
+    }
+    .entry-work {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .work-list {
+      display: grid;
+      gap: 7px;
+    }
+    .work {
+      padding: 10px 11px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+    }
+    .work small {
+      display: block;
+      color: var(--muted);
+      font-size: 6.8px;
+      font-weight: 900;
+      letter-spacing: .22em;
+    }
+    .work b {
+      display: block;
+      margin: 3px 0 5px;
+      color: var(--blue);
+      font-size: 10.7px;
+      line-height: 1.35;
+      font-weight: 950;
+    }
+    .work p {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 4px;
+      margin-top: 3px;
+      color: var(--body);
+      font-size: 8.1px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .good { color: var(--blue); font-weight: 950; }
+    .bad { color: #ff4c64; font-weight: 950; }
+    .cta {
+      margin-top: 10px;
+      padding: 15px 16px;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(135deg, #623cff, #2276f2 48%, #ef5b68);
+    }
+    .cta b {
+      display: block;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 950;
+    }
+    .cta p {
+      margin-top: 6px;
+      color: rgba(255,255,255,.92);
+      font-size: 8.8px;
+      line-height: 1.58;
+      font-weight: 700;
+    }
+
+    /* Structure page, intentionally close to the current result page design */
+    .structure-note {
+      margin-bottom: 20px;
+      padding: 17px 18px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid var(--line);
+    }
+    .structure-note b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 15px;
+      font-weight: 950;
+    }
+    .formula-box {
+      display: grid;
+      grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 28px;
+      padding: 25px 22px;
+      border-radius: 9px;
+      background: rgba(247,246,243,.82);
+    }
+    .formula-item { text-align: center; }
+    .circle {
+      display: grid;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-size: 31px;
+      font-weight: 950;
+    }
+    .formula-op {
+      color: #8d92a2;
+      font-size: 24px;
+      font-weight: 300;
+      text-align: center;
+    }
+    .formula-label {
+      font-size: 11px;
+      font-weight: 950;
+    }
+    .formula-sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .22em;
+    }
+    .you-pill {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--pink);
+      font-size: 7.2px;
+      line-height: 1;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+    .formula-total .circle {
+      color: var(--ink);
+      background: transparent;
+      border: 0;
+      font-size: 36px;
+    }
+    .formula-total .you-code {
+      margin-top: 7px;
+      color: var(--pink);
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .behavior-list { display: grid; gap: 10px; }
+    .behavior {
+      position: relative;
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      align-items: center;
+      min-height: 58px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: rgba(247,246,243,.82);
+      border: 1px solid var(--line);
+    }
+    .behavior.current {
+      border: 2px solid var(--violet);
+      background: rgba(255,255,255,.9);
+    }
+    .behavior b {
+      font-size: 15px;
+      font-weight: 950;
+    }
+    .behavior span {
+      color: #686d7b;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .you-tag {
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--violet);
+      font-size: 8px;
+      font-weight: 950;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .type-card {
+      position: relative;
+      min-height: 164px;
+      padding: 12px 8px 10px;
+      border-radius: 9px;
+      background: rgba(247,246,243,.72);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .type-card.current {
+      border: 2px solid var(--violet);
+      background: rgba(255,255,255,.9);
+    }
+    .type-card img {
+      display: block;
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      margin: 0 auto 8px;
+    }
+    .type-card code {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: .15em;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+    }
+    .type-card b {
+      display: block;
+      margin-top: 8px;
+      font-size: 9px;
+      line-height: 1.25;
+      font-weight: 950;
+    }
+    .type-card p {
+      margin-top: 7px;
+      color: #747986;
+      font-size: 8.5px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+    .red b { color: #ff315c; }
+    .blue b { color: #166df2; }
+    .green b { color: #00a98f; }
+    .purple b { color: #7650e8; }
+    .map-wrap {
+      width: 430px;
+      margin: 32px auto 0;
+    }
+    .axis-top {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 6px;
+      color: #7f8493;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .map-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      width: 430px;
+      height: 430px;
+      border: 2px solid var(--ink);
+      background:
+        linear-gradient(90deg, rgba(0,191,166,.07) 0 50%, rgba(255,59,103,.055) 50% 100%),
+        linear-gradient(180deg, rgba(255,59,103,.025) 0 50%, rgba(70,105,255,.055) 50% 100%);
+    }
+    .map-cell {
+      display: grid;
+      place-items: center;
+      border-right: 1px solid rgba(28,30,40,.12);
+      border-bottom: 1px solid rgba(28,30,40,.12);
+      color: #5e6370;
+      font-family: "Courier New", monospace;
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .map-cell:nth-child(4n) { border-right: 0; }
+    .map-cell:nth-child(n+13) { border-bottom: 0; }
+    .big-letter {
+      position: absolute;
+      font-size: 52px;
+      line-height: 1;
+      font-weight: 950;
+      opacity: .48;
+    }
+    .big-p { top: 92px; right: 88px; color: #ff3b67; }
+    .big-i { top: 100px; left: 102px; color: #00cfae; }
+    .big-a { bottom: 72px; left: 92px; color: #5b74ff; }
+    .big-d { bottom: 72px; right: 96px; color: #9b75ff; }
+    .map-you {
+      position: absolute;
+      top: 260px;
+      left: 139px;
+      transform: translate(-50%, -50%);
+      padding: 8px 14px;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 10px 20px rgba(22,109,242,.25);
+      font-size: 15px;
+      font-weight: 950;
+      text-align: center;
+    }
+    .map-you span {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 8px;
+      line-height: 1;
+      letter-spacing: .12em;
+    }
+    .axis-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      color: #333642;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .cta-box {
+      margin-top: 26px;
+      padding: 18px 22px;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(135deg, #623cff, #2276f2 48%, #ef5b68);
+    }
+    .cta-box b { display: block; font-size: 18px; line-height: 1.35; font-weight: 950; }
+    .cta-box p { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 10px; line-height: 1.7; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <div class="top">
+      <img class="logo" src="../80cards/logo/80cards-logo-full.png" alt="80CARDS" />
+      <div class="kicker">SAVE REPORT / LIGHT EDITION</div>
+    </div>
+    <div class="cover-grid">
+      <img class="result-card" src="80cards_result_card_eap_current.png" alt="EAP 効率型 頼れる右腕" />
+      <div>
+        <p class="result-code">YOUR RESULT</p>
+        <h1 class="cover-title">EAP<br />頼れる右腕</h1>
+        <p class="quote">「冷静な仮面の下に、情熱を隠し持つ実務の切り札」</p>
+        <div class="stats">
+          <div class="stat"><span>パターンコード</span><strong>EAP</strong></div>
+          <div class="stat"><span>タイプコード</span><strong>AP</strong></div>
+          <div class="stat"><span>行動類型</span><strong>効率型</strong></div>
+          <div class="stat"><span>グループ</span><strong>A群</strong></div>
+        </div>
+        <div class="chips">
+          <span class="chip">#合理性</span><span class="chip">#分析力</span><span class="chip">#冷静沈着</span><span class="chip">#器用貧乏</span><span class="chip">#マイペース</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="mini-title">性格の解説</h2>
+    <div class="panel">
+      <p class="text">効率型頼れる右腕は、冷静かつ慎重な性格と明るくポジティブな性格が同居する珍しい類型です。これは通常、相反する特徴が同時に現れることが少ないですが、この類型では両方の性格が共存します。そのため、普段は冷静で慎重な性格なのですが、時折明るくポジティブな性格に切り替わり、テンションが高くなる日（時間）があります。そのため、他の類型と比較すると、テンションの上下幅が大きい類型と言えます。効率型頼れる右腕は、自分の行為のメリット・デメリットをよく分析し、物事を処理する際に最も効率的な方法・経路を選ぶ傾向が強いです。このような特徴は、ビジネスでも高い評価を受けることがあります。</p>
+    </div>
+    <div class="footer"><span>80CARDS / LIGHT REPORT</span><span class="page-no"></span></div>
+  </section>
+
+  <section class="page">
+    <div class="section-head"><h2>相性のいいタイプ</h2><span>COMPATIBLE</span></div>
+    <div class="compat-row">
+      <div class="compat"><h3>氷の頭脳</h3><p>論理の矛盾を一閃で断つ、<br />冷静なる分析の刃<br />AD</p><div class="score">96<span style="font-size:10px;">点</span></div></div>
+      <div class="compat"><h3>二面性の魔術師</h3><p>社交と没頭を行き来する、<br />こだわりの二刀流<br />PA</p><div class="score">80<span style="font-size:10px;">点</span></div></div>
+      <div class="compat"><h3>突破のカリスマ</h3><p>走りながら考え、<br />考えながら結果を出す突破者<br />PD</p><div class="score">79<span style="font-size:10px;">点</span></div></div>
+    </div>
+
+    <div class="section-head" style="margin-top:26px;"><h2>強み・注意点</h2><span>STRENGTHS & SHADOWS</span></div>
+    <div class="sw-grid">
+      <div class="sw-col">
+        <div class="sw-label">強み</div>
+        <div class="sw-item"><b>効率的な問題解決</b><span>物事に対する冷静で慎重な視点と、得られるメリット・デメリットを厳しく分析する能力は、効率的な問題解決を可能にします。これは、ビジネスでのプロジェクトや課題を高速かつ正確に解決する力につながります。</span></div>
+        <div class="sw-item"><b>二面性の活用</b><span>冷静さと明るさを併せ持つという性格の二面性は、時に状況に応じて雰囲気を変える柔軟性を生み出します。つまり、クールに判断を下す場面と、人々を励ます場面を適切に切り替えることができます。</span></div>
+        <div class="sw-item"><b>高い自己分析力</b><span>自己の行為について冷静に分析することから、自己の行動やパフォーマンスについて深く理解する力があります。これにより、自己改善や成長を促すことができます。</span></div>
+      </div>
+      <div class="sw-col">
+        <div class="sw-label warn">注意点</div>
+        <div class="sw-item"><b>感情コントロールの難しさ</b><span>テンションの上下を適切にコントロールできず、場合によっては冷静さを失い、通常なら避けるはずの失敗を引き起こす可能性があります。</span></div>
+        <div class="sw-item"><b>感情の変動による混乱</b><span>感情の変動により、自分自身が混乱し、予想外の行動をとることがあります。</span></div>
+        <div class="sw-item"><b>自己分析による過剰な反省</b><span>自己分析を行いすぎることで、自己評価が過度に厳しくなり、自己肯定感が低下する可能性があります。</span></div>
+      </div>
+    </div>
+    <div class="footer"><span>COMPATIBLE / STRENGTHS</span><span class="page-no"></span></div>
+  </section>
+
+  <section class="page">
+    <div class="section-head"><h2>適した職種</h2><span>CAREERS</span></div>
+    <div class="career-list">
+      <span class="career">エンジニア</span><span class="career">プログラマー</span><span class="career">デザイナー</span><span class="career">各種企画職</span><span class="career">経理</span><span class="career">財務</span><span class="career">法務</span><span class="career">労務</span><span class="career">事務</span><span class="career">経営企画</span><span class="career">マーケティング</span><span class="career">研究職</span><span class="career">施工管理</span>
+    </div>
+    <div class="entry-work">
+      <div>
+        <div class="section-head" style="margin-top:22px;"><h2>未経験からチャレンジできる適職</h2><span>ENTRY</span></div>
+        <div class="panel"><p class="text">エンジニア全般 / 事務系</p></div>
+        <div class="panel" style="margin-top:10px;">
+          <p class="text">ITエンジニア (インフラ、社内SEなどを含む): 論理的思考力と効率性を活かせる。効率的なシステム構築や運用方法を常に模索し、改善していくことにやりがいを感じやすい。
+事務職: 正確性と効率性を活かせる。コツコツと業務をこなし、正確に処理することが得意。ルーティンワークを効率化し、生産性を高めることが得意。
+施工管理: 効率性を重視する気質を活かして、現場業務の改善を提案できる。工程管理や資材調達などを効率化し、コスト削減に貢献できる可能性がある。</p>
+        </div>
+      </div>
+      <div>
+        <div class="section-head" style="margin-top:22px;"><h2>あなたに合う働き方</h2><span>WORK STYLE</span></div>
+        <div class="work-list">
+          <div class="work"><small>SUITABLE WORK</small><b>向いている仕事</b><p><span class="good">◎</span><span>個人で完結する作業に向いています</span></p><p><span class="bad">△</span><span>非効率な作業を強制されるのがとても苦手です</span></p></div>
+          <div class="work"><small>CULTURE FIT</small><b>合う社風</b><p><span class="good">◎</span><span>適度な距離感を保てる社風との相性が良いです</span></p><p><span class="bad">△</span><span>社風が固まりすぎている組織とは合いません</span></p></div>
+          <div class="work"><small>IDEAL BOSS</small><b>合う上司</b><p><span class="good">◎</span><span>理解してくれる上司との相性が良いです</span></p><p><span class="bad">△</span><span>寛容性の乏しい上司との相性は悪いです</span></p></div>
+          <div class="work"><small>IDEAL TEAM</small><b>合う部下</b><p><span class="good">◎</span><span>自分で考えて動ける部下との相性が良いです</span></p><p><span class="bad">△</span><span>受け身の部下との相性が悪いです</span></p></div>
+          <div class="work"><small>WORK STYLE</small><b>理想の働き方</b><p><span class="good">◎</span><span>専門職として自由に働くことに向いています</span></p><p><span class="bad">△</span><span>厳格なルールの下で働くのは相性が悪いです</span></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>CAREERS / ENTRY / WORK STYLE</span><span class="page-no"></span></div>
+  </section>
+
+  <section class="page">
+    <div class="section-head"><h2>この診断の仕組み</h2><span>80 TYPE STRUCTURE</span></div>
+    <div class="structure-note">
+      <b>16タイプじゃ、まだ足りない。</b>
+      <p class="text">80CARDSは「行動スタイル × 性格の基本軸 × 補助軸」の3要素で、あなたを <strong>80タイプ</strong> に分類します。</p>
+    </div>
+    <div class="formula-box">
+      <div class="formula-item"><div class="circle">5</div><div class="formula-label">行動類型</div><div class="formula-sub">STYLE</div><div class="you-pill">YOU: 効率型「E」</div></div>
+      <div class="formula-op">×</div>
+      <div class="formula-item"><div class="circle">4</div><div class="formula-label">性格類型</div><div class="formula-sub">MAIN</div><div class="you-pill">YOU: A群</div></div>
+      <div class="formula-op">×</div>
+      <div class="formula-item"><div class="circle">4</div><div class="formula-label">補助類型</div><div class="formula-sub">SUB</div><div class="you-pill">YOU: P寄り</div></div>
+      <div class="formula-op">=</div>
+      <div class="formula-item formula-total"><div class="circle">80</div><div class="formula-sub">TYPE</div><div class="formula-sub">YOU ARE</div><div class="you-code">EAP</div></div>
+    </div>
+
+    <div class="section-head"><h2>5つの行動スタイル</h2><span>BEHAVIOR STYLES</span></div>
+    <div class="behavior-list">
+      <div class="behavior"><b>達成型「A」</b><span>目標達成志向。結果にこだわる</span></div>
+      <div class="behavior"><b>調和型「H」</b><span>人間関係重視。平和を保つ</span></div>
+      <div class="behavior current"><b>効率型「E」</b><span>最短ルート志向。無駄を嫌う</span><em class="you-tag">YOU</em></div>
+      <div class="behavior"><b>演出型「S」</b><span>自己表現重視。見せ方にこだわる</span></div>
+      <div class="behavior"><b>情報型「I」</b><span>データ重視。納得してから動く</span></div>
+    </div>
+    <div class="footer"><span>80 TYPE STRUCTURE / BEHAVIOR</span><span class="page-no"></span></div>
+  </section>
+
+  <section class="page">
+    <div class="section-head"><h2>16タイプ</h2><span>16 TYPES</span></div>
+    <div class="type-grid">
+      <div class="type-card red"><img src="../80cards/character/PP.png" alt="" /><code>PP</code><b>チームの太陽</b><p>場を明るくする人</p></div>
+      <div class="type-card red"><img src="../80cards/character/PA.png" alt="" /><code>PA</code><b>二面性の魔術師</b><p>社交と没頭の両立</p></div>
+      <div class="type-card red"><img src="../80cards/character/PI.png" alt="" /><code>PI</code><b>愛されの天才</b><p>人をつなぐ才能</p></div>
+      <div class="type-card red"><img src="../80cards/character/PD.png" alt="" /><code>PD</code><b>突破のカリスマ</b><p>走って結果を出す</p></div>
+      <div class="type-card blue current"><span class="you-tag">YOU</span><img src="../80cards/character/AP.png" alt="" /><code>AP</code><b>頼れる右腕</b><p>冷静と情熱の両立</p></div>
+      <div class="type-card blue"><img src="../80cards/character/AA.png" alt="" /><code>AA</code><b>知の番人</b><p>深掘りする探究者</p></div>
+      <div class="type-card blue"><img src="../80cards/character/AI.png" alt="" /><code>AI</code><b>継続の鬼</b><p>静かに積み上げる人</p></div>
+      <div class="type-card blue"><img src="../80cards/character/AD.png" alt="" /><code>AD</code><b>氷の頭脳</b><p>矛盾を断つ分析家</p></div>
+      <div class="type-card green"><img src="../80cards/character/IP.png" alt="" /><code>IP</code><b>助っ人ヒーロー</b><p>何でもこなす万能</p></div>
+      <div class="type-card green"><img src="../80cards/character/IA.png" alt="" /><code>IA</code><b>隠れ実力者</b><p>静かに支える人</p></div>
+      <div class="type-card green"><img src="../80cards/character/II.png" alt="" /><code>II</code><b>共感マスター</b><p>痛みに気づく才能</p></div>
+      <div class="type-card green"><img src="../80cards/character/ID.png" alt="" /><code>ID</code><b>深掘りマニア</b><p>本質を考え抜く人</p></div>
+      <div class="type-card purple"><img src="../80cards/character/DI.png" alt="" /><code>DI</code><b>即決エンジン</b><p>即断即決の行動者</p></div>
+      <div class="type-card purple"><img src="../80cards/character/DP.png" alt="" /><code>DP</code><b>大将気質</b><p>決断で引っ張る人</p></div>
+      <div class="type-card purple"><img src="../80cards/character/DA.png" alt="" /><code>DA</code><b>静かな司令塔</b><p>仕組みを創る頭脳</p></div>
+      <div class="type-card purple"><img src="../80cards/character/DD.png" alt="" /><code>DD</code><b>ゲームチェンジャー</b><p>ルールを書き換える</p></div>
+    </div>
+    <div class="footer"><span>16 TYPES</span><span class="page-no"></span></div>
+  </section>
+
+  <section class="page">
+    <div class="section-head"><h2>タイプマップ</h2><span>TYPE MAP</span></div>
+    <div class="map-wrap">
+      <div class="axis-top"><span>協調性（高）</span><span>社交性（高）</span></div>
+      <div class="map-grid">
+        <div class="map-cell">II</div><div class="map-cell">IP</div><div class="map-cell">PI</div><div class="map-cell">PP</div>
+        <div class="map-cell">IA</div><div class="map-cell">ID</div><div class="map-cell">PA</div><div class="map-cell">PD</div>
+        <div class="map-cell">AI</div><div class="map-cell">AP</div><div class="map-cell">DI</div><div class="map-cell">DP</div>
+        <div class="map-cell">AA</div><div class="map-cell">AD</div><div class="map-cell">DA</div><div class="map-cell">DD</div>
+        <div class="big-letter big-i">I</div><div class="big-letter big-p">P</div><div class="big-letter big-a">A</div><div class="big-letter big-d">D</div>
+        <div class="map-you"><span>YOU</span>AP</div>
+      </div>
+      <div class="axis-bottom"><span>← 正確性重視</span><span>即断即決 →</span></div>
+    </div>
+    <div class="cta-box">
+      <b>この結果を、もう少し自分向けに見てみる</b>
+      <p>向いている職種はわかっても、実際に「自分の経歴で狙えるか」「どんな社風なら合うか」は人によって変わります。80CARDSの結果をもとに、あなたに合う仕事選びの方向性を確認できます。</p>
+    </div>
+    <div class="footer"><span>© 2026 Personal Inc.</span><span class="page-no"></span></div>
+  </section>
+</body>
+</html>
