@@ -1,0 +1,2105 @@
+{
+  "_meta": {
+    "description": "80CARDS 診断ロジック golden snapshot。差分が出たら判定ロジックの挙動が変わっている。",
+    "sourceFile": "80cards/index.html"
+  },
+  "mapping": {
+    "constants": {
+      "BASE_TOTAL_QUESTIONS": 57,
+      "PERSONALITY_TIE_THRESHOLD": 2,
+      "BEHAVIOR_TIE_THRESHOLD": 1,
+      "MAX_ADAPTIVE_QUESTIONS": 8,
+      "orderedQuestionCount": 57
+    },
+    "BEHAVIOR_CODE_PREFIX": {
+      "達成型": "AC",
+      "調和型": "HM",
+      "効率型": "EF",
+      "演出型": "SH",
+      "情報型": "IN"
+    },
+    "TYPE_NICKNAMES": {
+      "PP": "チームの太陽",
+      "PA": "二面性の魔術師",
+      "PI": "愛されの天才",
+      "PD": "突破のカリスマ",
+      "AP": "頼れる右腕",
+      "AA": "知の番人",
+      "AI": "継続の鬼",
+      "AD": "氷の頭脳",
+      "IP": "助っ人ヒーロー",
+      "IA": "隠れ実力者",
+      "II": "共感マスター",
+      "ID": "深掘りマニア",
+      "DI": "即決エンジン",
+      "DP": "大将気質",
+      "DA": "静かな司令塔",
+      "DD": "ゲームチェンジャー"
+    },
+    "types80KeyCount": 80,
+    "missingTypes80Keys": [],
+    "questionAxisCounts": {
+      "P": 8,
+      "A": 8,
+      "I": 8,
+      "D": 8,
+      "K": 5,
+      "G": 5,
+      "H": 5,
+      "E": 5,
+      "J": 5
+    },
+    "reverseQuestionIds": [
+      "A-6",
+      "D-5",
+      "E-4",
+      "G-4",
+      "I-7",
+      "J-4",
+      "K-4",
+      "P-4"
+    ]
+  },
+  "unit": {
+    "boundary/personality-gap-12-solo": {
+      "personalityCode": "DD",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDD",
+      "patternNo": 16,
+      "adaptiveCount": 0,
+      "adaptiveQuestionIds": []
+    },
+    "boundary/personality-gap-11-pair": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 0,
+      "adaptiveQuestionIds": []
+    },
+    "tie/personality-all-equal": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4"
+      ]
+    },
+    "tie/personality-A-vs-I-equal": {
+      "personalityCode": "AI",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACAI",
+      "patternNo": 7,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-AI-1",
+        "PERSONALITY-TB-AI-2",
+        "PERSONALITY-TB-AI-3",
+        "PERSONALITY-TB-AI-4"
+      ]
+    },
+    "tie/behavior-all-equal-P-main": {
+      "personalityCode": "PP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACPP",
+      "patternNo": 1,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    },
+    "tie/behavior-all-equal-A-main": {
+      "personalityCode": "AA",
+      "behaviorName": "情報型",
+      "behaviorCode": "J",
+      "code80": "INAA",
+      "patternNo": 70,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-JK-1",
+        "BEHAVIOR-TB-JK-2",
+        "BEHAVIOR-TB-JK-3",
+        "BEHAVIOR-TB-JK-4"
+      ]
+    },
+    "tie/behavior-all-equal-I-main": {
+      "personalityCode": "II",
+      "behaviorName": "調和型",
+      "behaviorCode": "H",
+      "code80": "HMII",
+      "patternNo": 27,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-HK-1",
+        "BEHAVIOR-TB-HK-2",
+        "BEHAVIOR-TB-HK-3",
+        "BEHAVIOR-TB-HK-4"
+      ]
+    },
+    "tie/behavior-all-equal-D-main": {
+      "personalityCode": "DD",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDD",
+      "patternNo": 16,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    },
+    "tie/behavior-KH-equal-A-main-preferred-not-in-tie": {
+      "personalityCode": "AA",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACAA",
+      "patternNo": 6,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    },
+    "tie/behavior-JE-equal-A-main-preferred-in-tie": {
+      "personalityCode": "AA",
+      "behaviorName": "情報型",
+      "behaviorCode": "J",
+      "code80": "INAA",
+      "patternNo": 70,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-JE-1",
+        "BEHAVIOR-TB-JE-2",
+        "BEHAVIOR-TB-JE-3",
+        "BEHAVIOR-TB-JE-4"
+      ]
+    },
+    "adaptive/personality-gap-2-triggers": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4"
+      ]
+    },
+    "adaptive/personality-gap-3-no-trigger": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 0,
+      "adaptiveQuestionIds": []
+    },
+    "adaptive/behavior-gap-1-triggers": {
+      "personalityCode": "DD",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDD",
+      "patternNo": 16,
+      "adaptiveCount": 4,
+      "adaptiveQuestionIds": [
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    },
+    "adaptive/behavior-gap-2-no-trigger": {
+      "personalityCode": "DD",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDD",
+      "patternNo": 16,
+      "adaptiveCount": 0,
+      "adaptiveQuestionIds": []
+    },
+    "adaptive/both-trigger-max-8": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 8,
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    },
+    "edge/all-zero": {
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "behaviorCode": "K",
+      "code80": "ACDP",
+      "patternNo": 13,
+      "adaptiveCount": 8,
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ]
+    }
+  },
+  "flow": {
+    "type-coverage/達成型-PP": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PP",
+      "behaviorName": "達成型",
+      "code80": "ACPP",
+      "shareCode": "acpp",
+      "patternNo": 1,
+      "nickname": "チームの太陽",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-PP": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PP",
+      "behaviorName": "調和型",
+      "code80": "HMPP",
+      "shareCode": "hmpp",
+      "patternNo": 17,
+      "nickname": "チームの太陽",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-PP": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PP",
+      "behaviorName": "情報型",
+      "code80": "INPP",
+      "shareCode": "inpp",
+      "patternNo": 65,
+      "nickname": "チームの太陽",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-PP": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PP",
+      "behaviorName": "演出型",
+      "code80": "SHPP",
+      "shareCode": "shpp",
+      "patternNo": 49,
+      "nickname": "チームの太陽",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-PP": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PP",
+      "behaviorName": "効率型",
+      "code80": "EFPP",
+      "shareCode": "efpp",
+      "patternNo": 33,
+      "nickname": "チームの太陽",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-PA": {
+      "scores": {
+        "P": 40,
+        "A": 32,
+        "I": 8,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PA",
+      "behaviorName": "達成型",
+      "code80": "ACPA",
+      "shareCode": "acpa",
+      "patternNo": 2,
+      "nickname": "二面性の魔術師",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-PA": {
+      "scores": {
+        "P": 40,
+        "A": 32,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PA",
+      "behaviorName": "調和型",
+      "code80": "HMPA",
+      "shareCode": "hmpa",
+      "patternNo": 18,
+      "nickname": "二面性の魔術師",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-PA": {
+      "scores": {
+        "P": 40,
+        "A": 32,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PA",
+      "behaviorName": "情報型",
+      "code80": "INPA",
+      "shareCode": "inpa",
+      "patternNo": 66,
+      "nickname": "二面性の魔術師",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-PA": {
+      "scores": {
+        "P": 40,
+        "A": 32,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PA",
+      "behaviorName": "演出型",
+      "code80": "SHPA",
+      "shareCode": "shpa",
+      "patternNo": 50,
+      "nickname": "二面性の魔術師",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-PA": {
+      "scores": {
+        "P": 40,
+        "A": 32,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PA",
+      "behaviorName": "効率型",
+      "code80": "EFPA",
+      "shareCode": "efpa",
+      "patternNo": 34,
+      "nickname": "二面性の魔術師",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-PI": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 32,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PI",
+      "behaviorName": "達成型",
+      "code80": "ACPI",
+      "shareCode": "acpi",
+      "patternNo": 3,
+      "nickname": "愛されの天才",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-PI": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PI",
+      "behaviorName": "調和型",
+      "code80": "HMPI",
+      "shareCode": "hmpi",
+      "patternNo": 19,
+      "nickname": "愛されの天才",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-PI": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PI",
+      "behaviorName": "情報型",
+      "code80": "INPI",
+      "shareCode": "inpi",
+      "patternNo": 67,
+      "nickname": "愛されの天才",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-PI": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PI",
+      "behaviorName": "演出型",
+      "code80": "SHPI",
+      "shareCode": "shpi",
+      "patternNo": 51,
+      "nickname": "愛されの天才",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-PI": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PI",
+      "behaviorName": "効率型",
+      "code80": "EFPI",
+      "shareCode": "efpi",
+      "patternNo": 35,
+      "nickname": "愛されの天才",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-PD": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 32,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PD",
+      "behaviorName": "達成型",
+      "code80": "ACPD",
+      "shareCode": "acpd",
+      "patternNo": 4,
+      "nickname": "突破のカリスマ",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-PD": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PD",
+      "behaviorName": "調和型",
+      "code80": "HMPD",
+      "shareCode": "hmpd",
+      "patternNo": 20,
+      "nickname": "突破のカリスマ",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-PD": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PD",
+      "behaviorName": "情報型",
+      "code80": "INPD",
+      "shareCode": "inpd",
+      "patternNo": 68,
+      "nickname": "突破のカリスマ",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-PD": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PD",
+      "behaviorName": "演出型",
+      "code80": "SHPD",
+      "shareCode": "shpd",
+      "patternNo": 52,
+      "nickname": "突破のカリスマ",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-PD": {
+      "scores": {
+        "P": 40,
+        "A": 8,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "PD",
+      "behaviorName": "効率型",
+      "code80": "EFPD",
+      "shareCode": "efpd",
+      "patternNo": 36,
+      "nickname": "突破のカリスマ",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-AP": {
+      "scores": {
+        "P": 32,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AP",
+      "behaviorName": "達成型",
+      "code80": "ACAP",
+      "shareCode": "acap",
+      "patternNo": 5,
+      "nickname": "頼れる右腕",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-AP": {
+      "scores": {
+        "P": 32,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AP",
+      "behaviorName": "調和型",
+      "code80": "HMAP",
+      "shareCode": "hmap",
+      "patternNo": 21,
+      "nickname": "頼れる右腕",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-AP": {
+      "scores": {
+        "P": 32,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AP",
+      "behaviorName": "情報型",
+      "code80": "INAP",
+      "shareCode": "inap",
+      "patternNo": 69,
+      "nickname": "頼れる右腕",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-AP": {
+      "scores": {
+        "P": 32,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AP",
+      "behaviorName": "演出型",
+      "code80": "SHAP",
+      "shareCode": "shap",
+      "patternNo": 53,
+      "nickname": "頼れる右腕",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-AP": {
+      "scores": {
+        "P": 32,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AP",
+      "behaviorName": "効率型",
+      "code80": "EFAP",
+      "shareCode": "efap",
+      "patternNo": 37,
+      "nickname": "頼れる右腕",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-AA": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AA",
+      "behaviorName": "達成型",
+      "code80": "ACAA",
+      "shareCode": "acaa",
+      "patternNo": 6,
+      "nickname": "知の番人",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-AA": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AA",
+      "behaviorName": "調和型",
+      "code80": "HMAA",
+      "shareCode": "hmaa",
+      "patternNo": 22,
+      "nickname": "知の番人",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-AA": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AA",
+      "behaviorName": "情報型",
+      "code80": "INAA",
+      "shareCode": "inaa",
+      "patternNo": 70,
+      "nickname": "知の番人",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-AA": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AA",
+      "behaviorName": "演出型",
+      "code80": "SHAA",
+      "shareCode": "shaa",
+      "patternNo": 54,
+      "nickname": "知の番人",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-AA": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AA",
+      "behaviorName": "効率型",
+      "code80": "EFAA",
+      "shareCode": "efaa",
+      "patternNo": 38,
+      "nickname": "知の番人",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-AI": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 32,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AI",
+      "behaviorName": "達成型",
+      "code80": "ACAI",
+      "shareCode": "acai",
+      "patternNo": 7,
+      "nickname": "継続の鬼",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-AI": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AI",
+      "behaviorName": "調和型",
+      "code80": "HMAI",
+      "shareCode": "hmai",
+      "patternNo": 23,
+      "nickname": "継続の鬼",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-AI": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AI",
+      "behaviorName": "情報型",
+      "code80": "INAI",
+      "shareCode": "inai",
+      "patternNo": 71,
+      "nickname": "継続の鬼",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-AI": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AI",
+      "behaviorName": "演出型",
+      "code80": "SHAI",
+      "shareCode": "shai",
+      "patternNo": 55,
+      "nickname": "継続の鬼",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-AI": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 32,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AI",
+      "behaviorName": "効率型",
+      "code80": "EFAI",
+      "shareCode": "efai",
+      "patternNo": 39,
+      "nickname": "継続の鬼",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-AD": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 32,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AD",
+      "behaviorName": "達成型",
+      "code80": "ACAD",
+      "shareCode": "acad",
+      "patternNo": 8,
+      "nickname": "氷の頭脳",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-AD": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AD",
+      "behaviorName": "調和型",
+      "code80": "HMAD",
+      "shareCode": "hmad",
+      "patternNo": 24,
+      "nickname": "氷の頭脳",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-AD": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AD",
+      "behaviorName": "情報型",
+      "code80": "INAD",
+      "shareCode": "inad",
+      "patternNo": 72,
+      "nickname": "氷の頭脳",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-AD": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AD",
+      "behaviorName": "演出型",
+      "code80": "SHAD",
+      "shareCode": "shad",
+      "patternNo": 56,
+      "nickname": "氷の頭脳",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-AD": {
+      "scores": {
+        "P": 8,
+        "A": 40,
+        "I": 8,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "AD",
+      "behaviorName": "効率型",
+      "code80": "EFAD",
+      "shareCode": "efad",
+      "patternNo": 40,
+      "nickname": "氷の頭脳",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-IP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IP",
+      "behaviorName": "達成型",
+      "code80": "ACIP",
+      "shareCode": "acip",
+      "patternNo": 9,
+      "nickname": "助っ人ヒーロー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-IP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IP",
+      "behaviorName": "調和型",
+      "code80": "HMIP",
+      "shareCode": "hmip",
+      "patternNo": 25,
+      "nickname": "助っ人ヒーロー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-IP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IP",
+      "behaviorName": "情報型",
+      "code80": "INIP",
+      "shareCode": "inip",
+      "patternNo": 73,
+      "nickname": "助っ人ヒーロー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-IP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IP",
+      "behaviorName": "演出型",
+      "code80": "SHIP",
+      "shareCode": "ship",
+      "patternNo": 57,
+      "nickname": "助っ人ヒーロー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-IP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IP",
+      "behaviorName": "効率型",
+      "code80": "EFIP",
+      "shareCode": "efip",
+      "patternNo": 41,
+      "nickname": "助っ人ヒーロー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-IA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 40,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IA",
+      "behaviorName": "達成型",
+      "code80": "ACIA",
+      "shareCode": "acia",
+      "patternNo": 10,
+      "nickname": "隠れ実力者",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-IA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IA",
+      "behaviorName": "調和型",
+      "code80": "HMIA",
+      "shareCode": "hmia",
+      "patternNo": 26,
+      "nickname": "隠れ実力者",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-IA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IA",
+      "behaviorName": "情報型",
+      "code80": "INIA",
+      "shareCode": "inia",
+      "patternNo": 74,
+      "nickname": "隠れ実力者",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-IA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IA",
+      "behaviorName": "演出型",
+      "code80": "SHIA",
+      "shareCode": "shia",
+      "patternNo": 58,
+      "nickname": "隠れ実力者",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-IA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "IA",
+      "behaviorName": "効率型",
+      "code80": "EFIA",
+      "shareCode": "efia",
+      "patternNo": 42,
+      "nickname": "隠れ実力者",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-II": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "II",
+      "behaviorName": "達成型",
+      "code80": "ACII",
+      "shareCode": "acii",
+      "patternNo": 11,
+      "nickname": "共感マスター",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-II": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "II",
+      "behaviorName": "調和型",
+      "code80": "HMII",
+      "shareCode": "hmii",
+      "patternNo": 27,
+      "nickname": "共感マスター",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-II": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "II",
+      "behaviorName": "情報型",
+      "code80": "INII",
+      "shareCode": "inii",
+      "patternNo": 75,
+      "nickname": "共感マスター",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-II": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "II",
+      "behaviorName": "演出型",
+      "code80": "SHII",
+      "shareCode": "shii",
+      "patternNo": 59,
+      "nickname": "共感マスター",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-II": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 8,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "II",
+      "behaviorName": "効率型",
+      "code80": "EFII",
+      "shareCode": "efii",
+      "patternNo": 43,
+      "nickname": "共感マスター",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-ID": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 32,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "ID",
+      "behaviorName": "達成型",
+      "code80": "ACID",
+      "shareCode": "acid",
+      "patternNo": 12,
+      "nickname": "深掘りマニア",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-ID": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 32,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "ID",
+      "behaviorName": "調和型",
+      "code80": "HMID",
+      "shareCode": "hmid",
+      "patternNo": 28,
+      "nickname": "深掘りマニア",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-ID": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "ID",
+      "behaviorName": "情報型",
+      "code80": "INID",
+      "shareCode": "inid",
+      "patternNo": 76,
+      "nickname": "深掘りマニア",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-ID": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "ID",
+      "behaviorName": "演出型",
+      "code80": "SHID",
+      "shareCode": "shid",
+      "patternNo": 60,
+      "nickname": "深掘りマニア",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-ID": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 40,
+        "D": 32,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "ID",
+      "behaviorName": "効率型",
+      "code80": "EFID",
+      "shareCode": "efid",
+      "patternNo": 44,
+      "nickname": "深掘りマニア",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-DP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "code80": "ACDP",
+      "shareCode": "acdp",
+      "patternNo": 13,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-DP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DP",
+      "behaviorName": "調和型",
+      "code80": "HMDP",
+      "shareCode": "hmdp",
+      "patternNo": 29,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-DP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DP",
+      "behaviorName": "情報型",
+      "code80": "INDP",
+      "shareCode": "indp",
+      "patternNo": 77,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-DP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DP",
+      "behaviorName": "演出型",
+      "code80": "SHDP",
+      "shareCode": "shdp",
+      "patternNo": 61,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-DP": {
+      "scores": {
+        "P": 32,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DP",
+      "behaviorName": "効率型",
+      "code80": "EFDP",
+      "shareCode": "efdp",
+      "patternNo": 45,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-DA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 8,
+        "D": 40,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DA",
+      "behaviorName": "達成型",
+      "code80": "ACDA",
+      "shareCode": "acda",
+      "patternNo": 14,
+      "nickname": "静かな司令塔",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-DA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DA",
+      "behaviorName": "調和型",
+      "code80": "HMDA",
+      "shareCode": "hmda",
+      "patternNo": 30,
+      "nickname": "静かな司令塔",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-DA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DA",
+      "behaviorName": "情報型",
+      "code80": "INDA",
+      "shareCode": "inda",
+      "patternNo": 78,
+      "nickname": "静かな司令塔",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-DA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DA",
+      "behaviorName": "演出型",
+      "code80": "SHDA",
+      "shareCode": "shda",
+      "patternNo": 62,
+      "nickname": "静かな司令塔",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-DA": {
+      "scores": {
+        "P": 8,
+        "A": 32,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DA",
+      "behaviorName": "効率型",
+      "code80": "EFDA",
+      "shareCode": "efda",
+      "patternNo": 46,
+      "nickname": "静かな司令塔",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-DI": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 32,
+        "D": 40,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DI",
+      "behaviorName": "達成型",
+      "code80": "ACDI",
+      "shareCode": "acdi",
+      "patternNo": 15,
+      "nickname": "即決エンジン",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-DI": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 32,
+        "D": 40,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DI",
+      "behaviorName": "調和型",
+      "code80": "HMDI",
+      "shareCode": "hmdi",
+      "patternNo": 31,
+      "nickname": "即決エンジン",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-DI": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 32,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DI",
+      "behaviorName": "情報型",
+      "code80": "INDI",
+      "shareCode": "indi",
+      "patternNo": 79,
+      "nickname": "即決エンジン",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-DI": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 32,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DI",
+      "behaviorName": "演出型",
+      "code80": "SHDI",
+      "shareCode": "shdi",
+      "patternNo": 63,
+      "nickname": "即決エンジン",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-DI": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 32,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DI",
+      "behaviorName": "効率型",
+      "code80": "EFDI",
+      "shareCode": "efdi",
+      "patternNo": 47,
+      "nickname": "即決エンジン",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/達成型-DD": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 25,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DD",
+      "behaviorName": "達成型",
+      "code80": "ACDD",
+      "shareCode": "acdd",
+      "patternNo": 16,
+      "nickname": "ゲームチェンジャー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/調和型-DD": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 25,
+        "J": 5,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DD",
+      "behaviorName": "調和型",
+      "code80": "HMDD",
+      "shareCode": "hmdd",
+      "patternNo": 32,
+      "nickname": "ゲームチェンジャー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/情報型-DD": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 25,
+        "G": 5,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DD",
+      "behaviorName": "情報型",
+      "code80": "INDD",
+      "shareCode": "indd",
+      "patternNo": 80,
+      "nickname": "ゲームチェンジャー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/演出型-DD": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 25,
+        "E": 5
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DD",
+      "behaviorName": "演出型",
+      "code80": "SHDD",
+      "shareCode": "shdd",
+      "patternNo": 64,
+      "nickname": "ゲームチェンジャー",
+      "typeKeyExistsInTypes80": true
+    },
+    "type-coverage/効率型-DD": {
+      "scores": {
+        "P": 8,
+        "A": 8,
+        "I": 8,
+        "D": 40,
+        "K": 5,
+        "H": 5,
+        "J": 5,
+        "G": 5,
+        "E": 25
+      },
+      "adaptiveQuestionIds": [],
+      "personalityCode": "DD",
+      "behaviorName": "効率型",
+      "code80": "EFDD",
+      "shareCode": "efdd",
+      "patternNo": 48,
+      "nickname": "ゲームチェンジャー",
+      "typeKeyExistsInTypes80": true
+    },
+    "edge/all-3": {
+      "scores": {
+        "P": 36,
+        "A": 24,
+        "I": 24,
+        "D": 36,
+        "K": 27,
+        "H": 27,
+        "J": 15,
+        "G": 15,
+        "E": 15
+      },
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ],
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "code80": "ACDP",
+      "shareCode": "acdp",
+      "patternNo": 13,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "edge/all-5": {
+      "scores": {
+        "P": 48,
+        "A": 36,
+        "I": 36,
+        "D": 48,
+        "K": 21,
+        "H": 25,
+        "J": 21,
+        "G": 21,
+        "E": 21
+      },
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4"
+      ],
+      "personalityCode": "DP",
+      "behaviorName": "調和型",
+      "code80": "HMDP",
+      "shareCode": "hmdp",
+      "patternNo": 29,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "edge/all-1": {
+      "scores": {
+        "P": 24,
+        "A": 12,
+        "I": 12,
+        "D": 24,
+        "K": 21,
+        "H": 5,
+        "J": 21,
+        "G": 9,
+        "E": 9
+      },
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KJ-1",
+        "BEHAVIOR-TB-KJ-2",
+        "BEHAVIOR-TB-KJ-3",
+        "BEHAVIOR-TB-KJ-4"
+      ],
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "code80": "ACDP",
+      "shareCode": "acdp",
+      "patternNo": 13,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "edge/all-3-adaptive-agree-first": {
+      "scores": {
+        "P": 36,
+        "A": 24,
+        "I": 24,
+        "D": 36,
+        "K": 27,
+        "H": 27,
+        "J": 15,
+        "G": 15,
+        "E": 15
+      },
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ],
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "code80": "ACDP",
+      "shareCode": "acdp",
+      "patternNo": 13,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    },
+    "edge/all-3-adaptive-agree-second": {
+      "scores": {
+        "P": 36,
+        "A": 24,
+        "I": 24,
+        "D": 36,
+        "K": 27,
+        "H": 27,
+        "J": 15,
+        "G": 15,
+        "E": 15
+      },
+      "adaptiveQuestionIds": [
+        "PERSONALITY-TB-DP-1",
+        "PERSONALITY-TB-DP-2",
+        "PERSONALITY-TB-DP-3",
+        "PERSONALITY-TB-DP-4",
+        "BEHAVIOR-TB-KH-1",
+        "BEHAVIOR-TB-KH-2",
+        "BEHAVIOR-TB-KH-3",
+        "BEHAVIOR-TB-KH-4"
+      ],
+      "personalityCode": "DP",
+      "behaviorName": "達成型",
+      "code80": "ACDP",
+      "shareCode": "acdp",
+      "patternNo": 13,
+      "nickname": "大将気質",
+      "typeKeyExistsInTypes80": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "80cards-regression-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "80CARDS 診断ロジックの golden file テストとスクリーンショット基準記録（開発用・本番配信不要）",
+  "scripts": {
+    "test": "node run-diagnosis-tests.mjs",
+    "test:update": "node run-diagnosis-tests.mjs --update",
+    "screenshots:baseline": "node capture-screenshots.mjs",
+    "screenshots:current": "node capture-screenshots.mjs --out current"
+  },
+  "dependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "playwright": "^1.60.0"
+  }
+}
