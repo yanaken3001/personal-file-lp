@@ -241,6 +241,10 @@ if (unknownTypeKeys.length > 0) {
 
 const json = JSON.stringify(snapshot, null, 2);
 
+function normalizeLineEndings(text) {
+  return text.replace(/\r\n/g, '\n');
+}
+
 if (UPDATE) {
   fs.mkdirSync(path.dirname(GOLDEN_PATH), { recursive: true });
   fs.writeFileSync(GOLDEN_PATH, json);
@@ -255,7 +259,7 @@ if (!fs.existsSync(GOLDEN_PATH)) {
 }
 
 const golden = fs.readFileSync(GOLDEN_PATH, 'utf8');
-if (golden === json) {
+if (normalizeLineEndings(golden) === normalizeLineEndings(json)) {
   console.log(`PASS: 診断ロジックは golden と完全一致（flow ${Object.keys(snapshot.flow).length}件 / unit ${Object.keys(snapshot.unit).length}件 / 80タイプ網羅 ${coverageCodes.size}/80）`);
   process.exit(0);
 }

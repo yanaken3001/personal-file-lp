@@ -4,6 +4,10 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { APP_PATH, SOURCE_PATH, buildAppCode } from './build-app.mjs';
 
+function normalizeLineEndings(text) {
+  return text.replace(/\r\n/g, '\n');
+}
+
 export function assertAppBuildInSync() {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), '80cards-app-build-'));
   const tempAppPath = path.join(tempDir, 'app.js');
@@ -17,13 +21,15 @@ export function assertAppBuildInSync() {
   }
 
   const actual = fs.readFileSync(APP_PATH, 'utf8');
-  if (actual === expected) {
+  const comparableActual = normalizeLineEndings(actual);
+  const comparableExpected = normalizeLineEndings(expected);
+  if (comparableActual === comparableExpected) {
     console.log('PASS: 80cards/app.js is in sync with 80cards/src/app.jsx');
     return;
   }
 
   let index = 0;
-  while (index < actual.length && index < expected.length && actual[index] === expected[index]) {
+  while (index < comparableActual.length && index < comparableExpected.length && comparableActual[index] === comparableExpected[index]) {
     index += 1;
   }
 
@@ -36,9 +42,9 @@ export function assertAppBuildInSync() {
     `Generated file: ${path.relative(process.cwd(), APP_PATH)}`,
     `First difference at byte/char offset: ${index}`,
     '--- expected regenerated snippet ---',
-    expected.slice(contextStart, contextEnd),
+    comparableExpected.slice(contextStart, contextEnd),
     '--- actual committed snippet ---',
-    actual.slice(contextStart, contextEnd),
+    comparableActual.slice(contextStart, contextEnd),
   ].join('\n');
 
   throw new Error(message);
