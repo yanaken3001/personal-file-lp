@@ -4190,7 +4190,7 @@
                         onClick={onResume}
                         style={{ fontSize: 14, padding: '13px 20px', borderRadius: '12px', background: 'rgba(255,255,255,0.86)' }}
                       >
-                        前回の続きから（Q.{resumeProgress.answeredCount}/{BASE_TOTAL_QUESTIONS}〜）
+                        前回の続きから（Q.{resumeProgress.answeredCount}/{resumeProgress.totalQuestions}〜）
                       </button>
                       <button
                         type="button"
@@ -7857,8 +7857,9 @@
 
       const resumeProgress = React.useMemo(() => {
         if (!restorableProgress) return null;
-        const answeredCount = Math.min(getSequentialAnswers(restorableProgress.answerHistory).length, BASE_TOTAL_QUESTIONS);
-        return answeredCount > 0 ? { answeredCount } : null;
+        const answeredCount = getSequentialAnswers(restorableProgress.answerHistory).length;
+        const totalQuestions = BASE_TOTAL_QUESTIONS + restorableProgress.adaptiveQuestions.length;
+        return answeredCount > 0 ? { answeredCount, totalQuestions } : null;
       }, [restorableProgress]);
 
       const resetDiagnosisState = () => {

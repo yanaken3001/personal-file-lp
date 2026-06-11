@@ -4549,7 +4549,7 @@ function StartScreen80({
       borderRadius: '12px',
       background: 'rgba(255,255,255,0.86)'
     }
-  }, "\u524D\u56DE\u306E\u7D9A\u304D\u304B\u3089\uFF08Q.", resumeProgress.answeredCount, "/", BASE_TOTAL_QUESTIONS, "\u301C\uFF09"), /*#__PURE__*/React.createElement("button", {
+  }, "\u524D\u56DE\u306E\u7D9A\u304D\u304B\u3089\uFF08Q.", resumeProgress.answeredCount, "/", resumeProgress.totalQuestions, "\u301C\uFF09"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "lp-resume-restart-clean",
     onClick: onRestart,
@@ -8610,9 +8610,11 @@ function App() {
   const activeTotalQuestions = activeQuestions.length;
   const resumeProgress = React.useMemo(() => {
     if (!restorableProgress) return null;
-    const answeredCount = Math.min(getSequentialAnswers(restorableProgress.answerHistory).length, BASE_TOTAL_QUESTIONS);
+    const answeredCount = getSequentialAnswers(restorableProgress.answerHistory).length;
+    const totalQuestions = BASE_TOTAL_QUESTIONS + restorableProgress.adaptiveQuestions.length;
     return answeredCount > 0 ? {
-      answeredCount
+      answeredCount,
+      totalQuestions
     } : null;
   }, [restorableProgress]);
   const resetDiagnosisState = () => {
