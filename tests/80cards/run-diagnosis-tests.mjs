@@ -14,12 +14,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assertAppBuildInSync } from './check-app-build.mjs';
 import { loadDiagnosisLogic } from './extract-logic.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GOLDEN_PATH = path.resolve(__dirname, 'golden/diagnosis-golden.json');
 const UPDATE = process.argv.includes('--update');
 
+assertAppBuildInSync();
 const api = loadDiagnosisLogic();
 const {
   ORDERED_QUESTIONS, BASE_TOTAL_QUESTIONS,

@@ -10,17 +10,18 @@
 
 ### A案: ビルド済みJSファイル差し替え
 
-`80cards/index.html` の `<script type="text/babel">` 内のJSXソースを `80cards/src/app.jsx` に退避し、Babel CLIで `80cards/app.js` を生成します。本番HTMLは `app.js` を通常の `<script src="/80cards/app.js">` として読み込みます。`80cards/src/` は `.vercelignore` で配信除外します。
+`80cards/index.html` の `<script type="text/babel">` 内のJSXソースを `80cards/src/app.jsx` に退避し、Babelで `80cards/app.js` を生成します。本番HTMLは `app.js` を通常の `<script src="/80cards/app.js">` として読み込みます。`80cards/src/` は `.vercelignore` で配信除外します。
 
 再生成コマンド例:
 
 ```powershell
-npx babel 80cards/src/app.jsx --presets @babel/preset-react --out-file 80cards/app.js
+cd tests/80cards
+node build-app.mjs
 ```
 
-手順は `docs/80cards-phase2b-build.md` に明文化します。
+手順は `docs/80cards-phase2b-build.md` に明文化します。`80cards/app.js` の冒頭には自動生成ファイルであること、直接編集禁止、再生成コマンドをコメントで明記します。
 
-リスク: HTMLからJSXを外へ出すため、テストハーネスとスクリーンショット基準の調整が必要です。`app.js` が手生成物になるため、ソースと生成物の同期漏れを防ぐ確認手順が必要です。
+リスク: HTMLからJSXを外へ出すため、テストハーネスとスクリーンショット基準の調整が必要です。`app.js` が手生成物になるため、ソースと生成物の同期漏れを防ぐdrift検知が必要です。
 
 工数: M。
 
@@ -54,14 +55,15 @@ A案を推奨します。理由は、実装が単純で、`index.html` と生成
 
 ## goldenテストへの影響と改修方針
 
-現行テストは `80cards/index.html` 内の `text/babel` スクリプトを抽出し、テスト側でトランスパイルして評価する方式です。A案ではJSXソースが `80cards/src/app.jsx` に移るため、テストハーネスは抽出元を `index.html` から `src/app.jsx` へ変更します。
+現行テストは `80cards/index.html` 内の `text/babel` スクリプトを抽出し、テスト側でトランスパイルして評価する方式です。A案ではJSXソースが `80cards/src/app.jsx` に移り、本番出荷物は `80cards/app.js` になります。goldenテストハーネスは出荷物である `80cards/app.js` を直接評価する方式へ変更します。
 
 担保すること:
 
 - `tests/80cards/golden/diagnosis-golden.json` は1バイトも変更しません。
 - テストが検証する期待80CODE、タイプ、判定閾値、同点処理、アダプティブ質問の期待値は変更しません。
 - 構造変更前の `npm test` 全PASSを記録し、変更後も同じgoldenで全PASSすることを必須条件にします。
-- テストハーネスの変更は「ソース取得場所の変更」に限定し、診断ロジックの再実装や期待値再解釈は行いません。
+- テストハーネスの変更は「評価対象を出荷物の `80cards/app.js` に変更する」ことに限定し、診断ロジックの再実装や期待値再解釈は行いません。
+- `npm test` の先頭で `80cards/src/app.jsx` を一時ディレクトリへBabel変換し、コミット済みの `80cards/app.js` と完全一致するか比較します。不一致ならテスト失敗にします。
 
 ## @babel/standalone削除可否
 

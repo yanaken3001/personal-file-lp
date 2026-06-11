@@ -6,10 +6,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { transformSync } from '@babel/core';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INDEX_HTML = path.resolve(__dirname, '../../80cards/index.html');
+const APP_JS = path.resolve(__dirname, '../../80cards/app.js');
 
 // テストから参照する公開シンボル。index.html 側の名前と1:1。
 const EXPORT_NAMES = [
@@ -26,14 +25,6 @@ const EXPORT_NAMES = [
   'get80Code', 'getPatternNo',
   'encodeMatchData', 'decodeMatchData',
 ];
-
-function extractBabelScript(html) {
-  const open = html.indexOf('<script type="text/babel">');
-  if (open === -1) throw new Error('text/babel script not found in index.html');
-  const start = html.indexOf('>', open) + 1;
-  const end = html.indexOf('</script>', start);
-  return html.slice(start, end);
-}
 
 function makeSandbox() {
   const noop = () => {};
@@ -114,23 +105,15 @@ function makeSandbox() {
 }
 
 export function loadDiagnosisLogic() {
-  const html = fs.readFileSync(INDEX_HTML, 'utf8');
-  const scriptBody = extractBabelScript(html);
+  const appCode = fs.readFileSync(APP_JS, 'utf8');
 
   const collector = `\n;globalThis.__TEST_API__ = { ${EXPORT_NAMES
     .map((n) => `${n}: (typeof ${n} !== 'undefined' ? ${n} : undefined)`)
     .join(', ')} };\n`;
 
-  const { code } = transformSync(scriptBody + collector, {
-    presets: [['@babel/preset-react', { runtime: 'classic' }]],
-    babelrc: false,
-    configFile: false,
-    compact: false,
-  });
-
   const sandbox = makeSandbox();
   vm.createContext(sandbox);
-  vm.runInContext(code, sandbox, { filename: '80cards-index-babel-script.js', timeout: 30000 });
+  vm.runInContext(appCode + collector, sandbox, { filename: '80cards/app.js', timeout: 30000 });
 
   const api = sandbox.__TEST_API__;
   const missing = EXPORT_NAMES.filter((n) => api[n] === undefined);
