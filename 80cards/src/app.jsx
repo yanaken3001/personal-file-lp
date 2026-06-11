@@ -3632,7 +3632,7 @@
               {isAdaptive ? `追加確認 ${adaptiveCurrent} / ${adaptiveTotal}` : `Q.${current} / ${total}`}
             </span>
             <span className="quiz-progress-section-label">
-              {isAdaptive ? 'RARE BRANCH' : `SECTION ${currentSection} / 4`}
+              {isAdaptive ? 'PRECISION CHECK' : `SECTION ${currentSection} / 4`}
             </span>
           </div>
           <div className="quiz-progress-track">
@@ -3690,17 +3690,17 @@
       return (
         <div className="adaptive-intro-screen">
           <div className="adaptive-intro-panel">
-            <div className="adaptive-intro-kicker">RARE BRANCH</div>
+            <div className="adaptive-intro-kicker">PRECISION CHECK</div>
             <div className="adaptive-intro-symbol" aria-hidden="true">
               <span>80</span>
             </div>
-            <h2 className="adaptive-intro-title">レアな分岐に入りました</h2>
-            <div className="adaptive-intro-subtitle">10人に1人の分岐</div>
+            <h2 className="adaptive-intro-title">あなたの1枚を、<br />確定させます</h2>
+            <div className="adaptive-intro-subtitle">複数のタイプが拮抗しています</div>
             <p className="adaptive-intro-body">
               あなたの傾向は、<br />
               ひとつに決めきれないほど近く出ています。<br />
               よりあなたらしい1枚にするために、<br />
-              特別にあと数問だけ教えてください。
+              あと数問だけ教えてください。
             </p>
             <button type="button" className="adaptive-intro-button" onClick={onContinue}>
               より正確な1枚を出す
@@ -4437,7 +4437,7 @@
           >
             {/* セクション情報 */}
             <div className="quiz-section-info">
-              <div className="quiz-section-number">{isAdaptiveQuestion ? 'RARE BRANCH' : `SECTION${sectionInfo.num}`}</div>
+              <div className="quiz-section-number">{isAdaptiveQuestion ? 'PRECISION CHECK' : `SECTION${sectionInfo.num}`}</div>
             </div>
 
             {/* 設問テキスト — 句読点(、。)の直後で明示改行して可読性を確保 */}
