@@ -2872,6 +2872,135 @@ function applyQuestionScore(scores, question, rawValue, multiplier = 1) {
   });
   return nextScores;
 }
+const PROGRESS_STORAGE_KEY = '80cards_progress';
+const PROGRESS_STORAGE_VERSION = 'base57-v1';
+const PROGRESS_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+function getSavedProgressTime(savedAt) {
+  if (typeof savedAt === 'number') return savedAt;
+  if (typeof savedAt === 'string') {
+    const time = Date.parse(savedAt);
+    return Number.isFinite(time) ? time : null;
+  }
+  return null;
+}
+function isAnswerValue(value) {
+  return Number.isInteger(value) && value >= 1 && value <= 5;
+}
+function clearSavedProgress() {
+  try {
+    window.localStorage.removeItem(PROGRESS_STORAGE_KEY);
+  } catch (e) {}
+}
+function writeSavedProgress(answers, currentQuestionIndex) {
+  try {
+    const payload = {
+      version: PROGRESS_STORAGE_VERSION,
+      answers,
+      currentQuestionIndex,
+      savedAt: new Date().toISOString()
+    };
+    window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(payload));
+  } catch (e) {}
+}
+function readSavedProgress() {
+  try {
+    const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.version !== PROGRESS_STORAGE_VERSION) {
+      clearSavedProgress();
+      return null;
+    }
+    const savedAt = getSavedProgressTime(parsed.savedAt);
+    if (!savedAt || Date.now() - savedAt > PROGRESS_MAX_AGE_MS) {
+      clearSavedProgress();
+      return null;
+    }
+    if (!Array.isArray(parsed.answers) || parsed.answers.length === 0 || parsed.answers.length > BASE_TOTAL_QUESTIONS + MAX_ADAPTIVE_QUESTIONS) {
+      clearSavedProgress();
+      return null;
+    }
+    if (!parsed.answers.every(isAnswerValue)) {
+      clearSavedProgress();
+      return null;
+    }
+    if (!Number.isInteger(parsed.currentQuestionIndex)) {
+      clearSavedProgress();
+      return null;
+    }
+    const index = parsed.currentQuestionIndex;
+    if (index < 0 || index > parsed.answers.length || index > BASE_TOTAL_QUESTIONS + MAX_ADAPTIVE_QUESTIONS) {
+      clearSavedProgress();
+      return null;
+    }
+    return {
+      version: parsed.version,
+      answers: parsed.answers,
+      currentQuestionIndex: index,
+      savedAt: parsed.savedAt
+    };
+  } catch (e) {
+    clearSavedProgress();
+    return null;
+  }
+}
+function getSequentialAnswers(answerHistory) {
+  const answers = [];
+  for (const answer of answerHistory) {
+    if (!isAnswerValue(answer)) break;
+    answers.push(answer);
+  }
+  return answers;
+}
+function rebuildProgressState(progress) {
+  if (!progress) return null;
+  let restoredScores = createEmptyScoreDelta();
+  const baseAnswers = progress.answers.slice(0, BASE_TOTAL_QUESTIONS);
+  const restoredHistory = [];
+  for (let i = 0; i < baseAnswers.length; i++) {
+    const answer = baseAnswers[i];
+    const question = ORDERED_QUESTIONS[i];
+    if (!question || !isAnswerValue(answer)) break;
+    restoredScores = applyQuestionScore(restoredScores, question, answer, 1);
+    restoredHistory[i] = answer;
+  }
+  if (restoredHistory.length < BASE_TOTAL_QUESTIONS) {
+    const nextIndex = Math.min(progress.currentQuestionIndex, restoredHistory.length);
+    return {
+      phase: 'quiz',
+      qIndex: nextIndex,
+      scores: restoredScores,
+      answerHistory: restoredHistory,
+      adaptiveQuestions: []
+    };
+  }
+  const restoredAdaptiveQuestions = buildAdaptiveQuestions(restoredScores);
+  const totalRestorableQuestions = BASE_TOTAL_QUESTIONS + restoredAdaptiveQuestions.length;
+  if (progress.answers.length > totalRestorableQuestions) {
+    clearSavedProgress();
+    return null;
+  }
+  const adaptiveAnswers = progress.answers.slice(BASE_TOTAL_QUESTIONS, BASE_TOTAL_QUESTIONS + restoredAdaptiveQuestions.length);
+  for (let i = 0; i < adaptiveAnswers.length; i++) {
+    const answer = adaptiveAnswers[i];
+    const question = restoredAdaptiveQuestions[i];
+    if (!question || !isAnswerValue(answer)) break;
+    restoredScores = applyQuestionScore(restoredScores, question, answer, 1);
+    restoredHistory[BASE_TOTAL_QUESTIONS + i] = answer;
+  }
+  const nextIndex = Math.min(progress.currentQuestionIndex, restoredHistory.length, totalRestorableQuestions);
+  if (nextIndex >= totalRestorableQuestions) {
+    clearSavedProgress();
+    return null;
+  }
+  return {
+    phase: nextIndex >= BASE_TOTAL_QUESTIONS && restoredAdaptiveQuestions.length > 0 && restoredHistory.length === BASE_TOTAL_QUESTIONS ? 'adaptiveIntro' : 'quiz',
+    qIndex: nextIndex,
+    scores: restoredScores,
+    answerHistory: restoredHistory,
+    adaptiveQuestions: restoredAdaptiveQuestions
+  };
+}
 
 // ===================================================================
 // URL PARAMS
@@ -4268,7 +4397,10 @@ function TypeMenuDropdown() {
 
 // --- StartScreen80 ---
 function StartScreen80({
-  onStart
+  onStart,
+  resumeProgress,
+  onResume,
+  onRestart
 }) {
   const [phases, setPhases] = React.useState([false, false, false, false]);
   const [featured, setFeatured] = React.useState(0);
@@ -4399,7 +4531,40 @@ function StartScreen80({
     stroke: "currentColor",
     strokeWidth: "2",
     strokeLinecap: "round"
-  })))), /*#__PURE__*/React.createElement("div", {
+  }))), resumeProgress && /*#__PURE__*/React.createElement("div", {
+    className: "lp-resume-clean",
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn-clean btn-ghost-clean lp-resume-button-clean",
+    onClick: onResume,
+    style: {
+      fontSize: 14,
+      padding: '13px 20px',
+      borderRadius: '12px',
+      background: 'rgba(255,255,255,0.86)'
+    }
+  }, "\u524D\u56DE\u306E\u7D9A\u304D\u304B\u3089\uFF08Q.", resumeProgress.answeredCount, "/", BASE_TOTAL_QUESTIONS, "\u301C\uFF09"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "lp-resume-restart-clean",
+    onClick: onRestart,
+    style: {
+      appearance: 'none',
+      border: 0,
+      background: 'transparent',
+      color: 'var(--ink3)',
+      fontSize: 12,
+      fontWeight: 700,
+      textDecoration: 'underline',
+      cursor: 'pointer',
+      padding: 2
+    }
+  }, "\u6700\u521D\u304B\u3089\u3084\u308A\u76F4\u3059"))), /*#__PURE__*/React.createElement("div", {
     className: "lp-hero-proof-clean",
     "aria-label": "\u8A3A\u65AD\u306E\u88DC\u8DB3\u60C5\u5831"
   }, /*#__PURE__*/React.createElement("span", {
@@ -8419,6 +8584,11 @@ function App() {
   // 相性リンクから来た場合: matchLanding → quiz → loading → result + compatibility
   // 通常フロー: start → quiz → loading → result
   const isMatchMode = !isDevMode && !!matchCreator;
+  const shouldUseProgressStorage = !isDevMode && !devAdaptivePreset && !isMatchMode;
+  const [restorableProgress, setRestorableProgress] = React.useState(() => {
+    if (!shouldUseProgressStorage || autoStart) return null;
+    return rebuildProgressState(readSavedProgress());
+  });
   const [phase, setPhase] = React.useState(isDevMode ? 'result' : devAdaptivePreset ? 'quiz' : isMatchMode ? 'matchLanding' : autoStart ? 'quiz' : 'start');
   const [qIndex, setQIndex] = React.useState(devAdaptivePreset?.qIndex || 0);
   const [scores, setScores] = React.useState(devScores || devAdaptivePreset?.scores || {
@@ -8438,9 +8608,55 @@ function App() {
   const [showCompatibility, setShowCompatibility] = React.useState(false);
   const activeQuestions = React.useMemo(() => [...ORDERED_QUESTIONS, ...adaptiveQuestions], [adaptiveQuestions]);
   const activeTotalQuestions = activeQuestions.length;
+  const resumeProgress = React.useMemo(() => {
+    if (!restorableProgress) return null;
+    const answeredCount = Math.min(getSequentialAnswers(restorableProgress.answerHistory).length, BASE_TOTAL_QUESTIONS);
+    return answeredCount > 0 ? {
+      answeredCount
+    } : null;
+  }, [restorableProgress]);
+  const resetDiagnosisState = () => {
+    setQIndex(0);
+    setScores(createEmptyScoreDelta());
+    setAnswerHistory([]);
+    setAdaptiveQuestions([]);
+    setNextChapter(null);
+    setShowCompatibility(false);
+  };
+  const persistProgress = (history, currentQuestionIndex) => {
+    if (!shouldUseProgressStorage) return;
+    const answers = getSequentialAnswers(history);
+    if (answers.length === 0) {
+      clearSavedProgress();
+      return;
+    }
+    writeSavedProgress(answers, currentQuestionIndex);
+  };
   const handleStart = () => {
+    if (shouldUseProgressStorage) {
+      clearSavedProgress();
+      setRestorableProgress(null);
+    }
+    resetDiagnosisState();
     setPhase('quiz');
     window.scrollTo(0, 0);
+  };
+  const handleResume = () => {
+    if (!restorableProgress) {
+      handleStart();
+      return;
+    }
+    setQIndex(restorableProgress.qIndex);
+    setScores(restorableProgress.scores);
+    setAnswerHistory(restorableProgress.answerHistory);
+    setAdaptiveQuestions(restorableProgress.adaptiveQuestions);
+    setNextChapter(null);
+    setShowCompatibility(false);
+    setPhase(restorableProgress.phase);
+    window.scrollTo(0, 0);
+  };
+  const handleRestart = () => {
+    handleStart();
   };
 
   // チャプター境界かどうか判定
@@ -8477,6 +8693,7 @@ function App() {
       setAdaptiveQuestions(extraQuestions);
       newHistory = newHistory.slice(0, BASE_TOTAL_QUESTIONS);
       setAnswerHistory(newHistory);
+      persistProgress(newHistory, BASE_TOTAL_QUESTIONS);
       if (extraQuestions.length > 0) {
         setPhase('adaptiveIntro');
       } else {
@@ -8502,9 +8719,11 @@ function App() {
       } else {
         setQIndex(nextIdx);
       }
+      persistProgress(newHistory, nextIdx);
       window.scrollTo(0, 0);
     } else {
       // All questions answered
+      persistProgress(newHistory, qIndex + 1);
       setPhase('loading');
       window.scrollTo(0, 0);
     }
@@ -8525,7 +8744,9 @@ function App() {
         newHistory = newHistory.slice(0, BASE_TOTAL_QUESTIONS);
       }
       setAnswerHistory(newHistory);
-      setQIndex(qIndex - 1);
+      const prevIndex = qIndex - 1;
+      persistProgress(newHistory, prevIndex);
+      setQIndex(prevIndex);
       window.scrollTo(0, 0);
     }
   };
@@ -8539,6 +8760,10 @@ function App() {
     window.scrollTo(0, 0);
   };
   const handleLoadingComplete = () => {
+    if (shouldUseProgressStorage) {
+      clearSavedProgress();
+      setRestorableProgress(null);
+    }
     setPhase('result');
     // 相性モードの場合、結果表示後に自動的に相性画面も表示
     if (isMatchMode) {
@@ -8562,7 +8787,10 @@ function App() {
     creatorBehaviorCode: matchCreator.behaviorCode,
     onStart: handleStart
   }), phase === 'start' && /*#__PURE__*/React.createElement(StartScreen80, {
-    onStart: handleStart
+    onStart: handleStart,
+    resumeProgress: resumeProgress,
+    onResume: handleResume,
+    onRestart: handleRestart
   }), phase === 'quiz' && /*#__PURE__*/React.createElement(QuestionScreen80, {
     qIndex: qIndex,
     questions: activeQuestions,
