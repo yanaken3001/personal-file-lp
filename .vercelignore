@@ -1,0 +1,6 @@
+# 本番配信から除外する開発用ファイル（git管理はするが配信しない）
+tests/
+screenshots/
+docs/
+AUDIT_PLAN.md
+AGENTS.md
