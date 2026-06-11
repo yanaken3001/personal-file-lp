@@ -25,6 +25,10 @@ This repository is the production repository for the PERSONAL FILE site.
 - Do not commit `personalfile_site_portable/` into this production repository.
 - `personalfile_site_portable/` is intentionally ignored by `.gitignore`.
 
+## Reference Docs
+
+- [80CARDS adaptive branch decision record](docs/adaptive-branch-decision.md)
+
 ## Git Safety
 
 - Do not use `git add .`.
