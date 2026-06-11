@@ -3817,7 +3817,7 @@ function ProgressBar80({
     className: "quiz-progress-qnum"
   }, isAdaptive ? `追加確認 ${adaptiveCurrent} / ${adaptiveTotal}` : `Q.${current} / ${total}`), /*#__PURE__*/React.createElement("span", {
     className: "quiz-progress-section-label"
-  }, isAdaptive ? 'RARE BRANCH' : `SECTION ${currentSection} / 4`)), /*#__PURE__*/React.createElement("div", {
+  }, isAdaptive ? 'PRECISION CHECK' : `SECTION ${currentSection} / 4`)), /*#__PURE__*/React.createElement("div", {
     className: "quiz-progress-track"
   }, sectionMarks.map((pos, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -3881,16 +3881,16 @@ function AdaptiveIntroScreen({
     className: "adaptive-intro-panel"
   }, /*#__PURE__*/React.createElement("div", {
     className: "adaptive-intro-kicker"
-  }, "RARE BRANCH"), /*#__PURE__*/React.createElement("div", {
+  }, "PRECISION CHECK"), /*#__PURE__*/React.createElement("div", {
     className: "adaptive-intro-symbol",
     "aria-hidden": "true"
   }, /*#__PURE__*/React.createElement("span", null, "80")), /*#__PURE__*/React.createElement("h2", {
     className: "adaptive-intro-title"
-  }, "\u30EC\u30A2\u306A\u5206\u5C90\u306B\u5165\u308A\u307E\u3057\u305F"), /*#__PURE__*/React.createElement("div", {
+  }, "\u3042\u306A\u305F\u306E1\u679A\u3092\u3001", /*#__PURE__*/React.createElement("br", null), "\u78BA\u5B9A\u3055\u305B\u307E\u3059"), /*#__PURE__*/React.createElement("div", {
     className: "adaptive-intro-subtitle"
-  }, "10\u4EBA\u306B1\u4EBA\u306E\u5206\u5C90"), /*#__PURE__*/React.createElement("p", {
+  }, "\u8907\u6570\u306E\u30BF\u30A4\u30D7\u304C\u62EE\u6297\u3057\u3066\u3044\u307E\u3059"), /*#__PURE__*/React.createElement("p", {
     className: "adaptive-intro-body"
-  }, "\u3042\u306A\u305F\u306E\u50BE\u5411\u306F\u3001", /*#__PURE__*/React.createElement("br", null), "\u3072\u3068\u3064\u306B\u6C7A\u3081\u304D\u308C\u306A\u3044\u307B\u3069\u8FD1\u304F\u51FA\u3066\u3044\u307E\u3059\u3002", /*#__PURE__*/React.createElement("br", null), "\u3088\u308A\u3042\u306A\u305F\u3089\u3057\u30441\u679A\u306B\u3059\u308B\u305F\u3081\u306B\u3001", /*#__PURE__*/React.createElement("br", null), "\u7279\u5225\u306B\u3042\u3068\u6570\u554F\u3060\u3051\u6559\u3048\u3066\u304F\u3060\u3055\u3044\u3002"), /*#__PURE__*/React.createElement("button", {
+  }, "\u3042\u306A\u305F\u306E\u50BE\u5411\u306F\u3001", /*#__PURE__*/React.createElement("br", null), "\u3072\u3068\u3064\u306B\u6C7A\u3081\u304D\u308C\u306A\u3044\u307B\u3069\u8FD1\u304F\u51FA\u3066\u3044\u307E\u3059\u3002", /*#__PURE__*/React.createElement("br", null), "\u3088\u308A\u3042\u306A\u305F\u3089\u3057\u30441\u679A\u306B\u3059\u308B\u305F\u3081\u306B\u3001", /*#__PURE__*/React.createElement("br", null), "\u3042\u3068\u6570\u554F\u3060\u3051\u6559\u3048\u3066\u304F\u3060\u3055\u3044\u3002"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "adaptive-intro-button",
     onClick: onContinue
@@ -4858,7 +4858,7 @@ function QuestionScreen80({
     className: "quiz-section-info"
   }, /*#__PURE__*/React.createElement("div", {
     className: "quiz-section-number"
-  }, isAdaptiveQuestion ? 'RARE BRANCH' : `SECTION${sectionInfo.num}`)), /*#__PURE__*/React.createElement("h2", {
+  }, isAdaptiveQuestion ? 'PRECISION CHECK' : `SECTION${sectionInfo.num}`)), /*#__PURE__*/React.createElement("h2", {
     className: "question-text"
   }, (() => {
     const text = question.text || '';
