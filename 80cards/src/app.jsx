@@ -6084,17 +6084,22 @@
       const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.personal-file.jp';
       const url = new URL('/80cards/contact.html', origin);
       const params = url.searchParams;
-      params.set('route', '80cards_result');
+      let route = '80cards_result';
       params.set('source', '80cards');
       params.set('cta', cta || 'career_section_modal');
 
       if (typeof window !== 'undefined') {
         const currentParams = new URLSearchParams(window.location.search);
+        const routeParam = (currentParams.get('route') || '').trim();
+        if (/^[A-Za-z0-9._~-]{1,80}$/.test(routeParam)) {
+          route = routeParam;
+        }
         ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'gclid', 'fbclid'].forEach((key) => {
           const value = currentParams.get(key);
           if (value) params.set(key, value);
         });
       }
+      params.set('route', route);
 
       return url.toString();
     }
