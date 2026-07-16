@@ -4072,6 +4072,9 @@
     function StartScreen80({ onStart, resumeProgress, onResume, onRestart }) {
       const [phases, setPhases] = React.useState([false, false, false, false]);
       const [featured, setFeatured] = React.useState(0);
+      const [showStickyCta, setShowStickyCta] = React.useState(false);
+      const mainCtaRef = React.useRef(null);
+      const isStartingRef = React.useRef(false);
       const featuredTypes = React.useMemo(() => getLPFeaturedTypes(), []);
 
       // ビューポート幅でカードサイズ・オフセットを切替
@@ -4103,14 +4106,45 @@
         return () => clearInterval(t);
       }, [featuredTypes.length]);
 
-      const handleStart = () => {
+      React.useEffect(() => {
+        const mainCta = mainCtaRef.current;
+        if (!mainCta || !isMobile) {
+          setShowStickyCta(false);
+          return undefined;
+        }
+
+        const updateStickyVisibility = () => {
+          const ctaRect = mainCta.getBoundingClientRect();
+          setShowStickyCta(ctaRect.bottom <= 0);
+        };
+
+        if (typeof IntersectionObserver === 'function') {
+          const observer = new IntersectionObserver(([entry]) => {
+            setShowStickyCta(!entry.isIntersecting && entry.boundingClientRect.bottom <= 0);
+          }, { threshold: 0 });
+          observer.observe(mainCta);
+          return () => observer.disconnect();
+        }
+
+        window.addEventListener('scroll', updateStickyVisibility, { passive: true });
+        updateStickyVisibility();
+        return () => window.removeEventListener('scroll', updateStickyVisibility);
+      }, [isMobile]);
+
+      const handleStart = (ctaPosition) => {
+        if (isStartingRef.current) return;
+        isStartingRef.current = true;
         try {
           if (typeof fbq === 'function') {
-            fbq('trackCustom', 'Diagnosis80Start', { content_name: '80cards_start' });
+            fbq('trackCustom', 'Diagnosis80Start', {
+              content_name: '80cards_start',
+              cta_position: ctaPosition,
+            });
           }
           if (typeof gtag === 'function') {
             gtag('event', 'diagnosis_80_start', {
               content_name: '80cards_start',
+              cta_position: ctaPosition,
             });
           }
         } catch (e) {}
@@ -4125,7 +4159,7 @@
       ];
 
       return (
-        <div className="lp-root-clean">
+        <div className={`lp-root-clean${showStickyCta && isMobile ? ' has-sticky-mobile-cta' : ''}`}>
 
           {/* ── HEADER ── */}
           <header className={`lp-header-clean lp-phase-clean${phases[0] ? ' visible' : ''}`}>
@@ -4176,12 +4210,21 @@
               {/* CTA ボタン */}
               <div className={`lp-phase-clean${phases[2] ? ' visible' : ''}`} style={{ animationDelay: '0.1s' }}>
                 <div className="lp-cta-group-clean">
-                  <button className="btn-clean btn-primary-clean" onClick={handleStart} style={{ fontSize: 16, padding: '18px 32px', borderRadius: '12px' }}>
-                    診断をはじめる
-                    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
-                      <path d="M1 7H16M16 7L10 1M16 7L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  </button>
+                  <div className="lp-main-cta-clean">
+                    <button
+                      ref={mainCtaRef}
+                      type="button"
+                      className="btn-clean btn-primary-clean"
+                      onClick={() => handleStart('hero')}
+                      style={{ fontSize: 16, padding: '18px 32px', borderRadius: '12px' }}
+                    >
+                      無料で自分の80タイプを見る
+                      <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+                        <path d="M1 7H16M16 7L10 1M16 7L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </button>
+                    <div className="lp-cta-note-clean">登録不要・約3分</div>
+                  </div>
                   {resumeProgress && (
                     <div className="lp-resume-clean" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                       <button
@@ -4202,11 +4245,6 @@
                       </button>
                     </div>
                   )}
-                </div>
-                <div className="lp-hero-proof-clean" aria-label="診断の補足情報">
-                  <span className="lp-hero-proof-item-clean">無料</span>
-                  <span className="lp-hero-proof-item-clean">約3分</span>
-                  <span className="lp-hero-proof-item-clean">80タイプ診断</span>
                 </div>
               </div>
             </div>
@@ -4344,6 +4382,19 @@
             </nav>
             <span>© 2026 Personal Inc.</span>
           </footer>
+
+          <div
+            className={`lp-sticky-cta-clean${showStickyCta && isMobile ? ' is-visible' : ''}`}
+            aria-hidden={!(showStickyCta && isMobile)}
+          >
+            <button
+              type="button"
+              className="btn-clean btn-primary-clean lp-sticky-cta-button-clean"
+              onClick={() => handleStart('sticky_mobile')}
+            >
+              無料で自分の80タイプを見る
+            </button>
+          </div>
         </div>
       );
     }

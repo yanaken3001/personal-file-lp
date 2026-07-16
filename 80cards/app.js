@@ -4404,6 +4404,9 @@ function StartScreen80({
 }) {
   const [phases, setPhases] = React.useState([false, false, false, false]);
   const [featured, setFeatured] = React.useState(0);
+  const [showStickyCta, setShowStickyCta] = React.useState(false);
+  const mainCtaRef = React.useRef(null);
+  const isStartingRef = React.useRef(false);
   const featuredTypes = React.useMemo(() => getLPFeaturedTypes(), []);
 
   // ビューポート幅でカードサイズ・オフセットを切替
@@ -4441,16 +4444,45 @@ function StartScreen80({
     const t = setInterval(() => setFeatured(f => (f + 1) % featuredTypes.length), 3500);
     return () => clearInterval(t);
   }, [featuredTypes.length]);
-  const handleStart = () => {
+  React.useEffect(() => {
+    const mainCta = mainCtaRef.current;
+    if (!mainCta || !isMobile) {
+      setShowStickyCta(false);
+      return undefined;
+    }
+    const updateStickyVisibility = () => {
+      const ctaRect = mainCta.getBoundingClientRect();
+      setShowStickyCta(ctaRect.bottom <= 0);
+    };
+    if (typeof IntersectionObserver === 'function') {
+      const observer = new IntersectionObserver(([entry]) => {
+        setShowStickyCta(!entry.isIntersecting && entry.boundingClientRect.bottom <= 0);
+      }, {
+        threshold: 0
+      });
+      observer.observe(mainCta);
+      return () => observer.disconnect();
+    }
+    window.addEventListener('scroll', updateStickyVisibility, {
+      passive: true
+    });
+    updateStickyVisibility();
+    return () => window.removeEventListener('scroll', updateStickyVisibility);
+  }, [isMobile]);
+  const handleStart = ctaPosition => {
+    if (isStartingRef.current) return;
+    isStartingRef.current = true;
     try {
       if (typeof fbq === 'function') {
         fbq('trackCustom', 'Diagnosis80Start', {
-          content_name: '80cards_start'
+          content_name: '80cards_start',
+          cta_position: ctaPosition
         });
       }
       if (typeof gtag === 'function') {
         gtag('event', 'diagnosis_80_start', {
-          content_name: '80cards_start'
+          content_name: '80cards_start',
+          cta_position: ctaPosition
         });
       }
     } catch (e) {}
@@ -4460,7 +4492,7 @@ function StartScreen80({
   // 3枚表示: 中央(featured)、右(featured+1)、左(featured-1 + len)
   const displayIndices = [(featured + featuredTypes.length - 1) % featuredTypes.length, featured, (featured + 1) % featuredTypes.length];
   return /*#__PURE__*/React.createElement("div", {
-    className: "lp-root-clean"
+    className: `lp-root-clean${showStickyCta && isMobile ? ' has-sticky-mobile-cta' : ''}`
   }, /*#__PURE__*/React.createElement("header", {
     className: `lp-header-clean lp-phase-clean${phases[0] ? ' visible' : ''}`
   }, /*#__PURE__*/React.createElement("a", {
@@ -4512,15 +4544,19 @@ function StartScreen80({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "lp-cta-group-clean"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lp-main-cta-clean"
   }, /*#__PURE__*/React.createElement("button", {
+    ref: mainCtaRef,
+    type: "button",
     className: "btn-clean btn-primary-clean",
-    onClick: handleStart,
+    onClick: () => handleStart('hero'),
     style: {
       fontSize: 16,
       padding: '18px 32px',
       borderRadius: '12px'
     }
-  }, "\u8A3A\u65AD\u3092\u306F\u3058\u3081\u308B", /*#__PURE__*/React.createElement("svg", {
+  }, "\u7121\u6599\u3067\u81EA\u5206\u306E80\u30BF\u30A4\u30D7\u3092\u898B\u308B", /*#__PURE__*/React.createElement("svg", {
     width: "18",
     height: "14",
     viewBox: "0 0 18 14",
@@ -4531,7 +4567,9 @@ function StartScreen80({
     stroke: "currentColor",
     strokeWidth: "2",
     strokeLinecap: "round"
-  }))), resumeProgress && /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "lp-cta-note-clean"
+  }, "\u767B\u9332\u4E0D\u8981\u30FB\u7D043\u5206")), resumeProgress && /*#__PURE__*/React.createElement("div", {
     className: "lp-resume-clean",
     style: {
       display: 'flex',
@@ -4564,16 +4602,7 @@ function StartScreen80({
       cursor: 'pointer',
       padding: 2
     }
-  }, "\u6700\u521D\u304B\u3089\u3084\u308A\u76F4\u3059"))), /*#__PURE__*/React.createElement("div", {
-    className: "lp-hero-proof-clean",
-    "aria-label": "\u8A3A\u65AD\u306E\u88DC\u8DB3\u60C5\u5831"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "lp-hero-proof-item-clean"
-  }, "\u7121\u6599"), /*#__PURE__*/React.createElement("span", {
-    className: "lp-hero-proof-item-clean"
-  }, "\u7D043\u5206"), /*#__PURE__*/React.createElement("span", {
-    className: "lp-hero-proof-item-clean"
-  }, "80\u30BF\u30A4\u30D7\u8A3A\u65AD")))), /*#__PURE__*/React.createElement("div", {
+  }, "\u6700\u521D\u304B\u3089\u3084\u308A\u76F4\u3059"))))), /*#__PURE__*/React.createElement("div", {
     className: `lp-cards-stage-clean lp-phase-clean${phases[1] ? ' visible' : ''}`,
     style: {
       animationDelay: '0.15s'
@@ -4751,7 +4780,14 @@ function StartScreen80({
     href: "/80cards/privacy.html"
   }, "\u30D7\u30E9\u30A4\u30D0\u30B7\u30FC\u30DD\u30EA\u30B7\u30FC"), /*#__PURE__*/React.createElement("a", {
     href: "/80cards/terms.html"
-  }, "\u5229\u7528\u898F\u7D04")), /*#__PURE__*/React.createElement("span", null, "\xA9 2026 Personal Inc.")));
+  }, "\u5229\u7528\u898F\u7D04")), /*#__PURE__*/React.createElement("span", null, "\xA9 2026 Personal Inc.")), /*#__PURE__*/React.createElement("div", {
+    className: `lp-sticky-cta-clean${showStickyCta && isMobile ? ' is-visible' : ''}`,
+    "aria-hidden": !(showStickyCta && isMobile)
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn-clean btn-primary-clean lp-sticky-cta-button-clean",
+    onClick: () => handleStart('sticky_mobile')
+  }, "\u7121\u6599\u3067\u81EA\u5206\u306E80\u30BF\u30A4\u30D7\u3092\u898B\u308B")));
 }
 
 // --- QuestionScreen80 (CLEAN テーマ: 1問1画面スタイル) ---
