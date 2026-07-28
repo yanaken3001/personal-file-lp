@@ -404,10 +404,11 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     line-height: 1.1;
   }
   .stat-desc {
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 11.5px;
+    line-height: 1.55;
     color: var(--text);
     margin-top: 8px;
+    font-weight: 500;
   }
   .lp-source {
     font-size: 12px;
@@ -495,37 +496,58 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   }
 
   /* ---------- CTA ---------- */
+  /* display:block必須。flexにすると内部のspanが個別アイテム化して文字組みが崩壊する */
   .lp-cta-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     width: 100%;
-    min-height: 60px;
     background: var(--orange);
     color: #FFFFFF;
     text-decoration: none;
     border-radius: 16px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.45;
     text-align: center;
-    padding: 12px 16px;
+    padding: 20px 18px;
     box-shadow: 0 4px 14px rgba(242,99,47,0.22);
     transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
     position: relative;
     overflow: hidden;
+    text-wrap: balance;
+  }
+  @supports (word-break: auto-phrase) {
+    .lp-cta-btn { word-break: auto-phrase; }
   }
   .lp-cta-btn:active {
     opacity: 0.9;
     transform: translateY(2px);
     box-shadow: 0 1px 4px rgba(242,99,47,0.2);
   }
+  /* マイクロコピー：項目単位で折り返す（項目の途中では折らない） */
   .lp-cta-micro {
-    text-align: center;
-    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 16px;
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--gray-dark);
-    margin: 10px 0 0;
+    margin: 12px 0 0;
   }
+  .lp-cta-micro span {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .lp-cta-micro span::before {
+    content: "✓";
+    color: var(--orange);
+    font-weight: 700;
+    margin-right: 5px;
+  }
+  /* 長い項目は折り返しを許可（横溢れ防止） */
+  .lp-cta-micro span.wrap-ok { white-space: normal; text-wrap: balance; }
   .lp-cta-wrap { margin: 8px 0; }
   /* 最終CTA：実績チップ→ボタン→安心コピーを1つの塊として見せる */
   .lp-cta-wrap.last { margin-top: 0; }
@@ -624,17 +646,24 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     text-align: center;
     margin: 0 0 12px;
   }
+  /* 実績チップ：項目ごとに丸バッジ化し、項目単位で折り返す */
   .lp-mini-chip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+  }
+  .lp-mini-chip span {
     display: inline-block;
-    max-width: 100%;
+    white-space: nowrap;
     background: #FFFFFF;
     border: 1px solid rgba(242,99,47,0.3);
     border-radius: 999px;
-    padding: 7px 16px;
-    font-size: 11px;
-    line-height: 1.6;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    line-height: 1.4;
     color: var(--gray-dark);
-    box-sizing: border-box;
   }
 
   .lp-emphasis {
@@ -1229,15 +1258,15 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-stats">
       <div class="stat-card">
         <div class="stat-number">95%</div>
-        <p class="stat-desc">就職成功者の<strong>95%が未経験</strong></p>
+        <p class="stat-desc"><span class="keep-phrase">就職成功者が</span><span class="keep-phrase">未経験</span></p>
       </div>
       <div class="stat-card">
         <div class="stat-number">98%</div>
-        <p class="stat-desc">入社<strong>半年後<span class="keep-phrase">定着率98%</span></strong></p>
+        <p class="stat-desc"><span class="keep-phrase">入社半年後の</span><span class="keep-phrase">定着率</span></p>
       </div>
       <div class="stat-card">
         <div class="stat-number">94%</div>
-        <p class="stat-desc"><strong>診断結果<span class="keep-phrase">納得度94%</span></strong></p>
+        <p class="stat-desc"><span class="keep-phrase">診断結果の</span><span class="keep-phrase">納得度</span></p>
       </div>
     </div>
     <p class="lp-source">出典：相性転職<span class="keep-phrase">パーソナルファイル</span>公式サイト<span class="keep-phrase">記載（2026年7月時点）</span></p>
@@ -1252,9 +1281,9 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-cta-wrap">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta1'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta1'});}">
-        <span class="keep-phrase">パーソナルファイル</span>で、自分に合う仕事を<span class="keep-phrase">見つける<span class="cta-arrow" aria-hidden="true">›</span></span>
+自分に合う仕事を見つける<span class="cta-arrow" aria-hidden="true">›</span>
       </a>
-      <p class="lp-cta-micro"><span class="keep-phrase">完全無料</span>／登録後すぐ、LINEに診断が届きます</p>
+      <p class="lp-cta-micro"><span>完全無料</span><span>登録後すぐLINEに診断が届く</span></p>
     </div>
   </section>
 
@@ -1340,14 +1369,14 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 
     <p class="lp-cta-lead auto-phrase">前と同じ選び方に戻る前に。</p>
     <div class="lp-mini-chip-wrap">
-      <p class="lp-mini-chip auto-phrase">就職成功者の<span class="keep-phrase">95%が未経験</span> ／ 半年後<span class="keep-phrase">定着率98%</span> ／ 診断結果<span class="keep-phrase">納得度94%</span></p>
+      <p class="lp-mini-chip"><span>就職成功者の95%が未経験</span><span>半年後定着率98%</span><span>診断結果納得度94%</span></p>
     </div>
     <div class="lp-cta-wrap">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta2'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta2'});}">
-        相性から、次の仕事を<span class="keep-phrase">見つける<span class="cta-arrow" aria-hidden="true">›</span></span>
+相性から次の仕事を見つける<span class="cta-arrow" aria-hidden="true">›</span>
       </a>
-      <p class="lp-cta-micro"><span class="keep-phrase">完全無料</span>／求人を見る前に、自分の相性から始められます</p>
+      <p class="lp-cta-micro"><span>完全無料</span><span>診断は10〜20分</span><span class="wrap-ok">求人を見る前に相性から始められる</span></p>
     </div>
   </section>
 
@@ -1363,14 +1392,14 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <p class="lp-emphasis auto-phrase"><span class="mark-orange">求人より先に、自分。</span></p>
 
     <div class="lp-mini-chip-wrap">
-      <p class="lp-mini-chip auto-phrase">就職成功者の<span class="keep-phrase">95%が未経験</span> ／ 半年後<span class="keep-phrase">定着率98%</span> ／ 診断結果<span class="keep-phrase">納得度94%</span></p>
+      <p class="lp-mini-chip"><span>就職成功者の95%が未経験</span><span>半年後定着率98%</span><span>診断結果納得度94%</span></p>
     </div>
     <div class="lp-cta-wrap last">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta3'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta3'});}">
-        私に合う環境を、<span class="keep-phrase">パーソナルファイルで</span><span class="keep-phrase">見つける<span class="cta-arrow" aria-hidden="true">›</span></span>
+私に合う環境を見つける<span class="cta-arrow" aria-hidden="true">›</span>
       </a>
-      <p class="lp-cta-micro"><span class="keep-phrase">完全無料</span>／合わなければ、診断の解説だけ聞いて帰ってもOK</p>
+      <p class="lp-cta-micro"><span>完全無料</span><span class="wrap-ok">解説だけ聞いて終わりでもOK</span></p>
     </div>
   </section>
 
