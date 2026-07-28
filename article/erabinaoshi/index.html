@@ -690,6 +690,12 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     text-align: center;
     margin: 28px 0 0;
   }
+  /* モバイルは左寄せ＋意図した位置で改行（中央寄せだと収まりが悪い） */
+  .br-mobile { display: none; }
+  @media (max-width: 767px) {
+    .lp-transition { text-align: left; }
+    .br-mobile { display: block; }
+  }
 
   /* ---------- Q&A ---------- */
   .lp-qa-item {
@@ -964,7 +970,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 
     <p>3ヶ月目には、友達のLINEに3日返せなくなっていました。そこでやっと思いました。これ、私が甘えてるとかじゃないかもしれない、と。</p>
     <p>一番きつかったのは、「自分で選んだんでしょ」という声が、他の誰でもなく自分の中から聞こえてくることでした。</p>
-    <p class="lp-transition auto-phrase">甘えじゃなかったと分かるのは、もう少しあとの話です。</p>
+    <p class="lp-transition">甘えじゃなかったと分かるのは、<br class="br-mobile">もう少しあとの話です。</p>
   </section>
   </div>
 
