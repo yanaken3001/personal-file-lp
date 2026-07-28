@@ -100,13 +100,13 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   }
 
   /* ---------- jp-typography L1 ベース ----------
-     日本語の文節改行は BudouX で <wbr> をHTMLに焼き込み、
+     日本語の文節改行は BudouX で  をHTMLに焼き込み、
      word-break:keep-all で「以外では改行しない」を強制する。
      word-break:auto-phrase はiOS Safari非対応のため使わない（全ブラウザで同一結果にする）。 */
   .lp {
     line-break: strict;
     word-break: keep-all;
-    overflow-wrap: break-word; /* 1文節が横幅を超える場合のみ最終手段として分割 */
+    overflow-wrap: normal; /* 任意位置での強制改行を禁止（単語途中で割れる原因） */
   }
   .lp :where(p, li, dd, summary) { text-wrap: pretty; }
   .lp :where(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
@@ -902,7 +902,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
       </div>
       <div class="bubble-col">
         <div class="bubble-line">
-          <div class="bubble auto-phrase">正直に<wbr>言うと、<wbr>この<wbr>求人は<wbr>人気なので<span class="mark-red">早くしないと<wbr>枠が<wbr>埋まりますよ</span></div>
+          <div class="bubble auto-phrase">正直に<wbr>言うと、<wbr>この<wbr>求人は<wbr>人気なので<span class="mark-red"><wbr>早くしないと<wbr>枠が<wbr>埋まりますよ</span></div>
           <span class="chat-meta">22:47</span>
         </div>
       </div>
@@ -948,7 +948,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   <div class="lp-container">
   <!-- ===== ブロック3 入社後 ===== -->
   <section class="lp-block">
-    <p>結局<wbr>そのまま<wbr>選考は<wbr>進んで、<wbr>1ヶ月後には、<wbr>その<wbr>会社で<wbr>働き<wbr>はじめていました。<wbr>頭に<wbr>あったのは<wbr>「働きたい<wbr>会社か」じゃなくて、<wbr>「この<wbr>内定を<wbr>逃していいのか」。<wbr>自分で<wbr>選んだと<wbr>いう<wbr>より、<wbr>止まる<wbr>理由が<wbr>見つから<wbr>なかった、<wbr>が<wbr>近いです。</p>
+    <p>結局<wbr>そのまま<wbr>選考は<wbr>進んで、<wbr>1ヶ月後には、<wbr>その<wbr>会社で<wbr>働き<wbr>はじめていました。<wbr>頭に<wbr>あったのは<wbr>「働きたい<wbr>会社か」じゃなくて、<wbr>「この<wbr>内定を<wbr>逃していいのか」。<wbr>自分で<wbr>選んだと<wbr>いう<wbr>より、<wbr>止まる<wbr>理由が<wbr>見つから<wbr>なかった、が<wbr>近いです。</p>
     <p>最初の<wbr>1週間は、<wbr>たぶん誰でも<wbr>こんな<wbr>もんだと<wbr>思っていました。</p>
     <p>朝礼で<wbr>数字を<wbr>読み上げる。<wbr>前日の<wbr>未達を<wbr>全員の<wbr>前で<wbr>共有する。<wbr>ホワイトボードには<wbr>個人別の<wbr>棒グラフ。<wbr>そういう<wbr>文化が<wbr>ある<wbr>こと自体は、<wbr>聞いていなかったわけじゃない。<wbr>求人票にも<wbr>「成果が<wbr>しっかり<wbr>評価される<wbr>環境」と<wbr>書いてありました。</p>
 
@@ -972,7 +972,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 
     <p>3ヶ月目には、<wbr>友達の<wbr>LINEに<wbr>3日返せなくなっていました。<wbr>そこで<wbr>やっと<wbr>思いました。<wbr>これ、<wbr>私が<wbr>甘えてるとかじゃないかもしれない、と。</p>
     <p>一<wbr>番きつかったのは、<wbr>「自分で<wbr>選んだんでしょ」と<wbr>いう<wbr>声が、<wbr>他の<wbr>誰でもなく<wbr>自分の<wbr>中から<wbr>聞こえてくる<wbr>ことでした。</p>
-    <p class="lp-transition auto-phrase">甘えじゃなかった<wbr>と<wbr>分かるのは、<wbr>もう<wbr>少し<wbr>あとの<wbr>話です。</p>
+    <p class="lp-transition auto-phrase">甘えじゃなかったと<wbr>分かるのは、<wbr>もう<wbr>少し<wbr>あとの<wbr>話です。</p>
   </section>
   </div>
 
@@ -1009,7 +1009,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
       </div>
       <div class="bubble-col">
         <div class="bubble-line">
-          <div class="bubble auto-phrase">え、<wbr>は<wbr>やっ！！<wbr>😳なんで<wbr>そんな<wbr>合う<wbr>会社<wbr>見つかったの？</div>
+          <div class="bubble auto-phrase">え、は<wbr>やっ！！<wbr>😳なんで<wbr>そんな<wbr>合う<wbr>会社<wbr>見つかったの？</div>
         </div>
       </div>
     </div>
@@ -1020,7 +1020,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
       </div>
       <div class="bubble-col">
         <div class="bubble-line">
-          <div class="bubble auto-phrase">合う<wbr>会社を<wbr>探したんじゃなくて、<span class="mark-orange">合わない<wbr>環境を<wbr>先に<wbr>潰した</span>感じ</div>
+          <div class="bubble auto-phrase">合う<wbr>会社を<wbr>探したんじゃなくて、<span class="mark-orange"><wbr>合わない<wbr>環境を<wbr>先に<wbr>潰した</span><wbr>感じ</div>
         </div>
       </div>
     </div>
@@ -1062,7 +1062,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   <div class="lp-container lp-container--last">
   <!-- ===== ブロック5 種明かし ===== -->
   <section class="lp-block lp-block--warm">
-    <p>「辞めたい」って<wbr>検索していた<wbr>夜に、<wbr>たまたま<wbr>流れてきたのが<span class="keep-phrase">80タイプ診断</span>（正式名称は<span class="keep-phrase">キャリアパーソナリティ診断）</span>でした。</p>
+    <p>「辞めたい」って<wbr>検索していた<wbr>夜に、<wbr>たまたま<wbr>流れてきたのが<span class="keep-phrase"><wbr>80タイプ診断</span><wbr>（正式名称は<span class="keep-phrase"><wbr>キャリアパーソナリティ診断）</span>でした。</p>
     <p>最初は<wbr>性格診断の<wbr>ノリでした。<wbr>当たってたら<wbr>面白い<wbr>な、<wbr>くらいの<wbr>気持ちで。</p>
     <p>登録して<wbr>LINEを<wbr>追加すると、<wbr>そこに<wbr>診断が<wbr>届きました。<wbr>誰かと<wbr>会って<wbr>受ける<wbr>ものだと<wbr>思っていたので、<wbr>正直これは<wbr>助かりました。<wbr>夜中の<wbr>1時、<wbr>ベッドにも<wbr>たれたまま<wbr>答えていったのを<wbr>覚えています。</p>
 
@@ -1099,7 +1099,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 
   <!-- ===== ブロック5.5 パーソナルファイルって何？ ===== -->
   <section class="lp-block lp-block--warm">
-    <h3 class="lp-h3">そも<wbr>そも、<span class="keep-phrase">パーソナルファイル</span>って<wbr>何なの？</h3>
+    <h3 class="lp-h3">そも<wbr>そも、<span class="keep-phrase"><wbr>パーソナルファイル</span>って<wbr>何なの？</h3>
 
     <div class="phone-wrap">
       <div class="phone-shell" data-pf-slider tabindex="0" role="button" aria-pressed="false"
@@ -1136,9 +1136,9 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <p class="pf-about-note">※ 公式の<wbr>サービス紹介ページより<wbr>（タップで<wbr>止まります）</p>
 
     <div class="pf-about-body">
-      <p>ざっくり言うと、<wbr>性格タイプを<span class="keep-phrase">80類型</span>に<wbr>分けて、<wbr>向いてる<wbr>仕事と、<wbr>合う<wbr>職場の<wbr>条件を<wbr>出してくれる<wbr>サービスでした。</p>
+      <p>ざっくり言うと、<wbr>性格タイプを<span class="keep-phrase"><wbr>80類型</span>に<wbr>分けて、<wbr>向いてる<wbr>仕事と、<wbr>合う<wbr>職場の<wbr>条件を<wbr>出してくれる<wbr>サービスでした。</p>
       <p>よく<wbr>ある<wbr>性格診断と<wbr>違ったのは、<wbr>タイプ名が<wbr>出て<wbr>終わりじゃない<wbr>こと。<wbr>診断の<wbr>結果を<wbr>「じゃあ、<wbr>どの<wbr>求人が<wbr>合うのか」まで<wbr>落とし込んで<wbr>使うのが<wbr>本体でした。</p>
-      <p>対象は<wbr>20代で、<wbr>学歴や<wbr>職歴は<wbr>問われません。<wbr>フリーターでも、<wbr>専門卒でも、<wbr>大学を<wbr>中退していても<wbr>使えます。<wbr>実際、<wbr>利用者の<span class="keep-phrase">9割が<wbr>20代</span>で、<span class="keep-phrase">高卒の<wbr>人が<wbr>半分</span>を<wbr>占めている<wbr>そうです。</p>
+      <p>対象は<wbr>20代で、<wbr>学歴や<wbr>職歴は<wbr>問われません。<wbr>フリーターでも、<wbr>専門卒でも、<wbr>大学を<wbr>中退していても<wbr>使えます。<wbr>実際、<wbr>利用者の<span class="keep-phrase"><wbr>9割が<wbr>20代</span>で、<span class="keep-phrase"><wbr>高卒の<wbr>人が<wbr>半分</span>を<wbr>占めている<wbr>そうです。</p>
       <p>私みたいに<wbr>「何が<wbr>向いてるか<wbr>分からない」<wbr>状態から<wbr>でも<wbr>始められるのは、<wbr>たぶん<wbr>ここが<wbr>理由です。</p>
     </div>
 
@@ -1207,11 +1207,11 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <p>自分では<wbr>「どっちでも<wbr>いい」と<wbr>思っていた<wbr>項目ばかりです。<wbr>でも<wbr>診断結果を<wbr>横に<wbr>置いて<wbr>聞かれると、<wbr>全部は<wbr>っきり<wbr>答えられました。<wbr>私は<wbr>後者だ、と。</p>
+    <p>自分では<wbr>「どっちでも<wbr>いい」と<wbr>思っていた<wbr>項目ばかりです。<wbr>でも<wbr>診断結果を<wbr>横に<wbr>置いて<wbr>聞かれると、<wbr>全部はっきり<wbr>答えられました。<wbr>私は<wbr>後者だ、と。</p>
     <p>前の<wbr>転職で<wbr>私が<wbr>見ていたのは、<wbr>給与と<wbr>休日と<wbr>勤務地と<wbr>「未経験歓迎」の<wbr>4つだけでした。</p>
     <p>あの<wbr>会社や<wbr>求人の<wbr>側にも、<wbr>問題は<wbr>あったと<wbr>思います。<wbr>ただ<wbr>私も、<wbr>入社前に<wbr>上司の<wbr>ことも<wbr>評価の<wbr>され方も<wbr>仕事の<wbr>進め方も、<wbr>何ひとつ<wbr>確認していなかった。</p>
-    <p>その<wbr>4つが<wbr>同じでも、<wbr>上司と<wbr>社風と<wbr>働き方が<wbr>違えば、<wbr>もう<wbr>別の<wbr>会社です。<wbr>私は<wbr>そこを<wbr>見ないまま<wbr>選んで、<wbr>そのうえ急かされた。<wbr>詰むわけだ、<wbr>と<wbr>今なら<wbr>分かります。</p>
-    <p><span class="marker">条件じゃなくて、<wbr>相性。</span>言葉に<wbr>すると<wbr>当たり前すぎるけど、<wbr>これを<wbr>先に<wbr>決めて<wbr>おくか<wbr>どうかで、<wbr>見る<wbr>求人が<wbr>まる<wbr>ごと<wbr>変わりました。</p>
+    <p>その<wbr>4つが<wbr>同じでも、<wbr>上司と<wbr>社風と<wbr>働き方が<wbr>違えば、<wbr>もう<wbr>別の<wbr>会社です。<wbr>私は<wbr>そこを<wbr>見ないまま<wbr>選んで、<wbr>そのうえ急かされた。<wbr>詰むわけだ、と<wbr>今なら<wbr>分かります。</p>
+    <p><span class="marker">条件じゃなくて、<wbr>相性。</span><wbr>言葉に<wbr>すると<wbr>当たり前すぎるけど、<wbr>これを<wbr>先に<wbr>決めて<wbr>おくか<wbr>どうかで、<wbr>見る<wbr>求人が<wbr>まる<wbr>ごと<wbr>変わりました。</p>
 
     <div class="lp-compare-wrap">
       <table class="lp-compare">
@@ -1257,18 +1257,18 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-stats">
       <div class="stat-card">
         <div class="stat-number">95%</div>
-        <p class="stat-desc"><span class="keep-phrase">就職成功者が</span><wbr><span class="keep-phrase">未経験</span></p>
+        <p class="stat-desc"><span class="keep-phrase">就職成功者が</span><span class="keep-phrase"><wbr>未経験</span></p>
       </div>
       <div class="stat-card">
         <div class="stat-number">98%</div>
-        <p class="stat-desc"><span class="keep-phrase">入社半年後の</span><wbr><span class="keep-phrase">定着率</span></p>
+        <p class="stat-desc"><span class="keep-phrase">入社半年後の</span><span class="keep-phrase"><wbr>定着率</span></p>
       </div>
       <div class="stat-card">
         <div class="stat-number">94%</div>
-        <p class="stat-desc"><span class="keep-phrase">診断結果の</span><wbr><span class="keep-phrase">納得度</span></p>
+        <p class="stat-desc"><span class="keep-phrase">診断結果の</span><span class="keep-phrase"><wbr>納得度</span></p>
       </div>
     </div>
-    <p class="lp-source">出典：相性転職<span class="keep-phrase">パーソナルファイル</span>公式サイト<span class="keep-phrase">記載<wbr>（2026年7月時点）</span></p>
+    <p class="lp-source">出典：パーソナルファイル公式サイト<wbr>（2026年7月時点）</p>
 
     <p class="lp-example-lead auto-phrase">あとから<wbr>公式サイトを<wbr>見たら、<wbr>私みたいな<wbr>人は<wbr>結構いました。</p>
     <div class="lp-example-row">
@@ -1280,7 +1280,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-cta-wrap">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta1'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta1'});}">
-自分に<wbr>合う<wbr>仕事を<wbr>見つける<span class="cta-arrow" aria-hidden="true">›</span>
+自分に<wbr>合う<wbr>仕事を<wbr>見つける<span class="cta-arrow" aria-hidden="true"><wbr>›</span>
       </a>
       <p class="lp-cta-micro"><span>完全無<wbr>料</span><span>登録後すぐ<wbr>LINEに<wbr>診断が<wbr>届く</span></p>
     </div>
@@ -1292,7 +1292,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   <section class="lp-block">
     <p>半年後の、<wbr>水曜の<wbr>夜19時。</p>
     <p>仕事を<wbr>終えて<wbr>駅に<wbr>向かっています。<wbr>今日は<wbr>後輩から<wbr>相談を<wbr>受けて、<wbr>30分ちゃんと<wbr>聞いた。<wbr>それが<wbr>「無駄話」じゃなくて、<wbr>仕事と<wbr>して<wbr>カウントされる<wbr>場所に<wbr>いる。</p>
-    <p>改札で<wbr>スマホを<wbr>開いた<wbr>とき、<span class="mark-orange">日曜の<wbr>夜が<wbr>怖くない</span>自分に<wbr>気づく。<wbr>肩の<wbr>力が、<wbr>勝手に<wbr>抜けている。</p>
+    <p>改札で<wbr>スマホを<wbr>開いた<wbr>とき、<span class="mark-orange"><wbr>日曜の<wbr>夜が<wbr>怖くない</span><wbr>自分に<wbr>気づく。<wbr>肩の<wbr>力が、<wbr>勝手に<wbr>抜けている。</p>
 
     <figure class="lp-figure">
       <div class="img-frame" style="aspect-ratio:880/800">
@@ -1306,7 +1306,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <p>「受かりそうだから」<wbr>「早くしないと<wbr>枠が<wbr>埋まるから」で<wbr>選び続ける<wbr>限り。<wbr>来年の<wbr>同じ<wbr>日、<wbr>たぶんまた<wbr>同じ<wbr>言葉を<wbr>検索しています。<wbr>「仕事 向いてない<wbr> 甘え」って。<wbr>そして、<wbr>また<wbr>自分の<wbr>せいに<wbr>している。</p>
     <p>悪いのは、<wbr>あなたの能力でも、<wbr>学歴でも、<wbr>続かなかった<wbr>3ヶ月でもない。</p>
     <p>急かされたまま、<wbr>当て<wbr>ずっぽうで<wbr>選ぶしかなかった<wbr>こと。<wbr>それだけです。</p>
-    <p>だから、<wbr>やる<wbr>ことは<wbr>順番を<wbr>戻すだけ。<span class="marker">求人を<wbr>見る<wbr>前に、<wbr>自分の<wbr>相性を<wbr>知る。</span>それが、<wbr>本当は<wbr>あなたの<wbr>ものだったはずの<wbr>水曜を<wbr>取り戻す方<wbr>法でした。</p>
+    <p>だから、<wbr>やる<wbr>ことは<wbr>順番を<wbr>戻すだけ。<span class="marker"><wbr>求人を<wbr>見る<wbr>前に、<wbr>自分の<wbr>相性を<wbr>知る。</span><wbr>それが、<wbr>本当は<wbr>あなたの<wbr>ものだったはずの<wbr>水曜を<wbr>取り戻す方<wbr>法でした。</p>
   </section>
 
   <hr class="lp-hr">
@@ -1322,8 +1322,8 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     </div>
 
     <div class="lp-qa-item">
-      <p class="lp-q"><span class="qtag">Q.</span><span>本当に<span class="keep-phrase">完全無<wbr>料</span>ですか？</span></p>
-      <p><span class="marker"><span class="keep-phrase">完全無<wbr>料</span>です。</span>相談から<wbr>最後まで、<wbr>どんな<wbr>状況でも<wbr>一切費用は<wbr>かかりません。</p>
+      <p class="lp-q"><span class="qtag">Q.</span><span>本当に<span class="keep-phrase"><wbr>完全無料</span>ですか？</span></p>
+      <p><span class="marker"><span class="keep-phrase">完全無料</span>です。</span><wbr>相談から<wbr>最後まで、<wbr>どんな<wbr>状況でも<wbr>一切費用は<wbr>かかりません。</p>
     </div>
 
     <div class="lp-qa-item">
@@ -1334,14 +1334,14 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-qa-item">
       <p class="lp-q"><span class="qtag">Q.</span><span>まだ<wbr>転職するって<wbr>決めきれてない<span class="keep-phrase">んですけど</span></span></p>
       <p>決まってなくて<wbr>大丈夫です。<wbr>私も<wbr>最初は<wbr>「辞めたい」しか<wbr>言えない<wbr>状態でした。</p>
-      <p>ただ正直に<wbr>書くと、<wbr>一番もったいないのは、<wbr>決めきれないまま<wbr>前と<wbr>同じ<wbr>選び方<wbr>（給与・休日・勤務地・未経験歓迎の<wbr>4つ）で<wbr>次を<wbr>探し<wbr>はじめる<wbr>ことです。<wbr>転職するかは、<wbr>面談で<wbr>整理しながら<wbr>決めればいい。<wbr>ただ、<wbr>動き出しを<wbr>先延ばしに<wbr>すると、<wbr>また<wbr>急かされた<wbr>ときに<wbr>同じ<wbr>決め方を<wbr>します。<span class="mark-pink">順番だけ先に<wbr>直して、<wbr>早めに<wbr>動くのが<wbr>おすすめです</span>。</p>
+      <p>ただ正直に<wbr>書くと、<wbr>一番もったいないのは、<wbr>決めきれないまま<wbr>前と<wbr>同じ<wbr>選び方<wbr>（給与・休日・勤務地・未経験歓迎の<wbr>4つ）で<wbr>次を<wbr>探し<wbr>はじめる<wbr>ことです。<wbr>転職するかは、<wbr>面談で<wbr>整理しながら<wbr>決めればいい。<wbr>ただ、<wbr>動き出しを<wbr>先延ばしに<wbr>すると、<wbr>また<wbr>急かされた<wbr>ときに<wbr>同じ<wbr>決め方を<wbr>します。<span class="mark-pink"><wbr>順番だけ先に<wbr>直して、<wbr>早めに<wbr>動くのが<wbr>おすすめです</span>。</p>
       <p>逆に、<wbr>「とりあえず診断結果だけ<wbr>見たい」だけだと、<wbr>正直この<wbr>サービスの<wbr>良さは<wbr>半分も<wbr>使えないと<wbr>思います。</p>
     </div>
 
     <div class="lp-qa-item">
       <p class="lp-q"><span class="qtag">Q.</span><span>登録した<wbr>あと、<wbr>何が<wbr>起きますか？</span></p>
       <p>何を<wbr>されるか<wbr>分からないのが<wbr>一番<wbr>こわいので、<wbr>先に<wbr>書いて<wbr>おきます。</p>
-      <p>まず、<wbr>登録すると<wbr>LINEに<wbr>診断が<wbr>届きます。<wbr>私は<wbr>夜中に<wbr>自分の<wbr>ペースで<wbr>答えました。<wbr>時間は<span class="keep-phrase">10〜20分ほど。</span><wbr>移動中でも<wbr>寝る<wbr>前でも<wbr>大丈夫です。</p>
+      <p>まず、<wbr>登録すると<wbr>LINEに<wbr>診断が<wbr>届きます。<wbr>私は<wbr>夜中に<wbr>自分の<wbr>ペースで<wbr>答えました。<wbr>時間は<span class="keep-phrase"><wbr>10〜20分ほど。</span><wbr>移動中でも<wbr>寝る<wbr>前でも<wbr>大丈夫です。</p>
 
       <p class="lp-preview-label">＼ 登録からの<wbr>流れ ／</p>
       <figure class="lp-figure">
@@ -1357,12 +1357,12 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 
       <p>その<wbr>あとの<wbr>面談は、<wbr>オンラインで<wbr>この<wbr>4つの<wbr>流れでした。</p>
       <ol class="lp-steps">
-        <li><strong>イントロダクション</strong>：適職カウンセラーの<wbr>自己紹介と、<wbr>現状の<wbr>確認<wbr>（約10〜15分）</li>
-        <li><strong>転職軸の<wbr>すり合わせ</strong>：本当に<wbr>やりたい<wbr>ことと<wbr>強みを<wbr>ふまえて、<wbr>転職軸を<wbr>すり合わせる<wbr>（約10〜20分）</li>
-        <li><strong>診断結果の<wbr>解説</strong>：適職カウンセラーが<wbr>診断結果を<wbr>さらに<wbr>深掘りして<wbr>説明<wbr>（約10〜15分）</li>
-        <li><strong>求人の<wbr>紹介と<wbr>今後に<wbr>ついて</strong>：診断結果と<wbr>転職軸を<wbr>もとに、<wbr>相性の<wbr>良い<wbr>求人が<wbr>あれば<wbr>当日の<wbr>紹介も<wbr>可能。<wbr>「な<wbr>ぜ合い<wbr>そうか」<wbr>「どこに<wbr>ミスマッチの<wbr>リスクが<wbr>あるか」の<wbr>説明つき。<wbr>今後の<wbr>進め方を<wbr>話して<wbr>終了<wbr>（約20分）</li>
+        <li><strong>イントロダクション</strong><br>適職カウンセラーの<wbr>自己紹介と、<wbr>現状の<wbr>確認<wbr>（約10〜15分）</li>
+        <li><strong>転職軸の<wbr>すり合わせ</strong><br>本当に<wbr>やりたい<wbr>ことと<wbr>強みを<wbr>ふまえて、<wbr>転職軸を<wbr>すり合わせる<wbr>（約10〜20分）</li>
+        <li><strong>診断結果の<wbr>解説</strong><br>適職カウンセラーが<wbr>診断結果を<wbr>さらに<wbr>深掘りして<wbr>説明<wbr>（約10〜15分）</li>
+        <li><strong>求人の<wbr>紹介と<wbr>今後に<wbr>ついて</strong><br>診断結果と<wbr>転職軸を<wbr>もとに、<wbr>相性の<wbr>良い<wbr>求人が<wbr>あれば<wbr>当日の<wbr>紹介も<wbr>可能。「なぜ合い<wbr>そうか」<wbr>「どこに<wbr>ミスマッチの<wbr>リスクが<wbr>あるか」の<wbr>説明つき。<wbr>今後の<wbr>進め方を<wbr>話して<wbr>終了<wbr>（約20分）</li>
       </ol>
-      <p>診断結果は<wbr>まさに<wbr>その<wbr>通りだった<span class="keep-phrase">んですけど、</span>それ以上に<wbr>よかったのが<wbr>2番目の<wbr>転職軸の<wbr>すり合わせでした。<wbr>自分でも<wbr>整理できていなかった<wbr>ことが<wbr>言葉に<wbr>なって、<wbr>納得したうえで<wbr>次に<wbr>進めた<wbr>感じです。</p>
+      <p>診断結果は<wbr>まさに<wbr>その<wbr>通りだった<span class="keep-phrase">んですけど、</span><wbr>それ以上に<wbr>よかったのが<wbr>2番目の<wbr>転職軸の<wbr>すり合わせでした。<wbr>自分でも<wbr>整理できていなかった<wbr>ことが<wbr>言葉に<wbr>なって、<wbr>納得したうえで<wbr>次に<wbr>進めた<wbr>感じです。</p>
       <p>求人の<wbr>話も、<wbr>「未経験OKだから」じゃありませんでした。<wbr>診断結果の<wbr>どこと合うのか、<wbr>逆に<wbr>どこが<wbr>しんどくなりそうか、<wbr>面接で<wbr>何を<wbr>確認すべきか。<wbr>前の<wbr>転職に<wbr>足りなかったのは、<wbr>全部<wbr>ここだったと<wbr>思います。</p>
     </div>
 
@@ -1373,7 +1373,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-cta-wrap">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta2'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta2'});}">
-相性から<wbr>次の<wbr>仕事を<wbr>見つける<span class="cta-arrow" aria-hidden="true">›</span>
+相性から<wbr>次の<wbr>仕事を<wbr>見つける<span class="cta-arrow" aria-hidden="true"><wbr>›</span>
       </a>
       <p class="lp-cta-micro"><span>完全無<wbr>料</span><span>診断は<wbr>10〜20分</span><span class="wrap-ok">求人を<wbr>見る<wbr>前に<wbr>相性から<wbr>始められる</span></p>
     </div>
@@ -1384,9 +1384,9 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
   <!-- ===== ブロック10 クロージング＋CTA2/3 ===== -->
   <section class="lp-block lp-block--warm">
     <p>3ヶ月で<wbr>辞めた<wbr>会社の<wbr>こと、<wbr>今は<wbr>そこまで<wbr>後悔していません。</p>
-    <p>あ<wbr>そこで<wbr>「合わない」を<wbr>体で<wbr>知ったから、<wbr>次は<wbr>絶対に<wbr>条件だけで<wbr>選ばなかった。</p>
+    <p>あそこで<wbr>「合わない」を<wbr>体で<wbr>知ったから、<wbr>次は<wbr>絶対に<wbr>条件だけで<wbr>選ばなかった。</p>
     <p>もったいないのは、<wbr>辞めた<wbr>ことじゃない。<wbr>「向いてないのは<wbr>自分の<wbr>せい」と<wbr>思ったまま、<wbr>次も<wbr>同じ<wbr>選び方を<wbr>する<wbr>ことです。<wbr>私は<wbr>それを、<wbr>あと<wbr>3ヶ月続ける<wbr>ところでした。</p>
-    <p>今の<wbr>あなたが<wbr>どっちの<wbr>状態でも、<span class="mark-pink">順番だけ<wbr>変えてみて<wbr>ほしい</span>です。</p>
+    <p>今の<wbr>あなたが<wbr>どっちの<wbr>状態でも、<span class="mark-pink"><wbr>順番だけ<wbr>変えてみて<wbr>ほしい</span>です。</p>
 
     <p class="lp-emphasis auto-phrase"><span class="mark-orange">求人より<wbr>先に、<wbr>自分。</span></p>
 
@@ -1396,7 +1396,7 @@ src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
     <div class="lp-cta-wrap last">
       <a class="lp-cta-btn auto-phrase" href="https://per-sonal.co.jp/personalfile/adlp_second/?route=bridge001"
          onclick="fbq('trackCustom','BridgeCTAClick',{position:'cta3'});if(typeof gtag==='function'){gtag('event','bridge_cta_click',{position:'cta3'});}">
-私に<wbr>合う<wbr>環境を<wbr>見つける<span class="cta-arrow" aria-hidden="true">›</span>
+私に<wbr>合う<wbr>環境を<wbr>見つける<span class="cta-arrow" aria-hidden="true"><wbr>›</span>
       </a>
       <p class="lp-cta-micro"><span>完全無<wbr>料</span><span class="wrap-ok">解説だけ聞いて<wbr>終わりでも<wbr>OK</span></p>
     </div>
