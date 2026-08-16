@@ -55,7 +55,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/fv_cropped_760w.webp" fetchpriority="high">
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -115,39 +115,33 @@ p{margin:0;}
 .side-rail{flex-shrink:0;position:sticky;top:88px;display:none;}
 .side-entry{display:flex;flex-direction:column;gap:16px;width:340px;margin-left:20px;}
 .nav-card{background:#FFFFFF;border-radius:16px;padding:24px 20px;box-shadow:0 4px 16px rgba(0,0,0,.1);}
-.side-logo{display:flex;justify-content:center;margin-bottom:16px;font-size:15px;font-weight:700;color:var(--navy);letter-spacing:.5px;}
+.side-logo{display:flex;justify-content:center;margin-bottom:16px;font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.02em;line-height:1;}
 .anchor-list{list-style:none;margin:0;padding:0;}
 .anchor-item{border-bottom:1px solid #ccc;}
 .anchor-item:last-child{border-bottom:none;}
 .anchor-btn{
-  display:block;
-  width:100%;
+  display:block;width:100%;
   padding:16px 24px 16px 4px;
-  font-size:14px;
-  font-weight:700;
-  line-height:1.6;
-  color:var(--navy);
-  text-align:left;
-  position:relative;
-  cursor:pointer;
+  font-size:14px;font-weight:700;line-height:1.5;
+  color:var(--ink);text-align:left;position:relative;cursor:pointer;
 }
 .anchor-btn:after{
-  content:"";
-  position:absolute;top:50%;right:8px;
+  content:"";position:absolute;top:50%;right:8px;
   width:8px;height:8px;
-  border-top:2px solid var(--accent);
-  border-right:2px solid var(--accent);
+  border-top:2px solid var(--accent);border-right:2px solid var(--accent);
   transform:translateY(-50%) rotate(45deg);
 }
 .anchor-btn:hover{color:var(--accent);}
 .cta-card{background:#FFFFFF;border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.1);}
-.cta-card-lead{font-size:14px;font-weight:700;color:var(--navy);line-height:1.6;margin-bottom:12px;text-align:center;}
-.cta-card-lead .free{
+.cta-card .free{
   display:inline-block;
-  background:var(--accent);color:#FFFFFF;
-  border-radius:4px;margin-right:6px;padding:1px 7px;
-  font-size:13px;font-weight:700;
+  color:var(--accent);background:#FFFFFF;
+  border-radius:4px;margin-right:4px;padding:0 6px;
+  font-size:15px;font-weight:700;
 }
+.cta-card .cta{font-size:16px;padding:16px 32px 16px 24px;}
+.cta-card .cta:after{right:24px;}
+.cta-card .cta-micro{font-size:15px;margin-bottom:8px;}
 
 /* 2カラム未満の幅では1カラム中央寄せ（メインが潰れないように） */
 @media (max-width:1107px){
@@ -174,7 +168,7 @@ p{margin:0;}
   display:flex;
   align-items:center;
   gap:6px;
-}
+justify-content:center;}
 .label-en::before{
   content:"";
   display:block;
@@ -182,14 +176,8 @@ p{margin:0;}
   background:var(--accent);
   flex:0 0 auto;
 }
-.h2{
-  font-size:20px;
-  font-weight:700;
-  color:var(--navy);
-  line-height:1.5;
-  margin:0 0 14px;
-}
-.h2::after{
+.h2{font-size:20px;font-weight:800;color:var(--navy);line-height:1.3;margin:0 0 16px;text-align:center;}
+.h2::after{margin-left:auto;margin-right:auto;
   content:"";
   display:block;
   width:32px;height:3px;
@@ -220,40 +208,49 @@ p{margin:0;}
 
 
 /* ── ヘッダー ── */
-/* hataractive DefaultHeader 実測: sticky top0 / inner max-width960 / padding 4px 12px */
+/* hataractive DefaultHeader 実測: sticky / inner max-width960 / padding 4px 12px / logo 48px枠 */
 .site-head{
   position:sticky;top:0;left:0;z-index:1003;
   width:100%;
   background:#FFFFFF;
-  border-bottom:1px solid var(--sub-border);
+  border-radius:4px;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
 }
 .site-head-inner{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   width:100%;
   min-width:320px;
   max-width:960px;
+  height:100%;
   margin:0 auto;
-  padding:8px 16px;
+  padding:4px 12px;
 }
-.site-head .logo{font-size:14px;font-weight:700;color:var(--navy);letter-spacing:.5px;line-height:1.4;}
-.head-right{display:flex;align-items:center;gap:12px;}
-.site-head .tag{font-size:11px;color:var(--mute);line-height:1.4;}
+.site-head .logo{
+  display:flex;align-items:center;
+  height:48px;                 /* ctsLogo height:48px */
+  font-size:19px;font-weight:800;color:var(--navy);
+  letter-spacing:.02em;line-height:1;
+}
+.head-right{display:flex;align-items:center;gap:4px;}  /* navigation gap:4px */
+.site-head .tag{font-size:12px;color:var(--mute);line-height:1.4;margin-right:8px;}
 .head-cta{
-  background:var(--accent);
-  color:#FFFFFF;
+  background:var(--accent);color:#FFFFFF;
   border-radius:9999px;
-  padding:7px 16px;
-  font-size:13px;
-  font-weight:700;
-  line-height:1.7;
-  letter-spacing:.02em;
+  padding:4px 12px;
+  font-size:14px;font-weight:700;line-height:1.7;letter-spacing:.02em;
   white-space:nowrap;
 }
+.burger{
+  display:flex;flex-direction:column;justify-content:center;gap:5px;
+  width:44px;height:44px;padding:0 10px;background:none;border:0;cursor:pointer;
+}
+.burger span{display:block;height:2px;background:var(--navy);border-radius:2px;}
 @media (max-width:576px){
   .site-head .tag{display:none;}
-  .head-cta{font-size:12px;padding:6px 12px;}
+  .site-head .logo{height:40px;font-size:17px;}
+  .head-cta{font-size:13px;}
 }
 
 /* ── CTA ── */
@@ -265,30 +262,9 @@ p{margin:0;}
   margin-bottom:12px;
   text-align:center;
 }
-.cta{
-  display:block;
-  background:var(--accent);
-  color:#FFFFFF;
-  border-radius:999px;
-  padding:15px 12px;
-  text-align:center;
-  font-size:17px;
-  font-weight:700;
-  line-height:1.5;
-  box-shadow:0 4px 0 var(--accent-shadow);
-  transition:transform .1s ease, box-shadow .1s ease;
-}
-.cta:active{
-  transform:translateY(4px);
-  box-shadow:0 0 0 var(--accent-shadow);
-}
-.cta-micro{
-  font-size:12px;
-  color:var(--mute);
-  text-align:center;
-  margin-top:8px;
-  line-height:1.6;
-}
+.cta{display:block;position:relative;background:var(--accent);color:#FFFFFF;border-radius:20vw;padding:16px 28px;font-size:18px;font-weight:700;line-height:1.5;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;}
+.cta:after{content:"";position:absolute;top:50%;right:20px;width:10px;height:10px;margin-top:-5px;border-top:3px solid #FFFFFF;border-right:3px solid #FFFFFF;transform:rotate(45deg);transition:right .2s;}.cta>span{font-size:14px;}@media (hover:hover){.cta:hover{transform:scale(1.025);box-shadow:none;}.cta:hover:after{right:16px;}}
+.cta-micro{display:block;margin:0 auto 8px;font-size:20px;font-weight:700;color:var(--accent);text-align:center;line-height:1.6;}
 .cta .ic{margin-left:6px;}
 
 /* ── カード ── */
@@ -866,7 +842,10 @@ p{margin:0;}
     <span class="logo">Personal File</span>
     <div class="head-right">
       <span class="tag">20代の相性転職</span>
-      <a class="head-cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_head" data-cta="af_l1_head">無料の適職診断を受ける</a>
+      <a class="head-cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_head" data-cta="af_l1_head">無料の適職診断</a>
+      <button class="burger" id="burger" type="button" aria-label="メニュー" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
@@ -895,8 +874,8 @@ p{margin:0;}
       <div class="badge"><div class="t">診断・相談</div><div class="n">無料</div><div class="u">すべて</div></div>
     </div>
 
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_fv" data-cta="af_l1_fv">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
     <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_fv" data-cta="af_l1_fv">無料の適職診断を受ける</a>
 
     <p class="note" style="margin-top:14px;">※1 サービス開始から2026/3までの診断実施数<br>※2 2025/1〜2026/2に入社された方の入社半年後の定着率</p>
   </section>
@@ -1039,8 +1018,8 @@ p{margin:0;}
   <!-- ============ S4 ｜ 中間CTA ============ -->
   <section class="sec sec-gray">
     <div class="cta-lead">右側も、分かったうえで選べます。</div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_mid" data-cta="af_l1_mid">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
     <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_mid" data-cta="af_l1_mid">無料の適職診断を受ける</a>
   </section>
 
   <!-- ============ S5 ｜ WHAT YOU GET ============ -->
@@ -1112,8 +1091,8 @@ p{margin:0;}
     </div>
 
     <div class="cta-lead"><span class="np">ここから先は、</span><span class="np">一人で決めなくて大丈夫です。</span></div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_after" data-cta="af_l1_after">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
     <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_after" data-cta="af_l1_after">無料の適職診断を受ける</a>
   </section>
 
   <!-- ============ S7 ｜ PROOF ============ -->
@@ -1245,8 +1224,8 @@ p{margin:0;}
       <p class="body b navy" style="margin-top:16px;">その15分が、次の3年を決めます。</p>
     </div>
 
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_flow" data-cta="af_l1_flow">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
     <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_flow" data-cta="af_l1_flow">無料の適職診断を受ける</a>
   </section>
 
   <!-- ============ S10 ｜ STORIES ============ -->
@@ -1343,8 +1322,8 @@ p{margin:0;}
     </details>
 
     <div class="cta-lead"><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_end" data-cta="af_l1_end">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
     <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_end" data-cta="af_l1_end">無料の適職診断を受ける</a>
   </section>
 
   <!-- ============ FOOTER ============ -->
@@ -1366,16 +1345,15 @@ p{margin:0;}
       <div class="nav-card">
         <div class="side-logo">Personal File</div>
         <ul class="anchor-list">
-          <li class="anchor-item"><a class="anchor-btn" href="#s2">なぜ、80タイプに分けるのか。</a></li>
-          <li class="anchor-item"><a class="anchor-btn" href="#s6">診断結果だけでは、明日は変わりません。</a></li>
-          <li class="anchor-item"><a class="anchor-btn" href="#s9">必要なのは、15分の診断と、60分の面談だけ。</a></li>
-          <li class="anchor-item"><a class="anchor-btn" href="#s10">みんなの就職・転職エピソード</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s2">80タイプに分ける理由</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s6">診断のあとにすること</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s9">ご利用の流れ</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s10">利用者の声</a></li>
         </ul>
       </div>
       <div class="cta-card">
-        <div class="cta-card-lead"><span class="free">無料</span>診断・相談 すべて無料</div>
-        <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_side" data-cta="af_l1_side">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
         <div class="cta-micro">入力は約30秒</div>
+        <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_side" data-cta="af_l1_side"><span class="free">無料</span>適職診断を受ける</a>
       </div>
     </div>
   </aside>
@@ -1385,7 +1363,7 @@ p{margin:0;}
 <!-- ============ 追従バー（SPのみ／FVがビューポート外に出てから表示） ============ -->
 <div class="bar" id="bar">
   <div class="t">診断・相談<br><span class="hl">すべて無料</span></div>
-  <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_bar" data-cta="af_l1_bar">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
+  <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_bar" data-cta="af_l1_bar">無料の適職診断を受ける</a>
 </div>
 
 <script>
