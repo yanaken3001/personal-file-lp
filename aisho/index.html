@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-0200">
+<html lang="ja" data-build="20260817-0620">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -148,7 +148,7 @@ p{margin:0;}
 
 /* ── 右サイドレール（hataractive SideEntryForm 実測値） ── */
 .side-rail{flex-shrink:0;position:sticky;top:88px;display:none;}
-.side-entry{display:flex;flex-direction:column;gap:16px;width:340px;margin-left:20px;}
+.side-entry{display:flex;flex-direction:column;gap:16px;width:340px;margin-left:24px;}
 .nav-card{background:#FFFFFF;border-radius:var(--radius-md);padding:24px 20px;box-shadow:var(--shadow-raised);}
 .side-logo{display:flex;justify-content:center;margin-bottom:16px;font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.02em;line-height:1;}
 .anchor-list{list-style:none;margin:0;padding:0;}
@@ -186,7 +186,7 @@ p{margin:0;}
 /* ── PC（1108px以上）: hataractive と同一 contents1108 / main748 / side340+20 ── */
 @media (min-width:1108px){
   .side-rail{display:block;}
-  .page{width:calc(100% - 360px);}
+  .page{width:calc(100% - 364px);}
   body .bar{display:none !important;} /* PCは右カラムCTAが常時見えるので下部バーは出さない */
 }
 .sec{padding:48px 16px;}
@@ -1026,6 +1026,140 @@ justify-content:center;}
   .head-cta{font-size:3.47594vw;}
   .bar .btn{font-size:4.0107vw;}
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   スマホファースト全面調整
+   目的: FVを1画面に収め、職種カードの独占を解消し、全セクションを
+         同じ余白/文字/角丸/影のルールへ統一する。
+   基底ルールより後方に置き、同一詳細度で上書きする。
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* H1は全幅共通のbrをやめ、意味単位のspanをblock化して制御する */
+.fv h1 .ln{display:block;}
+
+/* 職種カードのアーチ: 回転±3度・scale0.88・opacity0.62。
+   隣接カードが中央より大きく描画されないようにする */
+.job .job-body{transform:scale(.88) translateY(10px);opacity:.62;transition:transform .45s ease,opacity .45s ease;}
+.job.is-active .job-body{transform:none;opacity:1;z-index:3;}
+.job.is-prev  .job-body{transform:scale(.88) translateY(10px) rotate(-3deg);opacity:.62;}
+.job.is-next  .job-body{transform:scale(.88) translateY(10px) rotate(3deg);opacity:.62;}
+
+/* キーボード操作とフォーカス表示 */
+.jobs-track:focus-visible,.grid80 .cell:focus-visible,.jobs-dots button:focus-visible,
+a:focus-visible,button:focus-visible,summary:focus-visible{
+  outline:3px solid var(--brand-primary-dark);outline-offset:2px;border-radius:4px;
+}
+.jobs-dots{display:flex;justify-content:center;align-items:center;gap:6px;}
+.jobs-dots button{
+  width:6px;height:6px;border:0;padding:0;border-radius:50%;
+  background:var(--sub-border);cursor:pointer;
+  transition:background-color .2s,width .2s;
+}
+.jobs-dots button.on{background:var(--accent);width:16px;border-radius:3px;}
+
+@media (prefers-reduced-motion:reduce){
+  .job .job-body,.jobs-dots button,.cta,.card{transition:none !important;}
+  .jobs-track{scroll-behavior:auto !important;}
+}
+
+/* ── ここからスマホ（767px以下）。基準幅390px ────────────────────── */
+@media (max-width:767px){
+  /* FV */
+  .fv{padding:12px 16px 22px;}
+  .fv h1{
+    font-size:clamp(24px,7.1vw,28px);
+    line-height:1.34;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin:0 auto 10px;
+    color:var(--text-primary);
+  }
+  .fv .sub{
+    margin:0 auto 12px;
+    font-size:clamp(15px,3.95vw,16px);
+    line-height:1.7;
+    color:var(--text-primary);
+  }
+  /* 職種カード: 中央カード196x272、表示領域292px。主役を張りすぎない */
+  .fv>.jobs{max-width:none;margin:0 -16px 8px;}
+  .jobs-track{padding:4px calc(50% - 98px) 13px;gap:12px;scroll-behavior:auto;}
+  .job{flex:0 0 196px;max-width:196px;}
+  .job-body{border-radius:18px;box-shadow:0 8px 24px rgba(16,58,64,.12);}
+  .job .pic{width:78%;margin:8px auto 4px;}
+  .job .pic img{width:100%;max-width:100%;margin-left:0;}
+  .job .name{top:-10px;width:auto;min-width:50%;padding:4px 12px;font-size:13px;letter-spacing:.06em;}
+  .job .fitlist{padding:21px 8px 9px;gap:5px;}
+  .job .fitlist > div{font-size:13px;line-height:1.5;}
+  .job .fitlist .ic{width:14px;height:14px;}
+  .jobs-dots{margin-top:0;padding:8px 0 8px;}
+  /* 実績3点: 横一列を維持したまま直径を縮小 */
+  .badges{gap:10px;margin-bottom:10px;}
+  .badge{max-width:88px;border-width:2px;padding:4px 2px;}
+  .badge .n{font-size:clamp(22px,6.4vw,26px);}
+  .badge .t,.badge .u{font-size:10px;line-height:1.35;color:var(--text-primary);}
+  /* CTA: ほぼ全幅・高さ58px。「入力は約30秒」は20px→13px */
+  .fv .cta-micro{font-size:13px;line-height:1.4;margin:0 auto 6px;}
+  .sec .cta,.fv .cta{max-width:none;min-height:58px;padding:15px 28px calc(15px + var(--cta-edge));font-size:16px;}
+  .fv .note{margin-top:12px;}
+
+  /* 下層セクション共通リズム */
+  .site-head{min-height:56px;}
+  .site-head-inner{padding:6px 16px;}
+  .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;}
+  .sec{padding:60px 16px;}
+  .h2{font-size:clamp(26px,7.2vw,30px);line-height:1.38;margin:0 auto 18px;}
+  .h3{font-size:20px;line-height:1.5;}
+  .body{font-size:15px;line-height:1.78;}
+  .card,.block-navy{padding:20px;border-radius:var(--radius-md);}
+  .card + .card,.block-navy + .card,.card + .block-navy{margin-top:14px;}
+  .fit > div:not(.h){display:flex;flex-wrap:wrap;row-gap:2px;}
+  .story{padding:20px;}
+  .story + .story{margin-top:14px;}
+  .faq{padding:16px 18px;margin-bottom:12px;}
+}
+
+/* ── 374px未満: vw縮小ブロックの上書き（FVの新スケールを維持する） ── */
+@media (max-width:373px){
+  .fv h1{font-size:clamp(23px,7.1vw,28px);}
+  .cta-micro{font-size:12.5px;}
+  .cta{font-size:15px;padding:14px 22px calc(14px + var(--cta-edge));}
+  .badge{max-width:84px;}
+  .badge .t,.badge .u{font-size:9.5px;}
+  .job{flex:0 0 184px;max-width:184px;}
+  .jobs-track{padding:4px calc(50% - 92px) 16px;}
+  .note{font-size:11px;}
+}
+
+/* ── PC（768px以上） ───────────────────────────────────────────── */
+@media (min-width:768px){
+  /* ヘッダーCTAのタップ領域を44px確保する */
+  .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
+  /* FV全高を900〜980pxへ圧縮する（余白のみで調整し、情報は削らない） */
+  .fv{padding:24px 16px 32px;}
+  .fv>.jobs{margin:10px -16px 10px;}
+  .badges{margin-bottom:10px;}
+  .job{flex:0 0 216px;max-width:216px;}
+  .jobs-track{padding:6px calc(50% - 108px) 20px;gap:14px;}
+  .job .pic{width:84%;margin:12px auto 6px;}
+  .job .pic img{width:100%;max-width:100%;margin-left:0;}
+  .job .name{top:-11px;width:auto;min-width:50%;padding:5px 14px;font-size:14px;}
+  .job .fitlist{padding:24px 10px 14px;gap:6px;}
+  .job .fitlist > div{font-size:14px;line-height:1.55;}
+  .jobs-dots{padding:12px 0 8px;}
+  .badge{max-width:100px;}
+  .badge .t,.badge .u{font-size:11px;}
+  .fv .cta-micro{font-size:15px;margin-bottom:6px;}
+  .sec .cta,.fv .cta{min-height:58px;padding:13px 28px calc(13px + var(--cta-edge));}
+  .sec{padding:88px 16px;}
+  .card,.block-navy{padding:26px;}
+  .faq{padding:18px 22px;}
+}
+@media (min-width:1108px){
+  .h2{font-size:36px;line-height:1.35;}
+  .h3{font-size:22px;}
+  .fv h1{font-size:40px;line-height:1.3;}
+}
+
 </style>
 </head>
 <body>
@@ -1086,7 +1220,7 @@ justify-content:center;}
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
 
-    <h1>「辞めたい理由」はある。<br><span class="np">でも「やりたい仕事」が</span><span class="np">わからない。</span></h1>
+    <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が</span><span class="ln">わからない。</span></h1>
 
     <p class="body sub"><span class="np">パーソナルファイル</span>は、あなたの性格を<span class="b navy">80タイプ</span>に分類する<span class="np">キャリアパーソナリティ診断</span>で、AIと5万人のデータをもとに分析。<span class="b marker">あなたと相性のいい仕事だけを、厳選してご紹介します。</span></p>
 
@@ -1118,7 +1252,7 @@ justify-content:center;}
       <div class="h3">性格を、16タイプに分ける</div>
     </div>
 
-    <div class="card" style="padding:12px;margin-bottom:10px;">
+    <div class="card" style="margin-bottom:10px;">
 
       <!-- MATRIX（personal-file.jp スマホ版と同じ構造） -->
       <div class="matrix">
@@ -1178,7 +1312,7 @@ justify-content:center;}
 
     <p class="body b" style="margin-bottom:22px;">性格が同じでも、進め方が違えば、合う職場は変わります。</p>
 
-    <div class="card" style="padding:16px 12px;margin-bottom:14px;">
+    <div class="card" style="margin-bottom:14px;">
       <div class="logic">
         <div class="c"><div class="l">性格類型</div><div class="n"><span class="num-mont">4</span></div></div>
         <div class="x">×</div>
@@ -1196,7 +1330,7 @@ justify-content:center;}
   <!-- ============ S3 ｜ WHY YOU CAN'T CHOOSE ============ -->
   <section class="sec sec-white">
     <div class="label-en">WHY YOU CAN'T CHOOSE</div>
-    <h2 class="h2"><span class="np">辞めた理由、</span><span class="np">求人票に書いてありましたか。</span></h2>
+    <h2 class="h2"><span class="np">辞めた理由、</span><span class="np">求人票に</span><span class="np">書いてありましたか。</span></h2>
 
     <div class="doc-mock" style="margin-bottom:14px;">
       <div class="doc-mock-bar"></div>
@@ -1247,7 +1381,7 @@ justify-content:center;}
   <!-- ============ S5 ｜ WHAT YOU GET ============ -->
   <section class="sec sec-white">
     <div class="label-en">WHAT YOU GET</div>
-    <h2 class="h2"><span class="np">キャリアパーソナリティ診断で</span><span class="np">分かる16のこと</span></h2>
+    <h2 class="h2"><span class="np">キャリアパーソナリティ</span><span class="np">診断で</span><span class="np">分かる16のこと</span></h2>
 
     <div class="scene sm">
       <img src="/aisho/assets/illust/result.webp" width="640" height="640" alt="スマートフォンで診断結果を見ている男性のイラスト" loading="lazy" decoding="async">
@@ -1382,7 +1516,7 @@ justify-content:center;}
   <!-- ============ S9 ｜ FLOW ============ -->
   <section class="sec sec-white" id="s9">
     <div class="label-en">FLOW</div>
-    <h2 class="h2"><span class="np">必要なのは、15分の診断と、</span><span class="np">60分の面談だけ。</span></h2>
+    <h2 class="h2"><span class="np">必要なのは、</span><span class="np">15分の診断と、</span><span class="np">60分の面談だけ。</span></h2>
 
     <div class="steps" style="margin-bottom:20px;">
       <div class="step">
@@ -1638,7 +1772,11 @@ justify-content:center;}
     track.appendChild(makeCard(JOBS[JOBS.length - 1], JOBS.length - 1, true));
     JOBS.forEach(function(j, i){
       track.appendChild(makeCard(j, i, false));
-      var d = document.createElement('b');
+      var d = document.createElement('button');
+      d.type = 'button';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', j.name + 'のカードを表示');
+      d.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
       if (i === 0) d.className = 'on';
       dots.appendChild(d);
     });
@@ -1647,7 +1785,12 @@ justify-content:center;}
     var lastLeft = -1;
     var all = [].slice.call(track.querySelectorAll('.job'));
     var cards = all.filter(function(c){ return !c.classList.contains('is-clone'); });
-    var bullets = dots.querySelectorAll('b');
+    dots.setAttribute('role', 'tablist');
+    dots.setAttribute('aria-label', '職種カードの選択');
+    track.setAttribute('tabindex', '0');
+    track.setAttribute('role', 'region');
+    track.setAttribute('aria-label', '職種カード。左右キーで切り替えられます');
+    var bullets = dots.querySelectorAll('button');
     var idx = 0, timer = null, paused = false;
 
     /* トラック中央に最も近いカードを現在位置とする（中央寄せスナップのため） */
@@ -1690,13 +1833,13 @@ justify-content:center;}
         center(to, true);
         lastLeft = track.scrollLeft;
         updateClasses();
-        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); });
+        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); b.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
         return;
       }
       var n = cards.indexOf(all[bp]);
       if (n !== -1 && n !== idx) {
         idx = n;
-        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); });
+        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); b.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
         updateClasses();
       }
     };
@@ -1707,7 +1850,7 @@ justify-content:center;}
       center(idx, true);
       lastLeft = track.scrollLeft;
       updateClasses();
-      bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); });
+      bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); b.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
     };
     initCenter();
     window.addEventListener('load', initCenter);
@@ -1721,6 +1864,13 @@ justify-content:center;}
     };
     window.requestAnimationFrame(watch);
     track.addEventListener('scroll', sync, {passive:true});
+    track.addEventListener('keydown', function(e){
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      paused = true;
+      center((idx + (e.key === 'ArrowRight' ? 1 : cards.length - 1)) % cards.length);
+      release();
+    });
 
     /* 自動送り。操作中と非表示タブでは止める */
     var advance = function(){
