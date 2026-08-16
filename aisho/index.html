@@ -97,12 +97,67 @@ a{color:inherit;text-decoration:none;}
 p{margin:0;}
 
 /* ── 1カラム600px。PC・SP共通。ブレイクポイントを作らない ── */
-.page{
-  max-width:600px;
+/* hataractive DefaultTemplate 実測: contents max-width1108 / main calc(100% - 360px) / BP576 */
+.layout{
+  max-width:1108px;
   margin:0 auto;
+  display:flex;
+  align-items:flex-start;
+}
+.page{
+  width:100%;
   background:#FFFFFF;
-  padding-bottom:82px; /* 追従バーの逃げ */
+  padding-bottom:82px; /* 追従バーの逃げ（SP） */
   overflow-x:hidden; /* 80グリッドのツールチップ(.tip)がセル外にはみ出し横スクロールを誘発するのを防ぐ */
+}
+
+/* ── 右サイドレール（hataractive SideEntryForm 実測値） ── */
+.side-rail{flex-shrink:0;position:sticky;top:88px;display:none;}
+.side-entry{display:flex;flex-direction:column;gap:16px;width:340px;margin-left:20px;}
+.nav-card{background:#FFFFFF;border-radius:16px;padding:24px 20px;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.side-logo{display:flex;justify-content:center;margin-bottom:16px;font-size:15px;font-weight:700;color:var(--navy);letter-spacing:.5px;}
+.anchor-list{list-style:none;margin:0;padding:0;}
+.anchor-item{border-bottom:1px solid #ccc;}
+.anchor-item:last-child{border-bottom:none;}
+.anchor-btn{
+  display:block;
+  width:100%;
+  padding:16px 24px 16px 4px;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.6;
+  color:var(--navy);
+  text-align:left;
+  position:relative;
+  cursor:pointer;
+}
+.anchor-btn:after{
+  content:"";
+  position:absolute;top:50%;right:8px;
+  width:8px;height:8px;
+  border-top:2px solid var(--accent);
+  border-right:2px solid var(--accent);
+  transform:translateY(-50%) rotate(45deg);
+}
+.anchor-btn:hover{color:var(--accent);}
+.cta-card{background:#FFFFFF;border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.cta-card-lead{font-size:14px;font-weight:700;color:var(--navy);line-height:1.6;margin-bottom:12px;text-align:center;}
+.cta-card-lead .free{
+  display:inline-block;
+  background:var(--accent);color:#FFFFFF;
+  border-radius:4px;margin-right:6px;padding:1px 7px;
+  font-size:13px;font-weight:700;
+}
+
+/* 2カラム未満の幅では1カラム中央寄せ（メインが潰れないように） */
+@media (max-width:1107px){
+  .page{max-width:600px;margin:0 auto;}
+}
+/* ── PC（1108px以上）: hataractive と同一 contents1108 / main748 / side340+20 ── */
+@media (min-width:1108px){
+  .side-rail{display:block;}
+  .page{width:calc(100% - 360px);}
+  body .bar{display:none !important;} /* PCは右カラムCTAが常時見えるので下部バーは出さない */
 }
 .sec{padding:44px 20px;}
 .sec-gray{background:var(--gray);}
@@ -162,17 +217,44 @@ p{margin:0;}
 /* ── アイコン ── */
 .ic{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:0 0 auto;}
 
+
+
 /* ── ヘッダー ── */
+/* hataractive DefaultHeader 実測: sticky top0 / inner max-width960 / padding 4px 12px */
 .site-head{
+  position:sticky;top:0;left:0;z-index:1003;
+  width:100%;
+  background:#FFFFFF;
+  border-bottom:1px solid var(--sub-border);
+}
+.site-head-inner{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:11px 18px;
-  border-bottom:1px solid var(--sub-border);
-  background:#FFFFFF;
+  width:100%;
+  min-width:320px;
+  max-width:960px;
+  margin:0 auto;
+  padding:8px 16px;
 }
-.site-head .logo{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.5px;line-height:1.4;}
-.site-head .tag{font-size:10px;color:var(--mute);line-height:1.4;}
+.site-head .logo{font-size:14px;font-weight:700;color:var(--navy);letter-spacing:.5px;line-height:1.4;}
+.head-right{display:flex;align-items:center;gap:12px;}
+.site-head .tag{font-size:11px;color:var(--mute);line-height:1.4;}
+.head-cta{
+  background:var(--accent);
+  color:#FFFFFF;
+  border-radius:9999px;
+  padding:7px 16px;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.7;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+@media (max-width:576px){
+  .site-head .tag{display:none;}
+  .head-cta{font-size:12px;padding:6px 12px;}
+}
 
 /* ── CTA ── */
 .cta-lead{
@@ -723,6 +805,22 @@ p{margin:0;}
   box-shadow:0 0 0 var(--accent-shadow);
 }
 .bar .btn .ic{margin-left:5px;}
+/* ── PC（1108px以上）のタイポスケール（hataractive: body 1.6rem=16px） ── */
+@media (min-width:1108px){
+  html body{font-size:16px;}
+  .body{font-size:16px;}
+  .h2{font-size:28px;}          /* TitleSection big 2.8rem */
+  .fv h1{font-size:32px;}       /* TitlePrimary title 3.2rem */
+  .h3{font-size:20px;}          /* TitleSection small 2rem */
+  .sec{padding:56px 32px;}
+  .fv{padding:40px 32px;}
+  .small{font-size:14px;}
+  .note{font-size:12px;}
+  .cta{font-size:18px;}
+  .cta-lead{font-size:20px;}
+  .side-entry .cta{font-size:15px;padding:13px 10px;}
+  .side-entry .cta-micro{font-size:11px;}
+}
 </style>
 </head>
 <body>
@@ -762,13 +860,20 @@ p{margin:0;}
 <symbol id="i-graph-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="4"/><line x1="4" y1="20" x2="20" y2="20"/><polyline points="6,16 10,12 13,14 19,7"/><polyline points="15,7 19,7 19,11"/></symbol>
 </svg>
 
-<div class="page">
-
-  <!-- ============ HEADER ============ -->
-  <header class="site-head">
+<!-- ============ HEADER（全幅sticky。hataractive DefaultHeader 相当） ============ -->
+<header class="site-head">
+  <div class="site-head-inner">
     <span class="logo">Personal File</span>
-    <span class="tag">20代の相性転職</span>
-  </header>
+    <div class="head-right">
+      <span class="tag">20代の相性転職</span>
+      <a class="head-cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_head" data-cta="af_l1_head">無料の適職診断を受ける</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ contents: max-width1108px / flex（hataractive DefaultTemplate 相当） ============ -->
+<div class="layout">
+<main class="page">
 
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
@@ -797,7 +902,7 @@ p{margin:0;}
   </section>
 
   <!-- ============ S2 ｜ WHY 80 TYPES ============ -->
-  <section class="sec sec-gray">
+  <section class="sec sec-gray" id="s2">
     <div class="label-en">WHY 80 TYPES</div>
     <h2 class="h2">なぜ、80タイプに分けるのか。</h2>
 
@@ -963,7 +1068,7 @@ p{margin:0;}
   </section>
 
   <!-- ============ S6 ｜ AFTER THE TEST ============ -->
-  <section class="sec sec-gray">
+  <section class="sec sec-gray" id="s6">
     <div class="label-en">AFTER THE TEST</div>
     <h2 class="h2"><span class="np">診断結果だけでは、</span><span class="np">明日は変わりません。</span></h2>
 
@@ -1073,7 +1178,7 @@ p{margin:0;}
   </section>
 
   <!-- ============ S9 ｜ FLOW ============ -->
-  <section class="sec sec-white">
+  <section class="sec sec-white" id="s9">
     <div class="label-en">FLOW</div>
     <h2 class="h2"><span class="np">必要なのは、15分の診断と、</span><span class="np">60分の面談だけ。</span></h2>
 
@@ -1145,7 +1250,7 @@ p{margin:0;}
   </section>
 
   <!-- ============ S10 ｜ STORIES ============ -->
-  <section class="sec sec-stories">
+  <section class="sec sec-stories" id="s10">
     <div class="label-en">STORIES</div>
     <h2 class="h2">みんなの就職・転職エピソード</h2>
     <p class="body intro" style="margin-bottom:18px;"><span class="np">80タイプのうち、どれだったか。</span><span class="np">そして、どこに落ち着いたか。</span></p>
@@ -1253,9 +1358,31 @@ p{margin:0;}
     <div class="cr">©2026 Personal Co.,Ltd</div>
   </footer>
 
+</main>
+
+  <!-- ============ 右サイドレール（PCのみ。hataractive SideEntryForm 相当） ============ -->
+  <aside class="side-rail">
+    <div class="side-entry">
+      <div class="nav-card">
+        <div class="side-logo">Personal File</div>
+        <ul class="anchor-list">
+          <li class="anchor-item"><a class="anchor-btn" href="#s2">なぜ、80タイプに分けるのか。</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s6">診断結果だけでは、明日は変わりません。</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s9">必要なのは、15分の診断と、60分の面談だけ。</a></li>
+          <li class="anchor-item"><a class="anchor-btn" href="#s10">みんなの就職・転職エピソード</a></li>
+        </ul>
+      </div>
+      <div class="cta-card">
+        <div class="cta-card-lead"><span class="free">無料</span>診断・相談 すべて無料</div>
+        <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_side" data-cta="af_l1_side">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
+        <div class="cta-micro">入力は約30秒</div>
+      </div>
+    </div>
+  </aside>
+
 </div>
 
-<!-- ============ 追従バー（FVがビューポート外に出てから表示） ============ -->
+<!-- ============ 追従バー（SPのみ／FVがビューポート外に出てから表示） ============ -->
 <div class="bar" id="bar">
   <div class="t">診断・相談<br><span class="hl">すべて無料</span></div>
   <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_bar" data-cta="af_l1_bar">無料の適職診断を受ける<svg class="ic"><use href="#i-arrow-right"></use></svg></a>
