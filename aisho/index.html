@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-0130">
+<html lang="ja" data-build="20260817-0200">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -893,13 +893,12 @@ justify-content:center;}
 }
 .story .av{
   grid-area:image;
-  width:60%;max-width:207px;
+  width:60%;max-width:180px;
   aspect-ratio:1;
   margin:0 auto;
   border-radius:50%;
   overflow:hidden;
   background:var(--sub-fill);
-  border:2px solid var(--accent);
 }
 .story .av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;}
 .story .story-main{grid-area:main;}
@@ -908,7 +907,7 @@ justify-content:center;}
 .story .nm{font-size:20px;font-weight:700;color:var(--navy);line-height:1.6;margin-top:2px;}
 .story .cm{font-size:15px;line-height:1.85;color:var(--ink);margin:11px 0 0;}
 @media (min-width:768px){
-  .story{grid-template-columns:207px 1fr;grid-template-areas:"image main" "fit fit";gap:20px 30px;padding:24px;}
+  .story{grid-template-columns:.3fr .7fr;grid-template-areas:"image main" "fit fit";gap:20px 30px;padding:24px;}
   .story .av{width:100%;}
   .story .cm{font-size:16px;}
   .story .nm{font-size:22px;}
