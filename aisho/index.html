@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-1230">
+<html lang="ja" data-build="20260817-1410">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,7 +142,6 @@ p{margin:0;}
 .page{
   width:100%;
   background:#FFFFFF;
-  padding-bottom:82px; /* 追従バーの逃げ（SP） */
   overflow-x:hidden; /* 80グリッドのツールチップ(.tip)がセル外にはみ出し横スクロールを誘発するのを防ぐ */
 }
 
@@ -950,7 +949,7 @@ justify-content:center;}
    リンク2カラム47%・白・13px・line-height2・下線・右に4pxのシェブロン /
    リンク列の下に 1px dashed #666 / コピーライト 11px 白 */
 .site-foot{background:#333333;padding:40px 0 calc(110px + env(safe-area-inset-bottom,0px));text-align:left;}
-.site-foot-inner{margin:0 6.667vw;max-width:624px;}
+.site-foot-inner{margin:0;padding:0 16px;max-width:656px;}
 .site-foot .logo{font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:25px;line-height:1.4;letter-spacing:.02em;}
 .site-foot .links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0;margin-bottom:20px;padding-bottom:15px;position:relative;}
 .site-foot .links::after{content:"";position:absolute;left:0;bottom:0;width:100%;border-bottom:1px dashed #666666;}
@@ -968,7 +967,7 @@ justify-content:center;}
 .site-foot .cr{background:transparent;margin:0;padding:0;font-size:11px;color:#FFFFFF;text-align:left;line-height:1.7;}
 @media (min-width:768px){
   .site-foot{padding:48px 0 104px;}
-  .site-foot-inner{margin:0 auto;padding:0 16px;}
+  .site-foot-inner{margin:0;padding:0 16px;max-width:656px;}
   .site-foot .links a{width:31%;}
 }
 
@@ -1748,6 +1747,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <!-- ============ FOOTER ============ -->
 
+  <footer class="site-foot">
+    <div class="site-foot-inner">
+    <div class="logo">Personal File</div>
+    <div class="links">
+      <a href="https://per-sonal.co.jp/personalfile/media/" target="_blank" rel="noopener">相性転職マガジン</a>
+      <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener">運営会社</a>
+      <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
+    </div>
+    <div class="cr">©2026 Personal Co.,Ltd</div>
+    </div>
+  </footer>
+
 </main>
 
   <!-- ============ 右サイドレール（PCのみ。hataractive SideEntryForm 相当） ============ -->
@@ -1770,18 +1781,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </aside>
 
 </div>
-
-  <footer class="site-foot">
-    <div class="site-foot-inner">
-    <div class="logo">Personal File</div>
-    <div class="links">
-      <a href="https://per-sonal.co.jp/personalfile/media/" target="_blank" rel="noopener">相性転職マガジン</a>
-      <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener">運営会社</a>
-      <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
-    </div>
-    <div class="cr">©2026 Personal Co.,Ltd</div>
-    </div>
-  </footer>
 
 <!-- ============ 追従バー（SPのみ／FVがビューポート外に出てから表示） ============ -->
 <div class="bar" id="bar">
