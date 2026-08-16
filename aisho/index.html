@@ -1462,27 +1462,36 @@ justify-content:center;}
   var track = document.getElementById('jobsTrack');
   var dots  = document.getElementById('jobsDots');
   if (track && dots) {
-    JOBS.forEach(function(j, i){
+    var makeCard = function(j, i, clone){
       var el = document.createElement('div');
-      el.className = 'job';
+      el.className = 'job' + (clone ? ' is-clone' : '');
       el.style.setProperty('--job-color', j.color);
       el.innerHTML =
         '<div class="job-body">' +
-          '<div class="pic"><img src="assets/jobs/' + j.id + '.webp" width="600" height="600" alt="' + j.name + 'の仕事をする人のイラスト" ' +
-          (i === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"') + ' decoding="async"></div>' +
+          '<div class="pic"><img src="assets/jobs/' + j.id + '.webp" width="600" height="600" alt="' + (clone ? '' : j.name + 'の仕事をする人のイラスト') + '" ' +
+          ((i === 0 && !clone) ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"') + ' decoding="async"></div>' +
+          '<span class="name">' + j.name + '</span>' +
           '<div class="fitlist">' +
-            '<span class="name">' + j.name + '</span>' +
             '<div><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> ' + j.o + '</div>' +
             '<div><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> ' + j.x + '</div>' +
           '</div>' +
         '</div>';
-      track.appendChild(el);
+      if (clone) el.setAttribute('aria-hidden', 'true');
+      return el;
+    };
+    /* 両端が空かないよう前後に1枚ずつクローンを置く */
+    track.appendChild(makeCard(JOBS[JOBS.length - 1], JOBS.length - 1, true));
+    JOBS.forEach(function(j, i){
+      track.appendChild(makeCard(j, i, false));
       var d = document.createElement('b');
       if (i === 0) d.className = 'on';
       dots.appendChild(d);
     });
+    track.appendChild(makeCard(JOBS[0], 0, true));
 
-    var cards = track.querySelectorAll('.job');
+    var lastLeft = -1;
+    var all = [].slice.call(track.querySelectorAll('.job'));
+    var cards = all.filter(function(c){ return !c.classList.contains('is-clone'); });
     var bullets = dots.querySelectorAll('b');
     var idx = 0, timer = null, paused = false;
 
@@ -1497,33 +1506,52 @@ justify-content:center;}
       }
       return best;
     };
-    var center = function(i){
+    var center = function(i, instant){
       var c = cards[i];
-      track.scrollTo({left: c.offsetLeft + c.offsetWidth / 2 - track.clientWidth / 2, behavior:'smooth'});
+      track.scrollTo({left: c.offsetLeft + c.offsetWidth / 2 - track.clientWidth / 2,
+                      behavior: instant ? 'auto' : 'smooth'});
     };
     /* アーチ配置：アクティブ/隣接カードに is-active・is-prev・is-next を付け替える（循環しない） */
     var updateClasses = function(){
-      for (var i = 0; i < cards.length; i++) {
-        cards[i].classList.remove('is-active','is-prev','is-next');
+      var pos = all.indexOf(cards[idx]);
+      for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('is-active','is-prev','is-next');
       }
-      cards[idx].classList.add('is-active');
-      if (idx - 1 >= 0) cards[idx - 1].classList.add('is-prev');
-      if (idx + 1 < cards.length) cards[idx + 1].classList.add('is-next');
+      all[pos].classList.add('is-active');
+      if (all[pos - 1]) all[pos - 1].classList.add('is-prev');
+      if (all[pos + 1]) all[pos + 1].classList.add('is-next');
     };
     var sync = function(){
-      var n = nearest();
-      if (n !== idx) {
-        bullets[idx].classList.remove('on');
+      /* クローン上に乗ったら対応する実カードへ瞬間移動（無限ループ） */
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var bp = 0, bd = Infinity;
+      for (var k = 0; k < all.length; k++) {
+        var d = Math.abs(all[k].offsetLeft + all[k].offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; bp = k; }
+      }
+      if (all[bp].classList.contains('is-clone')) {
+        var to = (bp === 0) ? cards.length - 1 : 0;
+        idx = to;
+        center(to, true);
+        lastLeft = track.scrollLeft;
+        updateClasses();
+        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); });
+        return;
+      }
+      var n = cards.indexOf(all[bp]);
+      if (n !== -1 && n !== idx) {
         idx = n;
-        bullets[idx].classList.add('on');
+        bullets.forEach(function(b, i){ b.classList.toggle('on', i === idx); });
         updateClasses();
       }
     };
     updateClasses();
-    track.addEventListener('scroll', function(){
-      window.clearTimeout(track._t);
-      track._t = window.setTimeout(sync, 80);
-    }, {passive:true});
+    var watch = function(){
+      if (track.scrollLeft !== lastLeft) { lastLeft = track.scrollLeft; sync(); }
+      window.requestAnimationFrame(watch);
+    };
+    window.requestAnimationFrame(watch);
+    track.addEventListener('scroll', sync, {passive:true});
 
     /* 自動送り。操作中と非表示タブでは止める */
     var advance = function(){
