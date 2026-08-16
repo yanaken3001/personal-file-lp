@@ -153,7 +153,7 @@ p{margin:0;}
   .page{width:calc(100% - 360px);}
   body .bar{display:none !important;} /* PCは右カラムCTAが常時見えるので下部バーは出さない */
 }
-.sec{padding:44px 20px;}
+.sec{padding:48px 0;}.sec>*{max-width:656px;margin-left:auto;margin-right:auto;padding-left:16px;padding-right:16px;}
 .sec-gray{background:var(--gray);}
 .sec-white{background:#FFFFFF;}
 
@@ -292,7 +292,7 @@ justify-content:center;}
 .pill-gray{background:var(--sub-fill);color:var(--navy);}
 
 /* ── S1 FV ── */
-.fv{padding:32px 20px;background:linear-gradient(180deg,#F4FBFB 0%,#FFFFFF 58%);}
+.fv{padding:32px 0 40px;background:linear-gradient(180deg,#F4FBFB 0%,#FFFFFF 58%);}.fv>*{max-width:656px;margin-left:auto;margin-right:auto;padding-left:16px;padding-right:16px;}
 .fv .eyebrow{font-size:12px;color:var(--mute);line-height:1.7;margin-bottom:8px;}
 .fv .eyebrow .pill-brand{
   display:inline-block;
@@ -319,7 +319,7 @@ justify-content:center;}
 
 /* ── 職種スライダー（元LP adlp_second と同構造） ── */
 /* セクション左右paddingを打ち消して全幅に伸ばし、隣のカードを覗かせる（元LP Swiperと同じ見え方） */
-.jobs{margin:16px -20px 14px;}
+.fv>.jobs{max-width:none;padding-left:0;padding-right:0;margin:16px 0 14px;}
 .jobs-track{
   display:flex;
   overflow-x:auto;
@@ -788,8 +788,8 @@ justify-content:center;}
   .h2{font-size:28px;}          /* TitleSection big 2.8rem */
   .fv h1{font-size:32px;}       /* TitlePrimary title 3.2rem */
   .h3{font-size:20px;}          /* TitleSection small 2rem */
-  .sec{padding:56px 32px;}
-  .fv{padding:40px 32px;}
+  .sec{padding:80px 0;}
+  .fv{padding:40px 0 56px;}
   .small{font-size:14px;}
   .note{font-size:12px;}
   .cta{font-size:18px;}
