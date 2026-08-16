@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260816-2245">
+<html lang="ja" data-build="20260817-0025">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&family=Montserrat:wght@700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/jobs/jimu.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/aisho/assets/jobs/jimu.webp" fetchpriority="high">
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
@@ -242,7 +242,7 @@ justify-content:center;}
   background:var(--accent);
   flex:0 0 auto;
 }
-.h2{font-size:22px;font-weight:800;color:var(--navy);line-height:1.4;margin:0 0 16px;text-align:center;}
+.h2{font-size:22px;font-weight:800;color:var(--navy);line-height:1.4;margin:0 auto 16px;text-align:center;}
 .h2::after{margin-left:auto;margin-right:auto;
   content:"";
   display:block;
@@ -256,7 +256,7 @@ justify-content:center;}
   font-weight:700;
   color:var(--navy);
   line-height:1.5;
-  margin:0;
+  margin:0 auto;
 }
 .body{font-size:15px;line-height:1.75;color:var(--ink);}
 .small{font-size:13px;line-height:1.6;color:var(--mute);}
@@ -384,7 +384,7 @@ justify-content:center;}
   font-weight:800;
   line-height:1.4;
   color:var(--navy);
-  margin:0;
+  margin:0 auto;
   letter-spacing:-0.02em;
 }
 .fv .sub{margin-top:12px;}
@@ -395,6 +395,7 @@ justify-content:center;}
 /* セクション左右paddingを打ち消して全幅に伸ばし、隣のカードを覗かせる（元LP Swiperと同じ見え方） */
 .fv>.jobs{max-width:none;margin:16px -16px 14px;}
 .jobs-track{
+  position:relative;
   display:flex;
   overflow-x:auto;
   overflow-y:hidden;
@@ -877,13 +878,14 @@ justify-content:center;}
 /* ── S10 ── */
 .sec-stories{background:var(--brand-primary);}
 .sec-stories .label-en,.sec-stories .h2,.sec-stories .intro{color:#FFFFFF;}
+.sec-stories .intro{text-align:center;}
 .sec-stories .label-en::before{background:#FFFFFF;}
 .sec-stories .h2::after{background:#FFFFFF;}
 .sec-stories .block-navy{background:#FFFFFF;border:none;}
 .story + .story{margin-top:12px;}
 .story .head{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
 .story .av{
-  width:38px;height:38px;flex:0 0 38px;
+  width:56px;height:56px;flex:0 0 56px;
   border-radius:50%;
   background:var(--sub-fill);
   color:var(--navy);
@@ -892,7 +894,9 @@ justify-content:center;}
   display:flex;align-items:center;justify-content:center;
   line-height:1;
   border:2px solid var(--accent);
+  overflow:hidden;
 }
+.story .av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;}
 .story .rt{font-size:15px;font-weight:700;color:var(--navy);line-height:1.5;}
 .story .nm{font-size:11px;color:var(--mute);line-height:1.6;}
 .story .cm{font-size:14px;line-height:1.85;color:var(--ink);margin:11px 0;}
@@ -1069,7 +1073,6 @@ justify-content:center;}
 
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
-    <div class="eyebrow"><span class="pill-brand">相性転職<span class="np">パーソナルファイル</span></span></div>
 
     <h1>「辞めたい理由」はある。<br><span class="np">でも「やりたい仕事」が</span><span class="np">わからない。</span></h1>
 
@@ -1211,7 +1214,7 @@ justify-content:center;}
     </div>
 
     <div class="scene">
-      <img src="assets/illust/worry.webp" width="640" height="640" alt="スマートフォンで求人を延々と見ている女性のイラスト" loading="lazy" decoding="async">
+      <img src="/aisho/assets/illust/worry.webp" width="640" height="640" alt="スマートフォンで求人を延々と見ている女性のイラスト" loading="lazy" decoding="async">
     </div>
 
     <p class="body" style="margin-bottom:16px;"><span class="b">どこにも書いていないので、比べられません。</span><br>比べられないものは、選べません。<br>求人を何百件スクロールしても決まらないのは、そのためです。</p>
@@ -1235,7 +1238,7 @@ justify-content:center;}
     <h2 class="h2"><span class="np">キャリアパーソナリティ診断で</span><span class="np">分かる16のこと</span></h2>
 
     <div class="scene sm">
-      <img src="assets/illust/result.webp" width="640" height="640" alt="スマートフォンで診断結果を見ている男性のイラスト" loading="lazy" decoding="async">
+      <img src="/aisho/assets/illust/result.webp" width="640" height="640" alt="スマートフォンで診断結果を見ている男性のイラスト" loading="lazy" decoding="async">
     </div>
 
     <p class="body" style="margin-bottom:16px;">とくに、辞める理由に直結するのは<span class="np">この4つです。</span></p>
@@ -1276,7 +1279,7 @@ justify-content:center;}
 
     <div class="bridge">
       <div class="scene">
-        <img src="assets/illust/counselor.webp" width="640" height="640" alt="適職カウンセラーと1対1で面談している様子のイラスト" loading="lazy" decoding="async">
+        <img src="/aisho/assets/illust/counselor.webp" width="640" height="640" alt="適職カウンセラーと1対1で面談している様子のイラスト" loading="lazy" decoding="async">
       </div>
       <p class="body">あなたのこれまでの経歴。いまの職場でしんどいこと。譲れない条件。<br><span class="b">それと診断結果を突き合わせて、次の一手まで落とすのが、適職カウンセラーの仕事です。</span></p>
     </div>
@@ -1386,7 +1389,7 @@ justify-content:center;}
             <div class="t">STEP 2　診断を受ける（約15分）</div>
             <div class="d">LINEが届いたら、その場でスマホから受けられます。事前準備は不要です。能力テストではありません。</div>
             <div class="scene sm" style="margin:10px 0 4px;max-width:180px;">
-              <img src="assets/illust/chat.webp" width="640" height="640" alt="スマートフォンにメッセージが届いている様子のイラスト" loading="lazy" decoding="async">
+              <img src="/aisho/assets/illust/chat.webp" width="640" height="640" alt="スマートフォンにメッセージが届いている様子のイラスト" loading="lazy" decoding="async">
             </div>
           </div>
         </div>
@@ -1421,7 +1424,7 @@ justify-content:center;}
     </div>
 
     <div class="scene sm">
-      <img src="assets/illust/start.webp" width="640" height="640" alt="新しい職場へ向かって歩き出す女性のイラスト" loading="lazy" decoding="async">
+      <img src="/aisho/assets/illust/start.webp" width="640" height="640" alt="新しい職場へ向かって歩き出す女性のイラスト" loading="lazy" decoding="async">
     </div>
 
     <div class="why" style="margin-bottom:18px;">
@@ -1444,7 +1447,7 @@ justify-content:center;}
 
     <div class="card story" style="padding:14px;">
       <div class="head">
-        <div class="av">H.K</div>
+        <div class="av"><img src="/aisho/assets/voice/hk.webp" width="168" height="168" alt="H.Kさんの写真" loading="lazy" decoding="async"></div>
         <div>
           <div class="rt">保育系 → 事務</div>
           <div class="nm">H.Kさん（20代）</div>
@@ -1461,7 +1464,7 @@ justify-content:center;}
 
     <div class="card story" style="padding:14px;">
       <div class="head">
-        <div class="av">A.D</div>
+        <div class="av"><img src="/aisho/assets/voice/ad.webp" width="168" height="168" alt="A.Dさんの写真" loading="lazy" decoding="async"></div>
         <div>
           <div class="rt">美容系 → 営業</div>
           <div class="nm">A.Dさん（20代）</div>
@@ -1478,7 +1481,7 @@ justify-content:center;}
 
     <div class="card story" style="padding:14px;margin-bottom:14px;">
       <div class="head">
-        <div class="av">T.O</div>
+        <div class="av"><img src="/aisho/assets/voice/to.webp" width="168" height="168" alt="T.Oさんの写真" loading="lazy" decoding="async"></div>
         <div>
           <div class="rt">自動車業 → エンジニア</div>
           <div class="nm">T.Oさん（25歳）</div>
@@ -1614,7 +1617,7 @@ justify-content:center;}
       el.style.setProperty('--job-color', j.color);
       el.innerHTML =
         '<div class="job-body">' +
-          '<div class="pic"><img src="assets/jobs/' + j.id + '.webp" width="600" height="600" alt="' + (clone ? '' : j.name + 'の仕事をする人のイラスト') + '" ' +
+          '<div class="pic"><img src="/aisho/assets/jobs/' + j.id + '.webp" width="600" height="600" alt="' + (clone ? '' : j.name + 'の仕事をする人のイラスト') + '" ' +
           ((i === 0 && !clone) ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"') + ' decoding="async"></div>' +
           '<div class="fitlist">' +
             '<span class="name">' + j.name + '</span>' +
