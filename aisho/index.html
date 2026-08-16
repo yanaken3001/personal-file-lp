@@ -87,7 +87,7 @@ html body{
   font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
   font-weight:400;
   font-size:15px;
-  line-height:1.85;
+  line-height:1.6;
   color:var(--ink);
   overflow-wrap:break-word;
   overflow-x:hidden;
@@ -153,7 +153,8 @@ p{margin:0;}
   .page{width:calc(100% - 360px);}
   body .bar{display:none !important;} /* PCは右カラムCTAが常時見えるので下部バーは出さない */
 }
-.sec{padding:48px 0;}.sec>*{max-width:656px;margin-left:auto;margin-right:auto;padding-left:16px;padding-right:16px;}
+.sec{padding:48px 16px;}
+.sec>*{max-width:624px;margin-left:auto;margin-right:auto;}
 .sec-gray{background:var(--gray);}
 .sec-white{background:#FFFFFF;}
 
@@ -192,8 +193,8 @@ justify-content:center;}
   line-height:1.6;
   margin:0;
 }
-.body{font-size:15px;line-height:1.85;color:var(--ink);}
-.small{font-size:13px;line-height:1.85;color:var(--mute);}
+.body{font-size:15px;line-height:1.6;color:var(--ink);}
+.small{font-size:13px;line-height:1.6;color:var(--mute);}
 .note{font-size:10px;line-height:1.7;color:var(--mute);}
 .b{font-weight:700;}
 .navy{color:var(--navy);}
@@ -292,7 +293,8 @@ justify-content:center;}
 .pill-gray{background:var(--sub-fill);color:var(--navy);}
 
 /* ── S1 FV ── */
-.fv{padding:32px 0 40px;background:linear-gradient(180deg,#F4FBFB 0%,#FFFFFF 58%);}.fv>*{max-width:656px;margin-left:auto;margin-right:auto;padding-left:16px;padding-right:16px;}
+.fv{padding:32px 16px 40px;background:linear-gradient(180deg,#F4FBFB 0%,#FFFFFF 58%);}
+.fv>*{max-width:624px;margin-left:auto;margin-right:auto;}
 .fv .eyebrow{font-size:12px;color:var(--mute);line-height:1.7;margin-bottom:8px;}
 .fv .eyebrow .pill-brand{
   display:inline-block;
@@ -319,7 +321,7 @@ justify-content:center;}
 
 /* ── 職種スライダー（元LP adlp_second と同構造） ── */
 /* セクション左右paddingを打ち消して全幅に伸ばし、隣のカードを覗かせる（元LP Swiperと同じ見え方） */
-.fv>.jobs{max-width:none;padding-left:0;padding-right:0;margin:16px 0 14px;}
+.fv>.jobs{max-width:none;margin:16px -16px 14px;}
 .jobs-track{
   display:flex;
   overflow-x:auto;
@@ -768,11 +770,11 @@ justify-content:center;}
 }
 
 /* ── フッター ── */
-.site-foot{background:var(--deep);padding:20px 18px;text-align:center;}
-.site-foot .logo{font-size:13px;font-weight:700;color:#FFFFFF;margin-bottom:10px;line-height:1.5;}
-.site-foot .links{font-size:11px;color:#9FC6C9;line-height:2;}
-.site-foot .links a{margin:0 6px;}
-.site-foot .cr{font-size:10px;color:#6E9A9E;margin-top:10px;line-height:1.6;}
+.site-foot{background:var(--gray);padding:24px 16px 40px;text-align:center;}
+.site-foot .logo{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:24px;line-height:1;letter-spacing:.02em;}
+.site-foot .links{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:16px;max-width:624px;margin:0 auto;font-size:12px;line-height:1.6;}
+.site-foot .links a{color:var(--ink);text-decoration:underline;}.site-foot .links a:hover{text-decoration:none;}
+.site-foot .cr{background:#FFFFFF;max-width:768px;margin:32px auto 0;padding:16px;font-size:10px;color:var(--mute);text-align:center;line-height:1.6;}
 
 /* ── 追従バー ── */
 .bar{
@@ -818,14 +820,31 @@ justify-content:center;}
   .h2{font-size:28px;}          /* TitleSection big 2.8rem */
   .fv h1{font-size:32px;}       /* TitlePrimary title 3.2rem */
   .h3{font-size:20px;}          /* TitleSection small 2rem */
-  .sec{padding:80px 0;}
-  .fv{padding:40px 0 56px;}
+  .sec{padding:80px 16px;}
+  .fv{padding:40px 16px 56px;}
   .small{font-size:14px;}
   .note{font-size:12px;}
   .cta{font-size:18px;}
   .cta-lead{font-size:20px;}
   .side-entry .cta{font-size:15px;padding:13px 10px;}
   .side-entry .cta-micro{font-size:11px;}
+}
+
+/* ── 374px未満は vw で等比縮小（hataractive: px/374*100 vw → 374px以上はpx固定） ── */
+@media (max-width:373px){
+  html body{font-size:4.0107vw;}
+  .body{font-size:4.0107vw;}
+  .h2{font-size:5.34759vw;}
+  .h3{font-size:4.54545vw;}
+  .small{font-size:3.47594vw;}
+  .note{font-size:2.6738vw;}
+  .label-en{font-size:2.40642vw;}
+  .cta{font-size:4.81283vw;padding:4.27807vw 7.48663vw;}
+  .cta-micro{font-size:5.34759vw;}
+  .cta-lead{font-size:4.54545vw;}
+  .site-head .logo{font-size:4.54545vw;}
+  .head-cta{font-size:3.47594vw;}
+  .bar .btn{font-size:4.0107vw;}
 }
 </style>
 </head>
