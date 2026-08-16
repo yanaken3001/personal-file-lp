@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-0025">
+<html lang="ja" data-build="20260817-0130">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -882,24 +882,37 @@ justify-content:center;}
 .sec-stories .label-en::before{background:#FFFFFF;}
 .sec-stories .h2::after{background:#FFFFFF;}
 .sec-stories .block-navy{background:#FFFFFF;border:none;}
-.story + .story{margin-top:12px;}
-.story .head{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
+.story + .story{margin-top:16px;}
+/* 元サイト実測: 写真 max-width 207px、カードは .3fr/.7fr のグリッド、相性ブロックは全幅 */
+.story{
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-areas:"image" "main" "fit";
+  gap:14px;
+  align-items:center;
+}
 .story .av{
-  width:56px;height:56px;flex:0 0 56px;
+  grid-area:image;
+  width:60%;max-width:207px;
+  aspect-ratio:1;
+  margin:0 auto;
   border-radius:50%;
-  background:var(--sub-fill);
-  color:var(--navy);
-  font-weight:700;
-  font-size:12px;
-  display:flex;align-items:center;justify-content:center;
-  line-height:1;
-  border:2px solid var(--accent);
   overflow:hidden;
+  background:var(--sub-fill);
+  border:2px solid var(--accent);
 }
 .story .av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;}
+.story .story-main{grid-area:main;}
+.story .fit{grid-area:fit;}
 .story .rt{font-size:15px;font-weight:700;color:var(--navy);line-height:1.5;}
-.story .nm{font-size:11px;color:var(--mute);line-height:1.6;}
-.story .cm{font-size:14px;line-height:1.85;color:var(--ink);margin:11px 0;}
+.story .nm{font-size:20px;font-weight:700;color:var(--navy);line-height:1.6;margin-top:2px;}
+.story .cm{font-size:15px;line-height:1.85;color:var(--ink);margin:11px 0 0;}
+@media (min-width:768px){
+  .story{grid-template-columns:207px 1fr;grid-template-areas:"image main" "fit fit";gap:20px 30px;padding:24px;}
+  .story .av{width:100%;}
+  .story .cm{font-size:16px;}
+  .story .nm{font-size:22px;}
+}
 .fit{background:var(--gray);border-radius:var(--radius-sm);padding:10px;font-size:12px;line-height:1.85;}
 .fit .h{font-weight:700;color:var(--navy);margin-bottom:5px;font-size:13px;}
 .fit .o{color:var(--brand-primary-dark);font-weight:700;}
@@ -1445,16 +1458,14 @@ justify-content:center;}
     <h2 class="h2">みんなの就職・転職エピソード</h2>
     <p class="body intro" style="margin-bottom:18px;"><span class="np">80タイプのうち、どれだったか。</span><span class="np">そして、どこに落ち着いたか。</span></p>
 
-    <div class="card story" style="padding:14px;">
-      <div class="head">
-        <div class="av"><img src="/aisho/assets/voice/hk.webp" width="168" height="168" alt="H.Kさんの写真" loading="lazy" decoding="async"></div>
-        <div>
+    <div class="card story">
+      <div class="av"><img src="/aisho/assets/voice/hk.webp" width="366" height="366" alt="H.Kさんの写真" loading="lazy" decoding="async"></div>
+      <div class="story-main">
           <div class="rt">保育系 → 事務</div>
           <div class="nm">H.Kさん（20代）</div>
-        </div>
-      </div>
       <span class="pill pill-navy">平和型<span class="np">サポーター</span></span>
       <p class="cm">仕事のやりがいや相談のしやすさなど、とても良い環境だと思います！適職カウンセラーの方からは細かいアドバイス・添削・擬似面接をしてくださったので…</p>
+      </div>
       <div class="fit">
         <div class="h">H.Kさんの相性</div>
         <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 地道なサポート業務全般</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 重要な意思決定</span></div>
@@ -1462,16 +1473,14 @@ justify-content:center;}
       </div>
     </div>
 
-    <div class="card story" style="padding:14px;">
-      <div class="head">
-        <div class="av"><img src="/aisho/assets/voice/ad.webp" width="168" height="168" alt="A.Dさんの写真" loading="lazy" decoding="async"></div>
-        <div>
+    <div class="card story">
+      <div class="av"><img src="/aisho/assets/voice/ad.webp" width="183" height="183" alt="A.Dさんの写真" loading="lazy" decoding="async"></div>
+      <div class="story-main">
           <div class="rt">美容系 → 営業</div>
           <div class="nm">A.Dさん（20代）</div>
-        </div>
-      </div>
       <span class="pill pill-navy" id="type-ad">達成型<span class="np">コラボレーター</span></span>
       <p class="cm">自分だけで転職活動をしていたら、恐らく今の会社には縁が無かったですし、営業職にもなっていなかったと思うので…</p>
+      </div>
       <div class="fit">
         <div class="h">A.Dさんの相性</div>
         <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 人と接する作業</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 黙々とこなす事務作業</span></div>
@@ -1479,16 +1488,14 @@ justify-content:center;}
       </div>
     </div>
 
-    <div class="card story" style="padding:14px;margin-bottom:14px;">
-      <div class="head">
-        <div class="av"><img src="/aisho/assets/voice/to.webp" width="168" height="168" alt="T.Oさんの写真" loading="lazy" decoding="async"></div>
-        <div>
+    <div class="card story" style="margin-bottom:14px;">
+      <div class="av"><img src="/aisho/assets/voice/to.webp" width="414" height="414" alt="T.Oさんの写真" loading="lazy" decoding="async"></div>
+      <div class="story-main">
           <div class="rt">自動車業 → エンジニア</div>
           <div class="nm">T.Oさん（25歳）</div>
-        </div>
-      </div>
       <span class="pill pill-navy">情報型<span class="np">アナリスト</span></span>
       <p class="cm">人間関係は悪くはなかったのですが、休みと拘束時間が長く、できれば土日休みがいいなと思い転職活動をはじめました…</p>
+      </div>
       <div class="fit">
         <div class="h">T.Oさんの相性</div>
         <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 自分の好きな分野の作業</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 興味のない分野</span></div>
