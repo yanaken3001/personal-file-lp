@@ -385,8 +385,9 @@ justify-content:center;}
   z-index:2;
 }
 .job .fitlist{
+  position:relative;
   background:#ededed;
-  padding:20px 0 18px;
+  padding:26px 0 18px;
   position:relative;
   text-align:center;
   display:flex;
@@ -1470,8 +1471,8 @@ justify-content:center;}
         '<div class="job-body">' +
           '<div class="pic"><img src="assets/jobs/' + j.id + '.webp" width="600" height="600" alt="' + (clone ? '' : j.name + 'の仕事をする人のイラスト') + '" ' +
           ((i === 0 && !clone) ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"') + ' decoding="async"></div>' +
-          '<span class="name">' + j.name + '</span>' +
           '<div class="fitlist">' +
+            '<span class="name">' + j.name + '</span>' +
             '<div><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> ' + j.o + '</div>' +
             '<div><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> ' + j.x + '</div>' +
           '</div>' +
