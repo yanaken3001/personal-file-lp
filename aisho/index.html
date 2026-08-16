@@ -421,11 +421,11 @@ justify-content:center;}
 }
 .num-navy{border:2px solid var(--navy);color:var(--navy);}
 .num-acc{border:2px solid var(--accent);color:var(--accent);}
-.type4{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.type4 .c{background:var(--sub-fill);border-radius:6px;padding:10px 4px;text-align:center;}
-.type4 .k{font-size:19px;font-weight:700;color:var(--navy);line-height:1.3;}
-.type4 .e{font-size:10px;color:var(--navy);line-height:1.5;}
-.type4 .j{font-size:10px;color:var(--mute);line-height:1.5;}
+
+
+
+
+
 .eq{text-align:center;font-size:13px;color:var(--mute);margin-top:12px;line-height:1.7;}
 
 /* MATRIX（personal-file.jp の構造・情報量を1:1で移植。配色のみ新LPトークン） */
@@ -445,6 +445,36 @@ justify-content:center;}
   background:#FFFFFF;
 }
 .matrix .q{position:relative;overflow:hidden;}
+/* ── 象限のホバー/タップ演出（personal-file.jp と同じ挙動） ── */
+.matrix .q{cursor:pointer;transition:background-color .3s;}
+.matrix .sub4,.matrix .big,.matrix .chip{transition:opacity .3s,transform .3s;}
+.matrix .qdesc{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 8px;text-align:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+  z-index:3;
+}
+.matrix .qdesc span{
+  background:rgba(255,255,255,.95);
+  color:var(--accent);
+  font-size:12px;font-weight:700;line-height:1.6;
+  padding:6px 8px;border-radius:6px;
+}
+/* 発火条件: マウスホバー or タップで付与される .is-open */
+.matrix .q.is-open{background:var(--acc-l);}
+.matrix .q.is-open .sub4{opacity:.12;}
+.matrix .q.is-open .big{opacity:.12;transform:scale(1.1);}
+.matrix .q.is-open .chip{opacity:0;}
+.matrix .q.is-open .qdesc{opacity:1;}
+@media (hover:hover){
+  .matrix .q:hover{background:var(--acc-l);}
+  .matrix .q:hover .sub4{opacity:.12;}
+  .matrix .q:hover .big{opacity:.12;transform:scale(1.1);}
+  .matrix .q:hover .chip{opacity:0;}
+  .matrix .q:hover .qdesc{opacity:1;}
+}
 .matrix .q.br{border-right:2px solid var(--navy);}
 .matrix .q.bb{border-bottom:2px solid var(--navy);}
 .matrix .sub4{
@@ -891,12 +921,6 @@ justify-content:center;}
     </div>
 
     <div class="card" style="padding:12px;margin-bottom:10px;">
-      <div class="type4">
-        <div class="c"><div class="k">I</div><div class="e">SUPPORT</div><div class="j">協調・平和志向</div></div>
-        <div class="c"><div class="k">P</div><div class="e">VITALITY</div><div class="j">感覚・行動派</div></div>
-        <div class="c"><div class="k">A</div><div class="e">ANALYZE</div><div class="j">慎重・論理重視</div></div>
-        <div class="c"><div class="k">D</div><div class="e">INNOVATE</div><div class="j">合理・即決</div></div>
-      </div>
 
       <!-- MATRIX（personal-file.jp スマホ版と同じ構造） -->
       <div class="matrix">
@@ -909,26 +933,26 @@ justify-content:center;}
           <span>社交性（高）</span>
         </div>
         <div class="box">
-          <div class="q br bb">
+          <div class="q br bb" tabindex="0">
             <div class="sub4"><div>II</div><div>IP</div><div>IA</div><div>ID</div></div>
             <div class="big">I</div>
             <div class="chip top"><span>SUPPORT / サポート</span></div>
-          </div>
-          <div class="q bb">
+          <div class="qdesc"><span>協調大事、リスク回避、平和志向</span></div></div>
+          <div class="q bb" tabindex="0">
             <div class="sub4"><div>PI</div><div>PP</div><div>PA</div><div>PD</div></div>
             <div class="big">P</div>
             <div class="chip top"><span>VITALITY / バイタリティ</span></div>
-          </div>
-          <div class="q br">
+          <div class="qdesc"><span>ポジティブ、感覚派、ノリ、行動</span></div></div>
+          <div class="q br" tabindex="0">
             <div class="sub4"><div>AI</div><div>AP</div><div>AA</div><div>AD</div></div>
             <div class="big">A</div>
             <div class="chip bottom"><span>ANALYZE / アナライズ</span></div>
-          </div>
-          <div class="q">
+          <div class="qdesc"><span>慎重、論理重視、正確性重視</span></div></div>
+          <div class="q" tabindex="0">
             <div class="sub4"><div>DI</div><div>DP</div><div>DA</div><div>DD</div></div>
             <div class="big">D</div>
             <div class="chip bottom"><span>INNOVATE / イノベート</span></div>
-          </div>
+          <div class="qdesc"><span>合理性、個人主義、即決</span></div></div>
         </div>
         <div class="ax-bottom">
           <div class="l">← 正確性重視</div>
@@ -1368,6 +1392,25 @@ justify-content:center;}
 
 <script>
 (function(){
+  /* MATRIX象限：タップでも説明を出す（ホバーできない端末向け） */
+  (function(){
+    var qs=[].slice.call(document.querySelectorAll('.matrix .q'));
+    if(!qs.length) return;
+    var close=function(){ qs.forEach(function(q){ q.classList.remove('is-open'); }); };
+    qs.forEach(function(q){
+      q.addEventListener('click', function(e){
+        e.stopPropagation();
+        var on=q.classList.contains('is-open');
+        close();
+        if(!on) q.classList.add('is-open');
+      });
+      q.addEventListener('keydown', function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); q.click(); }
+      });
+    });
+    document.addEventListener('click', close);
+  })();
+
   /* 職種スライダー：元LPと同じ6職種。順番と相性文言は1箇所で管理する */
   var JOBS = [
     {id:'jimu',     name:'事務',      color:'#F4602A', o:'適度な距離感',   x:'社内交流が多い'},
