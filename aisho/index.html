@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-0620">
+<html lang="ja" data-build="20260817-1230">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -945,11 +945,32 @@ justify-content:center;}
 }
 
 /* ── フッター ── */
-.site-foot{background:var(--gray);padding:24px 16px 40px;text-align:center;}
-.site-foot .logo{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:24px;line-height:1;letter-spacing:.02em;}
-.site-foot .links{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:16px;max-width:624px;margin:0 auto;font-size:12px;line-height:1.6;}
-.site-foot .links a{display:inline-block;padding:12px 8px;min-height:44px;line-height:20px;color:var(--ink);text-decoration:underline;}.site-foot .links a:hover{text-decoration:none;}
-.site-foot .cr{background:#FFFFFF;max-width:768px;margin:32px auto 0;padding:16px;font-size:10px;color:var(--mute);text-align:center;line-height:1.6;}
+/* ── フッター：小さなお葬式(osohshiki.jp) SP版 .p-simpleFooter の実測値に合わせる ──
+   background #333 / padding-top 40px / inner margin 6.667vw / サイト名16px太字 /
+   リンク2カラム47%・白・13px・line-height2・下線・右に4pxのシェブロン /
+   リンク列の下に 1px dashed #666 / コピーライト 11px 白 */
+.site-foot{background:#333333;padding:40px 0 calc(110px + env(safe-area-inset-bottom,0px));text-align:left;}
+.site-foot-inner{margin:0 6.667vw;max-width:624px;}
+.site-foot .logo{font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:25px;line-height:1.4;letter-spacing:.02em;}
+.site-foot .links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0;margin-bottom:20px;padding-bottom:15px;position:relative;}
+.site-foot .links::after{content:"";position:absolute;left:0;bottom:0;width:100%;border-bottom:1px dashed #666666;}
+.site-foot .links a{
+  position:relative;display:inline-block;width:47%;
+  color:#FFFFFF;font-size:13px;line-height:2;text-decoration:underline;
+  padding:9px 14px 9px 0;min-height:44px;
+}
+.site-foot .links a::after{
+  content:"";position:absolute;top:50%;right:2px;width:4px;height:4px;
+  border:2px solid #FFFFFF;border-bottom:0;border-left:0;
+  transform:translateY(-50%) rotate(45deg);
+}
+.site-foot .links a:hover{text-decoration:none;}
+.site-foot .cr{background:transparent;margin:0;padding:0;font-size:11px;color:#FFFFFF;text-align:left;line-height:1.7;}
+@media (min-width:768px){
+  .site-foot{padding:48px 0 104px;}
+  .site-foot-inner{margin:0 auto;padding:0 16px;}
+  .site-foot .links a{width:31%;}
+}
 
 /* ── 追従バー ── */
 .bar{
@@ -1071,17 +1092,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     line-height:1.34;
     font-weight:800;
     letter-spacing:-.02em;
-    margin:0 auto 10px;
+    margin:0 auto 14px;
     color:var(--text-primary);
   }
   .fv .sub{
-    margin:0 auto 12px;
+    margin:0 auto 16px;
     font-size:clamp(15px,3.95vw,16px);
     line-height:1.7;
     color:var(--text-primary);
   }
   /* 職種カード: 中央カード196x272、表示領域292px。主役を張りすぎない */
-  .fv>.jobs{max-width:none;margin:0 -16px 8px;}
+  .fv>.jobs{max-width:none;margin:4px -16px 14px;}
   .jobs-track{padding:4px calc(50% - 98px) 13px;gap:12px;scroll-behavior:auto;}
   .job{flex:0 0 196px;max-width:196px;}
   .job-body{border-radius:18px;box-shadow:0 8px 24px rgba(16,58,64,.12);}
@@ -1093,7 +1114,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .job .fitlist .ic{width:14px;height:14px;}
   .jobs-dots{margin-top:0;padding:8px 0 8px;}
   /* 実績3点: 横一列を維持したまま直径を縮小 */
-  .badges{gap:10px;margin-bottom:10px;}
+  .badges{gap:10px;margin:16px auto 0;}
   .badge{max-width:88px;border-width:2px;padding:4px 2px;}
   .badge .n{font-size:clamp(22px,6.4vw,26px);}
   .badge .t,.badge .u{font-size:10px;line-height:1.35;color:var(--text-primary);}
@@ -1136,8 +1157,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
   /* FV全高を900〜980pxへ圧縮する（余白のみで調整し、情報は削らない） */
   .fv{padding:24px 16px 32px;}
-  .fv>.jobs{margin:10px -16px 10px;}
-  .badges{margin-bottom:10px;}
+  .fv>.jobs{margin:6px -16px 16px;}
+  .badges{margin:20px auto 0;}
   .job{flex:0 0 216px;max-width:216px;}
   .jobs-track{padding:6px calc(50% - 108px) 20px;gap:14px;}
   .job .pic{width:84%;margin:12px auto 6px;}
@@ -1160,6 +1181,48 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .fv h1{font-size:40px;line-height:1.3;}
 }
 
+
+/* ── 中間CTA帯：ティール地に街の線画を1枚敷く。
+   参考サイト(jikka-saisei /lp/sonomama-fudosan)の実装を採寸した結果、
+   タイル状のパターンではなく「1枚のラスター画像を cover / no-repeat / 低opacity」だった。
+   線画はgpt-image-2で生成した一点透視のオフィス街（黒線・白地）を multiply で沈める ── */
+.cta-band{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:var(--brand-primary);
+  border-top:3px solid var(--brand-primary-deepest);
+  color:#FFFFFF;
+  padding-left:0;padding-right:0;
+}
+.cta-band::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url("/aisho/assets/cta/city.webp");
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:50% 62%;
+  mix-blend-mode:multiply;
+  opacity:.26;
+}
+.cta-band > *{position:relative;z-index:1;}
+/* 同じ画像でも切り出し位置を変え、2つの帯が同一に見えないようにする（参考サイトの --mid / --final と同じ考え方） */
+.cta-band--final::before{background-position:18% 74%;}
+.cta-band-inner{max-width:624px;margin:0 auto;padding:0 16px;}
+/* 色面の上ではCTAのグラデーションが背景と同化するため、白フチ4pxと影で面として独立させる。
+   ご指定のグラデーション自体は変更しない */
+.cta-band .cta,.sec-fill .cta{
+  border:4px solid #FFFFFF;
+  box-shadow:0 10px 26px rgba(0,60,70,.35);
+  min-height:50px;   /* 枠4px×2を足して総高58pxに揃える */
+}
+.cta-band .cta:active,.sec-fill .cta:active{box-shadow:0 4px 12px rgba(0,60,70,.30);}
+.cta-band .cta-lead{color:#FFFFFF;}
+.cta-band .cta-micro{color:#FFFFFF;}
+@media (max-width:767px){
+  .cta-band{padding-top:56px;padding-bottom:60px;}
+  .cta-band::before{background-position:50% 58%;opacity:.24;}
+  .cta-band--final::before{background-position:22% 70%;}
+}
 </style>
 </head>
 <body>
@@ -1219,10 +1282,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
-
     <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が</span><span class="ln">わからない。</span></h1>
-
-    <p class="body sub"><span class="np">パーソナルファイル</span>は、あなたの性格を<span class="b navy">80タイプ</span>に分類する<span class="np">キャリアパーソナリティ診断</span>で、AIと5万人のデータをもとに分析。<span class="b marker">あなたと相性のいい仕事だけを、厳選してご紹介します。</span></p>
 
     <!-- 職種スライダー（元LPと同じ構造。イラストのみ画像、ラベルと相性はHTML） -->
     <div class="jobs" id="jobs">
@@ -1230,14 +1290,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="jobs-dots" id="jobsDots"></div>
     </div>
 
+    <p class="body sub"><span class="np">パーソナルファイル</span>は、あなたの性格を<span class="b navy">80タイプ</span>に分類する<span class="np">キャリアパーソナリティ診断</span>で、AIと5万人のデータをもとに分析。<span class="b marker">あなたと相性のいい仕事だけを、厳選してご紹介します。</span></p>
+
+    <div class="cta-micro">入力は約30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_fv" data-cta="af_l1_fv">無料の適職診断を受ける</a>
+
     <div class="badges">
       <div class="badge"><div class="t">診断実績</div><div class="n"><span class="num-mont">5万</span>人</div><div class="u">以上 ※1</div></div>
       <div class="badge"><div class="t">入社半年後</div><div class="n"><span class="num-mont">100</span>%</div><div class="u">定着率 ※2</div></div>
       <div class="badge"><div class="t">診断・相談</div><div class="n">無料</div><div class="u">すべて</div></div>
     </div>
-
-    <div class="cta-micro">入力は約30秒</div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_fv" data-cta="af_l1_fv">無料の適職診断を受ける</a>
 
     <p class="note" style="margin-top:14px;">※1 サービス開始から2026/3までの診断実施数<br>※2 2025/1〜2026/2に入社された方の入社半年後の定着率</p>
   </section>
@@ -1372,10 +1434,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </section>
 
   <!-- ============ S4 ｜ 中間CTA ============ -->
-  <section class="sec sec-gray">
-    <div class="cta-lead">右側も、分かったうえで選べます。</div>
-    <div class="cta-micro">入力は約30秒</div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_mid" data-cta="af_l1_mid">無料の適職診断を受ける</a>
+  <section class="sec cta-band">
+    <div class="cta-band-inner">
+      <div class="cta-lead">右側も、分かったうえで選べます。</div>
+      <div class="cta-micro">入力は約30秒</div>
+      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_mid" data-cta="af_l1_mid">無料の適職診断を受ける</a>
+    </div>
   </section>
 
   <!-- ============ S5 ｜ WHAT YOU GET ============ -->
@@ -1671,22 +1735,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <summary>年齢制限はありますか？<svg class="ic faq-chev"><use href="#i-chevron-down"></use></svg></summary>
       <div class="a">基本的にはございません。ただし取り扱い求人の多くが若手採用のため、ご経歴やご希望によってはご紹介できない場合もあります。</div>
     </details>
+  </section>
 
-    <div class="cta-lead"><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
-    <div class="cta-micro">入力は約30秒</div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_end" data-cta="af_l1_end">無料の適職診断を受ける</a>
+  <!-- ============ 最終CTA（中間CTAと同じティール帯） ============ -->
+  <section class="sec cta-band cta-band--final">
+    <div class="cta-band-inner">
+      <div class="cta-lead"><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
+      <div class="cta-micro">入力は約30秒</div>
+      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_end" data-cta="af_l1_end">無料の適職診断を受ける</a>
+    </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="site-foot">
-    <div class="logo">Personal File</div>
-    <div class="links">
-      <a href="https://per-sonal.co.jp/personalfile/media/" target="_blank" rel="noopener">相性転職マガジン</a>
-      <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener">運営会社</a>
-      <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
-    </div>
-    <div class="cr">©2026 Personal Co.,Ltd</div>
-  </footer>
 
 </main>
 
@@ -1710,6 +1770,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </aside>
 
 </div>
+
+  <footer class="site-foot">
+    <div class="site-foot-inner">
+    <div class="logo">Personal File</div>
+    <div class="links">
+      <a href="https://per-sonal.co.jp/personalfile/media/" target="_blank" rel="noopener">相性転職マガジン</a>
+      <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener">運営会社</a>
+      <a href="https://per-sonal.co.jp/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
+    </div>
+    <div class="cr">©2026 Personal Co.,Ltd</div>
+    </div>
+  </footer>
 
 <!-- ============ 追従バー（SPのみ／FVがビューポート外に出てから表示） ============ -->
 <div class="bar" id="bar">
