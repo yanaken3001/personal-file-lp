@@ -1090,6 +1090,7 @@ justify-content:center;}
 
 /* H1は全幅共通のbrをやめ、意味単位のspanをblock化して制御する */
 .fv h1 .ln{display:block;}
+.fv h1 .h1-sp-break{display:none;}
 
 /* 職種カードのアーチ: 回転±3度・scale0.88・opacity0.62。
    隣接カードが中央より大きく描画されないようにする */
@@ -1128,6 +1129,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     margin:0 auto 14px;
     color:var(--text-primary);
   }
+  .fv h1 .h1-sp-break{display:inline;}
   .fv .sub{
     margin:0 auto 16px;
     font-size:clamp(15px,3.95vw,16px);
@@ -1257,7 +1259,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .cta-band--final::before{background-position:22% 70%;}
 }
 </style>
-<link rel="stylesheet" href="/aisho-v3/fv-photo.css">
+<link rel="stylesheet" href="/aisho-v3/fv-photo.css?v=20260817-2">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -1313,7 +1315,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
-    <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が</span><span class="ln">わからない。</span></h1>
+    <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が<br class="h1-sp-break">わからない。</span></h1>
 
     <div class="fv-v3-photo">
       <img src="/aisho-v3/assets/fv-job-search-v1.webp" width="1536" height="1024" alt="仕事選びについて考える20代女性" fetchpriority="high" decoding="async">

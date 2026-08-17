@@ -1090,6 +1090,7 @@ justify-content:center;}
 
 /* H1は全幅共通のbrをやめ、意味単位のspanをblock化して制御する */
 .fv h1 .ln{display:block;}
+.fv h1 .h1-sp-break{display:none;}
 
 /* 職種カードのアーチ: 回転±3度・scale0.88・opacity0.62。
    隣接カードが中央より大きく描画されないようにする */
@@ -1128,6 +1129,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     margin:0 auto 14px;
     color:var(--text-primary);
   }
+  .fv h1 .h1-sp-break{display:inline;}
   .fv .sub{
     margin:0 auto 16px;
     font-size:clamp(15px,3.95vw,16px);
@@ -1211,7 +1213,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 @media (min-width:1108px){
   .h2{font-size:36px;line-height:1.35;}
   .h3{font-size:22px;}
-  .fv h1{font-size:40px;line-height:1.3;}
+  .fv h1{max-width:680px;font-size:40px;line-height:1.3;}
 }
 
 
@@ -1312,7 +1314,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <!-- ============ S1 ｜ FV ============ -->
   <section class="fv sec-white" id="fv">
-    <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が</span><span class="ln">わからない。</span></h1>
+    <h1><span class="ln">「辞めたい理由」はある。</span><span class="ln">でも「やりたい仕事」が<br class="h1-sp-break">わからない。</span></h1>
 
     <!-- 職種スライダー（元LPと同じ構造。イラストのみ画像、ラベルと相性はHTML） -->
     <div class="jobs" id="jobs">

@@ -12,12 +12,19 @@
 #fv h1{
   max-width:none;
   margin:0;
-  padding:38px 48px 34px;
+  padding:38px 32px 34px;
   background:#F4FBFB;
   color:#325151;
   font-size:40px;
   line-height:1.34;
   letter-spacing:-.025em;
+}
+
+@media (min-width:768px) and (max-width:1107px){
+  #fv h1{
+    font-size:30px;
+    line-height:1.4;
+  }
 }
 
 #fv .fv-v3-photo{
