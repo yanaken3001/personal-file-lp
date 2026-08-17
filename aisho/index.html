@@ -309,11 +309,6 @@ justify-content:center;}
   font-size:14px;font-weight:700;line-height:1.7;letter-spacing:.02em;
   white-space:nowrap;
 }
-.burger{
-  display:flex;flex-direction:column;justify-content:center;gap:5px;
-  width:44px;height:44px;padding:0 10px;background:none;border:0;cursor:pointer;
-}
-.burger span{display:block;height:2px;background:var(--navy);border-radius:2px;}
 @media (max-width:576px){
   .site-head .tag{display:none;}
   .site-head .logo{height:40px;font-size:17px;}
@@ -657,11 +652,50 @@ justify-content:center;}
 .logic .x{font-size:16px;color:var(--mute);line-height:1;flex:0 0 auto;}
 
 /* 5類型テーブル */
-.rows{background:#FFFFFF;border:1px solid var(--sub-border);border-radius:var(--radius-md);overflow:hidden;}
-.rows .r{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #F0F3F7;}
+.rows{
+  overflow:hidden;
+  background:#FFFFFF;
+  border:1px solid var(--border-strong);
+  border-radius:12px;
+}
+.rows .r{
+  display:grid;
+  grid-template-columns:96px minmax(0,1fr);
+  gap:0;
+  min-height:56px;
+  padding:0;
+  border-bottom:1px solid var(--border);
+}
 .rows .r:last-child{border-bottom:0;}
-.rows .k{min-width:60px;font-size:14px;font-weight:700;color:var(--navy);line-height:1.6;}
-.rows .v{font-size:14px;line-height:1.7;color:var(--ink);}
+.rows .k{
+  min-width:0;
+  padding:14px 12px;
+  display:flex;
+  align-items:center;
+  background:var(--surface-subtle);
+  border-right:1px solid var(--border);
+  color:var(--brand-primary-dark);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.5;
+  letter-spacing:.02em;
+}
+.rows .v{
+  min-width:0;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.75;
+}
+.rows .r:nth-child(even) .v{background:#FCFEFE;}
+@media (max-width:576px){
+  .rows{border-radius:10px;}
+  .rows .r{grid-template-columns:72px minmax(0,1fr);min-height:58px;}
+  .rows .k{justify-content:center;padding:13px 8px;font-size:13px;}
+  .rows .v{padding:13px 12px;font-size:14px;line-height:1.75;}
+}
 
 /* 80グリッド（実サイトと同じ 10列×8行・タイプコード表示。罫線と配色のみLPトークン） */
 .grid80{
@@ -1268,9 +1302,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="head-right">
       <span class="tag">20代の相性転職</span>
       <a class="head-cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_head" data-cta="af_l1_head">無料の適職診断</a>
-      <button class="burger" id="burger" type="button" aria-label="メニュー" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
     </div>
   </div>
 </header>
