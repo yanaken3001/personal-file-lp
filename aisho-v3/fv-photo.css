@@ -1,0 +1,193 @@
+/* aisho-v3: FV-only photo variant. Everything below the FV remains identical to /aisho/. */
+
+#fv.fv{
+  padding:0 0 46px;
+  background:#FFFFFF;
+}
+
+#fv > .jobs{
+  display:none !important;
+}
+
+#fv h1{
+  max-width:none;
+  margin:0;
+  padding:38px 48px 34px;
+  background:#F4FBFB;
+  color:#325151;
+  font-size:40px;
+  line-height:1.34;
+  letter-spacing:-.025em;
+}
+
+#fv .fv-v3-photo{
+  width:100%;
+  max-width:none;
+  height:280px;
+  margin:0;
+  overflow:hidden;
+  border-top:1px solid #DAE4E5;
+  background:#F4FBFB;
+  line-height:0;
+}
+
+#fv .fv-v3-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 44%;
+}
+
+#fv .sub{
+  max-width:624px;
+  margin:0 auto;
+  padding:30px 20px 18px;
+  color:#333333;
+  font-size:16px;
+  line-height:1.9;
+}
+
+#fv .cta-micro{
+  margin-top:0;
+}
+
+#fv .cta{
+  width:320px;
+  max-width:calc(100% - 40px);
+  min-height:60px;
+}
+
+#fv .badges{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  width:520px;
+  max-width:calc(100% - 40px);
+  margin:26px auto 0;
+  overflow:hidden;
+  background:#FFFFFF;
+  border:1px solid #B9DDE1;
+  border-radius:8px;
+}
+
+#fv .badge{
+  max-width:none;
+  min-height:86px;
+  aspect-ratio:auto;
+  padding:12px 8px;
+  border:0;
+  border-right:1px solid #DAE4E5;
+  border-radius:0;
+  background:#FFFFFF;
+}
+
+#fv .badge:last-child{
+  border-right:0;
+}
+
+#fv .badge .t,
+#fv .badge .u{
+  color:#667A7A;
+  font-size:11px;
+  line-height:1.4;
+}
+
+#fv .badge .n{
+  color:#009DB3;
+  font-size:25px;
+  line-height:1.18;
+}
+
+#fv .note{
+  width:520px;
+  max-width:calc(100% - 40px);
+  margin-left:auto;
+  margin-right:auto;
+  color:#667A7A;
+}
+
+@media (max-width:767px){
+  #fv.fv{
+    padding-bottom:34px;
+  }
+
+  #fv h1{
+    margin:0;
+    padding:27px 20px 24px;
+    font-size:clamp(25px,7.15vw,28px);
+    line-height:1.4;
+  }
+
+  #fv .fv-v3-photo{
+    height:180px;
+  }
+
+  #fv .fv-v3-photo img{
+    object-position:center 45%;
+  }
+
+  #fv .sub{
+    margin:0 auto;
+    padding:22px 20px 14px;
+    font-size:14px;
+    line-height:1.82;
+  }
+
+  #fv .cta-micro{
+    margin-bottom:6px;
+    font-size:12px;
+  }
+
+  #fv .cta{
+    width:calc(100% - 40px);
+    max-width:350px;
+    min-height:56px;
+    padding:14px 38px 18px;
+    font-size:16px;
+  }
+
+  #fv .badges{
+    max-width:calc(100% - 40px);
+    margin-top:22px;
+  }
+
+  #fv .badge{
+    min-height:76px;
+    padding:10px 4px;
+  }
+
+  #fv .badge .t,
+  #fv .badge .u{
+    font-size:9.5px;
+  }
+
+  #fv .badge .n{
+    font-size:21px;
+  }
+
+  #fv .note{
+    max-width:calc(100% - 40px);
+    font-size:10px;
+    line-height:1.65;
+  }
+}
+
+@media (max-width:359px){
+  #fv h1{
+    font-size:21px;
+  }
+
+  #fv .sub{
+    font-size:14px;
+  }
+
+  #fv .badge .n{
+    font-size:19px;
+  }
+
+  #fv .badge .t,
+  #fv .badge .u{
+    font-size:9px;
+  }
+}
