@@ -72,6 +72,7 @@
   --accent-warm:#F2994A;
   /* Neutral — 文字色はニュートラルグレーを使わず、ブランド色相の濃色1本＋不透明度で階層を作る
      （Pairs実測: 本文#325151が59.8%、注釈は別色でなく不透明度で引く） */
+  --text-heading:#1F3A3A;                  /* 見出し専用インク（同色相の濃色・白背景 12.9:1）。本文と1段差を作る */
   --text-primary:#325151;                  /* 白背景 8.63:1 */
   --text-secondary:rgba(50,81,81,.88);     /* 6.20:1 */
   --text-tertiary:rgba(50,81,81,.78);      /* 4.76:1 — Pairsは注釈を40%まで引くがAA不適合なので追随しない */
@@ -113,18 +114,18 @@
   --navy:var(--text-primary);
   --deep:var(--text-primary);
   --sub-border:var(--border);
-  --sub-fill:#E0F8FC;
+  --sub-fill:#E9F5F8;   /* 箱の淡色はこの1つに統一 */
   --accent:var(--brand-primary);
   --accent-shadow:var(--brand-primary-dark);
   --fill:var(--brand-primary);
-  --acc-l:#EAF6F8;
+  --acc-l:#E9F5F8;
   --acc-b:#BFE2E8;
   --acc-d:#D4EEF2;
   --rule:#E3E8EE;
   --ink:var(--text-primary);
   --mute:var(--text-secondary);
   --gray:var(--surface-subtle);
-  --page-margin:#E9F2F4;
+  --page-margin:#D4EEF2;  /* PC外周を一段濃くしてコンテンツの柱を立てる */
   --marker:#FFE9A0;
   --xmark:var(--mute);
 }
@@ -208,7 +209,7 @@ p{margin:0;}
 .mismatch-lead{
   display:flex;align-items:center;gap:16px;
   margin:0 0 24px;
-  font-size:22px;font-weight:700;line-height:1.6;color:var(--text-primary);
+  font-size:22px;font-weight:700;line-height:1.6;color:var(--text-heading);
 }
 .mismatch-lead-icon{flex:0 0 auto;width:44px;height:44px;display:block;}
 .mismatch-box{
@@ -311,7 +312,7 @@ p{margin:0;}
 
 /* ── タイポグラフィ ── */
 .label-en{
-  font-size:12px;
+  font-size:13px;
   font-weight:700;
   letter-spacing:.12em;
   color:var(--brand-primary-dark);
@@ -328,7 +329,7 @@ justify-content:center;}
   background:var(--accent);
   flex:0 0 auto;
 }
-.h2{font-size:22px;font-weight:800;color:var(--navy);line-height:1.4;margin:0 auto 16px;text-align:center;}
+.h2{font-size:22px;font-weight:800;color:var(--text-heading);line-height:1.4;margin:0 auto 16px;text-align:center;}
 .h2::after{margin-left:auto;margin-right:auto;
   content:"";
   display:block;
@@ -340,7 +341,7 @@ justify-content:center;}
 .h3{
   font-size:17px;
   font-weight:700;
-  color:var(--navy);
+  color:var(--text-heading);
   line-height:1.5;
   margin:0 auto;
 }
@@ -436,7 +437,7 @@ justify-content:center;}
 .block-navy .t{font-size:15px;font-weight:700;color:var(--navy);line-height:1.8;}
 .block-navy .s{font-size:var(--fs-body);line-height:1.85;color:var(--ink);margin-top:10px;}
 /* S3ペイオフ限定の強調バリエーション（他の.block-navyには適用しない） */
-.block-navy.payoff{background:#EAF8FA;border:none;border-left:4px solid var(--brand-primary);padding:20px;}
+.block-navy.payoff{background:var(--acc-l);border:none;border-left:4px solid var(--brand-primary);padding:20px;}
 .block-navy.payoff .t{font-size:17px;font-weight:800;color:var(--navy);}
 
 /* ── 読ませる流れ: flow-cue / key-band / punch-band ── */
@@ -456,7 +457,7 @@ justify-content:center;}
   text-align:center;
   font-size:20px;
   font-weight:700;
-  color:var(--text-primary);
+  color:var(--text-heading);
   line-height:1.7;
 }
 .key-band::before{
@@ -866,7 +867,7 @@ justify-content:center;}
   font-size:15px;
   line-height:1.75;
 }
-.rows .r:nth-child(even) .v{background:#FCFEFE;}
+.rows .r:nth-child(even) .v{background:#FFFFFF;}
 @media (max-width:576px){
   .rows{border-radius:10px;}
   .rows .r{grid-template-columns:72px minmax(0,1fr);min-height:58px;}
@@ -1190,7 +1191,7 @@ justify-content:center;}
 .step .dot .ic{width:12px;height:12px;}
 .step-content{display:flex;align-items:flex-start;gap:10px;}
 .step-text{flex:1 1 auto;min-width:0;}
-.step .t{font-size:16px;font-weight:700;color:var(--navy);line-height:1.6;}
+.step .t{font-size:16px;font-weight:700;color:var(--text-heading);line-height:1.6;}
 .step .d{font-size:var(--fs-body);line-height:1.8;color:var(--ink);margin-top:8px;}
 /* セクション挿絵（細線の線画のため大きく使う） */
 .scene{margin:4px auto 18px;max-width:260px;}
@@ -1604,7 +1605,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .cta-band--final::before{background-position:22% 70%;}
 }
 </style>
-<link rel="stylesheet" href="/aisho-v3/fv-photo.css?v=20260818-2">
+<link rel="stylesheet" href="/aisho-v3/fv-photo.css?v=20260818-3">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">

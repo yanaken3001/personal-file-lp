@@ -14,7 +14,7 @@
   margin:0;
   padding:38px 32px 34px;
   background:#F4FBFB;
-  color:#325151;
+  color:#1F3A3A;  /* 見出しインク（--text-heading と同値。本ファイルはトークン定義より前に読まれる可能性があるため直値） */
   font-size:40px;
   line-height:1.34;
   letter-spacing:-.025em;
