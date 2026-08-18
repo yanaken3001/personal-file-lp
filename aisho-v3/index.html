@@ -944,21 +944,38 @@ justify-content:center;}
   line-height:1.5;
 }
 .four .ic{display:block;font-size:20px;margin-bottom:6px;}
-/* Pairsのポイントカードと同構造：淡色の箱に塗りのある図版を入れ、見出しは箱の外・下に置く */
-.four .c.illust{background:none;border:0;padding:0;}
+/* 図版カード：図と見出しを1枚のカードにまとめる。
+   見出しは「何が分かるか」を伝える最重要の文字なので、中央・濃色・太字で最も強くする。
+   旧: 箱の外に浮いた15pxの#00AEC2（白背景に対し2.68:1でAA不合格）→ #325151 で8.63:1 */
+.four{gap:12px;align-items:stretch;}
+.four .c.illust{
+  display:flex;flex-direction:column;
+  height:100%;
+  background:#FFFFFF;
+  border:1px solid var(--sub-border);
+  border-radius:16px;
+  padding:12px 12px 16px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
 .four .c.illust .c-fig{
   background:var(--acc-l);
-  border-radius:12px;
+  border-radius:10px;
   overflow:hidden;
-  aspect-ratio:1024/672;
 }
-.four .c.illust .c-fig img{display:block;width:100%;height:100%;object-fit:cover;}
+/* height:auto。比率固定＋coverだと比率の違う画像で切れる */
+.four .c.illust .c-fig img{display:block;width:100%;height:auto;}
 .four .c.illust .c-t{
-  margin-top:8px;
-  font-size:15px;
+  margin-top:12px;
+  text-align:center;
+  font-size:16px;
   font-weight:700;
-  color:var(--brand-primary-dark);
+  color:var(--text-primary);
   line-height:1.5;
+}
+@media (min-width:768px){
+  .four{gap:16px;}
+  .four .c.illust{padding:14px 14px 18px;}
+  .four .c.illust .c-t{margin-top:14px;font-size:17px;}
 }
 .bridge{
   border-left:3px solid var(--accent);
