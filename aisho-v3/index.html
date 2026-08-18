@@ -443,16 +443,29 @@ justify-content:center;}
 .flow-cue{text-align:center;margin:28px 0;}
 .flow-cue p{font-size:15px;line-height:1.75;color:var(--mute);margin:0;}
 .flow-cue .chev{width:20px;height:auto;color:#00C1D4;display:block;margin:8px auto 0;}
+/* セクションの主張。箱で囲まない。
+   旧: 背景#EAF8FA(輝度245.2)がセクション地#F4FBFB(249.5)と差4.3しかなく、
+   区切りとして機能しないまま角丸だけが残り、punch-bandとも同型で階層が潰れていた。
+   前後が箱もの（表・カード）なので、ここは囲まない方がむしろ際立つ。
+   短い罫＋大きめの組版で、引用のように見せる */
 .key-band{
-  background:#EAF8FA;
-  border-radius:var(--radius-md);
-  padding:18px 16px;
+  background:none;
+  border-radius:0;
+  padding:0;
+  margin:36px auto;
   text-align:center;
-  font-size:17px;
+  font-size:20px;
   font-weight:700;
-  color:var(--navy);
-  line-height:1.55;
-  margin:22px 0;
+  color:var(--text-primary);
+  line-height:1.7;
+}
+.key-band::before{
+  content:"";
+  display:block;
+  width:40px;height:3px;
+  margin:0 auto 18px;
+  border-radius:2px;
+  background:var(--brand-primary);
 }
 .punch-band{
   background:var(--brand-primary);
@@ -1080,13 +1093,16 @@ justify-content:center;}
 .cmp .row.head .me{color:var(--navy);box-shadow:inset 2px 2px 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary);}
 .cmp .row:last-child .b2{box-shadow:inset 2px 0 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary), inset 0 -2px 0 var(--brand-primary);}
 .cmp .row .b2{font-size:15px;font-weight:700;color:var(--navy);}
-.cmp .row.head .me{flex-direction:column;gap:5px;}
-.cmp .row.head .me-badge{
-  display:inline-block;
-  background:var(--brand-primary);
-  color:#FFFFFF;
-  font-size:11px;font-weight:700;line-height:1;letter-spacing:.04em;
-  padding:4px 10px;border-radius:999px;
+/* 強調列のヘッダーは「相性転職／パーソナルファイル」の2行。サービス名をそのまま出す */
+.cmp .row.head .me{flex-direction:column;gap:3px;}
+.cmp .row.head .me-sub{
+  font-size:11px;font-weight:700;line-height:1.4;letter-spacing:.02em;
+  color:var(--brand-primary-dark);
+}
+.cmp .row.head .me-name{font-size:12px;font-weight:700;line-height:1.4;color:var(--navy);white-space:nowrap;}
+@media (min-width:768px){
+  .cmp .row.head .me-sub{font-size:12px;}
+  .cmp .row.head .me-name{font-size:16px;white-space:normal;}
 }
 .cmp .row.head .me .ic{font-size:13px;margin-right:4px;vertical-align:-0.05em;}
 /* 最終行（定着率）は結論なので一段強く */
@@ -1371,7 +1387,8 @@ justify-content:center;}
   .h2{font-size:32px;line-height:1.35;}          /* TitleSection big 3.2rem */
   .fv h1{font-size:40px;line-height:1.35;}       /* TitlePrimary title 4.0rem */
   .h3{font-size:20px;}          /* TitleSection small 2rem */
-  .key-band,.punch-band{font-size:19px;}
+  .key-band{font-size:24px;margin:48px auto;}
+  .punch-band{font-size:19px;}
   .talk-av{width:56px;height:56px;}
   .talk-body p{font-size:15px;}
   .sec{padding:80px 16px;}
@@ -1916,7 +1933,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="row head">
         <div></div>
         <div>一般的な<br>適職診断</div>
-        <div class="me"><span class="me-badge">おすすめ</span><span>パーソナルファイル</span></div>
+        <div class="me"><span class="me-sub">相性転職</span><span class="me-name">パーソナルファイル</span></div>
       </div>
       <div class="row">
         <div class="k">分類数</div>
