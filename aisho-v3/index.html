@@ -1312,22 +1312,23 @@ justify-content:center;}
    Qバッジ白丸ティール字に反転、回答は白地にA白丸ティール枠。チェブロンは無し ── */
 .faq{
   background:#FFFFFF;
-  border:1px solid #DAE4E5;
+  border:2px solid #EBF2F2;   /* Pairs実測: 2px #EBF2F2 */
   border-radius:16px;
   overflow:hidden;
   padding:0;
-  margin-bottom:16px;
+  margin-bottom:16px;         /* Pairs実測: SP16px */
   box-shadow:none;
 }
+/* リズム規則(.sec.sec > * + * の32/40px)はFAQ間には適用しない。Pairs実測の間隔にする */
+.sec.sec > .faq + .faq{margin-top:0;}
 .faq summary{
   list-style:none;
   display:flex;
   align-items:center;
   gap:12px;
-  min-height:64px;
   cursor:pointer;
-  padding:14px 16px;
-  font-size:15px;
+  padding:16px;
+  font-size:16px;
   font-weight:700;
   color:var(--text-primary);
   line-height:1.6;
@@ -1375,8 +1376,8 @@ justify-content:center;}
 }
 @media (min-width:768px){
   .faq{margin-bottom:20px;}
-  .faq summary{padding:18px 24px;font-size:17px;gap:16px;}
-  .faq .a{padding:22px 24px;font-size:15px;}
+  .faq summary{padding:24px;font-size:16px;gap:16px;}
+  .faq .a{padding:24px;font-size:15px;}
   .faq-badge,.faq .a::before{width:44px;height:44px;font-size:18px;}
 }
 
