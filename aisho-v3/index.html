@@ -82,6 +82,19 @@
   --border-strong:#8FB3BA;
   --success:#0F9D58;
   --warning:#E8A317;
+  /* Type scale — 使ってよい文字サイズはこの7段だけ。
+     生の px を新規に書かない（2026-08-18: 16種類が混在し本文の43%が14px未満になった事故の再発防止）。
+     追加したくなったら、まず既存の段で足りない理由を確認する。 */
+  --fs-note:11px;      /* 注釈・脚注。文章には使わない */
+  --fs-label:12px;     /* 英字ラベル・話者名・表のヘッダー */
+  --fs-caption:14px;   /* 表のセル・補助リスト。文章の最小 */
+  --fs-body:15px;      /* 本文の基準。読ませる文章はすべてこれ以上 */
+  --fs-lead:17px;      /* リード文・強調帯・小見出し */
+  --fs-h3:20px;        /* 小見出し */
+  --fs-h2:28px;        /* セクション見出し */
+  --lh-body:1.8;
+  --lh-head:1.45;
+
   /* Radius */
   --radius-sm:8px;
   --radius-md:16px;
@@ -188,6 +201,51 @@ p{margin:0;}
    どこで話題が切れるか分からなかった。関係の強さで4段階に分ける。
    隣接兄弟のマージンは相殺されるため、既存の指定とは「大きい方が勝つ」。
    .card+.card 等の既存ルールに勝つよう .sec を重ねて詳細度を上げている ── */
+/* ── ご遠慮ください（本番LP top の attention ブロックの実測複製）
+   実測: bodyWrap bg#E9F5F8 / radius32 / padding48 40、item bg#FFF / radius24 / padding24 21 / gap20、
+   title 35px/700/中央/色#1A9AB3。色だけ当サイトの #00AEC2 系へ置換している ── */
+.mismatch{}
+.mismatch-lead{
+  display:flex;align-items:center;gap:16px;
+  margin:0 0 24px;
+  font-size:22px;font-weight:700;line-height:1.6;color:var(--text-primary);
+}
+.mismatch-lead-icon{flex:0 0 auto;width:44px;height:44px;display:block;}
+.mismatch-box{
+  background:#E9F5F8;
+  border-radius:32px;
+  padding:40px 24px;
+}
+.mismatch-title{
+  margin:0 0 20px;
+  text-align:center;
+  font-size:20px;font-weight:700;line-height:1.5;
+  color:var(--brand-primary-dark);
+}
+.mismatch-items{display:grid;grid-template-columns:1fr;gap:16px;}
+.mismatch-item{
+  background:#FFFFFF;
+  border-radius:24px;
+  padding:24px 21px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;
+  text-align:center;
+}
+.mismatch-item img{display:block;width:auto;height:76px;}
+.mismatch-item p{margin:0;font-size:15px;font-weight:500;line-height:1.7;color:var(--text-primary);}
+.mismatch-item small{display:block;margin-top:6px;font-size:13px;line-height:1.6;color:var(--text-secondary);}
+/* PCは3カラム。参照元は1020px幅前提のため、当LPの本文幅624px（0.567倍）に比率で移植する */
+@media (min-width:768px){
+  .mismatch-lead{font-size:24px;gap:18px;margin-bottom:28px;}
+  .mismatch-lead-icon{width:52px;height:52px;}
+  .mismatch-box{padding:32px 24px;border-radius:28px;}
+  .mismatch-title{font-size:22px;margin-bottom:22px;}
+  .mismatch-items{grid-template-columns:repeat(3,1fr);gap:12px;}
+  .mismatch-item{height:100%;border-radius:16px;padding:18px 12px;gap:12px;}
+  .mismatch-item img{height:68px;}
+  .mismatch-item p{font-size:14px;line-height:1.65;}
+  .mismatch-item small{font-size:12px;margin-top:5px;}
+}
+
 /* 中央寄せを確定させる。コンポーネント側が margin:22px 0 のような一括指定をすると
    .sec>* の auto が潰れて左寄せになるため、詳細度を上げてここで固定する（2026-08-18の事故） */
 .sec.sec > *{margin-left:auto;margin-right:auto;}
@@ -233,7 +291,7 @@ p{margin:0;}
    すべてを白カード化すると役割の差が消え、同じ箱の羅列になるため。 */
 .sec-fill .body,.sec-fill .small{background:transparent;padding:0;color:#FFFFFF;font-weight:700;}
 .sec-fill .body{font-size:18px;line-height:1.9;}
-.sec-fill .small{font-size:15px;line-height:1.8;}
+.sec-fill .small{font-size:var(--fs-body);line-height:1.8;}
 .sec-fill .cta{color:#FFFFFF;}
 .sec-fill .cta:after{border-color:#FFFFFF;}
 .sec-fill .cta-micro{color:#FFFFFF;}
@@ -286,9 +344,9 @@ justify-content:center;}
   line-height:1.5;
   margin:0 auto;
 }
-.body{font-size:15px;line-height:1.75;color:var(--ink);}
+.body{font-size:var(--fs-body);line-height:1.75;color:var(--ink);}
 .small{font-size:15px;line-height:1.75;color:var(--mute);}
-.note{font-size:11px;line-height:1.7;color:var(--text-tertiary);}
+.note{font-size:var(--fs-note);line-height:1.7;color:var(--text-tertiary);}
 .b{font-weight:700;}
 .navy{color:var(--navy);}
 .acc{color:var(--brand-primary-dark);}
@@ -376,7 +434,7 @@ justify-content:center;}
   padding:16px;
 }
 .block-navy .t{font-size:15px;font-weight:700;color:var(--navy);line-height:1.8;}
-.block-navy .s{font-size:15px;line-height:1.85;color:var(--ink);margin-top:10px;}
+.block-navy .s{font-size:var(--fs-body);line-height:1.85;color:var(--ink);margin-top:10px;}
 /* S3ペイオフ限定の強調バリエーション（他の.block-navyには適用しない） */
 .block-navy.payoff{background:#EAF8FA;border:none;border-left:4px solid var(--brand-primary);padding:20px;}
 .block-navy.payoff .t{font-size:17px;font-weight:800;color:var(--navy);}
@@ -450,8 +508,8 @@ justify-content:center;}
 }
 .talk-body::before{left:-8px;border-right-color:#D3E5E8;}
 .talk-body::after{left:-7px;border-right-color:#FFFFFF;}
-.talk-name{font-size:12px;line-height:1.5;color:var(--mute);margin-bottom:4px;}
-.talk-body p{margin:0;font-size:14px;line-height:1.75;color:var(--ink);}
+.talk-name{font-size:var(--fs-label);line-height:1.5;color:var(--mute);margin-bottom:4px;}
+.talk-body p{margin:0;font-size:var(--fs-body);line-height:1.75;color:var(--ink);}
 .pill{
   display:inline-block;
   border-radius:999px;
@@ -635,7 +693,7 @@ justify-content:center;}
 
 
 
-.eq{text-align:center;font-size:15px;color:var(--mute);margin-top:12px;line-height:1.7;}
+.eq{text-align:center;font-size:var(--fs-body);color:var(--mute);margin-top:12px;line-height:1.7;}
 
 /* MATRIX（personal-file.jp の構造・情報量を1:1で移植。配色のみ新LPトークン） */
 .matrix{margin:16px 0 4px;}
@@ -1055,7 +1113,7 @@ justify-content:center;}
 .step-content{display:flex;align-items:flex-start;gap:10px;}
 .step-text{flex:1 1 auto;min-width:0;}
 .step .t{font-size:16px;font-weight:700;color:var(--navy);line-height:1.6;}
-.step .d{font-size:15px;line-height:1.8;color:var(--ink);margin-top:8px;}
+.step .d{font-size:var(--fs-body);line-height:1.8;color:var(--ink);margin-top:8px;}
 /* セクション挿絵（細線の線画のため大きく使う） */
 .scene{margin:4px auto 18px;max-width:260px;}
 .scene img{width:100%;height:auto;display:block;}
@@ -1821,11 +1879,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       </div>
     </div>
 
-    <div class="exclude">
-      <div class="h"><span class="np">この3つに当てはまる方は、</span><span class="np">ご遠慮ください</span></div>
-      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>診断結果だけ知りたい方<br><small>（転職の相談とセットのサービスです）</small></span></div>
-      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>スキルを活かして年収を上げたい方</span></div>
-      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>すでに行きたい職種・企業が<span class="np">決まっている方</span></span></div>
+    <!-- 本番LP top の attention ブロックを実測どおりに複製（bodyWrap radius32/pad48-40、card radius24/pad24-21、見出し35px/700/中央） -->
+    <div class="mismatch">
+      <p class="mismatch-lead"><img class="mismatch-lead-icon" src="/aisho-v3/assets/mismatch/error.svg" width="88" height="88" alt="" loading="lazy" decoding="async"><span><span class="np">この3つに当てはまる方は、</span><span class="np">ご遠慮ください</span></span></p>
+      <div class="mismatch-box">
+        <p class="mismatch-title"><span class="np">以下をご希望の方は</span><span class="np">ご対応を遠慮させて</span><span class="np">いただいております</span></p>
+        <div class="mismatch-items">
+          <div class="mismatch-item">
+            <img src="/aisho-v3/assets/mismatch/mismatch_1.svg" width="111" height="89" alt="" loading="lazy" decoding="async">
+            <p><span class="np">診断結果だけ</span><span class="np">知りたい方</span><small>（転職の相談とセットのサービスです）</small></p>
+          </div>
+          <div class="mismatch-item">
+            <img src="/aisho-v3/assets/mismatch/mismatch_2.svg" width="87" height="99" alt="" loading="lazy" decoding="async">
+            <p><span class="np">スキルを活かして</span><span class="np">年収を上げたい方</span></p>
+          </div>
+          <div class="mismatch-item">
+            <img src="/aisho-v3/assets/mismatch/mismatch_3.svg" width="98" height="84" alt="" loading="lazy" decoding="async">
+            <p><span class="np">すでに行きたい</span><span class="np">職種・企業が</span><span class="np">決まっている方</span></p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
