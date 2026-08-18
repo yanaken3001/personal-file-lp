@@ -1041,19 +1041,64 @@ justify-content:center;}
 }
 
 /* ── S7 ── */
-.cmp{background:#FFFFFF;border:1px solid var(--sub-border);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);}
-.cmp .row{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--sub-border);}
+/* ── 比較表（2026-08-18 再設計）
+   NN/g「Comparison Tables」/ Material Design / Carbon Design System ほかの原則に準拠:
+   ・縦罫線は引かない（罫線の格子はデータと注意を奪い合う）。区切りは余白と背景色で作る
+   ・横罫線は薄い1pxのみ
+   ・強調列はベタ塗りせず「淡い背景＋太枠＋ヘッダーバッジ」の3点に絞る
+   ・ヘッダーは背景色＋太字＋中央揃え
+   ・セル padding 上下14px / 左右12px、行高44px以上、本文14px以上
+   3列は等幅（ユーザー指定）。PF列だけ淡色帯を全行に通して独立ブロックに見せる ── */
+.cmp{
+  background:#FFFFFF;
+  border:1px solid var(--sub-border);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  box-shadow:var(--shadow-card);
+}
+.cmp .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--sub-border);}
 .cmp .row:first-child{border-top:0;}
-.cmp .row.head{background:var(--gray);font-size:12px;color:var(--mute);}
-.cmp .row.head div{padding:9px 6px;text-align:center;line-height:1.5;}
-.cmp .row.head .me{color:var(--navy);font-weight:700;background:var(--acc-l);}
-.cmp .row.head .me .ic{font-size:13px;margin-right:3px;vertical-align:-0.05em;}
-.cmp .row .k{padding:12px 6px;color:var(--mute);font-size:14px;line-height:1.55;}
-.cmp .row .a{padding:12px 6px;text-align:center;font-size:14px;line-height:1.55;}
-.cmp .row .b2{padding:12px 6px;text-align:center;font-size:14px;font-weight:700;color:var(--navy);line-height:1.55;}
+.cmp .row > *{
+  padding:14px 12px;
+  min-height:56px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  line-height:1.55;
+}
+/* ヘッダー：背景＋太字＋中央 */
+.cmp .row.head{background:var(--gray);font-size:13px;color:var(--mute);}
+.cmp .row.head > *{min-height:52px;font-weight:700;}
+/* 項目名列：中央揃え（調査の原則どおり） */
+.cmp .row .k{color:var(--mute);font-size:14px;font-weight:700;}
+.cmp .row .a{font-size:14px;color:var(--text-secondary);}
+/* 強調列：全行に淡色を通し、左右に太枠を立てて1本の柱に見せる */
+.cmp .row .me,
+.cmp .row .b2{
+  background:var(--acc-l);
+  box-shadow:inset 2px 0 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary);
+}
+.cmp .row.head .me{color:var(--navy);box-shadow:inset 2px 2px 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary);}
+.cmp .row:last-child .b2{box-shadow:inset 2px 0 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary), inset 0 -2px 0 var(--brand-primary);}
+.cmp .row .b2{font-size:15px;font-weight:700;color:var(--navy);}
+.cmp .row.head .me{flex-direction:column;gap:5px;}
+.cmp .row.head .me-badge{
+  display:inline-block;
+  background:var(--brand-primary);
+  color:#FFFFFF;
+  font-size:11px;font-weight:700;line-height:1;letter-spacing:.04em;
+  padding:4px 10px;border-radius:999px;
+}
+.cmp .row.head .me .ic{font-size:13px;margin-right:4px;vertical-align:-0.05em;}
+/* 最終行（定着率）は結論なので一段強く */
 .cmp .row.last{background:var(--gray);}
 .cmp .row.last .k{color:var(--navy);font-weight:700;font-size:14px;}
-.cmp .row.last .b2{color:var(--brand-primary-dark);font-size:18px;}
+.cmp .row.last .b2{color:var(--brand-primary-dark);font-size:20px;}
+@media (min-width:768px){
+  .cmp .row > *{padding:16px 16px;min-height:60px;}
+  .cmp .row .k,.cmp .row .a{font-size:15px;}
+  .cmp .row .b2{font-size:16px;}
+  .cmp .row.last .b2{font-size:24px;}
+}
 
 /* ── S8 ── */
 .forlist .f{
@@ -1152,7 +1197,34 @@ justify-content:center;}
   .scene.scene--box{max-width:420px;}
   .scene.scene--box.is-inline{max-width:300px;}
 }
-.why{background:var(--gray);border-radius:var(--radius-md);padding:20px 16px;box-shadow:var(--shadow-card);}
+/* 「なぜ15分かけるのか」：淡色の箱に文字を置いただけだと補足に見えるため、
+   白カード＋ブランド色の上辺＋ラベル付き見出しで独立したブロックとして立てる */
+.why{
+  position:relative;
+  background:#FFFFFF;
+  border:1px solid var(--sub-border);
+  border-top:4px solid var(--brand-primary);
+  border-radius:var(--radius-md);
+  padding:26px 20px;
+  box-shadow:var(--shadow-card);
+}
+.why .h3{
+  position:relative;
+  padding-bottom:14px;
+  margin-bottom:18px;
+  font-size:19px;
+  line-height:1.5;
+}
+.why .h3::after{
+  content:"";
+  position:absolute;left:0;bottom:0;
+  width:40px;height:3px;border-radius:2px;
+  background:var(--brand-primary);
+}
+@media (min-width:768px){
+  .why{padding:32px 28px;}
+  .why .h3{font-size:22px;}
+}
 
 /* ── S10 ── */
 .sec-stories{background:var(--brand-primary);}
@@ -1844,7 +1916,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="row head">
         <div></div>
         <div>一般的な<br>適職診断</div>
-        <div class="me"><svg class="ic"><use href="#i-sparkle"></use></svg><span class="np">パーソナル</span><br>ファイル</div>
+        <div class="me"><span class="me-badge">おすすめ</span><span>パーソナルファイル</span></div>
       </div>
       <div class="row">
         <div class="k">分類数</div>
