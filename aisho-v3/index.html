@@ -182,6 +182,29 @@ p{margin:0;}
 .cta-card .cta-micro{font-size:15px;margin-bottom:8px;}
 
 /* 2カラム未満の幅では1カラム中央寄せ（メインが潰れないように） */
+
+/* ── 縦のリズム（2026-08-18）
+   従来は最大28pxしかなく、関連の強い組（ラベル→見出し8px）と独立ブロック間が同間隔で、
+   どこで話題が切れるか分からなかった。関係の強さで4段階に分ける。
+   隣接兄弟のマージンは相殺されるため、既存の指定とは「大きい方が勝つ」。
+   .card+.card 等の既存ルールに勝つよう .sec を重ねて詳細度を上げている ── */
+.sec.sec > * + *{margin-top:32px;}
+.sec.sec > .card + .card,
+.sec.sec > .card + .block-navy,
+.sec.sec > .block-navy + .card,
+.sec.sec > * + .scene,
+.sec.sec > * + .cmp,
+.sec.sec > .cmp + *{margin-top:32px;}
+.sec.sec > .label-en + .h2{margin-top:0;}
+.sec.sec > .h2 + *{margin-top:20px;}
+.sec.sec > .h3 + *,
+.sec.sec > .numhead + *{margin-top:16px;}
+.sec.sec > .cta-lead + .cta-micro,
+.sec.sec > .cta-micro + .cta{margin-top:8px;}
+.sec.sec > .small + .small,
+.sec.sec > * + .note{margin-top:10px;}
+
+
 @media (max-width:1107px){
   .page{max-width:600px;margin:0 auto;}
 }
@@ -1311,7 +1334,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .site-head{min-height:56px;}
   .site-head-inner{padding:6px 16px;}
   .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;}
-  .sec{padding:60px 16px;}
+  .sec{padding:72px 16px;}
   .h2{font-size:clamp(26px,7.2vw,30px);line-height:1.38;margin:0 auto 18px;}
   .h3{font-size:20px;line-height:1.5;}
   .body{font-size:15px;line-height:1.78;}
@@ -1355,7 +1378,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .badge .t,.badge .u{font-size:11px;}
   .fv .cta-micro{font-size:15px;margin-bottom:6px;}
   .sec .cta,.fv .cta{min-height:58px;padding:13px 28px calc(13px + var(--cta-edge));}
-  .sec{padding:88px 16px;}
+  .sec{padding:104px 16px;}
+  .sec.sec > * + *{margin-top:40px;}
+  .sec.sec > .h2 + *{margin-top:24px;}
+  .sec.sec > .h3 + *,
+  .sec.sec > .numhead + *{margin-top:20px;}
   .card,.block-navy{padding:26px;}
   .faq{padding:18px 22px;}
 }
@@ -1761,7 +1788,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       </div>
     </div>
 
-    <p class="body" style="margin-top:12px;"><span class="b marker">公開できるということが、そのまま答えです。</span></p>
+    <p class="body"><span class="b marker">公開できるということが、そのまま答えです。</span></p>
     <p class="note" style="margin-top:10px;">※2025/1〜2026/2に入社された方の入社半年後の定着率</p>
   </section>
 
@@ -1864,9 +1891,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="why" style="margin-bottom:18px;">
       <div class="h3" style="margin-bottom:12px;">なぜ診断に15分かけるのか？</div>
       <p class="body">人の複雑さは、数分の質問では測れません。<br>4〜16タイプに分けるなら、それでも足りるかもしれません。</p>
-      <p class="body" style="margin-top:16px;"><span class="b">でも、80タイプに分けるには、それだけの問いかけが必要です。</span></p>
-      <p class="body" style="margin-top:16px;">性格だけでなく、仕事の進め方も、価値観も、苦手なことも、矛盾しているところも含めて見るために、15分をいただいています。</p>
-      <p class="body b navy" style="margin-top:16px;">その15分が、次の3年を決めます。</p>
+      <p class="body" style="margin-top:22px;"><span class="b">でも、80タイプに分けるには、それだけの問いかけが必要です。</span></p>
+      <p class="body" style="margin-top:22px;">性格だけでなく、仕事の進め方も、価値観も、苦手なことも、矛盾しているところも含めて見るために、15分をいただいています。</p>
+      <p class="body b navy" style="margin-top:22px;">その15分が、次の3年を決めます。</p>
     </div>
 
     <div class="cta-micro">入力は約30秒</div>
