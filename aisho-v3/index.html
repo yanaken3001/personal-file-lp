@@ -188,6 +188,9 @@ p{margin:0;}
    どこで話題が切れるか分からなかった。関係の強さで4段階に分ける。
    隣接兄弟のマージンは相殺されるため、既存の指定とは「大きい方が勝つ」。
    .card+.card 等の既存ルールに勝つよう .sec を重ねて詳細度を上げている ── */
+/* 中央寄せを確定させる。コンポーネント側が margin:22px 0 のような一括指定をすると
+   .sec>* の auto が潰れて左寄せになるため、詳細度を上げてここで固定する（2026-08-18の事故） */
+.sec.sec > *{margin-left:auto;margin-right:auto;}
 .sec.sec > * + *{margin-top:32px;}
 .sec.sec > .card + .card,
 .sec.sec > .card + .block-navy,
