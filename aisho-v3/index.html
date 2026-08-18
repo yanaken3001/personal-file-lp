@@ -70,9 +70,11 @@
   --brand-primary-dark:#00AEC2;
   --brand-primary-deepest:#00A0B2;
   --accent-warm:#F2994A;
-  /* Neutral */
-  --text-primary:#1E1E1E;
-  --text-secondary:#5A6A6D;
+  /* Neutral — 文字色はニュートラルグレーを使わず、ブランド色相の濃色1本＋不透明度で階層を作る
+     （Pairs実測: 本文#325151が59.8%、注釈は別色でなく不透明度で引く） */
+  --text-primary:#325151;                  /* 白背景 8.63:1 */
+  --text-secondary:rgba(50,81,81,.88);     /* 6.20:1 */
+  --text-tertiary:rgba(50,81,81,.78);      /* 4.76:1 — Pairsは注釈を40%まで引くがAA不適合なので追随しない */
   --background:#FFFFFF;
   --surface:#FFFFFF;
   --surface-subtle:#F4FBFB;
@@ -110,7 +112,7 @@
   --mute:var(--text-secondary);
   --gray:var(--surface-subtle);
   --page-margin:#E9F2F4;
-  --marker:#CDEDF2;
+  --marker:#FFE9A0;
   --xmark:var(--mute);
 }
 *,*::before,*::after{box-sizing:border-box;}
@@ -149,7 +151,8 @@ p{margin:0;}
 .side-rail{flex-shrink:0;position:sticky;top:88px;display:none;}
 .side-entry{display:flex;flex-direction:column;gap:16px;width:340px;margin-left:24px;}
 .nav-card{background:#FFFFFF;border-radius:var(--radius-md);padding:24px 20px;box-shadow:var(--shadow-raised);}
-.side-logo{display:flex;justify-content:center;margin-bottom:16px;font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.02em;line-height:1;}
+.side-logo{display:flex;justify-content:center;margin-bottom:16px;line-height:1;}
+.side-logo img{display:block;height:26px;width:auto;max-width:100%;}
 .anchor-list{list-style:none;margin:0;padding:0;}
 .anchor-item{border-bottom:1px solid #ccc;}
 .anchor-item:last-child{border-bottom:none;}
@@ -259,12 +262,12 @@ justify-content:center;}
 }
 .body{font-size:15px;line-height:1.75;color:var(--ink);}
 .small{font-size:13px;line-height:1.6;color:var(--mute);}
-.note{font-size:11px;line-height:1.7;color:var(--mute);}
+.note{font-size:11px;line-height:1.7;color:var(--text-tertiary);}
 .b{font-weight:700;}
 .navy{color:var(--navy);}
 .acc{color:var(--brand-primary-dark);}
 .np{white-space:nowrap;}
-.marker{background:linear-gradient(transparent 62%, var(--marker) 0);}
+.marker{background:linear-gradient(transparent 55%, var(--marker) 0);}
 .num-mont{font-family:"Montserrat",sans-serif;font-weight:800;}
 
 /* ── アイコン ── */
@@ -295,9 +298,9 @@ justify-content:center;}
 .site-head .logo{
   display:flex;align-items:center;
   height:48px;                 /* ctsLogo height:48px */
-  font-size:19px;font-weight:800;color:var(--navy);
-  letter-spacing:.02em;line-height:1;
 }
+/* ブランドロゴ（830×147）。高さで指定し、幅は比率に任せる */
+.site-head .logo img{display:block;height:30px;width:auto;}
 .head-right{display:flex;align-items:center;gap:4px;}  /* navigation gap:4px */
 .site-head .tag{font-size:12px;color:var(--mute);line-height:1.4;margin-right:8px;}
 .head-cta{
@@ -311,7 +314,8 @@ justify-content:center;}
 }
 @media (max-width:576px){
   .site-head .tag{display:none;}
-  .site-head .logo{height:40px;font-size:17px;}
+  .site-head .logo{height:40px;}
+  .site-head .logo img{height:25px;}
   .head-cta{font-size:13px;}
 }
 
@@ -347,6 +351,81 @@ justify-content:center;}
 }
 .block-navy .t{font-size:15px;font-weight:700;color:var(--navy);line-height:1.8;}
 .block-navy .s{font-size:13px;line-height:1.9;color:var(--ink);margin-top:8px;}
+/* S3ペイオフ限定の強調バリエーション（他の.block-navyには適用しない） */
+.block-navy.payoff{background:#EAF8FA;border:none;border-left:4px solid var(--brand-primary);padding:20px;}
+.block-navy.payoff .t{font-size:17px;font-weight:800;color:var(--navy);}
+
+/* ── 読ませる流れ: flow-cue / key-band / punch-band ── */
+.flow-cue{text-align:center;margin:28px 0;}
+.flow-cue p{font-size:15px;line-height:1.75;color:var(--mute);margin:0;}
+.flow-cue .chev{width:20px;height:auto;color:#00C1D4;display:block;margin:8px auto 0;}
+.key-band{
+  background:#EAF8FA;
+  border-radius:var(--radius-md);
+  padding:18px 16px;
+  text-align:center;
+  font-size:17px;
+  font-weight:700;
+  color:var(--navy);
+  line-height:1.55;
+  margin:22px 0;
+}
+.punch-band{
+  background:var(--brand-primary);
+  color:#FFFFFF;
+  font-weight:800;
+  font-size:17px;
+  line-height:1.55;
+  text-align:center;
+  padding:20px 16px;
+  border-radius:var(--radius-md);
+  margin-top:16px;
+}
+/* フェードアップ。JSに依存させない（JS不発で本文が消えるのを避ける）。
+   スクロール駆動アニメ非対応ブラウザでは常時表示のまま */
+@keyframes band-fade-up{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .key-band,.punch-band{
+      animation:band-fade-up linear both;
+      animation-timeline:view();
+      animation-range:entry 10% entry 50%;
+    }
+  }
+}
+/* ── 適職カウンセラーの吹き出し。地の文の断定とは役割を分け、補足・共感・先回りだけを担う ── */
+.talk{display:flex;align-items:flex-start;gap:10px;margin:18px 0;}
+.talk-av{
+  flex:0 0 auto;
+  width:48px;height:48px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#FFFFFF;
+  border:1px solid #CDEDF2;
+}
+.talk-av img{display:block;width:100%;height:100%;object-fit:cover;}
+.talk-body{
+  position:relative;
+  flex:1 1 auto;
+  min-width:0;
+  background:#FFFFFF;
+  border:1px solid #D3E5E8;
+  border-radius:14px;
+  padding:12px 15px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.talk-body::before,.talk-body::after{
+  content:"";
+  position:absolute;
+  top:16px;
+  width:0;height:0;
+  border:7px solid transparent;
+  border-left:0;
+}
+.talk-body::before{left:-8px;border-right-color:#D3E5E8;}
+.talk-body::after{left:-7px;border-right-color:#FFFFFF;}
+.talk-name{font-size:11px;line-height:1.5;color:var(--mute);margin-bottom:3px;}
+.talk-body p{margin:0;font-size:14px;line-height:1.75;color:var(--ink);}
 .pill{
   display:inline-block;
   border-radius:999px;
@@ -453,7 +532,7 @@ justify-content:center;}
   flex-direction:column;
   align-items:center;
   font-size:13px;
-  color:#4e4441;
+  color:var(--text-secondary);
   font-weight:500;
   line-height:1.6;
 }
@@ -523,7 +602,8 @@ justify-content:center;}
   line-height:1;
 }
 .num-navy{border:2px solid var(--navy);color:var(--navy);}
-.num-acc{border:2px solid var(--brand-primary-dark);background:var(--brand-primary-dark);color:#FFFFFF;}
+.num-acc{position:relative;border:2px solid var(--brand-primary-dark);background:var(--brand-primary-dark);color:#FFFFFF;}
+.num-acc::before{content:"";position:absolute;left:50%;top:-26px;transform:translateX(-50%);width:2px;height:24px;background:#BFE9EF;}
 
 
 
@@ -780,6 +860,22 @@ justify-content:center;}
   line-height:1.5;
 }
 .four .ic{display:block;font-size:20px;margin-bottom:6px;}
+/* Pairsのポイントカードと同構造：淡色の箱に塗りのある図版を入れ、見出しは箱の外・下に置く */
+.four .c.illust{background:none;border:0;padding:0;}
+.four .c.illust .c-fig{
+  background:var(--acc-l);
+  border-radius:12px;
+  overflow:hidden;
+  aspect-ratio:1024/672;
+}
+.four .c.illust .c-fig img{display:block;width:100%;height:100%;object-fit:cover;}
+.four .c.illust .c-t{
+  margin-top:8px;
+  font-size:15px;
+  font-weight:700;
+  color:var(--brand-primary-dark);
+  line-height:1.5;
+}
 .bridge{
   border-left:3px solid var(--accent);
   padding-left:12px;
@@ -859,15 +955,26 @@ justify-content:center;}
 .cmp .row.last .b2{color:var(--brand-primary-dark);font-size:18px;}
 
 /* ── S8 ── */
-.forlist .f{display:flex;gap:8px;align-items:flex-start;}
-.forlist .f + .f{margin-top:7px;}
-.forlist .f b{color:var(--accent);font-weight:700;font-size:15px;line-height:1.85;}
-.forlist .f .ic{width:16px;height:16px;margin-top:4px;}
+.forlist .f{
+  display:flex;gap:10px;align-items:flex-start;
+  background:#FFFFFF;
+  border-radius:12px;
+  padding:14px 16px;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.forlist .f + .f{margin-top:10px;}
+.forlist .f b{
+  flex:0 0 22px;width:22px;height:22px;margin-top:1px;
+  border-radius:50%;
+  background:var(--brand-primary);
+  display:flex;align-items:center;justify-content:center;
+}
+.forlist .f .ic{width:12px;height:12px;margin-top:0;color:#FFFFFF;}
 .forlist .f span{font-size:15px;line-height:1.85;color:var(--ink);}
 .forbox{
   background:#FFFFFF;
-  border-radius:var(--radius-sm);
-  padding:13px;
+  border-radius:12px;
+  padding:14px 16px;
   font-size:15px;
   font-weight:700;
   color:var(--navy);
@@ -875,13 +982,34 @@ justify-content:center;}
   display:flex;
   gap:8px;
   align-items:flex-start;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
 }
 .forbox .ic{width:18px;height:18px;margin-top:3px;flex:0 0 auto;color:var(--accent);}
-.exclude{border-top:1px solid #DDE3EA;padding-top:18px;margin-top:20px;}
-.exclude .h{font-size:15px;font-weight:700;color:var(--mute);margin-bottom:12px;line-height:1.6;}
-.exclude .e{font-size:13px;line-height:1.7;color:var(--mute);}
-.exclude .e + .e{margin-top:12px;}
-.exclude .e small{font-size:12px;}
+/* 上のforlistと同じ骨格（カード＋丸アイコン＋15px）で、色だけスレートに振った「逆リスト」 */
+.exclude{
+  background:#FFFFFF;
+  border:2px solid #BFCDD2;
+  border-radius:var(--radius-md);
+  padding:20px 18px;
+  margin-top:24px;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.exclude .h{
+  font-size:17px;font-weight:800;color:var(--ink);line-height:1.5;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--sub-border);
+}
+.exclude .e{display:flex;gap:10px;align-items:flex-start;}
+.exclude .e + .e{margin-top:14px;}
+.exclude .e b{
+  flex:0 0 22px;width:22px;height:22px;margin-top:4px;
+  border-radius:50%;
+  background:#7E9098;
+  display:flex;align-items:center;justify-content:center;
+}
+.exclude .e .ic{width:11px;height:11px;margin-top:0;color:#FFFFFF;}
+.exclude .e span{font-size:15px;line-height:1.8;color:var(--ink);}
+.exclude .e small{display:inline-block;margin-top:2px;font-size:13px;line-height:1.7;color:var(--mute);}
 
 /* ── S9 ── */
 .steps{border-left:2px solid var(--sub-border);padding-left:20px;margin-left:8px;}
@@ -906,6 +1034,23 @@ justify-content:center;}
 .scene{margin:4px auto 18px;max-width:260px;}
 .scene img{width:100%;height:auto;display:block;}
 .scene.sm{max-width:220px;}
+/* Pairs式の図版枠：本文幅いっぱいの淡色ボックスに、塗りのある横長図版を入れる。
+   .scene.sm より詳細度を上げてあるので、付けるだけで全幅になる */
+.scene.scene--box{
+  margin:6px auto 20px;
+  width:100%;
+  max-width:300px;
+  background:var(--acc-l);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+}
+/* height:auto。比率固定＋coverだと、比率の違う画像で頭が切れる */
+.scene.scene--box img{width:100%;height:auto;display:block;}
+.scene.scene--box.is-inline{max-width:220px;}
+@media (min-width:768px){
+  .scene.scene--box{max-width:420px;}
+  .scene.scene--box.is-inline{max-width:300px;}
+}
 .why{background:var(--gray);border-radius:var(--radius-md);padding:20px 16px;box-shadow:var(--shadow-card);}
 
 /* ── S10 ── */
@@ -984,7 +1129,8 @@ justify-content:center;}
    リンク列の下に 1px dashed #666 / コピーライト 11px 白 */
 .site-foot{background:#333333;padding:40px 0 calc(110px + env(safe-area-inset-bottom,0px));text-align:left;}
 .site-foot-inner{margin:0;padding:0 16px;max-width:656px;}
-.site-foot .logo{font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:25px;line-height:1.4;letter-spacing:.02em;}
+.site-foot .logo{margin-bottom:25px;line-height:1;}
+.site-foot .logo img{display:block;height:26px;width:auto;max-width:100%;}
 .site-foot .links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0;margin-bottom:20px;padding-bottom:15px;position:relative;}
 .site-foot .links::after{content:"";position:absolute;left:0;bottom:0;width:100%;border-bottom:1px dashed #666666;}
 .site-foot .links a{
@@ -1052,6 +1198,9 @@ justify-content:center;}
   .h2{font-size:32px;line-height:1.35;}          /* TitleSection big 3.2rem */
   .fv h1{font-size:40px;line-height:1.35;}       /* TitlePrimary title 4.0rem */
   .h3{font-size:20px;}          /* TitleSection small 2rem */
+  .key-band,.punch-band{font-size:19px;}
+  .talk-av{width:56px;height:56px;}
+  .talk-body p{font-size:15px;}
   .sec{padding:80px 16px;}
   .fv{padding:40px 16px 56px;}
   .badge{max-width:132px;} /* 実績メダル：ラベル12px化に伴い直径拡大 */
@@ -1259,7 +1408,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .cta-band--final::before{background-position:22% 70%;}
 }
 </style>
-<link rel="stylesheet" href="/aisho-v3/fv-photo.css?v=20260817-2">
+<link rel="stylesheet" href="/aisho-v3/fv-photo.css?v=20260818-2">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -1301,7 +1450,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <!-- ============ HEADER（全幅sticky。hataractive DefaultHeader 相当） ============ -->
 <header class="site-head">
   <div class="site-head-inner">
-    <span class="logo">Personal File</span>
+    <span class="logo"><img src="/aisho-v3/assets/brand/logo.svg" width="830" height="147" alt="Personal File" fetchpriority="high" decoding="async"></span>
     <div class="head-right">
       <span class="tag">20代の相性転職</span>
       <a class="head-cta" href="https://per-sonal.co.jp/personalfile/contact/?route=af_l1_head" data-cta="af_l1_head">無料の適職診断</a>
@@ -1394,7 +1543,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="eq">性格類型4 × 補助類型4 ＝ <span class="b navy">16タイプ</span></div>
     </div>
 
-    <p class="body" style="margin-bottom:22px;">ここまでは、よくある性格診断と同じ数です。</p>
+    <div class="flow-cue">
+      <p>ここまでは、よくある性格診断と同じ数です。</p>
+      <svg class="chev" viewBox="0 0 24 12" aria-hidden="true"><path d="M2 2l10 8 10-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
 
     <div class="numhead">
       <div class="num num-acc">2</div>
@@ -1409,7 +1561,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="r"><div class="k">情報型</div><div class="v">情報を集め、納得してから動くタイプ</div></div>
     </div>
 
-    <p class="body b" style="margin-bottom:22px;">性格が同じでも、進め方が違えば、合う職場は変わります。</p>
+    <div class="key-band"><span class="np">性格が同じでも、</span><span class="np">進め方が違えば、</span><span class="np">合う職場は変わります。</span></div>
 
     <div class="card" style="margin-bottom:14px;">
       <div class="logic">
@@ -1423,7 +1575,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="grid80-cap"><span class="num-mont">16</span> × <span class="num-mont">5</span> ＝ <span class="num-mont">80</span>タイプ</div>
     </div>
 
-    <p class="body">同じ「協調を大事にするタイプ」でも、<span class="b acc">達成型</span>の人と<span class="b acc">効率型</span>の人では、力が出る職場も、続けられる働き方も違います。<br><span class="b marker">その差を見ずに選ぶから、入ってからズレます。</span></p>
+    <p class="body">同じ「協調を大事にするタイプ」でも、<span class="b">達成型</span>の人と<span class="b">効率型</span>の人では、力が出る職場も、続けられる働き方も違います。</p>
+    <div class="punch-band">その差を見ずに選ぶから、<br class="brsp">入ってからズレます。</div>
   </section>
 
   <!-- ============ S3 ｜ WHY YOU CAN'T CHOOSE ============ -->
@@ -1450,6 +1603,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <p class="body" style="margin-bottom:26px;">左は全部、求人票に載っています。だから条件はすぐ言えます。<br><span class="b navy">でも、辞める理由になるのは右です。</span></p>
 
+    <div class="talk">
+      <div class="talk-av"><img src="/aisho-v3/assets/illust/counselor-face.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></div>
+      <div class="talk-body">
+        <div class="talk-name">適職カウンセラー</div>
+        <p>求人票は、条件を比べるための<span class="np">書類です。</span>続けられるかを見る<span class="np">材料ではありません。</span></p>
+      </div>
+    </div>
+
     <div class="h3" style="margin-bottom:24px;">そして、欄すらないもの。</div>
 
     <div class="dots" style="margin-bottom:14px;">
@@ -1458,13 +1619,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="d"><b><svg class="ic"><use href="#i-circle-o"></use></svg></b><span>この仕事を続けている自分が、想像できるかどうか</span></div>
     </div>
 
-    <div class="scene">
-      <img src="/aisho-v3/assets/illust/worry.webp" width="640" height="640" alt="スマートフォンで求人を延々と見ている女性のイラスト" loading="lazy" decoding="async">
+    <div class="scene scene--box">
+      <img src="/aisho-v3/assets/illust/worry.webp?v=3" width="640" height="420" alt="スマートフォンで求人を延々と見ている女性のイラスト" loading="lazy" decoding="async">
     </div>
 
     <p class="body" style="margin-bottom:16px;"><span class="b">どこにも書いていないので、比べられません。</span><br>比べられないものは、選べません。<br>求人を何百件スクロールしても決まらないのは、そのためです。</p>
 
-    <div class="block-navy">
+    <div class="block-navy payoff">
       <div class="t"><span class="np">パーソナルファイル</span>の診断は、この「書いていないこと」を先に言葉にします。</div>
       <div class="s">あなたに合う上司のタイプ。続けられる働き方。力が出る職場の空気。<br>先にそれが分かったうえで、求人を絞り込みます。</div>
     </div>
@@ -1484,17 +1645,31 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="label-en">WHAT YOU GET</div>
     <h2 class="h2"><span class="np">キャリアパーソナリティ</span><span class="np">診断で</span><span class="np">分かる16のこと</span></h2>
 
-    <div class="scene sm">
-      <img src="/aisho-v3/assets/illust/result.webp" width="640" height="640" alt="スマートフォンで診断結果を見ている男性のイラスト" loading="lazy" decoding="async">
+    <div class="talk">
+      <div class="talk-av"><img src="/aisho-v3/assets/illust/counselor-face.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></div>
+      <div class="talk-body">
+        <div class="talk-name">適職カウンセラー</div>
+        <p>とくに、辞める理由に直結するのは<span class="np">この4つです。</span></p>
+      </div>
     </div>
 
-    <p class="body" style="margin-bottom:16px;">とくに、辞める理由に直結するのは<span class="np">この4つです。</span></p>
-
     <div class="four" style="margin-bottom:18px;">
-      <div class="c"><svg class="ic"><use href="#i-desk"></use></svg>向いている職種</div>
-      <div class="c"><svg class="ic"><use href="#i-users-talk"></use></svg>合う上司／<br>合わない上司</div>
-      <div class="c"><svg class="ic"><use href="#i-building"></use></svg>合う社風／<br>合わない社風</div>
-      <div class="c"><svg class="ic"><use href="#i-clock"></use></svg>合う働き方／<br>合わない働き方</div>
+      <div class="c illust">
+        <div class="c-fig"><img src="/aisho-v3/assets/illust/card-job.webp?v=4" width="640" height="420" alt="自分に向いている職種が分かることを表したイラスト" loading="lazy" decoding="async"></div>
+        <div class="c-t">向いている職種</div>
+      </div>
+      <div class="c illust">
+        <div class="c-fig"><img src="/aisho-v3/assets/illust/card-boss.webp?v=4" width="640" height="420" alt="合う上司と合わない上司が分かることを表したイラスト" loading="lazy" decoding="async"></div>
+        <div class="c-t">合う上司／<br>合わない上司</div>
+      </div>
+      <div class="c illust">
+        <div class="c-fig"><img src="/aisho-v3/assets/illust/card-culture.webp?v=5" width="640" height="420" alt="合う社風と合わない社風が分かることを表したイラスト" loading="lazy" decoding="async"></div>
+        <div class="c-t">合う社風／<br>合わない社風</div>
+      </div>
+      <div class="c illust">
+        <div class="c-fig"><img src="/aisho-v3/assets/illust/card-worklife.webp?v=5" width="640" height="420" alt="合う働き方と合わない働き方が分かることを表したイラスト" loading="lazy" decoding="async"></div>
+        <div class="c-t">合う働き方／<br>合わない働き方</div>
+      </div>
     </div>
 
     <p class="small" style="margin-bottom:8px;">ほかにも、こんな項目まで</p>
@@ -1525,8 +1700,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <p class="body narrate" style="margin-bottom:22px;">タイプが分かることと、次の仕事が決まることの間には、まだ距離があります。</p>
 
     <div class="bridge">
-      <div class="scene">
-        <img src="/aisho-v3/assets/illust/counselor.webp" width="640" height="640" alt="適職カウンセラーと1対1で面談している様子のイラスト" loading="lazy" decoding="async">
+      <div class="scene scene--box">
+        <img src="/aisho-v3/assets/illust/counselor.webp?v=4" width="640" height="420" alt="適職カウンセラーと1対1で面談している様子のイラスト" loading="lazy" decoding="async">
       </div>
       <p class="body">あなたのこれまでの経歴。いまの職場でしんどいこと。譲れない条件。<br><span class="b">それと診断結果を突き合わせて、次の一手まで落とすのが、適職カウンセラーの仕事です。</span></p>
     </div>
@@ -1596,21 +1771,29 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <h2 class="h2">こんな方に向いています</h2>
 
     <div class="forlist" style="margin-bottom:14px;">
-      <div class="f"><b><svg class="ic"><use href="#i-compass"></use></svg></b><span>辞めたい理由は言えるのに、やりたい仕事が決まらない</span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-horizon"></use></svg></b><span>今の仕事を続けた先が、想像できない</span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-desk"></use></svg></b><span>事務系が気になるが、そこで止まっている</span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-shield"></use></svg></b><span>また合わなかったらどうしようと思っている</span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-clock"></use></svg></b><span>残業や休みの取り方を、次こそ変えたい</span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-sprout"></use></svg></b><span>未経験の職種に挑戦したい</span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>辞めたい理由は言えるのに、<span class="b">やりたい仕事が決まらない</span></span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>今の仕事を<span class="b">続けた先が、想像できない</span></span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">事務系が気になる</span>が、そこで止まっている</span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">また合わなかったらどうしよう</span>と思っている</span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>残業や休みの取り方を、<span class="b">次こそ変えたい</span></span></div>
+      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">未経験の職種に挑戦</span>したい</span></div>
     </div>
 
     <div class="forbox"><svg class="ic"><use href="#i-free-tag"></use></svg><span>在職中でも、離職中でも、<span class="np">フリーター</span>でも構いません。学歴も問いません。</span></div>
 
+    <div class="talk">
+      <div class="talk-av"><img src="/aisho-v3/assets/illust/counselor-face.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></div>
+      <div class="talk-body">
+        <div class="talk-name">適職カウンセラー</div>
+        <p>ひとつだけ、先に<span class="np">お断りがあります。</span>合わないまま進めるのは、<span class="np">お互いに時間が</span><span class="np">もったいないので。</span></p>
+      </div>
+    </div>
+
     <div class="exclude">
-      <div class="h">この3つに当てはまる方は、ご遠慮ください</div>
-      <div class="e">・診断結果だけ知りたい方<br><small>（転職の相談とセットのサービスです）</small></div>
-      <div class="e">・スキルを活かして年収を上げたい方</div>
-      <div class="e">・すでに行きたい職種・企業が決まっている方</div>
+      <div class="h"><span class="np">この3つに当てはまる方は、</span><span class="np">ご遠慮ください</span></div>
+      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>診断結果だけ知りたい方<br><small>（転職の相談とセットのサービスです）</small></span></div>
+      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>スキルを活かして年収を上げたい方</span></div>
+      <div class="e"><b><svg class="ic"><use href="#i-close"></use></svg></b><span>すでに行きたい職種・企業が<span class="np">決まっている方</span></span></div>
     </div>
   </section>
 
@@ -1635,8 +1818,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           <div class="step-text">
             <div class="t">STEP 2　診断を受ける（約15分）</div>
             <div class="d">LINEが届いたら、その場でスマホから受けられます。事前準備は不要です。能力テストではありません。</div>
-            <div class="scene sm" style="margin:10px 0 4px;max-width:180px;">
-              <img src="/aisho-v3/assets/illust/chat.webp" width="640" height="640" alt="スマートフォンにメッセージが届いている様子のイラスト" loading="lazy" decoding="async">
+            <div class="scene scene--box is-inline" style="margin:10px 0 14px;">
+              <img src="/aisho-v3/assets/illust/chat.webp?v=4" width="640" height="420" alt="スマートフォンにメッセージが届いている様子のイラスト" loading="lazy" decoding="async">
             </div>
           </div>
         </div>
@@ -1670,8 +1853,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       </div>
     </div>
 
-    <div class="scene sm">
-      <img src="/aisho-v3/assets/illust/start.webp" width="640" height="640" alt="新しい職場へ向かって歩き出す女性のイラスト" loading="lazy" decoding="async">
+    <div class="talk">
+      <div class="talk-av"><img src="/aisho-v3/assets/illust/counselor-face.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></div>
+      <div class="talk-body">
+        <div class="talk-name">適職カウンセラー</div>
+        <p>診断に<span class="np">対策も準備もいりません。</span><span class="np">迷ったら</span>直感で<span class="np">選んで大丈夫です。</span></p>
+      </div>
     </div>
 
     <div class="why" style="margin-bottom:18px;">
@@ -1787,7 +1974,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <footer class="site-foot">
     <div class="site-foot-inner">
-    <div class="logo">Personal File</div>
+    <div class="logo"><img src="/aisho-v3/assets/brand/logo_white.svg" width="830" height="147" alt="Personal File" loading="lazy" decoding="async"></div>
     <div class="links">
       <a href="https://per-sonal.co.jp/personalfile/media/" target="_blank" rel="noopener">相性転職マガジン</a>
       <a href="https://per-sonal.co.jp/" target="_blank" rel="noopener">運営会社</a>
@@ -1803,7 +1990,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <aside class="side-rail">
     <div class="side-entry">
       <div class="nav-card">
-        <div class="side-logo">Personal File</div>
+        <div class="side-logo"><img src="/aisho-v3/assets/brand/logo.svg" width="830" height="147" alt="Personal File" loading="lazy" decoding="async"></div>
         <ul class="anchor-list">
           <li class="anchor-item"><a class="anchor-btn" href="#s2">80タイプに分ける理由</a></li>
           <li class="anchor-item"><a class="anchor-btn" href="#s6">診断のあとにすること</a></li>

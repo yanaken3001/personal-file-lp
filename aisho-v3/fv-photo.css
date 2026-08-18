@@ -27,10 +27,11 @@
   }
 }
 
+/* 高さをpx固定にすると、幅だけ伸びて画面が広いほど帯が薄くなる。比率で固定する */
 #fv .fv-v3-photo{
   width:100%;
   max-width:none;
-  height:280px;
+  aspect-ratio:5/2;
   margin:0;
   overflow:hidden;
   border-top:1px solid #DAE4E5;
@@ -50,7 +51,7 @@
   max-width:624px;
   margin:0 auto;
   padding:30px 20px 18px;
-  color:#333333;
+  color:var(--text-primary);
   font-size:16px;
   line-height:1.9;
 }
@@ -95,7 +96,7 @@
 
 #fv .badge .t,
 #fv .badge .u{
-  color:#667A7A;
+  color:var(--text-secondary);
   font-size:11px;
   line-height:1.4;
 }
@@ -111,7 +112,7 @@
   max-width:calc(100% - 40px);
   margin-left:auto;
   margin-right:auto;
-  color:#667A7A;
+  color:var(--text-tertiary);
 }
 
 @media (max-width:767px){
@@ -127,7 +128,7 @@
   }
 
   #fv .fv-v3-photo{
-    height:180px;
+    aspect-ratio:2/1;
   }
 
   #fv .fv-v3-photo img{
