@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260819-1700">
+<html lang="ja" data-build="20260819-1930">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -743,23 +743,34 @@ justify-content:center;}
   background:#FFFFFF;
 }
 .matrix .q{position:relative;overflow:hidden;}
+/* 説明は象限幅では1行に入らない（スマホで8px相当）。開いた象限だけclipを外し盤面幅を使う */
+.matrix .q.is-open{overflow:visible;z-index:4;}
+@media (hover:hover){.matrix .q:hover{overflow:visible;z-index:4;}}
 /* ── 象限のホバー/タップ演出（personal-file.jp と同じ挙動） ── */
 .matrix .q{cursor:pointer;transition:background-color .3s;}
 .matrix .sub4,.matrix .big,.matrix .chip{transition:opacity .3s,transform .3s;}
 .matrix .qdesc{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  padding:0 8px;text-align:center;
+  padding:0 4px;text-align:center;
   opacity:0;pointer-events:none;
   transition:opacity .3s;
   z-index:3;
 }
 .matrix .qdesc span{
-  background:rgba(255,255,255,.95);
+  background:rgba(255,255,255,.97);
   color:var(--brand-primary-dark);
-  font-size:12px;font-weight:700;line-height:1.6;
-  padding:6px 8px;border-radius:var(--radius-sm);
+  /* 盤面幅に対し最長15文字が1行で収まる上限に追従（実測: 320px時15.1px / 390px時19.8px）。
+     PCの幾何学上限は36px超だが見出しと同格になるため24pxで頭打ち */
+  font-size:clamp(13px,4.4vw,24px);font-weight:700;line-height:1.6;
+  padding:8px 14px;border-radius:var(--radius-sm);
+  box-shadow:0 2px 10px rgba(16,58,64,.14);
 }
+/* 左列(1,3)は右へ、右列(2,4)は左へ伸ばし、説明の可用幅を象限幅→盤面幅にする */
+.matrix .q:nth-child(1) .qdesc,.matrix .q:nth-child(3) .qdesc{right:-100%;}
+.matrix .q:nth-child(2) .qdesc,.matrix .q:nth-child(4) .qdesc{left:-100%;}
+.matrix .qdesc span{white-space:nowrap;}
+
 /* 発火条件: マウスホバー or タップで付与される .is-open */
 
 .matrix .q.is-open .sub4{opacity:.12;}
@@ -786,6 +797,12 @@ justify-content:center;}
   line-height:1;
 }
 .matrix .sub4 div:nth-child(1),.matrix .sub4 div:nth-child(2){border-bottom:1px solid var(--sub-border);}
+/* 上下のチップと文字が重なるのを防ぐ（象限が低い狭幅で衝突していた）。
+   セルは中央揃えなので、上段は下へ・下段は上へ寄せる */
+.matrix .q:nth-child(1) .sub4 div:nth-child(-n+2),
+.matrix .q:nth-child(2) .sub4 div:nth-child(-n+2){padding-top:2.4em;}
+.matrix .q:nth-child(3) .sub4 div:nth-child(n+3),
+.matrix .q:nth-child(4) .sub4 div:nth-child(n+3){padding-bottom:2.4em;}
 .matrix .sub4 div:nth-child(1),.matrix .sub4 div:nth-child(3){border-right:1px solid var(--sub-border);}
 .matrix .big{
   position:absolute;inset:0;
@@ -804,7 +821,9 @@ justify-content:center;}
 .matrix .chip.top{top:7px;}
 .matrix .chip.bottom{bottom:7px;}
 .matrix .chip span{
-  font-size:10px;font-weight:700;color:var(--navy);
+  /* 象限が低い狭幅では文字と衝突するため画面幅に追従（430px以上で12px超） */
+  font-size:clamp(10px,2.85vw,14px);font-weight:700;color:var(--navy);
+  white-space:nowrap;
   background:rgba(255,255,255,.92);
   border:1px solid var(--navy);
   padding:2px 6px;
@@ -1635,6 +1654,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .sec.sec > .numhead + *{margin-top:20px;}
   .card,.block-navy{padding:26px;}
   .matrix .ax-side span,.matrix .ax-bottom .l,.matrix .ax-bottom .r{font-size:15px;}
+  .matrix .chip span{padding:3px 10px;}
   .eq{font-size:18px;}
   .pconly{display:inline;}
 }
@@ -1786,34 +1806,34 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <!-- MATRIX（personal-file.jp スマホ版と同じ構造） -->
       <div class="matrix">
         <div class="ax-side">
-          <span>協調性（高）</span>
-          <span>社交性（高）</span>
+          <span>協調性</span>
+          <span>社交性</span>
         </div>
         <div class="box">
           <div class="q br bb" tabindex="0">
             <div class="sub4"><div>II</div><div>IP</div><div>IA</div><div>ID</div></div>
             <div class="big">I</div>
-            <div class="chip top"><span>SUPPORT / サポート</span></div>
+            <div class="chip top"><span>サポートタイプ</span></div>
           <div class="qdesc"><span>協調大事、リスク回避、平和志向</span></div></div>
           <div class="q bb" tabindex="0">
             <div class="sub4"><div>PI</div><div>PP</div><div>PA</div><div>PD</div></div>
             <div class="big">P</div>
-            <div class="chip top"><span>VITALITY / バイタリティ</span></div>
+            <div class="chip top"><span>バイタリティタイプ</span></div>
           <div class="qdesc"><span>ポジティブ、感覚派、ノリ、行動</span></div></div>
           <div class="q br" tabindex="0">
             <div class="sub4"><div>AI</div><div>AP</div><div>AA</div><div>AD</div></div>
             <div class="big">A</div>
-            <div class="chip bottom"><span>ANALYZE / アナライズ</span></div>
+            <div class="chip bottom"><span>アナライズタイプ</span></div>
           <div class="qdesc"><span>慎重、論理重視、正確性重視</span></div></div>
           <div class="q" tabindex="0">
             <div class="sub4"><div>DI</div><div>DP</div><div>DA</div><div>DD</div></div>
             <div class="big">D</div>
-            <div class="chip bottom"><span>INNOVATE / イノベート</span></div>
+            <div class="chip bottom"><span>イノベートタイプ</span></div>
           <div class="qdesc"><span>合理性、個人主義、即決</span></div></div>
         </div>
         <div class="ax-bottom">
-          <div class="l">← 正確性重視</div>
-          <div class="r">即断即決 →</div>
+          <div class="l">正確性重視</div>
+          <div class="r">即断即決</div>
         </div>
       </div>
 
