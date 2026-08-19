@@ -36,7 +36,7 @@ The normalized side-by-side comparison aligns the source main column and the imp
 
 ## Interaction and regression checks
 
-- CTA destination and `data-cta="af_l1_fv"` preserved.
+- CTA destination and `data-cta="aishou01_fv"` preserved.
 - FAQ opens correctly.
 - 80-type grid renders 80 cells.
 - Three career stories remain.
