@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260818-0200">
+<html lang="ja" data-build="20260818-0300">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2305,6 +2305,51 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <script>
 (function(){
+  /* ── 広告識別子の引き継ぎ（合成方式） ─────────────────────────────
+     広告URL   : /aisho/?ad=ig_0818_a
+     CTAリンク : .../contact/?route=aishou01_fv__ig_0818_a
+     フォームが確実に保存する route に合成するため、ad が別途保存されなくても
+     「どの広告 × どのCTA位置」が1つの値で分かる。
+     ad が無いときは route を一切変更しない（従来どおり）。 */
+  (function(){
+    var SEP='__', MAX=40;
+    var pick=function(){
+      var q=new URLSearchParams(location.search);
+      // ad を最優先。Meta標準の utm_content もフォールバックとして受ける
+      var v=q.get('ad')||q.get('utm_content')||'';
+      return v;
+    };
+    var clean=function(v){
+      // 記号・空白は - に寄せ、長さを打ち切る（route値が無制限に伸びるのを防ぐ）
+      v=String(v).trim().replace(/[^0-9A-Za-z_\-\u3040-\u30FF\u4E00-\u9FFF]+/g,'-');
+      v=v.replace(/-{2,}/g,'-').replace(/^-|-$/g,'');
+      return v.slice(0,MAX);
+    };
+    var KEY='pf_ad_id';
+    var id='';
+    try{
+      id=clean(pick());
+      // 直リンクや再読込でパラメータが落ちても効くよう保持する
+      if(id){ sessionStorage.setItem(KEY,id); }
+      else  { id=sessionStorage.getItem(KEY)||''; }
+    }catch(e){ id=clean(pick()); }
+    if(!id) return;
+
+    var apply=function(){
+      [].slice.call(document.querySelectorAll('a[data-cta]')).forEach(function(a){
+        var u;
+        try{ u=new URL(a.href, location.href); }catch(e){ return; }
+        var r=u.searchParams.get('route');
+        if(!r || r.indexOf(SEP)>=0) return;   // route無し／適用済みは触らない
+        u.searchParams.set('route', r+SEP+id);
+        a.href=u.toString();
+        a.setAttribute('data-cta', r+SEP+id);
+      });
+    };
+    apply();
+    document.addEventListener('DOMContentLoaded', apply);
+  })();
+
   /* MATRIX象限：タップでも説明を出す（ホバーできない端末向け） */
   (function(){
     var qs=[].slice.call(document.querySelectorAll('.matrix .q'));
