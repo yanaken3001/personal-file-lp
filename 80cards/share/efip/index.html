@@ -9,7 +9,16 @@
     var PAGE_ID = '80cards';
     var q = location.search;
 
-    /* 1) 動作確認アクセスを計測から外す。?ga_off=1 でこのブラウザをオフ、?ga_on=1 で解除 */
+    /* 1) 動作確認アクセスを計測から外す
+          - 開発環境（localhost / プライベートIP / .local / file://）は常に除外。
+            GA4の内部トラフィック除外はIP登録済みでも localhost では効かないため（2026-08-19実測）
+          - ?ga_off=1 でこのブラウザをオフ、?ga_on=1 で解除
+          - deploy_check / event_id=test- / dev_scores を含むURLは自動で除外 */
+    var h = location.hostname;
+    if (!h || /\.local$/.test(h) ||
+        /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h)) {
+      window['ga-disable-' + GA_ID] = true;
+    }
     try {
       if (/[?&]ga_off=1/.test(q)) localStorage.setItem('pf_ga_off', '1');
       if (/[?&]ga_on=1/.test(q)) localStorage.removeItem('pf_ga_off');
