@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260817-1410">
+<html lang="ja" data-build="20260818-0120">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -703,7 +703,9 @@ justify-content:center;}
 }
 
 /* ── S2 ── */
-.numhead{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+/* 番号だけ左端に離れて見えるため、番号＋見出しを1組として中央に置く */
+.numhead{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;}
+.numhead .h3{margin:0;text-align:left;}
 .num{
   width:24px;height:24px;flex:0 0 24px;
   border-radius:50%;
@@ -949,6 +951,7 @@ justify-content:center;}
 .tbl3 .g > .cr:last-child{box-shadow:inset 2px 0 0 var(--brand-primary), inset -2px 0 0 var(--brand-primary), inset 0 -2px 0 var(--brand-primary);}
 @media (min-width:768px){
   .tbl3 .brsp{display:none;}
+  .phone-mock-below .brsp{display:none;}
   .tbl3 .g{grid-template-columns:minmax(104px,38%) 1fr;}
   .tbl3 .hl{font-size:14px;}
   .tbl3 .hr{font-size:15px;}
@@ -1576,7 +1579,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .site-head-inner{padding:6px 16px;}
   .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;}
   .sec{padding:72px 16px;}
-  .h2{font-size:clamp(26px,7.2vw,30px);line-height:1.38;margin:0 auto 18px;}
+  /* 「なぜ、80タイプに分けるのか。」等がスマホで1行に収まる上限に合わせる */
+  .h2{font-size:clamp(20px,6.2vw,30px);line-height:1.38;margin:0 auto 18px;letter-spacing:-.02em;}
   .h3{font-size:20px;line-height:1.5;}
   .body{font-size:15px;line-height:1.78;}
   .card,.block-navy{padding:20px;border-radius:var(--radius-md);}
@@ -1596,6 +1600,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .job{flex:0 0 184px;max-width:184px;}
   .jobs-track{padding:4px calc(50% - 92px) 16px;}
   .note{font-size:11px;}
+  /* アイコン分を引くと1行に入らない幅では、句のnowrap保護を解除して溢れを防ぐ */
+  .mismatch-lead{font-size:19px;gap:12px;}
+  .mismatch-lead .np{white-space:normal;}
+  .mismatch-lead-icon{width:38px;height:38px;}
 }
 
 /* ── PC（768px以上） ───────────────────────────────────────────── */
@@ -1895,7 +1903,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <div class="block-navy payoff">
       <div class="t"><span class="np">パーソナルファイル</span>の診断は、<span class="np">この「書いていないこと」を</span><span class="np">先に言葉にします。</span></div>
-      <div class="s">あなたに合う上司のタイプ。続けられる働き方。力が出る職場の空気。<br>先にそれが分かったうえで、求人を絞り込みます。</div>
+      <div class="s">あなたに合う上司のタイプ。続けられる働き方。<br>力が出る職場の空気。<br>先にそれが分かったうえで、求人を絞り込みます。</div>
     </div>
   </section>
 
@@ -1961,7 +1969,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           <div class="phone-result-item"><svg class="ic"><use href="#i-check"></use></svg><span>イケイケドンドンの社風とは合いません</span></div>
         </div>
       </div>
-      <p class="body phone-mock-below">そう書いてあったとして、<span class="b">次の日から何をすればいいのか。</span></p>
+      <p class="body phone-mock-below">そう書いてあったとして、<br class="brsp"><span class="b">次の日から何をすればいいのか。</span></p>
     </div>
 
     <div class="gap-viz" aria-hidden="true"></div>
@@ -2041,7 +2049,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="forlist" style="margin-bottom:14px;">
       <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>辞めたい理由は言えるのに、<span class="b">やりたい仕事が決まらない</span></span></div>
       <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>今の仕事を<span class="b">続けた先が、想像できない</span></span></div>
-      <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">事務系が気になる</span>が、そこで止まっている</span></div>
       <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">また合わなかったらどうしよう</span>と思っている</span></div>
       <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span>残業や休みの取り方を、<span class="b">次こそ変えたい</span></span></div>
       <div class="f"><b><svg class="ic"><use href="#i-check"></use></svg></b><span><span class="b">未経験の職種に挑戦</span>したい</span></div>
@@ -2168,7 +2175,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           <div class="rt">保育系 → 事務</div>
           <div class="nm">H.Kさん（20代）</div>
       <span class="pill pill-navy">平和型<span class="np">サポーター</span></span>
-      <p class="cm">仕事のやりがいや相談のしやすさなど、とても良い環境だと思います！適職カウンセラーの方からは細かいアドバイス・添削・擬似面接をしてくださったので…</p>
+      <p class="cm">仕事のやりがいや相談のしやすさなど、とても良い環境だと思います！また、運動会などのイベント行事も多く楽しく仕事出来ています。適職カウンセラーの方からは細かいアドバイス・添削・擬似面接をしてくださったので、自分なりに面接を受けることができました！転職して本当に良かったと思っています！</p>
       </div>
       <div class="fit">
         <div class="h">H.Kさんの相性</div>
@@ -2183,7 +2190,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           <div class="rt">美容系 → 営業</div>
           <div class="nm">A.Dさん（20代）</div>
       <span class="pill pill-navy" id="type-ad">達成型<span class="np">コラボレーター</span></span>
-      <p class="cm">自分だけで転職活動をしていたら、恐らく今の会社には縁が無かったですし、営業職にもなっていなかったと思うので…</p>
+      <p class="cm">適職カウンセラーの方には、とても優しく丁寧に対応して頂きました！面接対策や質問なども的確に答えていただき、とても感謝しております。また、自分だけで転職活動をしていたら、恐らく今の会社には縁が無かったですし、営業職にもなっていなかったと思うので、視野を広げていただいたという面でもお願いして良かったです！</p>
       </div>
       <div class="fit">
         <div class="h">A.Dさんの相性</div>
@@ -2198,7 +2205,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           <div class="rt">自動車業 → エンジニア</div>
           <div class="nm">T.Oさん（25歳）</div>
       <span class="pill pill-navy">情報型<span class="np">アナリスト</span></span>
-      <p class="cm">人間関係は悪くはなかったのですが、休みと拘束時間が長く、できれば土日休みがいいなと思い転職活動をはじめました…</p>
+      <p class="cm">人間関係は悪くはなかったのですが、休みと拘束時間が長く、できれば土日休みがいいなと思い転職活動をはじめました。慣れない転職において履歴書や職務経歴書の作成のサポート、面接対策までしっかりと行っていただき、大変な部分もありましたが内定を取ることができ、本当に感謝の気持ちでいっぱいです。</p>
       </div>
       <div class="fit">
         <div class="h">T.Oさんの相性</div>
