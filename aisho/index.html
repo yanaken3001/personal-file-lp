@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0200">
+<html lang="ja" data-build="20260820-0300">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2361,18 +2361,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 (function(){
   /* ── 広告識別子の引き継ぎ（合成方式） ─────────────────────────────
      広告URL   : /aisho/?route=instagramad0819  （?ad= でも可）
-     CTAリンク : .../contact/?route=aishou01_fv__instagramad0819
+     CTAリンク : .../contact/?route=aishou01_fv_instagramad0819
+     ※CTA位置は8種の固定値。集計は区切り文字での分割ではなく先頭一致で行う
      フォームが確実に保存する route に合成するため、ad が別途保存されなくても
      「どの広告 × どのCTA位置」が1つの値で分かる。
      ad が無いときは route を一切変更しない（従来どおり）。 */
   (function(){
-    var SEP='__', MAX=40;
+    var SEP='_', MAX=40;
     var pick=function(){
       var q=new URLSearchParams(location.search);
       // 従来からの慣習に合わせ route でも受ける。ad / utm_content も可
       var v=q.get('ad')||q.get('route')||q.get('utm_content')||'';
-      // CTAのURLをそのまま踏んだ場合（route=aishou01_fv 等）は広告IDとして扱わない
-      if(/^aishou\d+_/.test(v)||v.indexOf('__')>=0) return '';
+      // CTAのURLをそのまま踏んだ場合（route=aishou01_fv や合成済みの値）は広告IDとして扱わない
+      if(/^aishou\d+_/.test(v)) return '';
       return v;
     };
     var clean=function(v){
@@ -2393,13 +2394,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     var apply=function(){
       [].slice.call(document.querySelectorAll('a[data-cta]')).forEach(function(a){
+        /* 区切りが単一 _ だと route に必ず _ が含まれるため、
+           「_の有無」では適用済みを判定できない。フラグで一度だけ適用する */
+        if(a.getAttribute('data-ad-applied')) return;
         var u;
         try{ u=new URL(a.href, location.href); }catch(e){ return; }
         var r=u.searchParams.get('route');
-        if(!r || r.indexOf(SEP)>=0) return;   // route無し／適用済みは触らない
+        if(!r) return;
         u.searchParams.set('route', r+SEP+id);
         a.href=u.toString();
         a.setAttribute('data-cta', r+SEP+id);
+        a.setAttribute('data-ad-applied','1');
       });
     };
     apply();
