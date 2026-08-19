@@ -97,7 +97,7 @@
 #fv .badge .t,
 #fv .badge .u{
   color:var(--text-secondary);
-  font-size:11px;
+  font-size:13px;
   line-height:1.4;
 }
 
@@ -138,13 +138,13 @@
   #fv .sub{
     margin:0 auto;
     padding:22px 20px 14px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.82;
   }
 
   #fv .cta-micro{
     margin-bottom:6px;
-    font-size:12px;
+    font-size:14px;
   }
 
   #fv .cta{
@@ -167,7 +167,7 @@
 
   #fv .badge .t,
   #fv .badge .u{
-    font-size:9.5px;
+    font-size:12px;
   }
 
   #fv .badge .n{
@@ -176,7 +176,7 @@
 
   #fv .note{
     max-width:calc(100% - 40px);
-    font-size:10px;
+    font-size:12px;
     line-height:1.65;
   }
 }
@@ -196,6 +196,6 @@
 
   #fv .badge .t,
   #fv .badge .u{
-    font-size:9px;
+    font-size:11px;
   }
 }
