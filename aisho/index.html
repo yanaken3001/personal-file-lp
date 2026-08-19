@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260818-0300">
+<html lang="ja" data-build="20260818-0330">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2306,8 +2306,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <script>
 (function(){
   /* ── 広告識別子の引き継ぎ（合成方式） ─────────────────────────────
-     広告URL   : /aisho/?ad=ig_0818_a
-     CTAリンク : .../contact/?route=aishou01_fv__ig_0818_a
+     広告URL   : /aisho/?route=instagramad0819  （?ad= でも可）
+     CTAリンク : .../contact/?route=aishou01_fv__instagramad0819
      フォームが確実に保存する route に合成するため、ad が別途保存されなくても
      「どの広告 × どのCTA位置」が1つの値で分かる。
      ad が無いときは route を一切変更しない（従来どおり）。 */
@@ -2315,8 +2315,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     var SEP='__', MAX=40;
     var pick=function(){
       var q=new URLSearchParams(location.search);
-      // ad を最優先。Meta標準の utm_content もフォールバックとして受ける
-      var v=q.get('ad')||q.get('utm_content')||'';
+      // 従来からの慣習に合わせ route でも受ける。ad / utm_content も可
+      var v=q.get('ad')||q.get('route')||q.get('utm_content')||'';
+      // CTAのURLをそのまま踏んだ場合（route=aishou01_fv 等）は広告IDとして扱わない
+      if(/^aishou\d+_/.test(v)||v.indexOf('__')>=0) return '';
       return v;
     };
     var clean=function(v){
