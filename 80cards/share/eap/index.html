@@ -54,8 +54,14 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('set', { route: window.__pfRoute, ad_route: window.__pfAdRoute });
-    gtag('config', 'G-S4XQS4E3G0', { page_location: window.__pfPageLocation });
+    /* route は config の第3引数で渡す。gtag('set',{...}) 方式は
+       GA4のcollectペイロードに乗らず記録されなかった（2026-08-20 実測）。
+       稼働中の記事LPと同じ方式に統一する */
+    gtag('config', 'G-S4XQS4E3G0', {
+      page_location: window.__pfPageLocation,
+      route: window.__pfRoute,
+      ad_route: window.__pfAdRoute
+    });
   </script>
 
   <!-- Meta Pixel -->
