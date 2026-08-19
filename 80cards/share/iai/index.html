@@ -1,13 +1,51 @@
 <!doctype html>
 <html lang="ja">
 <head>
+  <meta charset="UTF-8" />
+  <!-- PF計測基盤: テスト除外 / route引き継ぎ / パス正規化（2026-08-19） -->
+  <script>
+  (function () {
+    var GA_ID = 'G-S4XQS4E3G0';
+    var PAGE_ID = '80cards';
+    var q = location.search;
+
+    /* 1) 動作確認アクセスを計測から外す。?ga_off=1 でこのブラウザをオフ、?ga_on=1 で解除 */
+    try {
+      if (/[?&]ga_off=1/.test(q)) localStorage.setItem('pf_ga_off', '1');
+      if (/[?&]ga_on=1/.test(q)) localStorage.removeItem('pf_ga_off');
+      if (localStorage.getItem('pf_ga_off') === '1') window['ga-disable-' + GA_ID] = true;
+    } catch (e) {}
+    if (/[?&]deploy_check=/.test(q) || /[?&]event_id=test-/.test(q) || /[?&]dev_scores=/.test(q)) {
+      window['ga-disable-' + GA_ID] = true;
+    }
+
+    /* 2) 広告routeを引き継ぐ。区切りは __（/aisho/ と同形式。route名の単一 _ と衝突しない）
+          80cards内部の遷移で付く固定値は広告routeとみなさない */
+    var m = q.match(/[?&]route=([A-Za-z0-9_-]{1,64})/);
+    var raw = m ? m[1] : '';
+    var isAd = !!raw && !/^80cards(_|$)/.test(raw);
+    var ad = '';
+    try {
+      if (isAd) { ad = raw; sessionStorage.setItem('pf_ad_route', raw); }
+      else { ad = sessionStorage.getItem('pf_ad_route') || ''; }
+    } catch (e) { if (isAd) ad = raw; }
+    window.__pfAdRoute = ad;
+    window.__pfRoute = ad ? PAGE_ID + '__' + ad : PAGE_ID;
+
+    /* 3) /80cards/index.html を /80cards/ に正規化して送る */
+    window.__pfPageLocation = location.origin
+      + location.pathname.replace(/index\.html$/, '') + q + location.hash;
+  })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-S4XQS4E3G0');
+    gtag('set', { route: window.__pfRoute, ad_route: window.__pfAdRoute });
+    gtag('config', 'G-S4XQS4E3G0', { page_location: window.__pfPageLocation });
   </script>
 
   <!-- Meta Pixel -->
@@ -29,7 +67,6 @@
       src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1" />
   </noscript>
 
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>INAI｜継続の鬼｜80CARDS</title>
   <meta name="description" content="静かに、正確に、気づけば誰より高い場所にいる。あなたは80タイプのうち何タイプ？" />
