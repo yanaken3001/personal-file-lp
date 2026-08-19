@@ -28,7 +28,8 @@
       window['ga-disable-' + GA_ID] = true;
     }
 
-    /* 2) 広告routeを引き継ぐ。区切りは __（/aisho/ と同形式。route名の単一 _ と衝突しない）
+    /* 2) 広告routeを引き継ぐ。区切りは _（/aisho/・記事LPと同形式）
+          集計は区切りでの分割ではなく PAGE_ID の先頭一致で判定する
           80cards内部の遷移で付く固定値は広告routeとみなさない */
     var m = q.match(/[?&]route=([A-Za-z0-9_-]{1,64})/);
     var raw = m ? m[1] : '';
@@ -39,7 +40,7 @@
       else { ad = sessionStorage.getItem('pf_ad_route') || ''; }
     } catch (e) { if (isAd) ad = raw; }
     window.__pfAdRoute = ad;
-    window.__pfRoute = ad ? PAGE_ID + '__' + ad : PAGE_ID;
+    window.__pfRoute = ad ? PAGE_ID + '_' + ad : PAGE_ID;
 
     /* 3) /80cards/index.html を /80cards/ に正規化して送る */
     window.__pfPageLocation = location.origin
