@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0100">
+<html lang="ja" data-build="20260820-0200">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1324,8 +1324,25 @@ justify-content:center;}
   .story .cm{font-size:16px;}
   .story .nm{font-size:22px;}
 }
-.fit{background:var(--gray);border-radius:var(--radius-sm);padding:12px;font-size:14px;line-height:1.8;}
-.fit .h{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:16px;}
+/* 相性ブロック（参照: adlp_second の episode__diagnosis / listWrap を採寸）
+   薄い地色の箱をやめ、見出しの左右に罫線を伸ばすセンター見出し＋2カラムに */
+.fit{background:transparent;border-radius:0;padding:0;margin-top:18px;font-size:16px;line-height:1.8;}
+.fit-head{
+  display:flex;align-items:center;
+  margin:0 0 6px;
+  font-size:14px;font-weight:700;color:var(--mute);
+  letter-spacing:.02em;
+}
+.fit-head::before,.fit-head::after{content:"";flex-grow:1;height:1px;background:var(--sub-border);}
+.fit-head::before{margin-right:16px;}
+.fit-head::after{margin-left:16px;}
+.fit-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:2px 24px;}
+.fit-item{display:flex;align-items:flex-start;gap:9px;font-size:16px;line-height:1.8;color:var(--ink);}
+.fit-item .ic{width:15px;height:15px;flex:0 0 auto;margin-top:.42em;}
+@media (min-width:768px){
+  .fit-list{grid-template-columns:1fr 1fr;gap:4px 28px;}
+  .fit-head{font-size:15px;}
+}
 .fit .o{color:var(--brand-primary-dark);font-weight:700;}
 .fit .x{color:var(--xmark);font-weight:700;}
 
@@ -1705,6 +1722,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .cta-band::before{background-position:50% 58%;opacity:.24;}
   .cta-band--final::before{background-position:22% 70%;}
 }
+
+/* ── セクション末尾の余白は padding だけで決める ──
+   最後の要素の margin-bottom が padding に加算され、
+   セクション下端の余白だけ 36〜48px 広くなっていた（S3/S5/S11）。
+   縦のリズムは .sec の padding に一本化する。 */
+.sec > *:last-child{margin-bottom:0;}
+
 </style>
 <link rel="stylesheet" href="/aisho/fv-photo.css?v=20260819-4">
 </head>
@@ -2196,9 +2220,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <p class="cm">仕事のやりがいや相談のしやすさなど、とても良い環境だと思います！また、運動会などのイベント行事も多く楽しく仕事出来ています。適職カウンセラーの方からは細かいアドバイス・添削・擬似面接をしてくださったので、自分なりに面接を受けることができました！転職して本当に良かったと思っています！</p>
       </div>
       <div class="fit">
-        <div class="h">H.Kさんの相性</div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 地道なサポート業務全般</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 重要な意思決定</span></div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 社員同士の仲がいい社風</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> ノリが良すぎる社風</span></div>
+        <p class="fit-head">H.Kさんの相性</p>
+        <ul class="fit-list">
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>地道なサポート業務全般</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>重要な意思決定</span></li>
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>社員同士の仲がいい社風</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>ノリが良すぎる社風</span></li>
+        </ul>
       </div>
     </div>
 
@@ -2211,9 +2239,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <p class="cm">適職カウンセラーの方には、とても優しく丁寧に対応して頂きました！面接対策や質問なども的確に答えていただき、とても感謝しております。また、自分だけで転職活動をしていたら、恐らく今の会社には縁が無かったですし、営業職にもなっていなかったと思うので、視野を広げていただいたという面でもお願いして良かったです！</p>
       </div>
       <div class="fit">
-        <div class="h">A.Dさんの相性</div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 人と接する作業</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 黙々とこなす事務作業</span></div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 聞き上手な上司</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 理詰めの上司</span></div>
+        <p class="fit-head">A.Dさんの相性</p>
+        <ul class="fit-list">
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>人と接する作業</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>黙々とこなす事務作業</span></li>
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>聞き上手な上司</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>理詰めの上司</span></li>
+        </ul>
       </div>
     </div>
 
@@ -2226,9 +2258,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <p class="cm">人間関係は悪くはなかったのですが、休みと拘束時間が長く、できれば土日休みがいいなと思い転職活動をはじめました。慣れない転職において履歴書や職務経歴書の作成のサポート、面接対策までしっかりと行っていただき、大変な部分もありましたが内定を取ることができ、本当に感謝の気持ちでいっぱいです。</p>
       </div>
       <div class="fit">
-        <div class="h">T.Oさんの相性</div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 自分の好きな分野の作業</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 興味のない分野</span></div>
-        <div><span class="np"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span> 自由な社風</span>　<span class="np"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span> 従業員を監視したがる社風</span></div>
+        <p class="fit-head">T.Oさんの相性</p>
+        <ul class="fit-list">
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>自分の好きな分野の作業</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>興味のない分野</span></li>
+          <li class="fit-item"><span class="o"><svg class="ic"><use href="#i-circle-o"></use></svg></span><span>自由な社風</span></li>
+          <li class="fit-item"><span class="x"><svg class="ic"><use href="#i-close"></use></svg></span><span>従業員を監視したがる社風</span></li>
+        </ul>
       </div>
     </div>
 
@@ -2263,7 +2299,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="a">できます。ご利用者の多くが在職中です。面談は業務後や休日にも調整しています。</div>
     </details>
 
-    <details class="faq" style="margin-bottom:22px;">
+    <details class="faq">
       <summary><span class="faq-badge" aria-hidden="true">Q</span><span>年齢制限はありますか？</span></summary>
       <div class="a">基本的にはございません。ただし取り扱い求人の多くが若手採用のため、ご経歴やご希望によってはご紹介できない場合もあります。</div>
     </details>
