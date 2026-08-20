@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-1700">
+<html lang="ja" data-build="20260820-1920">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1568,30 +1568,48 @@ justify-content:center;}
   background:rgba(255,255,255,.97);
   border-top:1px solid var(--sub-border);
   box-shadow:0 -6px 22px rgba(0,0,0,.12);
-  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
-  display:flex;
-  align-items:center;
-  gap:14px;
+  padding:9px 16px calc(9px + env(safe-area-inset-bottom,0px));
+  display:block;
   z-index:50;
   transform:translateY(110%);
   transition:transform .25s ease;
 }
 .bar.show{transform:translateY(0);}
-.bar .t{flex:0 0 auto;font-size:12px;color:var(--mute);line-height:1.5;font-weight:700;white-space:nowrap;}
-.bar .t .hl{color:var(--brand-primary-dark);font-weight:700;font-size:14px;}
+/* 追従バーは2ステップ。上と同じ文言を繰り返すのではなく、
+   親指ゾーンで実際に1問目に答えてもらう（2026-08-20） */
+/* 追従バーが出る幅（〜1107px）ではヘッダーCTAを出さない。
+   上下で同じCTAを出すと画面の15%を同じ文言が占有するだけになる。
+   1108px以上は側面レールCTAがあり追従バーを出さないので、ヘッダーCTAを残す（2026-08-20） */
+@media (max-width:1107px){
+  /* 後段の @media(min-width:768px) が display:inline-flex を当てるので
+     body を足して詳細度で勝たせる */
+  body .head-cta{display:none;}
+}
+/* 帯は hataractive.jp の「＼かんたん30秒で登録／」を実測して縮小移植
+   （実測: h42 / 16px / weight800 / letter-spacing .64px / padding 5px 0）。
+   追従バーは高さが限られるので 14px / padding 4px に詰める */
+.bar-head{
+  margin:-9px -16px 7px;
+  padding:4px 12px 5px;
+  background:var(--brand-primary);color:#FFFFFF;
+  font-size:14px;font-weight:800;letter-spacing:.04em;
+  line-height:1.5;text-align:center;
+}
+.bar-q{margin:0 0 7px;font-size:14px;font-weight:700;color:var(--ink);text-align:center;line-height:1.4;}
+.bar-opts{display:flex;gap:10px;justify-content:center;max-width:320px;margin:0 auto;}
 .bar .btn{
-  flex:1 1 auto;
+  flex:1 1 0;min-width:0;
   background-image:var(--cta-grad),var(--cta-grad-dark);background-size:100% calc(100% - var(--cta-edge)),100% 100%;background-position:top left,top left;background-repeat:no-repeat;
   color:#FFFFFF;
   border-radius:999px;
-  padding:12px 6px;
-  min-height:54px;
+  padding:10px 6px;
+  min-height:48px;
   display:flex;align-items:center;justify-content:center;
   text-align:center;
   font-size:16px;
   font-weight:700;
   line-height:1.5;
-  padding-bottom:calc(12px + var(--cta-edge));
+  padding-bottom:calc(10px + var(--cta-edge));
   transition:transform .1s ease, box-shadow .1s ease;
 }
 .bar .btn:active{
@@ -1720,7 +1738,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   /* 下層セクション共通リズム */
   .site-head{min-height:56px;}
   .site-head-inner{padding:6px 16px;}
-  .head-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;font-size:14px;}
+
   .sec{padding:48px 16px;}
   /* 「なぜ、80タイプに分けるのか。」等がスマホで1行に収まる上限に合わせる */
   .h2{font-size:clamp(20px,6.2vw,30px);line-height:1.38;margin:0 auto 18px;letter-spacing:-.02em;}
@@ -1935,7 +1953,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <div class="cta-note"><span class="sl">＼</span>未経験OKの就職・転職に特化<span class="sl">／</span></div>
     <div class="q2card">
-      <div class="q2card-head"><span class="q2card-free">無料</span><span class="np">キャリアパーソナリティ</span><span class="np">診断はこちら</span></div>
+      <div class="q2card-head"><span class="q2card-free">無料</span><span class="np">かんたん30秒で登録</span></div>
       <div class="q2card-body">
         <div class="q2-stats">
           <div class="q2-stat"><div class="t">診断実績</div><div class="n"><span class="num-mont">5万</span>人</div><div class="u">以上 ※1</div></div>
@@ -2456,7 +2474,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="cta-lead"><span class="np">条件だけで</span><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
       <div class="cta-note"><span class="sl">＼</span>未経験OKの就職・転職に特化<span class="sl">／</span></div>
       <div class="q2card">
-        <div class="q2card-head"><span class="q2card-free">無料</span><span class="np">キャリアパーソナリティ</span><span class="np">診断はこちら</span></div>
+        <div class="q2card-head"><span class="q2card-free">無料</span><span class="np">かんたん30秒で登録</span></div>
         <div class="q2card-body">
           <div class="q2-stats">
             <div class="q2-stat"><div class="t">診断実績</div><div class="n"><span class="num-mont">5万</span>人</div><div class="u">以上 ※1</div></div>
@@ -2512,8 +2530,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <!-- ============ 追従バー（SPのみ／FVがビューポート外に出てから表示） ============ -->
 <div class="bar" id="bar">
-  <div class="t">診断・相談<br><span class="hl">すべて無料</span></div>
-  <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_bar" data-cta="aishou01_bar">無料の適職診断を受ける</a>
+  <p class="bar-head">＼かんたん30秒で登録／</p>
+  <p class="bar-q">今までに就職したことはありますか？</p>
+  <div class="bar-opts">
+    <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_bar&amp;employment_experience=1" data-cta="aishou01_bar">はい</a>
+    <a class="btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_bar&amp;employment_experience=2" data-cta="aishou01_bar">いいえ</a>
+  </div>
 </div>
 
 <script>
