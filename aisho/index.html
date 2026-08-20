@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0830">
+<html lang="ja" data-build="20260820-0850">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1719,18 +1719,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .cta-band .cta-micro{color:#FFFFFF;}
 /* CTA直上の実績コピー（＼入社半年後の定着率100％／）。
    並びは リード → .cta-note → CTA → .cta-micro */
-/* 実績バッジ。以前は12px/500/mute（青帯では白）で、青帯#00C1D4上の白文字は
-   コントラスト2.19:1しかなく「薄い」状態だった。ピル＋濃色でAAを満たす。
-   白背景 = 薄ティント地に#056B78（5.4:1）／青帯 = 白地に#056B78（6.2:1） */
+/* CTA直上の実績コピー。背景・囲みは付けない（ユーザー指示）。
+   以前は12px / weight500 / mute（青帯ではrgba(255,255,255,.92)）で細く薄かったため、
+   サイズと太さと不透明度だけで強くする。
+   白背景 = #056B78（6.2:1）／青帯 = 純白 */
 .cta-note{
-  display:block;width:fit-content;margin:0 auto 10px;
-  padding:5px 16px;border-radius:999px;
-  background:rgba(0,193,212,.12);color:#056B78;
-  font-size:14px;font-weight:700;
+  display:block;margin:0 auto 8px;
+  color:#056B78;
+  font-size:15px;font-weight:700;
   text-align:center;line-height:1.6;letter-spacing:.02em;
 }
-.cta-note .sl{opacity:.6;}
-.cta-band .cta-note,.sec-fill .cta-note{background:#FFFFFF;color:#056B78;}
+.cta-note .sl{opacity:.55;font-weight:700;}
+.cta-band .cta-note,.sec-fill .cta-note{color:#FFFFFF;}
 /* CTAとひと組。.sec.sec > * + * の32/40pxを打ち消して密着させる */
 /* 親が .sec / .fv / .cta-band-inner のどれでも同じ間隔になるよう、
    隣接セレクタだけで指定する（.sec.sec > * + * の32/40pxより詳細度が高い） */
@@ -1740,7 +1740,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .sec.sec > .cta-lead + .cta-note{margin-top:10px;}
 .sec.sec > .cta-note + .cta{margin-top:0;}
 .sec.sec > .cta + .cta-micro{margin-top:10px;}
-@media (min-width:768px){.cta-note{font-size:15px;padding:6px 18px;}}
+@media (min-width:768px){.cta-note{font-size:16px;}}
 @media (max-width:767px){
   .cta-band{padding-top:56px;padding-bottom:60px;}
   .cta-band::before{background-position:50% 58%;opacity:.24;}
