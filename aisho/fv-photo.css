@@ -67,6 +67,8 @@
   min-height:60px;
 }
 
+
+
 #fv .badges{
   display:grid;
   grid-template-columns:repeat(3,1fr);
