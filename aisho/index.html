@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0500">
+<html lang="ja" data-build="20260820-0600">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1725,6 +1725,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   text-align:center;line-height:1.6;
 }
 .cta-band .cta-note,.sec-fill .cta-note{color:rgba(255,255,255,.92);}
+/* CTAと安心コピーはひと組。.sec.sec > * + * の32/40pxを打ち消し、CTA直下に寄せる */
+.sec.sec > .cta + .cta-note{margin-top:10px;}
 @media (min-width:768px){.cta-note{font-size:13px;}}
 @media (max-width:767px){
   .cta-band{padding-top:56px;padding-bottom:60px;}
@@ -1964,7 +1966,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="cta-lead"><span class="np">あなたが本当に</span><span class="np">活躍できる仕事と</span><span class="np">出会いませんか？</span></div>
       <div class="cta-micro">入力は約30秒</div>
       <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_mid" data-cta="aishou01_mid">無料の適職診断を受ける</a>
-      <div class="cta-note">診断・相談は完全無料。費用は一切かかりません</div>
+      <div class="cta-note">入社半年後の定着率100％</div>
     </div>
   </section>
 
@@ -2054,7 +2056,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="cta-lead"><span class="np">ここから先は、</span><span class="np">一人で決めなくて大丈夫です。</span></div>
     <div class="cta-micro">入力は約30秒</div>
     <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_after" data-cta="aishou01_after">無料の適職診断を受ける</a>
-      <div class="cta-note">在職中でもOK。面談は業務後や休日にも調整できます</div>
+      <div class="cta-note">入社半年後の定着率100％</div>
   </section>
 
   <!-- ============ S7 ｜ PROOF ============ -->
@@ -2214,7 +2216,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <div class="cta-micro">入力は約30秒</div>
     <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_flow" data-cta="aishou01_flow">無料の適職診断を受ける</a>
-      <div class="cta-note">学歴・職歴は問いません。在職中の方も利用できます</div>
+      <div class="cta-note">入社半年後の定着率100％</div>
   </section>
 
   <!-- ============ S10 ｜ STORIES ============ -->
@@ -2323,7 +2325,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <div class="cta-lead"><span class="np">条件だけで</span><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
       <div class="cta-micro">入力は約30秒</div>
       <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end" data-cta="aishou01_end">無料の適職診断を受ける</a>
-      <div class="cta-note">診断・相談は完全無料。費用は一切かかりません</div>
+      <div class="cta-note">入社半年後の定着率100％</div>
     </div>
   </section>
 
