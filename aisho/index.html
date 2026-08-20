@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-1620">
+<html lang="ja" data-build="20260820-1700">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -451,7 +451,10 @@ justify-content:center;}
    ヘッダーは帯=ブランド色#00C1D4 / 文字=白（ユーザー指定・2026-08-20）。
    コントラストは2.19:1でWCAG AAには届かないが、指定として確定。
    1問目の答えは ?employment_experience= でフォームへ渡す（はい=1 / いいえ=2）。
-   この2値以外は絶対に出力しない。routeは _yes / _no で既存計測に乗せる */
+   この2値以外は絶対に出力しない。
+   routeは はい/いいえ で分けない（aishou01_fv / aishou01_end のまま）。
+   回答の内訳はフォーム側の employment_experience に入るため、
+   routeを分岐させると広告IDとの連結が冗長になるだけ。2026-08-20ユーザー確定 */
 .q2card,
 .fv > .q2card,.sec > .q2card{  /* .fv>*{max-width:624px} より詳細度を上げる */
   /* 親のpaddingに左右されず同じ幅にする（.cta-band-inner は padding 0 16px）*/
@@ -1941,8 +1944,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         </div>
         <p class="q2-lead">今までに就職したことはありますか？</p>
         <div class="q2">
-          <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv_yes&amp;employment_experience=1" data-cta="aishou01_fv_yes">はい</a>
-          <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv_no&amp;employment_experience=2" data-cta="aishou01_fv_no">いいえ</a>
+          <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv&amp;employment_experience=1" data-cta="aishou01_fv">はい</a>
+          <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv&amp;employment_experience=2" data-cta="aishou01_fv">いいえ</a>
         </div>
       </div>
     </div>
@@ -2462,8 +2465,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
           </div>
           <p class="q2-lead">今までに就職したことはありますか？</p>
           <div class="q2">
-            <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end_yes&amp;employment_experience=1" data-cta="aishou01_end_yes">はい</a>
-            <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end_no&amp;employment_experience=2" data-cta="aishou01_end_no">いいえ</a>
+            <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end&amp;employment_experience=1" data-cta="aishou01_end">はい</a>
+            <a class="q2-btn" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end&amp;employment_experience=2" data-cta="aishou01_end">いいえ</a>
           </div>
         </div>
       </div>
