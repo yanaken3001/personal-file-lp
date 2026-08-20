@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0600">
+<html lang="ja" data-build="20260820-0720">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -265,7 +265,7 @@ p{margin:0;}
 .sec.sec > .h2 + *{margin-top:20px;}
 .sec.sec > .h3 + *,
 .sec.sec > .numhead + *{margin-top:16px;}
-.sec.sec > .cta-lead + .cta-micro,
+.sec.sec > .cta-lead + .cta-micro{margin-top:8px;}
 .sec.sec > .cta-micro + .cta{margin-top:8px;}
 .sec.sec > .small + .small,
 .sec.sec > * + .note{margin-top:10px;}
@@ -423,7 +423,7 @@ justify-content:center;}
 .cta:active{--cta-edge:2px;transform:translateY(3px);}
 /* Pairs実測: 307px幅 / 高さ72px = 4.26:1 */
 .sec .cta,.fv .cta{max-width:307px;min-height:72px;display:flex;align-items:center;justify-content:center;margin-left:auto;margin-right:auto;}
-.cta-micro{display:block;margin:0 auto 8px;font-size:13px;font-weight:700;color:var(--accent);text-align:center;line-height:1.6;letter-spacing:.02em;}
+.cta-micro{display:block;margin:0 auto;font-size:13px;font-weight:700;color:var(--accent);text-align:center;line-height:1.6;letter-spacing:.02em;}
 .cta .ic{margin-left:6px;}
 
 /* ── カード ── */
@@ -1603,7 +1603,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .badge{max-width:102px;border-width:2px;padding:5px 3px;}
   .badge .n{font-size:clamp(22px,6.4vw,26px);}
   .badge .t,.badge .u{font-size:12px;line-height:1.35;color:var(--text-primary);}
-  /* CTA: ほぼ全幅・高さ58px。「入力は約30秒」は20px→13px */
+  /* CTA: ほぼ全幅・高さ58px。「入力は30秒」は20px→13px */
   .fv .cta-micro{font-size:13px;line-height:1.4;margin:0 auto 6px;}
   .sec .cta,.fv .cta{max-width:none;min-height:58px;padding:15px 28px calc(15px + var(--cta-edge));font-size:16px;}
   .fv .note{margin-top:12px;}
@@ -1717,16 +1717,23 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .cta-band .cta:active,.sec-fill .cta:active{box-shadow:0 4px 12px rgba(0,60,70,.30);}
 .cta-band .cta-lead{color:#FFFFFF;}
 .cta-band .cta-micro{color:#FFFFFF;}
-/* CTA直下の安心コピー。クリック直前の不安（費用・在職中・学歴）を打ち消す。
-   文言はすべてページ内の既存記載（FAQ回答・S8）に裏付けがあるものだけを使う */
+/* CTA直上の実績コピー（＼入社半年後の定着率100％／）。
+   並びは リード → .cta-note → CTA → .cta-micro */
 .cta-note{
-  display:block;margin:10px auto 0;
+  display:block;margin:0 auto 8px;
   font-size:12px;font-weight:500;color:var(--mute);
   text-align:center;line-height:1.6;
 }
 .cta-band .cta-note,.sec-fill .cta-note{color:rgba(255,255,255,.92);}
-/* CTAと安心コピーはひと組。.sec.sec > * + * の32/40pxを打ち消し、CTA直下に寄せる */
-.sec.sec > .cta + .cta-note{margin-top:10px;}
+/* CTAとひと組。.sec.sec > * + * の32/40pxを打ち消して密着させる */
+/* 親が .sec / .fv / .cta-band-inner のどれでも同じ間隔になるよう、
+   隣接セレクタだけで指定する（.sec.sec > * + * の32/40pxより詳細度が高い） */
+.cta-lead + .cta-note{margin-top:10px;}
+.cta-note + .cta{margin-top:0;}
+.cta + .cta-micro{margin-top:10px;margin-bottom:0;}
+.sec.sec > .cta-lead + .cta-note{margin-top:10px;}
+.sec.sec > .cta-note + .cta{margin-top:0;}
+.sec.sec > .cta + .cta-micro{margin-top:10px;}
 @media (min-width:768px){.cta-note{font-size:13px;}}
 @media (max-width:767px){
   .cta-band{padding-top:56px;padding-bottom:60px;}
@@ -1741,7 +1748,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .sec > *:last-child{margin-bottom:0;}
 
 </style>
-<link rel="stylesheet" href="/aisho/fv-photo.css?v=20260820-5">
+<link rel="stylesheet" href="/aisho/fv-photo.css?v=20260820-6">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -1811,8 +1818,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <p class="body sub"><span class="np">パーソナルファイル</span>は、あなたの性格を<span class="b navy">80タイプ</span>に分類する、<br class="pconly"><span class="np">キャリアパーソナリティ診断</span>で、AIと5万人のデータをもとに分析。<br class="pconly"><span class="b marker">あなたと相性のいい仕事だけを、厳選してご紹介します。</span></p>
 
-    <div class="cta-micro">入力は約30秒</div>
+    <div class="cta-note">＼入社半年後の定着率100％／</div>
     <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv" data-cta="aishou01_fv">無料の適職診断を受ける</a>
+    <div class="cta-micro">入力は30秒</div>
 
     <div class="badges">
       <div class="badge"><div class="t">診断実績</div><div class="n"><span class="num-mont">5万</span>人</div><div class="u">以上 ※1</div></div>
@@ -1964,9 +1972,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <section class="sec cta-band">
     <div class="cta-band-inner">
       <div class="cta-lead"><span class="np">あなたが本当に</span><span class="np">活躍できる仕事と</span><span class="np">出会いませんか？</span></div>
-      <div class="cta-micro">入力は約30秒</div>
+      <div class="cta-note">＼入社半年後の定着率100％／</div>
       <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_mid" data-cta="aishou01_mid">無料の適職診断を受ける</a>
-      <div class="cta-note">入社半年後の定着率100％</div>
+      <div class="cta-micro">入力は30秒</div>
     </div>
   </section>
 
@@ -2054,9 +2062,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     </div>
 
     <div class="cta-lead"><span class="np">ここから先は、</span><span class="np">一人で決めなくて大丈夫です。</span></div>
-    <div class="cta-micro">入力は約30秒</div>
+    <div class="cta-note">＼入社半年後の定着率100％／</div>
     <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_after" data-cta="aishou01_after">無料の適職診断を受ける</a>
-      <div class="cta-note">入社半年後の定着率100％</div>
+      <div class="cta-micro">入力は30秒</div>
   </section>
 
   <!-- ============ S7 ｜ PROOF ============ -->
@@ -2214,9 +2222,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <p class="body b navy" style="margin-top:22px;">その15分が、次の3年を決めます。</p>
     </div>
 
-    <div class="cta-micro">入力は約30秒</div>
+    <div class="cta-note">＼入社半年後の定着率100％／</div>
     <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_flow" data-cta="aishou01_flow">無料の適職診断を受ける</a>
-      <div class="cta-note">入社半年後の定着率100％</div>
+      <div class="cta-micro">入力は30秒</div>
   </section>
 
   <!-- ============ S10 ｜ STORIES ============ -->
@@ -2323,9 +2331,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <section class="sec cta-band cta-band--final">
     <div class="cta-band-inner">
       <div class="cta-lead"><span class="np">条件だけで</span><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
-      <div class="cta-micro">入力は約30秒</div>
+      <div class="cta-note">＼入社半年後の定着率100％／</div>
       <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end" data-cta="aishou01_end">無料の適職診断を受ける</a>
-      <div class="cta-note">入社半年後の定着率100％</div>
+      <div class="cta-micro">入力は30秒</div>
     </div>
   </section>
 
@@ -2358,7 +2366,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         </ul>
       </div>
       <div class="cta-card">
-        <div class="cta-micro">入力は約30秒</div>
+        <div class="cta-micro">入力は30秒</div>
         <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_side" data-cta="aishou01_side"><span class="free">無料</span>適職診断を受ける</a>
       </div>
     </div>
