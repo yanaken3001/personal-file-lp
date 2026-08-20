@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-0850">
+<html lang="ja" data-build="20260820-0940">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -421,6 +421,25 @@ justify-content:center;}
 .cta{display:block;position:relative;background-image:var(--cta-grad),var(--cta-grad-dark);background-size:100% calc(100% - var(--cta-edge)),100% 100%;background-position:top left,top left;background-repeat:no-repeat;color:#FFFFFF;border-radius:999px;padding:16px 28px calc(16px + var(--cta-edge));font-size:17px;font-weight:700;line-height:1.5;text-align:center;min-height:56px;transition:transform .15s;}
 .cta:after{content:"";position:absolute;top:calc(50% - var(--cta-edge)/2);right:20px;width:10px;height:10px;margin-top:-5px;border-top:3px solid #FFFFFF;border-right:3px solid #FFFFFF;transform:rotate(45deg);transition:right .2s;}.cta>span{font-size:14px;}@media (hover:hover){.cta:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,193,212,.45);}}
 .cta:active{--cta-edge:2px;transform:translateY(3px);}
+/* CTAが画面内に入った瞬間、1回だけ光沢を走らせる。
+   ループさせないのが条件。常時アニメは広告要素と認識されて
+   視線が回避される（NN/g バナーブラインドネス）ため使わない。
+   prefers-reduced-motion では下の @media で無効化する */
+.cta{overflow:hidden;}
+.cta::before{
+  content:"";position:absolute;top:0;bottom:0;left:-55%;width:38%;
+  background:linear-gradient(100deg,
+    rgba(255,255,255,0) 0%,rgba(255,255,255,.50) 50%,rgba(255,255,255,0) 100%);
+  transform:skewX(-18deg);opacity:0;pointer-events:none;
+}
+/* fill-modeは付けない。付けると終了後も left:118% に留まり、
+   overflow:hidden の内側でscrollWidthを押し広げ続けるため */
+.cta.is-shine::before{animation:cta-shine .9s cubic-bezier(.22,.61,.36,1) 1;}
+@keyframes cta-shine{
+  0%{left:-55%;opacity:0;}
+  12%{opacity:1;}
+  100%{left:118%;opacity:0;}
+}
 /* Pairs実測: 307px幅 / 高さ72px = 4.26:1 */
 .sec .cta,.fv .cta{max-width:307px;min-height:72px;display:flex;align-items:center;justify-content:center;margin-left:auto;margin-right:auto;}
 .cta-micro{display:block;margin:0 auto;font-size:13px;font-weight:700;color:var(--accent);text-align:center;line-height:1.6;letter-spacing:.02em;}
@@ -1565,6 +1584,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 @media (prefers-reduced-motion:reduce){
   .job .job-body,.jobs-dots button,.cta,.card{transition:none !important;}
   .jobs-track{scroll-behavior:auto !important;}
+  .cta.is-shine::before{animation:none !important;opacity:0 !important;}
 }
 
 /* ── ここからスマホ（767px以下）。基準幅390px ────────────────────── */
@@ -1825,7 +1845,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <p class="body sub"><span class="np">パーソナルファイル</span>は、あなたの性格を<span class="b navy">80タイプ</span>に分類する、<br class="pconly"><span class="np">キャリアパーソナリティ診断</span>で、AIと5万人のデータをもとに分析。<br class="pconly"><span class="b marker">あなたと相性のいい仕事だけを、厳選してご紹介します。</span></p>
 
     <div class="cta-micro">入力は30秒</div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv" data-cta="aishou01_fv">無料の適職診断を受ける</a>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_fv" data-cta="aishou01_fv">無料で適職を診断する</a>
 
     <div class="badges">
       <div class="badge"><div class="t">診断実績</div><div class="n"><span class="num-mont">5万</span>人</div><div class="u">以上 ※1</div></div>
@@ -1978,8 +1998,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="cta-band-inner">
       <div class="cta-lead"><span class="np">あなたが本当に</span><span class="np">活躍できる仕事と</span><span class="np">出会いませんか？</span></div>
       <div class="cta-note"><span class="sl">＼</span>入社半年後の定着率100％<span class="sl">／</span></div>
-      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_mid" data-cta="aishou01_mid">無料の適職診断を受ける</a>
-      <div class="cta-micro">入力は30秒</div>
+      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_mid" data-cta="aishou01_mid">求人票にない自分を知る</a>
+      <div class="cta-micro">入力は30秒・診断も相談もすべて無料</div>
     </div>
   </section>
 
@@ -2068,8 +2088,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
     <div class="cta-lead"><span class="np">ここから先は、</span><span class="np">一人で決めなくて大丈夫です。</span></div>
     <div class="cta-note"><span class="sl">＼</span>入社半年後の定着率100％<span class="sl">／</span></div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_after" data-cta="aishou01_after">無料の適職診断を受ける</a>
-      <div class="cta-micro">入力は30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_after" data-cta="aishou01_after">診断のあと、相談してみる</a>
+      <div class="cta-micro">入力は30秒・診断も相談もすべて無料</div>
   </section>
 
   <!-- ============ S7 ｜ PROOF ============ -->
@@ -2228,8 +2248,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     </div>
 
     <div class="cta-note"><span class="sl">＼</span>入社半年後の定着率100％<span class="sl">／</span></div>
-    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_flow" data-cta="aishou01_flow">無料の適職診断を受ける</a>
-      <div class="cta-micro">入力は30秒</div>
+    <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_flow" data-cta="aishou01_flow">まずは診断だけ受けてみる</a>
+      <div class="cta-micro">入力は30秒・診断も相談もすべて無料</div>
   </section>
 
   <!-- ============ S10 ｜ STORIES ============ -->
@@ -2337,8 +2357,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="cta-band-inner">
       <div class="cta-lead"><span class="np">条件だけで</span><span class="np">求人を探すのは、</span><span class="np">もう終わりにしませんか。</span></div>
       <div class="cta-note"><span class="sl">＼</span>入社半年後の定着率100％<span class="sl">／</span></div>
-      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end" data-cta="aishou01_end">無料の適職診断を受ける</a>
-      <div class="cta-micro">入力は30秒</div>
+      <a class="cta" href="https://per-sonal.co.jp/personalfile/contact/?route=aishou01_end" data-cta="aishou01_end">相性で仕事を探してみる</a>
+      <div class="cta-micro">入力は30秒・診断も相談もすべて無料</div>
     </div>
   </section>
 
@@ -2656,6 +2676,25 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
+})();
+</script>
+
+<script>
+/* CTA光沢：画面内に入ったら1回だけ。1要素につき1回で、以後は監視を外す。
+   追従バー(.bar .btn)は常時見えているため対象外（常時アニメを避ける）。 */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(mq && mq.matches) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el = en.target;
+      io.unobserve(el);
+      setTimeout(function(){ el.classList.add('is-shine'); }, 240);
+    });
+  }, {threshold:0.6});
+  document.querySelectorAll('.cta').forEach(function(el){ io.observe(el); });
 })();
 </script>
 
