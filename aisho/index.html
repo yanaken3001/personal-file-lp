@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-build="20260820-1920">
+<html lang="ja" data-build="20260824-speed-v1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,12 +31,30 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-S4XQS4E3G0');
+  (function(){
+    var loaded = false;
+    var triggers = ['pointerdown','touchstart','wheel','keydown'];
+    var loadGtag = function(){
+      if (loaded) return;
+      loaded = true;
+      triggers.forEach(function(eventName){
+        window.removeEventListener(eventName, loadGtag);
+      });
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-S4XQS4E3G0';
+      document.head.appendChild(script);
+    };
+    triggers.forEach(function(eventName){
+      window.addEventListener(eventName, loadGtag, {passive:true});
+    });
+    window.setTimeout(loadGtag, 8000);
+  })();
 </script>
 
 <!-- Meta Pixel（既存トップと同一ID） -->
@@ -57,13 +75,42 @@
   src="https://www.facebook.com/tr?id=519412346829983&ev=PageView&noscript=1"
 /></noscript>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&family=Montserrat:wght@700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/aisho/assets/fv-job-search-v1.webp" fetchpriority="high">
-<script src="https://cdn.tailwindcss.com"></script>
+
+<style id="deferred-fonts" media="not all">
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:400;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-400-b6b5db1c58d7.woff2") format("woff2");}
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:700;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-700-1095aa2bfd5b.woff2") format("woff2");}
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:800;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-800-9402f7da1d26.woff2") format("woff2");}
+</style>
+<script>
+  (function(){
+    var loaded = false;
+    var triggers = ['pointerdown','touchstart','wheel','keydown'];
+    var loadDeferredFonts = function(){
+      if (loaded) return;
+      loaded = true;
+      triggers.forEach(function(eventName){
+        window.removeEventListener(eventName, loadDeferredFonts);
+      });
+      document.getElementById('deferred-fonts').media = 'all';
+    };
+    triggers.forEach(function(eventName){
+      window.addEventListener(eventName, loadDeferredFonts, {passive:true});
+    });
+    window.setTimeout(loadDeferredFonts, 8000);
+  })();
+</script>
 
 <style>
+/* 初期表示に必要なグリフだけをGoogle Fontsの同一書体から抽出したLP専用サブセット。 */
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:400;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-400-critical-70319c4eb301.woff2") format("woff2");unicode-range:U+0020-007E,U+203B,U+3001-3002,U+3042,U+3059,U+305F,U+3066-3068,U+306A-306B,U+306E-306F,U+3079,U+3082,U+308B,U+3092,U+30A1-30A4,U+30AD,U+30BD,U+30BF,U+30C6-30C7,U+30CA,U+30D1,U+30D5,U+30E3,U+30EA-30EB,U+30FB-30FC,U+4E07,U+4E0A,U+4EBA,U+4EE3,U+4EE5,U+5165,U+5206,U+534A,U+5B9A,U+5B9F,U+5E74,U+5F8C,U+6027,U+65AD,U+6790,U+683C,U+7387,U+76F8,U+7740,U+793E,U+7E3E,U+8077,U+8A3A,U+8AC7,U+8EE2,U+985E;}
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:700;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-700-critical-65066f11dee5.woff2") format("woff2");unicode-range:U+0020-007E,U+3001-3002,U+3042,U+3044,U+304B,U+3051,U+3053-3054,U+3057,U+3059,U+305F-3060,U+3066-3068,U+306A-306B,U+306E-306F,U+307E,U+308A-308C,U+3092-3093,U+30A4,U+30BF,U+30D7,U+30FB,U+4E8B,U+4ECA,U+4ECB,U+4ED5,U+5165,U+5206,U+5229,U+529B,U+5316,U+53B3,U+53D7,U+58F0,U+5C31,U+6027,U+6599,U+65AD,U+672A,U+6D41,U+7121,U+7279,U+7406,U+7528,U+7531,U+767B,U+76F8,U+79D2,U+7D39,U+7D4C,U+8005,U+8077,U+8A3A,U+8EE2,U+9069,U+9078,U+9332,U+9A13,U+FF0F,U+FF1F,U+FF3C;}
+@font-face{font-family:"Noto Sans JP";font-style:normal;font-weight:800;font-display:swap;src:url("/aisho/assets/fonts/noto-sans-jp-800-critical-ecd3666e63fb.woff2") format("woff2");unicode-range:U+0020-007E,U+3002,U+300C-300D,U+3042,U+3044,U+304B-304C,U+305F,U+3067,U+306A,U+306F,U+3081-3082,U+3084,U+3089,U+308A-308C,U+308F,U+4E8B,U+4EBA,U+4ED5,U+6599,U+7121,U+7406,U+7531,U+8F9E;}
+@font-face{font-family:"Zen Maru Gothic";font-style:normal;font-weight:500;font-display:swap;src:url("/aisho/assets/fonts/zen-maru-gothic-500-4493caaecf92.woff2") format("woff2");}
+@font-face{font-family:"Zen Maru Gothic";font-style:normal;font-weight:700;font-display:swap;src:url("/aisho/assets/fonts/zen-maru-gothic-700-61e82a214003.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:700;font-display:swap;src:url("/aisho/assets/fonts/montserrat-700-a41feb5308af.woff2") format("woff2");unicode-range:U+0051;}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:800;font-display:swap;src:url("/aisho/assets/fonts/montserrat-800-13bc1c94e299.woff2") format("woff2");unicode-range:U+0030-0039;}
+
 :root{
   /* Brand */
   --brand-primary:#00C1D4;
@@ -163,6 +210,11 @@ p{margin:0;}
   width:100%;
   background:#FFFFFF;
   overflow-x:hidden; /* 80グリッドのツールチップ(.tip)がセル外にはみ出し横スクロールを誘発するのを防ぐ */
+}
+/* 初期表示ではFVより下の描画を省き、スクロール直前にブラウザへ描画させる。 */
+.page > .sec:not(#fv),.page > .site-foot{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 1100px;
 }
 
 /* ── 右サイドレール（hataractive SideEntryForm 実測値） ── */
@@ -484,6 +536,7 @@ justify-content:center;}
 }
 .q2-stat .t{font-size:12px;color:var(--navy);line-height:1.3;}
 .q2-stat .n{font-size:21px;font-weight:800;color:var(--accent);line-height:1.25;white-space:nowrap;}
+.q2-stat .num-mont{line-height:calc(1.25em - 1px);}
 .q2-stat .u{font-size:12px;color:var(--navy);line-height:1.3;}
 
 .q2-lead{margin:0 0 12px;font-size:16px;font-weight:700;color:var(--ink);line-height:1.5;}
@@ -497,6 +550,7 @@ justify-content:center;}
   .q2-btn{min-height:58px;font-size:17px;}
   .q2-lead{font-size:17px;}
   .q2-stat .n{font-size:23px;}
+  .q2-stat .num-mont{line-height:calc(1.25em - 2px);}
   .q2-stats{gap:10px;}
 }
 /* 選択肢は本体CTAと同じグラデーション（押せることを一目で伝える） */
@@ -1881,7 +1935,44 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .sec > *:last-child{margin-bottom:0;}
 
 </style>
-<link rel="stylesheet" href="/aisho/fv-photo.css?v=20260820-10">
+<style>
+/* FV-only photo variant. Everything below the FV remains identical. */
+#fv.fv{padding:0 0 46px;background:#FFFFFF;}
+#fv > .jobs{display:none !important;}
+#fv h1{max-width:none;margin:0;padding:38px 32px 34px;background:#F4FBFB;color:#1F3A3A;font-size:40px;line-height:1.34;letter-spacing:-.025em;}
+@media (min-width:768px) and (max-width:1107px){#fv h1{font-size:30px;line-height:1.4;}}
+#fv .fv-v3-photo{width:100%;max-width:none;aspect-ratio:5/2;margin:0;overflow:hidden;border-top:1px solid #DAE4E5;background:#F4FBFB;line-height:0;}
+#fv .fv-v3-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 44%;}
+#fv .sub{max-width:624px;margin:0 auto;padding:30px 20px 18px;color:var(--text-primary);font-size:16px;line-height:1.9;}
+#fv .cta-micro{margin-top:10px;}
+#fv .cta{width:320px;max-width:calc(100% - 40px);min-height:60px;}
+#fv .badges{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:520px;max-width:calc(100% - 40px);margin:26px auto 0;overflow:hidden;background:#FFFFFF;border:1px solid #B9DDE1;border-radius:8px;}
+#fv .badge{max-width:none;min-height:86px;aspect-ratio:auto;padding:12px 8px;border:0;border-right:1px solid #DAE4E5;border-radius:0;background:#FFFFFF;}
+#fv .badge:last-child{border-right:0;}
+#fv .badge .t,#fv .badge .u{color:var(--text-secondary);font-size:13px;line-height:1.4;}
+#fv .badge .n{color:#009DB3;font-size:25px;line-height:1.18;}
+#fv .note{width:520px;max-width:calc(100% - 40px);margin-left:auto;margin-right:auto;color:var(--text-tertiary);}
+@media (max-width:767px){
+  #fv.fv{padding-bottom:34px;}
+  #fv h1{margin:0;padding:27px 20px 24px;font-size:clamp(25px,7.15vw,28px);line-height:1.4;}
+  #fv .fv-v3-photo{aspect-ratio:2/1;}
+  #fv .fv-v3-photo img{object-position:center 45%;}
+  #fv .sub{margin:0 auto;padding:22px 20px 14px;font-size:16px;line-height:1.82;}
+  #fv .cta-micro{margin-bottom:0;font-size:13px;}
+  #fv .cta{width:calc(100% - 40px);max-width:350px;min-height:56px;padding:14px 38px 18px;font-size:16px;}
+  #fv .badges{max-width:calc(100% - 40px);margin-top:22px;}
+  #fv .badge{min-height:76px;padding:10px 4px;}
+  #fv .badge .t,#fv .badge .u{font-size:12px;}
+  #fv .badge .n{font-size:21px;}
+  #fv .note{max-width:calc(100% - 40px);font-size:12px;line-height:1.65;}
+}
+@media (max-width:359px){
+  #fv h1{font-size:21px;}
+  #fv .sub{font-size:14px;}
+  #fv .badge .n{font-size:19px;}
+  #fv .badge .t,#fv .badge .u{font-size:11px;}
+}
+</style>
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -2623,7 +2714,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   var track = document.getElementById('jobsTrack');
   var dots  = document.getElementById('jobsDots');
-  if (track && dots) {
+  if (track && dots && track.closest('.jobs') && getComputedStyle(track.closest('.jobs')).display !== 'none') {
     var makeCard = function(j, i, clone){
       var el = document.createElement('div');
       el.className = 'job' + (clone ? ' is-clone' : '');
@@ -2770,25 +2861,39 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   var g = document.getElementById('grid80');
   if (g) {
-    var html = '';
-    for (var i = 0; i < 80; i++) {
-      var code = CATS[Math.floor(i / 10)] + '-' + ((i % 10) + 1 < 10 ? '0' : '') + ((i % 10) + 1);
-      html += '<div class="cell" tabindex="0">' + code +
-              '<span class="tip">' + TYPE_NAMES[i] + '</span></div>';
-    }
-    g.innerHTML = html;
-    /* タッチ端末でもホバー相当の表示ができるようにタップで切り替える */
-    var cells=[].slice.call(g.querySelectorAll('.cell'));
-    var clearCells=function(){ cells.forEach(function(c){ c.classList.remove('is-on'); }); };
-    cells.forEach(function(c){
-      c.addEventListener('click', function(e){
-        e.stopPropagation();
-        var on=c.classList.contains('is-on');
-        clearCells();
-        if(!on) c.classList.add('is-on');
+    var initGrid = function(){
+      if (g.dataset.ready === 'true') return;
+      g.dataset.ready = 'true';
+      var html = '';
+      for (var i = 0; i < 80; i++) {
+        var code = CATS[Math.floor(i / 10)] + '-' + ((i % 10) + 1 < 10 ? '0' : '') + ((i % 10) + 1);
+        html += '<div class="cell" tabindex="0">' + code +
+                '<span class="tip">' + TYPE_NAMES[i] + '</span></div>';
+      }
+      g.innerHTML = html;
+      /* タッチ端末でもホバー相当の表示ができるようにタップで切り替える */
+      var cells=[].slice.call(g.querySelectorAll('.cell'));
+      var clearCells=function(){ cells.forEach(function(c){ c.classList.remove('is-on'); }); };
+      cells.forEach(function(c){
+        c.addEventListener('click', function(e){
+          e.stopPropagation();
+          var on=c.classList.contains('is-on');
+          clearCells();
+          if(!on) c.classList.add('is-on');
+        });
       });
-    });
-    document.addEventListener('click', clearCells);
+      document.addEventListener('click', clearCells);
+    };
+    if ('IntersectionObserver' in window) {
+      var gridObserver = new IntersectionObserver(function(entries){
+        if (!entries.some(function(entry){ return entry.isIntersecting; })) return;
+        gridObserver.disconnect();
+        initGrid();
+      }, {rootMargin:'800px 0px'});
+      gridObserver.observe(g);
+    } else {
+      initGrid();
+    }
   }
 
   /* 追従バー：FVがビューポート外に出てから表示する */
