@@ -3583,6 +3583,21 @@
     function buildInviteMessage(code80, nickname) {
       return `私は「${code80}｜${nickname}」でした。\nあなたとの相性を見てみたい！\n無料・登録不要・約3分`;
     }
+    // LINE共有。スマホ（iOS/Android）は line.me/R/share（LINEの公式URLスキーム。送信先選択画面を開く）。
+    // 以前の social-plugins.line.me/lineit/share は Web 版の共有ページで、LINEアプリ内ブラウザ等から
+    // target=_blank で開くと外部ブラウザに出されて LINE Web ログイン画面で止まるため、スマホでは使わない。
+    // PC は line.me/R/share が非対応（公式: デスクトップ版は対象外）なので従来どおり lineit/share。本文は「文面 + 改行 + URL」。
+    function isMobileDevice() {
+      const ua = navigator.userAgent || '';
+      return /iPhone|iPad|iPod|Android/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    }
+    function buildLineShareHref(text, url) {
+      if (isMobileDevice()) {
+        const body = text.replace(/\n+$/, '') + '\n' + url;
+        return `https://line.me/R/share?text=${encodeURIComponent(body)}`;
+      }
+      return `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    }
     // 招待URLで開いたときの経路（utm_medium）。INVITE_MEDIUMS の4つだけをそのまま返し、無ければ none、それ以外はすべて other。
     // 自由な文字列を計測の値にしない（GA4 のカーディナリティと、書き換えられた値の混入を防ぐ）
     function getInviteSource() {
@@ -7946,8 +7961,11 @@
         trackCompatShare('x', 'compat_result');
       };
       const shareToLine = () => {
-        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrlLine)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        const lineHrefCompat = buildLineShareHref(shareText, shareUrlLine);
         trackCompatShare('line', 'compat_result');
+        // スマホはタップ直後に同じタブで遷移（window.open / _blank だと LINEアプリ内ブラウザから外部ブラウザに出される）
+        if (isMobileDevice()) window.location.href = lineHrefCompat;
+        else window.open(lineHrefCompat, '_blank');
       };
 
       return (
@@ -8251,14 +8269,26 @@
       const copyBtnRef = React.useRef(null);
       const copyingRef = React.useRef(false);
       useDialogBehavior({ dialogRef, closeRef, onClose, returnFocusSelector: '.pf-match-main' });
-      React.useEffect(() => () => window.clearTimeout(copiedTimerRef.current), []);
+      const clearLineWatch = () => {
+        window.clearTimeout(lineTimerRef.current);
+        if (lineLeaveRef.current) {
+          document.removeEventListener('visibilitychange', lineLeaveRef.current);
+          window.removeEventListener('pagehide', lineLeaveRef.current);
+          lineLeaveRef.current = null;
+        }
+      };
+      React.useEffect(() => () => { window.clearTimeout(copiedTimerRef.current); clearLineWatch(); }, []);
 
       const nickname = TYPE_NICKNAMES[personalityCode] || personalityCode;
       const message = buildInviteMessage(get80Code(behaviorName, personalityCode), nickname);
       const lineInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.line);
       const xInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.x);
       const copyInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.copy);
-      const lineHref = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(lineInviteUrl)}&text=${encodeURIComponent(message)}`;
+      const lineMobile = isMobileDevice();
+      const lineHref = buildLineShareHref(message, lineInviteUrl);
+      const [lineHint, setLineHint] = React.useState(false);
+      const lineTimerRef = React.useRef(null);
+      const lineLeaveRef = React.useRef(null);
       const xHref = `https://x.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(xInviteUrl)}&hashtags=${encodeURIComponent('80CARDS,80タイプ診断')}`;
       const matrixUrl = 'https://www.personal-file.jp/80cards/compatibility.html';
 
@@ -8270,6 +8300,22 @@
         share_status: status,
         ...trackBase,
       });
+
+      // LINEボタンを押したあと、2.5秒たってもページが見えたままなら（LINEが開かなかった）「リンクをコピー」を案内する。
+      // ページが隠れた／離れた（LINEが開いた）場合は出さない。自動コピーはしない
+      const handleLineClick = () => {
+        track('line', 'initiated');
+        if (!lineMobile) return;
+        clearLineWatch();
+        setLineHint(false);
+        lineLeaveRef.current = () => clearLineWatch();
+        document.addEventListener('visibilitychange', lineLeaveRef.current);
+        window.addEventListener('pagehide', lineLeaveRef.current);
+        lineTimerRef.current = window.setTimeout(() => {
+          clearLineWatch();
+          if (!document.hidden) setLineHint(true);
+        }, 2500);
+      };
 
       // コピー処理中の再入は無視する（連打で done / error が重複して記録されるのを防ぐ）。
       // 終わったらコピーボタンへフォーカスを戻す（代替経路の execCommand が一時的な入力欄にフォーカスを移すため）
@@ -8310,7 +8356,7 @@
             </p>
 
             <div className="pf-modal-actions">
-              <a className="pf-btn pf-btn--line" href={lineHref} target="_blank" rel="noopener noreferrer" onClick={() => track('line', 'initiated')}>
+              <a className="pf-btn pf-btn--line" href={lineHref} {...(lineMobile ? {} : { target: '_blank', rel: 'noopener noreferrer' })} onClick={handleLineClick}>
                 LINEで送る
               </a>
               <a className="pf-btn pf-btn--main" href={xHref} target="_blank" rel="noopener noreferrer" onClick={() => track('x', 'initiated')}>
@@ -8323,6 +8369,7 @@
 
             <div className="pf-invite-status" role="status" aria-live="polite">
               {copied && <span className="pf-invite-copied">コピーしました</span>}
+              {lineHint && !copied && !copyFailed && <span className="pf-invite-failed"><K>LINEが</K><K>開かないときは、</K><K>「リンクをコピー」を</K><K>押して、</K><K>LINEに</K><K>貼り付けてください。</K></span>}
               {copyFailed && <span className="pf-invite-failed"><K>コピーできませんでした。</K><K>下のリンクを</K><K>選んで、</K><K>コピーしてください。</K></span>}
             </div>
             {copyFailed && (
