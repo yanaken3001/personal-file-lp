@@ -24,7 +24,7 @@ const EXPORT_NAMES = [
   'createEmptyScoreDelta', 'getScoredValue', 'getQuestionScoreDelta', 'applyQuestionScore',
   'get80Code', 'getPatternNo',
   'encodeMatchData', 'decodeMatchData',
-  'RARITY_MAX_TIER', 'RARITY_TIERS', 'RARITY_TIER_BY_TYPE', 'RARITY_NOTE_PHRASES', 'getRarity', 'rarityParam',
+  'RARITY_MAX_TIER', 'RARITY_TIERS', 'RARITY_TIER_BY_TYPE', 'getRarity', 'rarityParam',
 ];
 
 function makeSandbox() {

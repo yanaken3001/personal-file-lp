@@ -3576,9 +3576,8 @@
       II: 3, DI: 3,
       PP: 4, AA: 4, DD: 4,
     };
-    // 根拠の注記（結果画面にだけ小さく出す。結果画像には入れない）。連結すると次の文になる:
-    // 「レア度は、これまでの診断結果での出やすさをもとにした目安です（定期的に見直します）」
-    const RARITY_NOTE_PHRASES = ['レア度は、', 'これまでの', '診断結果での', '出やすさを', 'もとにした', '目安です', '（定期的に', '見直します）'];
+    // 根拠の注記（「これまでの診断結果での出やすさをもとにした目安」）は 2026-10-08 ユーザー判断で画面から削除。
+    // 段階は引き続き上の実データ（GA4実績）で決め、人数・割合は出さない
     function getRarity(personalityCode) {
       const tier = RARITY_TIER_BY_TYPE[personalityCode];
       if (!tier || !RARITY_TIERS[tier]) return null;
@@ -5221,9 +5220,6 @@
             </span>
             <span className="pf-rarity-name" aria-hidden="true">{rarity.label}</span>
           </div>
-          <p className="pf-rarity-note">
-            {RARITY_NOTE_PHRASES.map((phrase) => <K key={phrase}>{phrase}</K>)}
-          </p>
         </div>
       );
     }
