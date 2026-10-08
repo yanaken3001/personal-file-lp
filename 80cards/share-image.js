@@ -341,7 +341,7 @@
   var LAYOUT_STORY = {
     x: 540, align: 'center',
     glow: { x: 540, y: 930, r: 520 },
-    labelBase: 310, labelPx: 36, labelSp: 10,
+    labelBase: 310, labelPx: 52, labelSp: 12,
     codeBase: 498, codeMax: 200, codeMin: 120, codeW: 880, codeSp: 8,
     rarityTop: 532, starR: 40, starGap: 104, rarityLabelPx: 80, rarityLabelMin: 70, rarityLabelW: 900, rarityLabelGap: 22,
     charCx: 540, charTop: 744, charTopNoRarity: 590, charBottom: 1152, charMaxW: 720,
@@ -353,7 +353,7 @@
   var LAYOUT_SQUARE = {
     x: 80, align: 'left',
     glow: { x: 830, y: 300, r: 430 },
-    labelBase: 100, labelPx: 30, labelSp: 8,
+    labelBase: 104, labelPx: 44, labelSp: 10,
     codeBase: 262, codeMax: 176, codeMin: 110, codeW: 540, codeSp: 6,
     rarityTop: 298, starR: 36, starGap: 92, rarityLabelPx: 76, rarityLabelMin: 66, rarityLabelW: 560, rarityLabelGap: 18,
     charCx: 848, charTop: 64, charTopNoRarity: 64, charBottom: 505, charMaxW: 360,
