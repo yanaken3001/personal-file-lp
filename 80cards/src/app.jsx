@@ -5095,7 +5095,7 @@
     }
 
     // 相性ペア画像（9:16 と 1:1）。a=友だち（左）／b=自分（右）。点数とラベルは getCompatibility() の値をそのまま渡す
-    function usePairImages({ a, b, score, label }) {
+    function usePairImages({ a, b, score, label, tone }) {
       const prefixA = getBehaviorPrefix(a.behaviorName);
       const prefixB = getBehaviorPrefix(b.behaviorName);
       return useGeneratedImages(`${prefixA}${a.typeCode}|${prefixB}${b.typeCode}`, (mod) => mod.generatePair({
@@ -5103,6 +5103,7 @@
         b: { behaviorPrefix: prefixB, typeCode: b.typeCode, nickname: TYPE_NICKNAMES[b.typeCode] },
         score,
         label,
+        tone,
       }));
     }
 
@@ -7895,17 +7896,13 @@
 
     // --- CompatibilityResult（相性結果画面）---
     // creatorType / creatorBehaviorCode: 招待してくれた友だち（?match= の中身）。responderType / responderBehavior: 診断を終えた自分
-    function CompatibilityResult({ creatorType, creatorBehaviorCode, responderType, responderBehavior, onNewMatch }) {
+    function CompatibilityResult({ creatorType, creatorBehaviorCode, responderType, responderBehavior, onShowMyResult }) {
       const compat = getCompatibility(creatorType, responderType);
       const insights = getCompatibilityInsights(creatorType, responderType, compat);
       const metaA = TYPE_META[creatorType];
       const metaB = TYPE_META[responderType];
       const nickA = TYPE_NICKNAMES[creatorType];
       const nickB = TYPE_NICKNAMES[responderType];
-      const colorA = getTypeColor(creatorType);
-      const colorB = getTypeColor(responderType);
-      const groupA = GROUP_COLORS[creatorType.charAt(0)];
-      const groupB = GROUP_COLORS[responderType.charAt(0)];
 
       // 2人のペア画像（9:16 と 1:1）。表示された時点で裏で作っておく。左=友だち（招待した人）／右=自分
       const behaviorNameA = getMatchBehaviorName(creatorBehaviorCode);
@@ -7915,6 +7912,7 @@
         b: { typeCode: responderType, behaviorName: behaviorNameB },
         score: compat.score,
         label: compat.label,
+        tone: compat.tone,
       });
       const [pairModalOpen, setPairModalOpen] = React.useState(false);
 
@@ -7970,129 +7968,54 @@
 
       return (
         <div style={{ minHeight: '100vh', padding: '0 0 60px' }}>
-          {/* ヒーローエリア */}
-          <div style={{
-            background: `linear-gradient(135deg, ${groupA.color}20, #FFF5EE, ${groupB.color}20)`,
-            padding: '48px 24px 40px',
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-            {/* 装飾円 */}
-            <div style={{ position: 'absolute', top: '-40px', left: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: groupA.color + '10' }} />
-            <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: groupB.color + '10' }} />
+          {/* 詳細コンテンツ */}
+          <div style={{ maxWidth: '700px', margin: '0 auto', padding: '24px 20px 0' }}>
 
-            {/* Emoji × Emoji */}
+            {/* ペア画像（友だちと自分の2人。保存・共有できる） */}
+            <div className="pf-pair">
+              {pairImages.images ? (
+                <img
+                  className="pf-pair-img"
+                  src={pairImages.images.square.url}
+                  width={pairImages.images.square.width}
+                  height={pairImages.images.square.height}
+                  alt={pairAlt}
+                />
+              ) : (
+                <div className="pf-pair-wait" role="status">
+                  <K>{pairImages.status === 'error' ? '画像を作成できませんでした。' : '画像を作成しています…'}</K>
+                </div>
+              )}
+              <button type="button" className="btn-clean pf-sub-btn pf-image-share-btn pf-pair-btn" onClick={() => setPairModalOpen(true)}>
+                画像を保存・共有
+              </button>
+            </div>
+
+            {/* シェアボタン群 */}
             <div style={{
               display: 'flex',
-              alignItems: 'center',
+              gap: '10px',
               justifyContent: 'center',
-              gap: '24px',
-              marginBottom: '20px',
-              position: 'relative',
-              zIndex: 1
+              flexWrap: 'wrap',
+              margin: '24px 0'
             }}>
-              <div style={{ fontSize: '64px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>{metaA.emoji}</div>
-              <span style={{ fontSize: '28px', color: 'rgba(42,42,42,0.3)', fontWeight: '700' }}>×</span>
-              <div style={{ fontSize: '64px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>{metaB.emoji}</div>
+              <button onClick={shareToX} style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '12px 24px', background: '#1A1A2E', color: '#fff',
+                border: 'none', borderRadius: '28px', fontSize: '14px',
+                fontWeight: '700', cursor: 'pointer'
+              }}>
+                𝕏 でシェア
+              </button>
+              <button onClick={shareToLine} style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '12px 24px', background: '#06C755', color: '#fff',
+                border: 'none', borderRadius: '28px', fontSize: '14px',
+                fontWeight: '700', cursor: 'pointer'
+              }}>
+                LINE
+              </button>
             </div>
-
-            {/* ニックネーム */}
-            <p style={{
-              fontSize: '16px',
-              fontWeight: '700',
-              color: '#1A1A2E',
-              marginBottom: '24px',
-              position: 'relative',
-              zIndex: 1
-            }}>
-              <span style={{ color: colorA.primary }}>{nickA}</span>
-              <span style={{ color: 'rgba(42,42,42,0.3)', margin: '0 8px' }}>×</span>
-              <span style={{ color: colorB.primary }}>{nickB}</span>
-            </p>
-
-            {/* スコア */}
-            <div style={{
-              display: 'inline-flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '24px 40px',
-              background: 'rgba(255,255,255,0.7)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(255,255,255,0.8)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
-              position: 'relative',
-              zIndex: 1
-            }}>
-              <div style={{ fontSize: '32px', marginBottom: '4px' }}>{compat.icon}</div>
-              <div style={{
-                fontSize: '20px',
-                fontWeight: '800',
-                color: '#FF3B5C',
-                marginBottom: '4px',
-                fontFamily: "'Playfair Display', serif"
-              }}>
-                {compat.label}
-              </div>
-              <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
-                color: '#1A1A2E',
-                lineHeight: 1,
-                fontFamily: "'Inter', sans-serif"
-              }}>
-                {compat.score}<span style={{ fontSize: '24px' }}>点</span>
-              </div>
-              <div style={{
-                fontSize: '14px',
-                color: 'rgba(42,42,42,0.5)',
-                marginTop: '8px'
-              }}>
-                {compat.tone}
-              </div>
-            </div>
-          </div>
-
-          {/* 詳細コンテンツ */}
-          <div style={{ maxWidth: '700px', margin: '0 auto', padding: '0 20px' }}>
-
-            {/* 個別視点スコア */}
-            {compat.scoreA != null && (
-              <div style={{
-                display: 'flex',
-                gap: '12px',
-                margin: '24px 0',
-                justifyContent: 'center'
-              }}>
-                <div style={{
-                  flex: 1,
-                  maxWidth: '200px',
-                  padding: '14px',
-                  background: 'rgba(255,255,255,0.6)',
-                  backdropFilter: 'blur(12px)',
-                  borderRadius: '14px',
-                  textAlign: 'center',
-                  border: '1px solid rgba(255,255,255,0.7)'
-                }}>
-                  <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickA}から見た相性</div>
-                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorA.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreA}<span style={{ fontSize: '16px' }}>点</span></div>
-                </div>
-                <div style={{
-                  flex: 1,
-                  maxWidth: '200px',
-                  padding: '14px',
-                  background: 'rgba(255,255,255,0.6)',
-                  backdropFilter: 'blur(12px)',
-                  borderRadius: '14px',
-                  textAlign: 'center',
-                  border: '1px solid rgba(255,255,255,0.7)'
-                }}>
-                  <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickB}から見た相性</div>
-                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorB.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreB}<span style={{ fontSize: '16px' }}>点</span></div>
-                </div>
-              </div>
-            )}
 
             {/* 関係タイプバッジ */}
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
@@ -8160,56 +8083,10 @@
               </p>
             </div>
 
-            {/* ペア画像（友だちと自分の2人。保存・共有できる） */}
-            <div className="pf-pair">
-              {pairImages.images ? (
-                <img
-                  className="pf-pair-img"
-                  src={pairImages.images.square.url}
-                  width={pairImages.images.square.width}
-                  height={pairImages.images.square.height}
-                  alt={pairAlt}
-                />
-              ) : (
-                <div className="pf-pair-wait" role="status">
-                  <K>{pairImages.status === 'error' ? '画像を作成できませんでした。' : '画像を作成しています…'}</K>
-                </div>
-              )}
-              <button type="button" className="btn-clean pf-sub-btn pf-image-share-btn pf-pair-btn" onClick={() => setPairModalOpen(true)}>
-                画像を保存・共有
-              </button>
-            </div>
-
-            {/* シェアボタン群 */}
-            <div style={{
-              display: 'flex',
-              gap: '10px',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              margin: '24px 0'
-            }}>
-              <button onClick={shareToX} style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '12px 24px', background: '#1A1A2E', color: '#fff',
-                border: 'none', borderRadius: '28px', fontSize: '14px',
-                fontWeight: '700', cursor: 'pointer'
-              }}>
-                𝕏 でシェア
-              </button>
-              <button onClick={shareToLine} style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '12px 24px', background: '#06C755', color: '#fff',
-                border: 'none', borderRadius: '28px', fontSize: '14px',
-                fontWeight: '700', cursor: 'pointer'
-              }}>
-                LINE
-              </button>
-            </div>
-
-            {/* 他の友達との相性を調べるボタン */}
+            {/* 自分の診断結果を見るボタン（押すと、この人自身の結果画面へ） */}
             <div style={{ textAlign: 'center', margin: '32px 0' }}>
               <button
-                onClick={onNewMatch}
+                onClick={onShowMyResult}
                 style={{
                   width: '100%',
                   maxWidth: '360px',
@@ -8224,7 +8101,7 @@
                   boxShadow: '0 4px 20px rgba(232,98,43,0.3)'
                 }}
               >
-                他の友達との相性も調べる
+                自分の診断結果を見る
               </button>
             </div>
 
@@ -8633,8 +8510,8 @@
         window.scrollTo(0, 0);
       };
 
-      // 相性結果から「他の友達との相性も調べる」→ 自分の結果画面に戻り、新しいリンクを生成
-      const handleNewMatch = () => {
+      // 相性結果から「自分の診断結果を見る」→ この人自身の結果画面（ResultDetailScreen80。招待モーダルへの導線もそこにある）
+      const handleShowMyResult = () => {
         setShowCompatibility(false);
         window.scrollTo(0, 0);
       };
@@ -8730,7 +8607,7 @@
               creatorBehaviorCode={matchCreator.behaviorCode}
               responderType={responderType}
               responderBehavior={determineBehavioralType(scores, responderType)}
-              onNewMatch={handleNewMatch}
+              onShowMyResult={handleShowMyResult}
             />
           )}
         </div>

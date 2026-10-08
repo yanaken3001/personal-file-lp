@@ -5524,7 +5524,8 @@ function usePairImages({
   a,
   b,
   score,
-  label
+  label,
+  tone
 }) {
   const prefixA = getBehaviorPrefix(a.behaviorName);
   const prefixB = getBehaviorPrefix(b.behaviorName);
@@ -5540,7 +5541,8 @@ function usePairImages({
       nickname: TYPE_NICKNAMES[b.typeCode]
     },
     score,
-    label
+    label,
+    tone
   }));
 }
 
@@ -8679,7 +8681,7 @@ function CompatibilityResult({
   creatorBehaviorCode,
   responderType,
   responderBehavior,
-  onNewMatch
+  onShowMyResult
 }) {
   const compat = getCompatibility(creatorType, responderType);
   const insights = getCompatibilityInsights(creatorType, responderType, compat);
@@ -8687,10 +8689,6 @@ function CompatibilityResult({
   const metaB = TYPE_META[responderType];
   const nickA = TYPE_NICKNAMES[creatorType];
   const nickB = TYPE_NICKNAMES[responderType];
-  const colorA = getTypeColor(creatorType);
-  const colorB = getTypeColor(responderType);
-  const groupA = GROUP_COLORS[creatorType.charAt(0)];
-  const groupB = GROUP_COLORS[responderType.charAt(0)];
 
   // 2人のペア画像（9:16 と 1:1）。表示された時点で裏で作っておく。左=友だち（招待した人）／右=自分
   const behaviorNameA = getMatchBehaviorName(creatorBehaviorCode);
@@ -8705,7 +8703,8 @@ function CompatibilityResult({
       behaviorName: behaviorNameB
     },
     score: compat.score,
-    label: compat.label
+    label: compat.label,
+    tone: compat.tone
   });
   const [pairModalOpen, setPairModalOpen] = React.useState(false);
 
@@ -8764,195 +8763,64 @@ function CompatibilityResult({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      background: `linear-gradient(135deg, ${groupA.color}20, #FFF5EE, ${groupB.color}20)`,
-      padding: '48px 24px 40px',
-      textAlign: 'center',
-      position: 'relative',
-      overflow: 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'absolute',
-      top: '-40px',
-      left: '-40px',
-      width: '200px',
-      height: '200px',
-      borderRadius: '50%',
-      background: groupA.color + '10'
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'absolute',
-      bottom: '-40px',
-      right: '-40px',
-      width: '200px',
-      height: '200px',
-      borderRadius: '50%',
-      background: groupB.color + '10'
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '24px',
-      marginBottom: '20px',
-      position: 'relative',
-      zIndex: 1
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '64px',
-      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
-    }
-  }, metaA.emoji), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '28px',
-      color: 'rgba(42,42,42,0.3)',
-      fontWeight: '700'
-    }
-  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '64px',
-      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
-    }
-  }, metaB.emoji)), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '16px',
-      fontWeight: '700',
-      color: '#1A1A2E',
-      marginBottom: '24px',
-      position: 'relative',
-      zIndex: 1
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: colorA.primary
-    }
-  }, nickA), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'rgba(42,42,42,0.3)',
-      margin: '0 8px'
-    }
-  }, "\xD7"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: colorB.primary
-    }
-  }, nickB)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'inline-flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '24px 40px',
-      background: 'rgba(255,255,255,0.7)',
-      backdropFilter: 'blur(20px)',
-      borderRadius: '24px',
-      border: '1px solid rgba(255,255,255,0.8)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
-      position: 'relative',
-      zIndex: 1
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '32px',
-      marginBottom: '4px'
-    }
-  }, compat.icon), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '20px',
-      fontWeight: '800',
-      color: '#FF3B5C',
-      marginBottom: '4px',
-      fontFamily: "'Playfair Display', serif"
-    }
-  }, compat.label), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '56px',
-      fontWeight: '900',
-      color: '#1A1A2E',
-      lineHeight: 1,
-      fontFamily: "'Inter', sans-serif"
-    }
-  }, compat.score, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '24px'
-    }
-  }, "\u70B9")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '14px',
-      color: 'rgba(42,42,42,0.5)',
-      marginTop: '8px'
-    }
-  }, compat.tone))), /*#__PURE__*/React.createElement("div", {
-    style: {
       maxWidth: '700px',
       margin: '0 auto',
-      padding: '0 20px'
+      padding: '24px 20px 0'
     }
-  }, compat.scoreA != null && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pf-pair"
+  }, pairImages.images ? /*#__PURE__*/React.createElement("img", {
+    className: "pf-pair-img",
+    src: pairImages.images.square.url,
+    width: pairImages.images.square.width,
+    height: pairImages.images.square.height,
+    alt: pairAlt
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "pf-pair-wait",
+    role: "status"
+  }, /*#__PURE__*/React.createElement(K, null, pairImages.status === 'error' ? '画像を作成できませんでした。' : '画像を作成しています…')), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn-clean pf-sub-btn pf-image-share-btn pf-pair-btn",
+    onClick: () => setPairModalOpen(true)
+  }, "\u753B\u50CF\u3092\u4FDD\u5B58\u30FB\u5171\u6709")), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
-      gap: '12px',
-      margin: '24px 0',
-      justifyContent: 'center'
+      gap: '10px',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      margin: '24px 0'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: shareToX,
     style: {
-      flex: 1,
-      maxWidth: '200px',
-      padding: '14px',
-      background: 'rgba(255,255,255,0.6)',
-      backdropFilter: 'blur(12px)',
-      borderRadius: '14px',
-      textAlign: 'center',
-      border: '1px solid rgba(255,255,255,0.7)'
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '12px 24px',
+      background: '#1A1A2E',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '28px',
+      fontSize: '14px',
+      fontWeight: '700',
+      cursor: 'pointer'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, "\uD835\uDD4F \u3067\u30B7\u30A7\u30A2"), /*#__PURE__*/React.createElement("button", {
+    onClick: shareToLine,
     style: {
-      fontSize: '12px',
-      color: 'rgba(42,42,42,0.5)',
-      marginBottom: '4px'
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '12px 24px',
+      background: '#06C755',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '28px',
+      fontSize: '14px',
+      fontWeight: '700',
+      cursor: 'pointer'
     }
-  }, nickA, "\u304B\u3089\u898B\u305F\u76F8\u6027"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '24px',
-      fontWeight: '800',
-      color: colorA.primary,
-      fontFamily: "'Inter', sans-serif"
-    }
-  }, compat.scoreA, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '16px'
-    }
-  }, "\u70B9"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1,
-      maxWidth: '200px',
-      padding: '14px',
-      background: 'rgba(255,255,255,0.6)',
-      backdropFilter: 'blur(12px)',
-      borderRadius: '14px',
-      textAlign: 'center',
-      border: '1px solid rgba(255,255,255,0.7)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '12px',
-      color: 'rgba(42,42,42,0.5)',
-      marginBottom: '4px'
-    }
-  }, nickB, "\u304B\u3089\u898B\u305F\u76F8\u6027"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '24px',
-      fontWeight: '800',
-      color: colorB.primary,
-      fontFamily: "'Inter', sans-serif"
-    }
-  }, compat.scoreB, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '16px'
-    }
-  }, "\u70B9")))), /*#__PURE__*/React.createElement("div", {
+  }, "LINE")), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       margin: '20px 0'
@@ -9043,65 +8911,12 @@ function CompatibilityResult({
       lineHeight: 1.8
     }
   }, insights.caution)), /*#__PURE__*/React.createElement("div", {
-    className: "pf-pair"
-  }, pairImages.images ? /*#__PURE__*/React.createElement("img", {
-    className: "pf-pair-img",
-    src: pairImages.images.square.url,
-    width: pairImages.images.square.width,
-    height: pairImages.images.square.height,
-    alt: pairAlt
-  }) : /*#__PURE__*/React.createElement("div", {
-    className: "pf-pair-wait",
-    role: "status"
-  }, /*#__PURE__*/React.createElement(K, null, pairImages.status === 'error' ? '画像を作成できませんでした。' : '画像を作成しています…')), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "btn-clean pf-sub-btn pf-image-share-btn pf-pair-btn",
-    onClick: () => setPairModalOpen(true)
-  }, "\u753B\u50CF\u3092\u4FDD\u5B58\u30FB\u5171\u6709")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '10px',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-      margin: '24px 0'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: shareToX,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      padding: '12px 24px',
-      background: '#1A1A2E',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '28px',
-      fontSize: '14px',
-      fontWeight: '700',
-      cursor: 'pointer'
-    }
-  }, "\uD835\uDD4F \u3067\u30B7\u30A7\u30A2"), /*#__PURE__*/React.createElement("button", {
-    onClick: shareToLine,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      padding: '12px 24px',
-      background: '#06C755',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '28px',
-      fontSize: '14px',
-      fontWeight: '700',
-      cursor: 'pointer'
-    }
-  }, "LINE")), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       margin: '32px 0'
     }
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: onNewMatch,
+    onClick: onShowMyResult,
     style: {
       width: '100%',
       maxWidth: '360px',
@@ -9115,7 +8930,7 @@ function CompatibilityResult({
       cursor: 'pointer',
       boxShadow: '0 4px 20px rgba(232,98,43,0.3)'
     }
-  }, "\u4ED6\u306E\u53CB\u9054\u3068\u306E\u76F8\u6027\u3082\u8ABF\u3079\u308B")), /*#__PURE__*/React.createElement("div", {
+  }, "\u81EA\u5206\u306E\u8A3A\u65AD\u7D50\u679C\u3092\u898B\u308B")), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       padding: '32px 0',
@@ -9536,8 +9351,8 @@ function App() {
     window.scrollTo(0, 0);
   };
 
-  // 相性結果から「他の友達との相性も調べる」→ 自分の結果画面に戻り、新しいリンクを生成
-  const handleNewMatch = () => {
+  // 相性結果から「自分の診断結果を見る」→ この人自身の結果画面（ResultDetailScreen80。招待モーダルへの導線もそこにある）
+  const handleShowMyResult = () => {
     setShowCompatibility(false);
     window.scrollTo(0, 0);
   };
@@ -9612,7 +9427,7 @@ function App() {
     creatorBehaviorCode: matchCreator.behaviorCode,
     responderType: responderType,
     responderBehavior: determineBehavioralType(scores, responderType),
-    onNewMatch: handleNewMatch
+    onShowMyResult: handleShowMyResult
   }));
 }
 
