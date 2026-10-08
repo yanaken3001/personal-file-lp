@@ -190,6 +190,46 @@ try {
   check(await a.evaluate(() => document.activeElement === document.querySelector('.pf-btn--sub')), '代替経路（execCommand）のコピーのあと、コピーボタンにフォーカスが戻っていません');
   await ctxA.close();
 
+  // スマホ（iOS Safari / iOS Chrome / LINEアプリ内ブラウザ / Android Chrome / Instagram内）: LINEボタンは line.me/R/share を同じタブで開く
+  // （target なし。social-plugins.line.me/lineit/share を _blank で開くと、LINEアプリ内ブラウザから外部ブラウザに出されて LINE Web ログインで止まった）
+  const NL = String.fromCharCode(10);
+  const MOBILE_UAS = {
+    'iOS Safari': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+    'iOS Chrome': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/126.0.6478.153 Mobile/15E148 Safari/604.1',
+    'LINEアプリ内(iOS)': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari Line/14.9.0',
+    'Android Chrome': 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+    'Instagram内(iOS)': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 330.0.0.20.113',
+  };
+  for (const [label, ua] of Object.entries(MOBILE_UAS)) {
+    const ctxM = await browser.newContext({ viewport: { width: 360, height: 740 }, userAgent: ua, hasTouch: true, isMobile: true });
+    const m = await newPage(ctxM);
+    await m.goto(`${BASE}/80cards/?ga_off=1&dev_scores=${encodeURIComponent(scores)}`);
+    await m.waitForSelector('.pf-match-main', { timeout: 20000 });
+    await m.locator('.pf-match-main').click();
+    await m.waitForSelector('#pf-invite-title');
+    const lineA = m.locator('a.pf-btn--line');
+    const href = await lineA.getAttribute('href');
+    const target = await lineA.getAttribute('target');
+    const u = new URL(href || 'about:blank');
+    check(u.origin === 'https://line.me' && u.pathname === '/R/share', `${label}: LINEボタンの宛先が line.me/R/share ではありません: ${href}`);
+    check(target === null, `${label}: LINEボタンに target が付いています（外部ブラウザに出る原因）: ${target}`);
+    const body = u.searchParams.get('text') || '';
+    const inner = new URL(body.split(NL).pop() || 'about:blank');
+    check(body.includes('ACPP｜チームの太陽') && body.includes(NL) && inner.origin + inner.pathname === 'https://www.personal-file.jp/80cards/' && inner.searchParams.get('utm_medium') === 'invite_line' && !!inner.searchParams.get('match'), `${label}: LINE本文が「文面＋改行＋招待URL」になっていません: ${body}`);
+    if (label === 'iOS Safari') {
+      // 遷移しなかった（LINEが開かなかった）場合は、2.5秒後に「リンクをコピー」の案内を出す。ページが隠れた場合は出さない
+      await m.evaluate(() => document.querySelectorAll('a.pf-btn').forEach((el) => el.addEventListener('click', (e) => e.preventDefault())));
+      await lineA.click();
+      check((await m.locator('.pf-invite-failed').count()) === 0, 'LINEボタンを押した直後に案内が出ています');
+      await m.waitForTimeout(2900);
+      const hint = (await m.locator('.pf-invite-failed').allInnerTexts()).join('');
+      check(hint.includes('LINEが開かないとき') && hint.includes('リンクをコピー'), `LINEが開かなかったときの案内が出ません: ${hint}`);
+      const evM = (await events(m)).filter((e) => e.name === 'share_80' && e.params.share_method === 'line' && e.params.share_content === 'invite_link');
+      check(evM.length === 1 && evM[0].params.share_status === 'initiated' && evM[0].params.share_surface === 'match_modal', `スマホのLINE share_80 が想定と違います: ${JSON.stringify(evM)}`);
+    }
+    await ctxM.close();
+  }
+
   // 招待URLの検査（LINE・X・コピーの3経路）
   const parse = (u) => new URL(u);
   const lineInvite = parse(parse(inviteHrefs.line).searchParams.get('url'));

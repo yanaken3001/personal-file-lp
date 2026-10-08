@@ -3,6 +3,7 @@
  * Source: 80cards/src/app.jsx
  * Regenerate: cd tests/80cards && node build-app.mjs
  */
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 // ===================================================================
 // DATA CONSTANTS
 // ===================================================================
@@ -3774,6 +3775,21 @@ function buildInviteUrl(typeCode, behaviorCode, medium) {
 }
 function buildInviteMessage(code80, nickname) {
   return `私は「${code80}｜${nickname}」でした。\nあなたとの相性を見てみたい！\n無料・登録不要・約3分`;
+}
+// LINE共有。スマホ（iOS/Android）は line.me/R/share（LINEの公式URLスキーム。送信先選択画面を開く）。
+// 以前の social-plugins.line.me/lineit/share は Web 版の共有ページで、LINEアプリ内ブラウザ等から
+// target=_blank で開くと外部ブラウザに出されて LINE Web ログイン画面で止まるため、スマホでは使わない。
+// PC は line.me/R/share が非対応（公式: デスクトップ版は対象外）なので従来どおり lineit/share。本文は「文面 + 改行 + URL」。
+function isMobileDevice() {
+  const ua = navigator.userAgent || '';
+  return /iPhone|iPad|iPod|Android/i.test(ua) || /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+}
+function buildLineShareHref(text, url) {
+  if (isMobileDevice()) {
+    const body = text.replace(/\n+$/, '') + '\n' + url;
+    return `https://line.me/R/share?text=${encodeURIComponent(body)}`;
+  }
+  return `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
 }
 // 招待URLで開いたときの経路（utm_medium）。INVITE_MEDIUMS の4つだけをそのまま返し、無ければ none、それ以外はすべて other。
 // 自由な文字列を計測の値にしない（GA4 のカーディナリティと、書き換えられた値の混入を防ぐ）
@@ -8736,8 +8752,10 @@ function CompatibilityResult({
     trackCompatShare('x', 'compat_result');
   };
   const shareToLine = () => {
-    window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrlLine)}&text=${encodeURIComponent(shareText)}`, '_blank');
+    const lineHrefCompat = buildLineShareHref(shareText, shareUrlLine);
     trackCompatShare('line', 'compat_result');
+    // スマホはタップ直後に同じタブで遷移（window.open / _blank だと LINEアプリ内ブラウザから外部ブラウザに出される）
+    if (isMobileDevice()) window.location.href = lineHrefCompat;else window.open(lineHrefCompat, '_blank');
   };
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -9140,13 +9158,28 @@ function InviteModal({
     onClose,
     returnFocusSelector: '.pf-match-main'
   });
-  React.useEffect(() => () => window.clearTimeout(copiedTimerRef.current), []);
+  const clearLineWatch = () => {
+    window.clearTimeout(lineTimerRef.current);
+    if (lineLeaveRef.current) {
+      document.removeEventListener('visibilitychange', lineLeaveRef.current);
+      window.removeEventListener('pagehide', lineLeaveRef.current);
+      lineLeaveRef.current = null;
+    }
+  };
+  React.useEffect(() => () => {
+    window.clearTimeout(copiedTimerRef.current);
+    clearLineWatch();
+  }, []);
   const nickname = TYPE_NICKNAMES[personalityCode] || personalityCode;
   const message = buildInviteMessage(get80Code(behaviorName, personalityCode), nickname);
   const lineInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.line);
   const xInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.x);
   const copyInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.copy);
-  const lineHref = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(lineInviteUrl)}&text=${encodeURIComponent(message)}`;
+  const lineMobile = isMobileDevice();
+  const lineHref = buildLineShareHref(message, lineInviteUrl);
+  const [lineHint, setLineHint] = React.useState(false);
+  const lineTimerRef = React.useRef(null);
+  const lineLeaveRef = React.useRef(null);
   const xHref = `https://x.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(xInviteUrl)}&hashtags=${encodeURIComponent('80CARDS,80タイプ診断')}`;
   const matrixUrl = 'https://www.personal-file.jp/80cards/compatibility.html';
 
@@ -9158,6 +9191,22 @@ function InviteModal({
     share_status: status,
     ...trackBase
   });
+
+  // LINEボタンを押したあと、2.5秒たってもページが見えたままなら（LINEが開かなかった）「リンクをコピー」を案内する。
+  // ページが隠れた／離れた（LINEが開いた）場合は出さない。自動コピーはしない
+  const handleLineClick = () => {
+    track('line', 'initiated');
+    if (!lineMobile) return;
+    clearLineWatch();
+    setLineHint(false);
+    lineLeaveRef.current = () => clearLineWatch();
+    document.addEventListener('visibilitychange', lineLeaveRef.current);
+    window.addEventListener('pagehide', lineLeaveRef.current);
+    lineTimerRef.current = window.setTimeout(() => {
+      clearLineWatch();
+      if (!document.hidden) setLineHint(true);
+    }, 2500);
+  };
 
   // コピー処理中の再入は無視する（連打で done / error が重複して記録されるのを防ぐ）。
   // 終わったらコピーボタンへフォーカスを戻す（代替経路の execCommand が一時的な入力欄にフォーカスを移すため）
@@ -9202,13 +9251,15 @@ function InviteModal({
     className: "pf-note"
   }, /*#__PURE__*/React.createElement(K, null, "\u53CB\u3060\u3061\u306B"), /*#__PURE__*/React.createElement(K, null, "\u30EA\u30F3\u30AF\u3092"), /*#__PURE__*/React.createElement(K, null, "\u9001\u308A\u307E\u3057\u3087\u3046\u3002"), /*#__PURE__*/React.createElement(K, null, "\u53CB\u3060\u3061\u304C"), /*#__PURE__*/React.createElement(K, null, "\u8A3A\u65AD\u3092\u7D42\u3048\u308B\u3068\u3001"), /*#__PURE__*/React.createElement(K, null, "2\u4EBA\u306E\u76F8\u6027\u304C"), /*#__PURE__*/React.createElement(K, null, "\u308F\u304B\u308A\u307E\u3059\u3002")), /*#__PURE__*/React.createElement("div", {
     className: "pf-modal-actions"
-  }, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("a", _extends({
     className: "pf-btn pf-btn--line",
-    href: lineHref,
-    target: "_blank",
-    rel: "noopener noreferrer",
-    onClick: () => track('line', 'initiated')
-  }, "LINE\u3067\u9001\u308B"), /*#__PURE__*/React.createElement("a", {
+    href: lineHref
+  }, lineMobile ? {} : {
+    target: '_blank',
+    rel: 'noopener noreferrer'
+  }, {
+    onClick: handleLineClick
+  }), "LINE\u3067\u9001\u308B"), /*#__PURE__*/React.createElement("a", {
     className: "pf-btn pf-btn--main",
     href: xHref,
     target: "_blank",
@@ -9225,7 +9276,9 @@ function InviteModal({
     "aria-live": "polite"
   }, copied && /*#__PURE__*/React.createElement("span", {
     className: "pf-invite-copied"
-  }, "\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F"), copyFailed && /*#__PURE__*/React.createElement("span", {
+  }, "\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F"), lineHint && !copied && !copyFailed && /*#__PURE__*/React.createElement("span", {
+    className: "pf-invite-failed"
+  }, /*#__PURE__*/React.createElement(K, null, "LINE\u304C"), /*#__PURE__*/React.createElement(K, null, "\u958B\u304B\u306A\u3044\u3068\u304D\u306F\u3001"), /*#__PURE__*/React.createElement(K, null, "\u300C\u30EA\u30F3\u30AF\u3092\u30B3\u30D4\u30FC\u300D\u3092"), /*#__PURE__*/React.createElement(K, null, "\u62BC\u3057\u3066\u3001"), /*#__PURE__*/React.createElement(K, null, "LINE\u306B"), /*#__PURE__*/React.createElement(K, null, "\u8CBC\u308A\u4ED8\u3051\u3066\u304F\u3060\u3055\u3044\u3002")), copyFailed && /*#__PURE__*/React.createElement("span", {
     className: "pf-invite-failed"
   }, /*#__PURE__*/React.createElement(K, null, "\u30B3\u30D4\u30FC\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002"), /*#__PURE__*/React.createElement(K, null, "\u4E0B\u306E\u30EA\u30F3\u30AF\u3092"), /*#__PURE__*/React.createElement(K, null, "\u9078\u3093\u3067\u3001"), /*#__PURE__*/React.createElement(K, null, "\u30B3\u30D4\u30FC\u3057\u3066\u304F\u3060\u3055\u3044\u3002"))), copyFailed && /*#__PURE__*/React.createElement("input", {
     className: "pf-invite-url",
