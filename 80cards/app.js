@@ -5702,15 +5702,22 @@ function ProfileQuickPoll({
 }) {
   const [age, setAge] = React.useState('');
   const [job, setJob] = React.useState('');
+  const [sent, setSent] = React.useState(false);
+
+  // 年代と職種の両方がそろった時点で1回だけ送る（1人1件で集計できるように。2026-10-08 ユーザー判断）。送信後は選び直せない
   const pick = (kind, value) => {
+    if (sent) return;
     const nextAge = kind === 'age' ? value : age;
     const nextJob = kind === 'job' ? value : job;
     if (kind === 'age') setAge(value);else setJob(value);
-    onAnswer({
-      kind,
-      age: nextAge,
-      job: nextJob
-    });
+    if (nextAge && nextJob) {
+      setSent(true);
+      onAnswer({
+        kind: 'both',
+        age: nextAge,
+        job: nextJob
+      });
+    }
   };
   const renderChips = (kind, options, selected, label) => /*#__PURE__*/React.createElement("div", {
     className: "pf-poll-group",
@@ -5725,6 +5732,7 @@ function ProfileQuickPoll({
     type: "button",
     className: "pf-poll-chip",
     "aria-pressed": selected === opt.value,
+    disabled: sent,
     onClick: () => pick(kind, opt.value)
   }, opt.label))));
   return /*#__PURE__*/React.createElement("section", {
@@ -5734,7 +5742,10 @@ function ProfileQuickPoll({
     className: "pf-poll-title"
   }, /*#__PURE__*/React.createElement(K, null, "\u3088\u3051\u308C\u3070\u3001"), /*#__PURE__*/React.createElement(K, null, "\u6559\u3048\u3066\u304F\u3060\u3055\u3044"), /*#__PURE__*/React.createElement("span", {
     className: "pf-poll-opt"
-  }, "\uFF08\u4EFB\u610F\uFF09")), renderChips('age', PROFILE_AGE_OPTIONS, age, '年代'), renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種'), /*#__PURE__*/React.createElement("p", {
+  }, "\uFF08\u4EFB\u610F\uFF09")), renderChips('age', PROFILE_AGE_OPTIONS, age, '年代'), renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種'), sent && /*#__PURE__*/React.createElement("p", {
+    className: "pf-poll-thanks",
+    role: "status"
+  }, "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\uFF01"), /*#__PURE__*/React.createElement("p", {
     className: "pf-poll-note"
   }, /*#__PURE__*/React.createElement(K, null, "\u7B54\u3048\u306A\u304F\u3066\u3082\u3001"), /*#__PURE__*/React.createElement(K, null, "\u7D50\u679C\u306F"), /*#__PURE__*/React.createElement(K, null, "\u5909\u308F\u308A\u307E\u305B\u3093\u3002"), /*#__PURE__*/React.createElement(K, null, "\u500B\u4EBA\u3092"), /*#__PURE__*/React.createElement(K, null, "\u7279\u5B9A\u3057\u306A\u3044"), /*#__PURE__*/React.createElement(K, null, "\u7D71\u8A08\u3068\u3057\u3066"), /*#__PURE__*/React.createElement(K, null, "\u4F7F\u3044\u307E\u3059\u3002")));
 }

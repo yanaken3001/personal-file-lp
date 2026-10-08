@@ -5249,12 +5249,18 @@
     function ProfileQuickPoll({ onAnswer }) {
       const [age, setAge] = React.useState('');
       const [job, setJob] = React.useState('');
+      const [sent, setSent] = React.useState(false);
 
+      // 年代と職種の両方がそろった時点で1回だけ送る（1人1件で集計できるように。2026-10-08 ユーザー判断）。送信後は選び直せない
       const pick = (kind, value) => {
+        if (sent) return;
         const nextAge = kind === 'age' ? value : age;
         const nextJob = kind === 'job' ? value : job;
         if (kind === 'age') setAge(value); else setJob(value);
-        onAnswer({ kind, age: nextAge, job: nextJob });
+        if (nextAge && nextJob) {
+          setSent(true);
+          onAnswer({ kind: 'both', age: nextAge, job: nextJob });
+        }
       };
 
       const renderChips = (kind, options, selected, label) => (
@@ -5267,6 +5273,7 @@
                 type="button"
                 className="pf-poll-chip"
                 aria-pressed={selected === opt.value}
+                disabled={sent}
                 onClick={() => pick(kind, opt.value)}
               >
                 {opt.label}
@@ -5283,6 +5290,7 @@
           </p>
           {renderChips('age', PROFILE_AGE_OPTIONS, age, '年代')}
           {renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種')}
+          {sent && <p className="pf-poll-thanks" role="status">ありがとうございます！</p>}
           <p className="pf-poll-note">
             <K>答えなくても、</K><K>結果は</K><K>変わりません。</K><K>個人を</K><K>特定しない</K><K>統計として</K><K>使います。</K>
           </p>
