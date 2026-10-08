@@ -6607,11 +6607,28 @@
        word-break: keep-all / auto-phrase は使わない */
     .pf-kp { display: inline-block; white-space: nowrap; }
 
-    .btn-clean.pf-image-share-btn {
+    /* 結果画面のボタン列（P2）: 「友だちと相性を見る」を主ボタン（全幅・既存の主ボタンの見た目）、
+       「画像を保存・共有」「SNSでシェア」を副ボタン（2列）にする */
+    .pf-result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
       width: 100%;
+    }
+    .btn-clean.pf-match-main {
+      width: 100%;
+      min-height: 56px;
+      padding: 16px 20px;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+    .pf-result-actions-sub { display: flex; gap: 10px; width: 100%; }
+    .btn-clean.pf-sub-btn {
+      flex: 1;
+      min-width: 0;
       min-height: 48px;
-      margin-top: 10px;
-      padding: 13px 16px;
+      padding: 12px 10px;
       border: 1.5px solid var(--ink);
       border-radius: 100px;
       background: var(--surface);
@@ -6619,7 +6636,60 @@
       font-size: 14px;
       line-height: 1.4;
     }
-    .btn-clean.pf-image-share-btn:hover { background: var(--surface2); }
+    .btn-clean.pf-sub-btn:hover { background: var(--surface2); }
+
+    /* 招待モーダル（LINEで送る / Xで送る / リンクをコピー） */
+    a.pf-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      text-decoration: none;
+    }
+    .pf-btn--line { border: 1px solid transparent; background: #06C755; color: #fff; }
+    .pf-invite-status { min-height: 22px; margin: 8px 0 4px; font-size: 13px; line-height: 1.6; text-align: center; }
+    .pf-invite-copied { font-weight: 800; color: var(--ink); }
+    .pf-invite-failed { color: var(--ink2); }
+    .pf-invite-url {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 44px;
+      margin: 0 0 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line2);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+    }
+    .pf-invite-matrix { margin: 8px 0 12px; font-size: 13px; line-height: 1.7; text-align: center; }
+    .pf-invite-matrix a { color: #6638F0; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* 相性結果のペア画像のプレビュー（1:1）と保存・共有ボタン */
+    .pf-pair { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 28px 0; line-break: strict; }
+    .pf-pair-img {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    .pf-pair-wait {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      background: var(--surface2);
+      color: var(--ink2);
+      font-size: 13px;
+      text-align: center;
+    }
+    .btn-clean.pf-pair-btn { flex: none; width: 100%; max-width: 400px; }
 
     /* レア度（結果画面のタイプ名の下）。段階の★と名前だけ。注記は小さく */
     .pf-rarity { margin: 0 0 18px; line-break: strict; }
@@ -6828,7 +6898,8 @@
     .pf-btn[aria-disabled="true"] { opacity: 0.6; cursor: default; }
     .pf-modal-card:focus { outline: none; }
     .pf-btn:focus-visible, .pf-seg-btn:focus-visible, .pf-poll-chip:focus-visible,
-    .pf-modal-x:focus-visible, .btn-clean.pf-image-share-btn:focus-visible {
+    .pf-modal-x:focus-visible, .btn-clean.pf-sub-btn:focus-visible, .btn-clean.pf-match-main:focus-visible,
+    .pf-invite-matrix a:focus-visible, .pf-invite-url:focus-visible {
       outline: 2px solid var(--accent-clean);
       outline-offset: 2px;
     }

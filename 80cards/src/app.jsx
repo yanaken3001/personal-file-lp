@@ -3554,6 +3554,25 @@
     }
 
     // ===================================================================
+    // 招待（相性リンク）のURL・文面・計測（P2）
+    // ===================================================================
+    // 招待URLは従来どおり ?match=<base64>。その後ろに計測用の utm を足す（?match= の形式は変えない）。
+    // utm_medium は経路: invite_line / invite_x / invite_copy（招待モーダル）、invite_pair（ペア画像の共有文）
+    const INVITE_MEDIUMS = { line: 'invite_line', x: 'invite_x', copy: 'invite_copy', pair: 'invite_pair' };
+    function buildInviteUrl(typeCode, behaviorCode, medium) {
+      return `https://www.personal-file.jp/80cards/?match=${encodeMatchData(typeCode, behaviorCode)}&utm_source=80cards&utm_medium=${medium}&utm_campaign=match`;
+    }
+    function buildInviteMessage(code80, nickname) {
+      return `私は「${code80}｜${nickname}」でした。\nあなたとの相性を見てみたい！\n無料・登録不要・約3分`;
+    }
+    // 招待URLで開いたときの経路（utm_medium）。無ければ none、想定外の形式なら other
+    function getInviteSource() {
+      const raw = urlParams.get('utm_medium');
+      if (!raw) return 'none';
+      return /^[A-Za-z0-9_-]{1,40}$/.test(raw) ? raw : 'other';
+    }
+
+    // ===================================================================
     // レア度（16タイプ単位の段階表示）
     // ===================================================================
     // 根拠: GA4 の diagnosis_80_complete を personality_type 別に見た「出やすさ」。
@@ -3658,7 +3677,7 @@
       if (!shareImageModulePromise) {
         shareImageModulePromise = new Promise((resolve, reject) => {
           const script = document.createElement('script');
-          script.src = '/80cards/share-image.js?v=20261008c';
+          script.src = '/80cards/share-image.js?v=20261008d';
           script.async = true;
           script.onload = () => (window.PF80ShareImage ? resolve(window.PF80ShareImage) : reject(new Error('share-image missing')));
           script.onerror = () => { shareImageModulePromise = null; reject(new Error('share-image load failed')); };
@@ -4820,113 +4839,6 @@
       setMeta('twitter:description', description);
     }
 
-    // --- OGPシェアカード生成（Canvas API）---
-    async function generateShareCard(personalityCode, behaviorType, keywords) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1200;
-      canvas.height = 630;
-      const ctx = canvas.getContext('2d');
-      const typeColor = getTypeColor(personalityCode);
-      const typeMeta = TYPE_META[personalityCode];
-      if (!typeMeta) return null;
-
-      // 背景グラデーション (light theme)
-      const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
-      bgGrad.addColorStop(0, '#FFF5EE');
-      bgGrad.addColorStop(1, '#FDF0F5');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, 1200, 630);
-
-      // タイプカラーのアクセント線（上部）
-      const accentGrad = ctx.createLinearGradient(0, 0, 1200, 0);
-      accentGrad.addColorStop(0, typeColor.primary);
-      accentGrad.addColorStop(1, typeColor.secondary);
-      ctx.fillStyle = accentGrad;
-      ctx.fillRect(0, 0, 1200, 6);
-
-      // タイプカラーの丸（装飾）
-      ctx.beginPath();
-      ctx.arc(1000, 315, 200, 0, Math.PI * 2);
-      ctx.fillStyle = typeColor.light;
-      ctx.fill();
-
-      // タイトル「80 TYPE DIAGNOSIS」
-      ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.4)';
-      ctx.fillText('80 TYPE DIAGNOSIS', 80, 80);
-
-      // 「あなたは」
-      ctx.font = '400 22px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.6)';
-      ctx.fillText('あなたは', 80, 145);
-
-      // 80CODE（巨大表示）
-      const behaviorPrefix = (BEHAVIOR_CODE_PREFIX[behaviorType] || '??');
-      ctx.font = '900 118px "JetBrains Mono", "SF Mono", "Helvetica Neue", monospace';
-      // 行動スタイル2文字（タイプカラー）
-      const behaviorPrefixWidth = ctx.measureText(behaviorPrefix).width;
-      ctx.fillStyle = typeColor.primary;
-      ctx.fillText(behaviorPrefix, 80, 270);
-      // 残り2文字（ダーク）
-      ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(personalityCode, 80 + behaviorPrefixWidth + 4, 270);
-
-      // 行動型 × あだ名
-      const nickname = TYPE_NICKNAMES[personalityCode] || typeMeta.name;
-      ctx.font = '700 28px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.55)';
-      ctx.fillText(`${behaviorType} ×`, 80, 330);
-      ctx.font = '800 44px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(nickname, 80, 380);
-
-      // キャッチコピー
-      ctx.font = '500 20px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = typeColor.primary;
-      ctx.fillText(TYPE_CATCHCOPY[personalityCode] || '', 80, 440);
-
-      // Emoji
-      ctx.font = '120px sans-serif';
-      ctx.fillText(typeMeta.emoji, 950, 350);
-
-      // キーワードタグ
-      if (keywords && keywords.length > 0) {
-        const tagY = 510;
-        let tagX = 80;
-        ctx.font = '500 18px "Hiragino Sans", "Yu Gothic", sans-serif';
-        keywords.slice(0, 3).forEach((kw) => {
-          const text = `#${kw}`;
-          const textWidth = ctx.measureText(text).width;
-          ctx.fillStyle = typeColor.light;
-          if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(tagX - 8, tagY - 18, textWidth + 16, 32, 6);
-            ctx.fill();
-          } else {
-            ctx.fillRect(tagX - 8, tagY - 18, textWidth + 16, 32);
-          }
-          ctx.fillStyle = typeColor.primary;
-          ctx.fillText(text, tagX, tagY + 4);
-          tagX += textWidth + 28;
-        });
-      }
-
-      // URL
-      ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.3)';
-      ctx.textAlign = 'left';
-      ctx.fillText('personal-file.jp/80cards', 80, 580);
-
-      // 80CARDS ロゴテキスト
-      ctx.font = '700 16px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.3)';
-      ctx.textAlign = 'right';
-      ctx.fillText('80CARDS', 1120, 580);
-      ctx.textAlign = 'left';
-
-      return canvas.toDataURL('image/png');
-    }
-
     // --- ShareButtons ---
     function ShareButtons({ typeName, behaviorType, personalityCode, resultUrl, onOpenImage }) {
       const [copied, setCopied] = React.useState(false);
@@ -5051,51 +4963,6 @@
       );
     }
 
-    // --- ShareCardPreview ---
-    function ShareCardPreview({ imageDataUrl }) {
-      if (!imageDataUrl) return null;
-
-      const downloadImage = () => {
-        const a = document.createElement('a');
-        a.href = imageDataUrl;
-        a.download = '80cards-result.png';
-        a.click();
-      };
-
-      return (
-        <div style={{
-          maxWidth: '600px',
-          margin: '24px auto',
-          textAlign: 'center'
-        }}>
-          <img
-            src={imageDataUrl}
-            alt="シェアカード"
-            style={{
-              width: '100%',
-              borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06)'
-            }}
-          />
-          <button
-            onClick={downloadImage}
-            style={{
-              marginTop: '12px',
-              padding: '10px 24px',
-              background: '#FFFBF5',
-              color: '#1A1A1A',
-              border: '1px solid rgba(26,26,26,0.12)',
-              borderRadius: '24px',
-              fontSize: '14px',
-              cursor: 'pointer'
-            }}
-          >
-            📥 画像を保存してシェア
-          </button>
-        </div>
-      );
-    }
-
     // ===================================================================
     // 結果画像の保存・共有 / 80CODEコピー / 任意アンケート（P1・2026-10-08）
     // 画像の描画は 80cards/share-image.js（結果画面の表示後に動的読み込み）
@@ -5134,7 +5001,9 @@
 
     // 結果が確定したら、裏で結果画像（9:16 と 1:1）を先に作っておく。
     // Web Share API はクリック直後に呼ぶ必要があり、クリック後に重い生成を始めると失敗するため。
-    function useShareImages({ behaviorName, typeCode, nickname, summary, rarity }) {
+    // depKey: 作る画像の中身が変わる値の文字列（変わったら作り直す）。produce(mod) は share-image.js のモジュールを受け取り、
+    // 画像（{ story, square, … }）の Promise を返す
+    function useGeneratedImages(depKey, produce) {
       const [state, setState] = React.useState({ status: 'pending', images: null });
       const [attempt, setAttempt] = React.useState(0);
 
@@ -5151,15 +5020,7 @@
           loadShareImageModule()
             .then(mod => {
               imageModule = mod;
-              return mod.generate({
-                behaviorPrefix: BEHAVIOR_CODE_PREFIX[behaviorName] || '',
-                behaviorName,
-                typeCode,
-                nickname,
-                summary,
-                rarityTier: rarity ? rarity.tier : 0,
-                rarityLabel: rarity ? rarity.label : '',
-              });
+              return produce(mod);
             })
             .then(images => {
               if (cancelled) { releaseImages(images); return; }   // 破棄された後に届いた結果はすぐ解放する
@@ -5180,10 +5041,95 @@
           if (timerId !== null) window.clearTimeout(timerId);
           releaseImages(produced);
         };
-      }, [behaviorName, typeCode, attempt]);
+      }, [depKey, attempt]);
 
       const retry = React.useCallback(() => setAttempt(a => a + 1), []);
       return { status: state.status, images: state.images, retry };
+    }
+
+    // 自分の結果画像（9:16 と 1:1）
+    function useShareImages({ behaviorName, typeCode, nickname, summary, rarity }) {
+      return useGeneratedImages(`${behaviorName}|${typeCode}`, (mod) => mod.generate({
+        behaviorPrefix: BEHAVIOR_CODE_PREFIX[behaviorName] || '',
+        behaviorName,
+        typeCode,
+        nickname,
+        summary,
+        rarityTier: rarity ? rarity.tier : 0,
+        rarityLabel: rarity ? rarity.label : '',
+      }));
+    }
+
+    // 相性ペア画像（9:16 と 1:1）。a=友だち（左）／b=自分（右）。点数とラベルは getCompatibility() の値をそのまま渡す
+    function usePairImages({ a, b, score, label }) {
+      const prefixA = BEHAVIOR_CODE_PREFIX[a.behaviorName] || '';
+      const prefixB = BEHAVIOR_CODE_PREFIX[b.behaviorName] || '';
+      return useGeneratedImages(`${prefixA}${a.typeCode}|${prefixB}${b.typeCode}`, (mod) => mod.generatePair({
+        a: { behaviorPrefix: prefixA, typeCode: a.typeCode, nickname: TYPE_NICKNAMES[a.typeCode] },
+        b: { behaviorPrefix: prefixB, typeCode: b.typeCode, nickname: TYPE_NICKNAMES[b.typeCode] },
+        score,
+        label,
+      }));
+    }
+
+    // モーダルの共通の挙動: 開いたら×へフォーカス／閉じたら開いたボタンへ戻す／スクロールロック／Esc で閉じる／Tab のフォーカストラップ。
+    // onClose は親の再描画のたびに新しい関数になる。effect の依存に入れると、再描画のたびにフォーカスが×へ戻り、
+    // スクロールロックも張り直されるため、ref で最新を持つ。returnFocusSelector は、開いたボタンが消えているときの戻り先
+    function useDialogBehavior({ dialogRef, closeRef, onClose, returnFocusSelector }) {
+      const onCloseRef = React.useRef(onClose);
+      onCloseRef.current = onClose;
+      // 閉じたときにフォーカスを戻す先（モーダルを開いたボタン）。最初の描画の時点で控える
+      const openerRef = React.useRef(document.activeElement);
+
+      React.useEffect(() => {
+        if (closeRef.current) closeRef.current.focus();
+        return () => {
+          const opener = openerRef.current;
+          const target = (opener && opener !== document.body && document.contains(opener))
+            ? opener
+            : document.querySelector(returnFocusSelector);
+          if (target && typeof target.focus === 'function') target.focus();
+        };
+      }, []);
+
+      React.useEffect(() => {
+        const originalOverflow = document.body.style.overflow;
+        const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        const handleKeyDown = (event) => {
+          if (event.key === 'Escape') {
+            onCloseRef.current();
+            return;
+          }
+          if (event.key !== 'Tab') return;
+          const dialog = dialogRef.current;
+          if (!dialog) return;
+          const items = Array.from(dialog.querySelectorAll(FOCUSABLE)).filter(el => el.getClientRects().length > 0);
+          if (items.length === 0) {
+            event.preventDefault();
+            dialog.focus();
+            return;
+          }
+          const first = items[0];
+          const last = items[items.length - 1];
+          const active = document.activeElement;
+          if (!dialog.contains(active)) {
+            event.preventDefault();
+            first.focus();
+          } else if (event.shiftKey && (active === first || active === dialog)) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && active === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        };
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+          document.body.style.overflow = originalOverflow;
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }, []);
     }
 
     // --- レア度（結果画面のタイプ名の下）。段階の★と名前だけを出し、人数・割合は出さない。根拠の注記は小さく添える ---
@@ -5277,8 +5223,8 @@
       );
     }
 
-    // --- 画像を保存・共有モーダル ---
-    function ShareImageModal({ imageState, code80, shareText, surface, trackBase, onClose }) {
+    // --- 画像を保存・共有モーダル（自分の結果画像 kind='result' と、相性ペア画像 kind='pair' で共通） ---
+    function ShareImageModal({ imageState, code80, shareText, surface, trackBase, onClose, kind = 'result', altText }) {
       const [fmt, setFmt] = React.useState('story');
       const [forceLongPress, setForceLongPress] = React.useState(false);
       const [sharing, setSharing] = React.useState(false);
@@ -5287,12 +5233,8 @@
       const openedRef = React.useRef(false);
       const viewedRef = React.useRef({});
       const sharingRef = React.useRef(false);
-      // onClose は親の再描画のたびに新しい関数になる。effect の依存に入れると、再描画のたびに
-      // フォーカスが×へ戻り、スクロールロックも張り直されるため、ref で最新を持つ
-      const onCloseRef = React.useRef(onClose);
-      onCloseRef.current = onClose;
-      // 閉じたときにフォーカスを戻す先（モーダルを開いたボタン）。最初の描画の時点で控える
-      const openerRef = React.useRef(document.activeElement);
+      // 開いたら×へフォーカス／閉じるときは開いたボタンへ戻す（ボタンが消えている場合は「画像を保存・共有」へ）／スクロールロック／Esc／Tab のフォーカストラップ
+      useDialogBehavior({ dialogRef, closeRef, onClose, returnFocusSelector: '.pf-image-share-btn' });
 
       const api = window.PF80ShareImage || null;
       const images = imageState.status === 'ready' ? imageState.images : null;
@@ -5303,7 +5245,7 @@
       const showShareButton = webShareOk && !forceLongPress;
       const showLongPress = !!images && (inApp || !webShareOk || forceLongPress);
       const showSaveButton = !!images && !inApp;
-      const contentName = fmt === 'story' ? 'result_image_story' : 'result_image_square';
+      const contentName = `${kind === 'pair' ? 'pair_image' : 'result_image'}_${fmt === 'story' ? 'story' : 'square'}`;
 
       const track = (extra) => trackGa('share_80', {
         share_content: contentName,
@@ -5335,58 +5277,6 @@
         viewedRef.current[fmt] = true;
         track({ share_method: 'view_image', share_status: 'initiated' });
       }, [showLongPress, fmt, !!current]);
-
-      // 開いた直後に×へフォーカス。閉じるときは開いたボタンへ戻す（ボタンが消えている場合は結果画面の「画像を保存・共有」へ）
-      React.useEffect(() => {
-        if (closeRef.current) closeRef.current.focus();
-        return () => {
-          const opener = openerRef.current;
-          const target = (opener && opener !== document.body && document.contains(opener))
-            ? opener
-            : document.querySelector('.pf-image-share-btn');
-          if (target && typeof target.focus === 'function') target.focus();
-        };
-      }, []);
-
-      // スクロールロック・Esc で閉じる・Tab のフォーカストラップ（モーダルの外へフォーカスを出さない）
-      React.useEffect(() => {
-        const originalOverflow = document.body.style.overflow;
-        const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-        const handleKeyDown = (event) => {
-          if (event.key === 'Escape') {
-            onCloseRef.current();
-            return;
-          }
-          if (event.key !== 'Tab') return;
-          const dialog = dialogRef.current;
-          if (!dialog) return;
-          const items = Array.from(dialog.querySelectorAll(FOCUSABLE)).filter(el => el.getClientRects().length > 0);
-          if (items.length === 0) {
-            event.preventDefault();
-            dialog.focus();
-            return;
-          }
-          const first = items[0];
-          const last = items[items.length - 1];
-          const active = document.activeElement;
-          if (!dialog.contains(active)) {
-            event.preventDefault();
-            first.focus();
-          } else if (event.shiftKey && (active === first || active === dialog)) {
-            event.preventDefault();
-            last.focus();
-          } else if (!event.shiftKey && active === last) {
-            event.preventDefault();
-            first.focus();
-          }
-        };
-        document.body.style.overflow = 'hidden';
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-          document.body.style.overflow = originalOverflow;
-          window.removeEventListener('keydown', handleKeyDown);
-        };
-      }, []);
 
       const handleShare = async () => {
         // 共有シートが開いている間の二度押しは無視する（二度目の navigator.share は InvalidStateError になる）
@@ -5455,7 +5345,7 @@
                   src={current.url}
                   width={current.width}
                   height={current.height}
-                  alt={`あなたの80CODE ${code80} の結果画像`}
+                  alt={altText || `あなたの80CODE ${code80} の結果画像`}
                 />
               ) : (
                 <div className="pf-preview-wait" role="status">
@@ -6370,17 +6260,20 @@
               <div className="detail-card-wrap-clean">
                 <Card80Clean type={card} size="xl" tilt={true} variant="result" />
               </div>
-              <div ref={resultActionsRef} style={{ display: 'flex', gap: 10, marginTop: 24, width: '100%' }}>
-                <button className="btn-primary-clean btn-clean" onClick={onShare} style={{ flex: 1, fontSize: 14, padding: '14px 16px' }}>
-                  SNSでシェア
+              {/* ボタンの順: 友だちと相性を見る（主）→ 画像を保存・共有／SNSでシェア（副） */}
+              <div ref={resultActionsRef} className="pf-result-actions">
+                <button type="button" className="btn-primary-clean btn-clean pf-match-main" onClick={onOpenMatchModal}>
+                  友だちと相性を見る
                 </button>
-                <button className="btn-ghost-clean btn-clean" onClick={onOpenMatchModal} style={{ padding: '14px 20px', fontSize: 13, flexShrink: 0 }}>
-                  相性診断
-                </button>
+                <div className="pf-result-actions-sub">
+                  <button type="button" className="btn-clean pf-sub-btn pf-image-share-btn" onClick={onOpenImage}>
+                    画像を保存・共有
+                  </button>
+                  <button type="button" className="btn-clean pf-sub-btn" onClick={onShare}>
+                    SNSでシェア
+                  </button>
+                </div>
               </div>
-              <button type="button" className="btn-clean pf-image-share-btn" onClick={onOpenImage}>
-                画像を保存・共有
-              </button>
               <img
                 className="result-brand-logo"
                 src="/80cards/logo/80cards-logo-full-new2.png?v=20260606c"
@@ -6651,18 +6544,20 @@
           <div className={`mobile-result-actions-fixed${showMobileFixedActions ? ' is-visible' : ''}`} aria-hidden={!showMobileFixedActions}>
             <div className="mobile-result-actions-inner">
               <button
+                type="button"
                 className="btn-primary-clean btn-clean"
+                onClick={onOpenMatchModal}
+                tabIndex={showMobileFixedActions ? 0 : -1}
+              >
+                友だちと相性を見る
+              </button>
+              <button
+                type="button"
+                className="btn-ghost-clean btn-clean"
                 onClick={onShare}
                 tabIndex={showMobileFixedActions ? 0 : -1}
               >
                 SNSでシェア
-              </button>
-              <button
-                className="btn-ghost-clean btn-clean"
-                onClick={onOpenMatchModal}
-                tabIndex={showMobileFixedActions ? 0 : -1}
-              >
-                相性診断
               </button>
             </div>
           </div>
@@ -7837,11 +7732,13 @@
             />
           )}
 
-          {/* 相性リンク生成モーダル */}
+          {/* 招待モーダル（LINE・X・リンクコピー） */}
           {showMatchModal && (
-            <MatchShareModal
+            <InviteModal
               personalityCode={personalityCode}
               behaviorCode={behavioralType.code}
+              behaviorName={behavioralType.name}
+              trackBase={trackBase}
               onClose={() => setShowMatchModal(false)}
             />
           )}
@@ -7858,6 +7755,14 @@
       const meta = TYPE_META[creatorType];
       const nickname = TYPE_NICKNAMES[creatorType];
       const typeColor = getTypeColor(creatorType);
+
+      // 招待URLからの着地。招待元のタイプと、経路（URL の utm_medium）を記録する。1回の表示につき1回だけ
+      const landedRef = React.useRef(false);
+      React.useEffect(() => {
+        if (landedRef.current || !meta) return;
+        landedRef.current = true;
+        trackGa('invite_land_80', { inviter_type: creatorType, invite_src: getInviteSource() });
+      }, []);
 
       if (!meta) return null;
       const creatorCard = buildMatchCreatorCard(creatorType, creatorBehaviorCode);
@@ -7951,92 +7856,9 @@
       );
     }
 
-    // --- 相性カード画像生成（Canvas API / 1080×1080） ---
-    async function generateCompatibilityCard(typeA, typeB, compatData) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1080;
-      canvas.height = 1080;
-      const ctx = canvas.getContext('2d');
-
-      const metaA = TYPE_META[typeA];
-      const metaB = TYPE_META[typeB];
-      const nickA = TYPE_NICKNAMES[typeA];
-      const nickB = TYPE_NICKNAMES[typeB];
-      const groupA = GROUP_COLORS[typeA.charAt(0)];
-      const groupB = GROUP_COLORS[typeB.charAt(0)];
-
-      if (!metaA || !metaB) return null;
-
-      // 背景グラデーション（2人のグループカラー）
-      const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
-      bgGrad.addColorStop(0, groupA.color);
-      bgGrad.addColorStop(0.5, '#FFF5EE');
-      bgGrad.addColorStop(1, groupB.color);
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, 1080, 1080);
-
-      // 半透明オーバーレイ
-      ctx.fillStyle = 'rgba(255,255,255,0.75)';
-      ctx.fillRect(0, 0, 1080, 1080);
-
-      // 装飾円
-      ctx.beginPath();
-      ctx.arc(200, 380, 160, 0, Math.PI * 2);
-      ctx.fillStyle = groupA.color + '15';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(880, 380, 160, 0, Math.PI * 2);
-      ctx.fillStyle = groupB.color + '15';
-      ctx.fill();
-
-      // 上部テキスト「性格タイプ相性診断」
-      ctx.font = '600 22px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.4)';
-      ctx.textAlign = 'center';
-      ctx.fillText('性格タイプ相性診断', 540, 100);
-
-      // Emoji（左右配置）
-      ctx.font = '100px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(metaA.emoji, 270, 420);
-      ctx.fillText(metaB.emoji, 810, 420);
-
-      // 中央の「×」
-      ctx.font = '700 48px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.3)';
-      ctx.fillText('×', 540, 400);
-
-      // ニックネーム
-      ctx.font = '700 26px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(`${nickA}  ×  ${nickB}`, 540, 540);
-
-      // ラベルアイコン + ラベル + スコア
-      ctx.font = '800 64px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = '#FF3B5C';
-      ctx.fillText(`${compatData.icon} ${compatData.label}`, 540, 660);
-
-      ctx.font = '800 80px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = '#1A1A2E';
-      ctx.fillText(`${compatData.score}%`, 540, 770);
-
-      // トーン
-      ctx.font = '500 24px "Hiragino Sans", "Yu Gothic", sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.6)';
-      ctx.fillText(compatData.tone, 540, 840);
-
-      // ブランド
-      ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = 'rgba(42,42,42,0.3)';
-      ctx.fillText('80CARDS', 540, 980);
-      ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
-      ctx.fillText('personalfile.jp', 540, 1010);
-
-      return canvas.toDataURL('image/png');
-    }
-
     // --- CompatibilityResult（相性結果画面）---
-    function CompatibilityResult({ creatorType, responderType, onNewMatch }) {
+    // creatorType / creatorBehaviorCode: 招待してくれた友だち（?match= の中身）。responderType / responderBehavior: 診断を終えた自分
+    function CompatibilityResult({ creatorType, creatorBehaviorCode, responderType, responderBehavior, onNewMatch }) {
       const compat = getCompatibility(creatorType, responderType);
       const insights = getCompatibilityInsights(creatorType, responderType, compat);
       const metaA = TYPE_META[creatorType];
@@ -8048,19 +7870,41 @@
       const groupA = GROUP_COLORS[creatorType.charAt(0)];
       const groupB = GROUP_COLORS[responderType.charAt(0)];
 
-      const [cardUrl, setCardUrl] = React.useState(null);
-      const [copied, setCopied] = React.useState(false);
+      // 2人のペア画像（9:16 と 1:1）。表示された時点で裏で作っておく。左=友だち（招待した人）／右=自分
+      const behaviorNameA = getMatchBehaviorName(creatorBehaviorCode);
+      const behaviorNameB = responderBehavior.name;
+      const pairImages = usePairImages({
+        a: { typeCode: creatorType, behaviorName: behaviorNameA },
+        b: { typeCode: responderType, behaviorName: behaviorNameB },
+        score: compat.score,
+        label: compat.label,
+      });
+      const [pairModalOpen, setPairModalOpen] = React.useState(false);
 
+      // 相性結果の表示を1回だけ記録する
+      const viewTrackedRef = React.useRef(false);
       React.useEffect(() => {
-        generateCompatibilityCard(creatorType, responderType, compat)
-          .then(url => { if (url) setCardUrl(url); })
-          .catch(() => {});
+        if (viewTrackedRef.current || !metaA || !metaB) return;
+        viewTrackedRef.current = true;
+        trackGa('compat_view_80', {
+          inviter_type: creatorType,
+          personality_type: responderType,
+          compat_score: compat.score,
+          compat_label: compat.label,
+        });
       }, []);
 
       if (!metaA || !metaB) return null;
 
       const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}%！\nあなたも相性を調べてみよう！\n\n`;
       const shareUrl = 'https://www.personal-file.jp/80cards/';
+
+      // ペア画像の共有文。自分のタイプの招待URL（utm_medium=invite_pair）を付け、見た人がさらに友だちを招待できるようにする
+      const pairShareText = `${nickA} × ${nickB} の相性は「${compat.label}」${compat.score}%でした。\nあなたも友だちとの相性を見てみて。\n${buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.pair)}`;
+      const pairCode80A = (BEHAVIOR_CODE_PREFIX[behaviorNameA] || '') + creatorType;
+      const pairCode80B = (BEHAVIOR_CODE_PREFIX[behaviorNameB] || '') + responderType;
+      const pairAlt = `${nickA}（${pairCode80A}）と${nickB}（${pairCode80B}）の相性は ${compat.label} ${compat.score}%`;
+      const pairTrackBase = { personality_type: responderType, ...rarityParam(responderType) };
 
       const trackCompatShare = (method, content) => trackGa('share_80', {
         share_method: method,
@@ -8077,14 +7921,6 @@
       const shareToLine = () => {
         window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
         trackCompatShare('line', 'compat_result');
-      };
-      const downloadCard = () => {
-        if (!cardUrl) return;
-        const a = document.createElement('a');
-        a.href = cardUrl;
-        a.download = `compatibility-${creatorType}-${responderType}.png`;
-        a.click();
-        trackCompatShare('save_image', 'pair_image_square');
       };
 
       return (
@@ -8279,23 +8115,25 @@
               </p>
             </div>
 
-            {/* 相性カードプレビュー */}
-            {cardUrl && (
-              <div style={{ textAlign: 'center', margin: '32px 0' }}>
+            {/* ペア画像（友だちと自分の2人。保存・共有できる） */}
+            <div className="pf-pair">
+              {pairImages.images ? (
                 <img
-                  src={cardUrl}
-                  alt="相性カード"
-                  loading="lazy"
-                  decoding="async"
-                  style={{
-                    width: '100%',
-                    maxWidth: '400px',
-                    borderRadius: '16px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
-                  }}
+                  className="pf-pair-img"
+                  src={pairImages.images.square.url}
+                  width={pairImages.images.square.width}
+                  height={pairImages.images.square.height}
+                  alt={pairAlt}
                 />
-              </div>
-            )}
+              ) : (
+                <div className="pf-pair-wait" role="status">
+                  <K>{pairImages.status === 'error' ? '画像を作成できませんでした。' : '画像を作成しています…'}</K>
+                </div>
+              )}
+              <button type="button" className="btn-clean pf-sub-btn pf-image-share-btn pf-pair-btn" onClick={() => setPairModalOpen(true)}>
+                画像を保存・共有
+              </button>
+            </div>
 
             {/* シェアボタン群 */}
             <div style={{
@@ -8321,16 +8159,6 @@
               }}>
                 LINE
               </button>
-              {cardUrl && (
-                <button onClick={downloadCard} style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  padding: '12px 24px', background: 'rgba(255,255,255,0.6)',
-                  color: '#1A1A2E', border: '1px solid rgba(0,0,0,0.1)',
-                  borderRadius: '28px', fontSize: '14px', fontWeight: '700', cursor: 'pointer'
-                }}>
-                  📥 画像を保存
-                </button>
-              )}
             </div>
 
             {/* 他の友達との相性を調べるボタン */}
@@ -8367,117 +8195,118 @@
               80CARDS
             </div>
           </div>
+
+          {/* ペア画像の保存・共有モーダル（自分の結果画像と同じモーダルを再利用） */}
+          {pairModalOpen && (
+            <ShareImageModal
+              kind="pair"
+              imageState={pairImages}
+              code80={pairCode80B}
+              altText={pairAlt}
+              shareText={pairShareText}
+              surface="compat_result"
+              trackBase={pairTrackBase}
+              onClose={() => setPairModalOpen(false)}
+            />
+          )}
         </div>
       );
     }
 
-    // --- MatchShareModal（相性リンク生成・共有モーダル）---
-    function MatchShareModal({ personalityCode, behaviorCode, onClose }) {
+    // --- 招待モーダル（結果画面の「友だちと相性を見る」。LINEで送る / Xで送る / リンクをコピー） ---
+    // 招待URLは ?match=（従来どおり）に utm を足したもの。経路ごとに utm_medium を変える（invite_line / invite_x / invite_copy）
+    function InviteModal({ personalityCode, behaviorCode, behaviorName, trackBase, onClose }) {
       const [copied, setCopied] = React.useState(false);
-      const matchData = encodeMatchData(personalityCode, behaviorCode);
-      const matchUrl = `https://www.personal-file.jp/80cards/?match=${matchData}`;
-      const matrixUrl = 'https://www.personal-file.jp/80cards/compatibility.html';
-      const meta = TYPE_META[personalityCode];
+      const [copyFailed, setCopyFailed] = React.useState(false);
+      const closeRef = React.useRef(null);
+      const dialogRef = React.useRef(null);
+      const copiedTimerRef = React.useRef(null);
+      useDialogBehavior({ dialogRef, closeRef, onClose, returnFocusSelector: '.pf-match-main' });
+      React.useEffect(() => () => window.clearTimeout(copiedTimerRef.current), []);
 
-      const copyLink = () => {
-        navigator.clipboard.writeText(matchUrl).then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-          trackGa('share_80', {
-            share_method: 'copy_link',
-            share_content: 'invite_link',
-            share_surface: 'match_modal',
-            share_status: 'done',
-            personality_type: personalityCode,
-            ...rarityParam(personalityCode),
-          });
-        });
+      const nickname = TYPE_NICKNAMES[personalityCode] || personalityCode;
+      const message = buildInviteMessage(get80Code(behaviorName, personalityCode), nickname);
+      const lineInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.line);
+      const xInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.x);
+      const copyInviteUrl = buildInviteUrl(personalityCode, behaviorCode, INVITE_MEDIUMS.copy);
+      const lineHref = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(lineInviteUrl)}&text=${encodeURIComponent(message)}`;
+      const xHref = `https://x.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(xInviteUrl)}&hashtags=${encodeURIComponent('80CARDS,80タイプ診断')}`;
+      const matrixUrl = 'https://www.personal-file.jp/80cards/compatibility.html';
+
+      // 招待の送信は share_80（share_content=invite_link）。LINE・X は押した時点（initiated）、コピーは結果（done / error）
+      const track = (method, status) => trackGa('share_80', {
+        share_method: method,
+        share_content: 'invite_link',
+        share_surface: 'match_modal',
+        share_status: status,
+        ...trackBase,
+      });
+
+      const handleCopy = async () => {
+        const ok = await copyTextToClipboard(copyInviteUrl);
+        window.clearTimeout(copiedTimerRef.current);
+        setCopied(ok);
+        setCopyFailed(!ok);
+        if (ok) copiedTimerRef.current = window.setTimeout(() => setCopied(false), 2200);
+        track('copy_link', ok ? 'done' : 'error');
       };
 
       return (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.4)',
-          backdropFilter: 'blur(8px)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '24px',
-          animation: 'fadeIn 0.2s ease-out'
-        }} onClick={onClose}>
-          <div style={{
-            background: '#FFFBF5',
-            borderRadius: '24px',
-            padding: '32px 24px',
-            maxWidth: '400px',
-            width: '100%',
-            boxShadow: '0 16px 64px rgba(0,0,0,0.12)',
-            animation: 'fadeSlideUp 0.3s ease-out'
-          }} onClick={e => e.stopPropagation()}>
-            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '12px' }}>{meta?.emoji}</div>
-              <h3 style={{
-                fontSize: '18px',
-                fontWeight: '800',
-                color: '#1A1A1A',
-                marginBottom: '8px'
-              }}>
-                友達に相性リンクを送ろう
-              </h3>
-              <p style={{ fontSize: '13px', color: '#6F687C', lineHeight: 1.75, margin: 0 }}>
-                リンクを受け取った人が診断すると、<br />
-                あなたとの相性が以下からわかります。
-              </p>
-              <a
-                href={matrixUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-block',
-                  marginTop: '14px',
-                  color: '#6638F0',
-                  fontSize: '14px',
-                  fontWeight: '800',
-                  lineHeight: 1.55,
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '4px'
-                }}
-              >
-                256通りの相性マトリクス<br />
-                を探してみる
-              </a>
+        <div className="pf-modal-overlay" onClick={onClose}>
+          <div
+            className="pf-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pf-invite-title"
+            ref={dialogRef}
+            tabIndex={-1}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="pf-modal-head">
+              <h2 id="pf-invite-title" className="pf-modal-title">友だちと相性を見る</h2>
+              <button type="button" className="pf-modal-x" onClick={onClose} aria-label="閉じる" ref={closeRef}>×</button>
             </div>
 
-            {/* リンクコピーボタン */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <button onClick={copyLink} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                padding: '14px', background: copied ? '#FF3B5C' : 'rgba(26,26,26,0.05)',
-                color: copied ? '#fff' : '#1A1A1A',
-                border: `1px solid ${copied ? 'transparent' : 'rgba(26,26,26,0.10)'}`,
-                borderRadius: '14px', fontSize: '15px',
-                fontWeight: '700', cursor: 'pointer', width: '100%',
-                transition: 'all 0.2s ease'
-              }}>
-                {copied ? '✓ コピーしました！' : '🔗 リンクをコピー'}
+            <p className="pf-note">
+              <K>友だちに</K><K>リンクを</K><K>送りましょう。</K><K>友だちが</K><K>診断を終えると、</K><K>2人の相性が</K><K>わかります。</K>
+            </p>
+
+            <div className="pf-modal-actions">
+              <a className="pf-btn pf-btn--line" href={lineHref} target="_blank" rel="noopener noreferrer" onClick={() => track('line', 'initiated')}>
+                LINEで送る
+              </a>
+              <a className="pf-btn pf-btn--main" href={xHref} target="_blank" rel="noopener noreferrer" onClick={() => track('x', 'initiated')}>
+                Xで送る
+              </a>
+              <button type="button" className="pf-btn pf-btn--sub" onClick={handleCopy}>
+                リンクをコピー
               </button>
             </div>
 
-            <button onClick={onClose} style={{
-              display: 'block',
-              width: '100%',
-              marginTop: '16px',
-              padding: '12px',
-              background: 'transparent',
-              border: 'none',
-              fontSize: '14px',
-              color: '#9A9284',
-              cursor: 'pointer'
-            }}>
-              閉じる
-            </button>
+            <div className="pf-invite-status" role="status" aria-live="polite">
+              {copied && <span className="pf-invite-copied">コピーしました</span>}
+              {copyFailed && <span className="pf-invite-failed"><K>コピーできませんでした。</K><K>下のリンクを</K><K>選んで、</K><K>コピーしてください。</K></span>}
+            </div>
+            {copyFailed && (
+              <input
+                className="pf-invite-url"
+                type="text"
+                readOnly
+                value={copyInviteUrl}
+                aria-label="招待リンク"
+                onFocus={(event) => event.target.select()}
+              />
+            )}
+
+            <p className="pf-invite-matrix">
+              <a href={matrixUrl} target="_blank" rel="noopener noreferrer">
+                <K>256通りの</K><K>相性マトリクスを</K><K>探してみる</K>
+              </a>
+            </p>
+
+            <div className="pf-modal-actions">
+              <button type="button" className="pf-btn pf-btn--text" onClick={onClose}>閉じる</button>
+            </div>
           </div>
         </div>
       );
@@ -8813,7 +8642,9 @@
           {phase === 'result' && showCompatibility && matchCreator && responderType && (
             <CompatibilityResult
               creatorType={matchCreator.typeCode}
+              creatorBehaviorCode={matchCreator.behaviorCode}
               responderType={responderType}
+              responderBehavior={determineBehavioralType(scores, responderType)}
               onNewMatch={handleNewMatch}
             />
           )}
