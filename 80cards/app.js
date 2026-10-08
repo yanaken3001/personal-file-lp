@@ -5598,28 +5598,6 @@ function useShareImages({
   };
 }
 
-// --- 80CODEをコピー（結果の80CODE表示の下） ---
-function CodeCopyRow({
-  onCopy,
-  copiedKind
-}) {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "pf-code-copy"
-  }, /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "pf-code-copy-btn",
-    onClick: () => onCopy('code_line')
-  }, "80CODE\u3092\u30B3\u30D4\u30FC"), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "pf-code-copy-btn pf-code-copy-btn--sub",
-    onClick: () => onCopy('code_only')
-  }, "\u30B3\u30FC\u30C9\u306E\u307F"), /*#__PURE__*/React.createElement("span", {
-    className: "pf-code-copy-toast",
-    role: "status",
-    "aria-live": "polite"
-  }, copiedKind ? 'コピーしました' : ''));
-}
-
 // --- レア度（結果画面のタイプ名の下）。段階の★と名前だけを出し、人数・割合は出さない。根拠の注記は小さく添える ---
 function RarityChip({
   rarity,
@@ -6935,8 +6913,6 @@ function ResultDetailScreen80({
   onShare,
   onOpenMatchModal,
   onOpenImage,
-  onCopyCode,
-  copiedKind,
   onProfileAnswer,
   rarity
 }) {
@@ -7115,10 +7091,7 @@ function ResultDetailScreen80({
       className: "pattern-code-letter"
     }, personalityCode?.[0] || ''), /*#__PURE__*/React.createElement("span", {
       className: "pattern-code-letter"
-    }, personalityCode?.[1] || '')), /*#__PURE__*/React.createElement(CodeCopyRow, {
-      onCopy: onCopyCode,
-      copiedKind: copiedKind
-    }));
+    }, personalityCode?.[1] || '')));
   })(), /*#__PURE__*/React.createElement("h1", {
     className: "jp-display result-nickname-clean",
     style: {
@@ -8552,25 +8525,7 @@ function ResultScreen80({
     ...rarityParam(personalityCode)
   };
 
-  // 80CODEをコピー（プロフィールにそのまま貼れる1行 / コードのみ）
-  const [copiedKind, setCopiedKind] = React.useState('');
-  const copiedTimerRef = React.useRef(null);
-  const handleCopyCode = async kind => {
-    const text = kind === 'code_only' ? code80 : `80CODE: ${code80}｜${resultNickname}`;
-    const ok = await copyTextToClipboard(text);
-    if (ok) {
-      setCopiedKind(kind);
-      window.clearTimeout(copiedTimerRef.current);
-      copiedTimerRef.current = window.setTimeout(() => setCopiedKind(''), 2200);
-    }
-    trackGa('share_80', {
-      share_method: 'copy_code',
-      share_content: kind === 'code_only' ? 'code_only' : 'code',
-      share_surface: 'result_top',
-      share_status: ok ? 'done' : 'error',
-      ...trackBase
-    });
-  };
+  // 80CODEのコピーボタンは 2026-10-08 ユーザー判断で削除（分かりにくいため）。80CODEの表示は残す
 
   // 年代・今の職種（任意）。GA4のイベントパラメータとしてのみ送る。個人を特定する情報は含めない
   const handleProfileAnswer = ({
@@ -8602,8 +8557,6 @@ function ResultScreen80({
     onShare: handleShare,
     onOpenMatchModal: () => setShowMatchModal(true),
     onOpenImage: () => setImageModalSurface('result_top'),
-    onCopyCode: handleCopyCode,
-    copiedKind: copiedKind,
     onProfileAnswer: handleProfileAnswer,
     rarity: rarity
   }), showSharePanel && /*#__PURE__*/React.createElement("div", {

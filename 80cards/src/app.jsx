@@ -5186,23 +5186,6 @@
       return { status: state.status, images: state.images, retry };
     }
 
-    // --- 80CODEをコピー（結果の80CODE表示の下） ---
-    function CodeCopyRow({ onCopy, copiedKind }) {
-      return (
-        <div className="pf-code-copy">
-          <button type="button" className="pf-code-copy-btn" onClick={() => onCopy('code_line')}>
-            80CODEをコピー
-          </button>
-          <button type="button" className="pf-code-copy-btn pf-code-copy-btn--sub" onClick={() => onCopy('code_only')}>
-            コードのみ
-          </button>
-          <span className="pf-code-copy-toast" role="status" aria-live="polite">
-            {copiedKind ? 'コピーしました' : ''}
-          </span>
-        </div>
-      );
-    }
-
     // --- レア度（結果画面のタイプ名の下）。段階の★と名前だけを出し、人数・割合は出さない。根拠の注記は小さく添える ---
     function RarityChip({ rarity, color }) {
       if (!rarity) return null;
@@ -6284,7 +6267,7 @@
     }
 
     // ResultDetailScreen80 — フェーズ2: 詳細スクロール
-    function ResultDetailScreen80({ card, typeData, scores, personalityCode, behavioralType, compatTop3, onRetake, onShare, onOpenMatchModal, onOpenImage, onCopyCode, copiedKind, onProfileAnswer, rarity }) {
+    function ResultDetailScreen80({ card, typeData, scores, personalityCode, behavioralType, compatTop3, onRetake, onShare, onOpenMatchModal, onOpenImage, onProfileAnswer, rarity }) {
       const hue = GROUP_HUE[card.groupKey] || 280;
       const groupName = card.groupKey + '群';
       const resultActionsRef = React.useRef(null);
@@ -6422,7 +6405,6 @@
                       <span className="pattern-code-letter">{personalityCode?.[0] || ''}</span>
                       <span className="pattern-code-letter">{personalityCode?.[1] || ''}</span>
                     </div>
-                    <CodeCopyRow onCopy={onCopyCode} copiedKind={copiedKind} />
                   </div>
                 );
               })()}
@@ -7790,25 +7772,7 @@
       const imageShareText = `私の80CODEは「${code80}｜${resultNickname}」でした。\n\nあなたの80CODEは？\n${resultShareUrl}\n\n#80CARDS #80タイプ診断`;
       const trackBase = { personality_type: personalityCode, full_type: typeName80, ...rarityParam(personalityCode) };
 
-      // 80CODEをコピー（プロフィールにそのまま貼れる1行 / コードのみ）
-      const [copiedKind, setCopiedKind] = React.useState('');
-      const copiedTimerRef = React.useRef(null);
-      const handleCopyCode = async (kind) => {
-        const text = kind === 'code_only' ? code80 : `80CODE: ${code80}｜${resultNickname}`;
-        const ok = await copyTextToClipboard(text);
-        if (ok) {
-          setCopiedKind(kind);
-          window.clearTimeout(copiedTimerRef.current);
-          copiedTimerRef.current = window.setTimeout(() => setCopiedKind(''), 2200);
-        }
-        trackGa('share_80', {
-          share_method: 'copy_code',
-          share_content: kind === 'code_only' ? 'code_only' : 'code',
-          share_surface: 'result_top',
-          share_status: ok ? 'done' : 'error',
-          ...trackBase,
-        });
-      };
+      // 80CODEのコピーボタンは 2026-10-08 ユーザー判断で削除（分かりにくいため）。80CODEの表示は残す
 
       // 年代・今の職種（任意）。GA4のイベントパラメータとしてのみ送る。個人を特定する情報は含めない
       const handleProfileAnswer = ({ kind, age, job }) => {
@@ -7835,8 +7799,6 @@
             onShare={handleShare}
             onOpenMatchModal={() => setShowMatchModal(true)}
             onOpenImage={() => setImageModalSurface('result_top')}
-            onCopyCode={handleCopyCode}
-            copiedKind={copiedKind}
             onProfileAnswer={handleProfileAnswer}
             rarity={rarity}
           />
