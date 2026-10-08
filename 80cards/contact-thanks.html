@@ -436,10 +436,11 @@
       const eventParams = getLeadEventParams();
       try {
         if (typeof fbq === 'function') {
+          // 80CARDSの相談はPF広告の標準Leadと混ぜないため専用のカスタムイベントで送る（2026-10-08 ユーザー判断）
           if (eventId) {
-            fbq('track', 'Lead', eventParams, { eventID: eventId });
+            fbq('trackCustom', 'PF80CardsLead', eventParams, { eventID: eventId });
           } else {
-            fbq('track', 'Lead', eventParams);
+            fbq('trackCustom', 'PF80CardsLead', eventParams);
           }
         }
         if (typeof gtag === 'function') {
