@@ -452,7 +452,7 @@
   var LAYOUT_PAIR_STORY = {
     cx: 540,
     glowY: 1010, glowR: 560,
-    headBase: 326, headPx: 52, headSp: 12,
+    headBase: 346, headPx: 80, headSp: 8,
     scoreBase: 600, scoreMax: 300, scoreMin: 240, scoreW: 640,
     labelBase: 740, labelMax: 124, labelMin: 84, labelW: 920,
     toneBase: 812, toneMax: 52, toneMin: 40, toneW: 920,
@@ -464,7 +464,7 @@
   var LAYOUT_PAIR_SQUARE = {
     cx: 540,
     glowY: 620, glowR: 520,
-    headBase: 100, headPx: 40, headSp: 10,
+    headBase: 112, headPx: 62, headSp: 6,
     scoreBase: 296, scoreMax: 200, scoreMin: 160, scoreW: 560,
     labelBase: 404, labelMax: 88, labelMin: 60, labelW: 920,
     toneBase: 470, toneMax: 40, toneMin: 30, toneW: 920,
@@ -512,7 +512,7 @@
       ctx.fillRect(0, 0, W, H);
     });
 
-    // 1. 見出し「2人の相性」（小さな見出し。1人用の「MY 80CODE」にあたる）
+    // 1. 見出し「2人の相性」（点数・ラベルより小さく、一言よりは大きい見出し）
     setFont(ctx, 700, L.headPx);
     drawSpaced(ctx, [{ t: PAIR_HEADING, c: DM }], cx, L.headBase, L.headSp, 'center');
     note('heading', textBox(ctx, PAIR_HEADING, cx, L.headBase, 'center', L.headSp, L.headPx));
