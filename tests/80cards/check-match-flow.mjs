@@ -262,6 +262,58 @@ try {
   check(await b.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), '相性結果(360px)で横スクロールが出ています');
   if (OUT_DIR) await b.locator('.pf-pair').screenshot({ path: path.join(OUT_DIR, 'compat-pair-360.png') });
 
+  // 相性結果画面のX・LINEシェア（第2段の追加）: シェア先が固定の /80cards/ ではなく、シェアした本人（自分）の招待URLになっている。
+  // 文面（点数「点」・ハッシュタグ）は従来のまま。リンクを開くと、シェアした本人との相性診断の着地画面になる
+  await b.evaluate(() => { window.__opened = []; window.open = (u) => { window.__opened.push(u); return null; }; });
+  await b.locator('button', { hasText: '𝕏 でシェア' }).click();
+  await b.getByRole('button', { name: 'LINE', exact: true }).click();
+  const opened = await b.evaluate(() => window.__opened.slice());
+  check(opened.length === 2, `相性結果のX・LINEシェアで開いたURLが2件ではありません: ${opened.length}`);
+  const [compatXHref, compatLineHref] = opened;
+  const cx = new URL(compatXHref || 'about:blank');
+  const cl = new URL(compatLineHref || 'about:blank');
+  check(cx.origin === 'https://twitter.com' && cx.pathname === '/intent/tweet', `相性結果のXシェアの宛先が前と違います: ${compatXHref}`);
+  check(cl.origin === 'https://social-plugins.line.me' && cl.pathname === '/lineit/share', `相性結果のLINEシェアの宛先が前と違います: ${compatLineHref}`);
+  // 文面は変えない（点数は「点」・ハッシュタグも従来のまま）
+  const compatXText = cx.searchParams.get('text') || '';
+  check(compatXText.includes('の相性は') && compatXText.includes(`${vp.compat_label} ${vp.compat_score}点！`) && compatXText.includes('あなたも相性を調べてみよう！'), `相性結果のXシェア文が前と違います: ${compatXText}`);
+  check(cx.searchParams.get('hashtags') === '相性診断,パーソナルファイル', `相性結果のXシェアのハッシュタグが前と違います: ${cx.searchParams.get('hashtags')}`);
+  check((cl.searchParams.get('text') || '') === compatXText, '相性結果のLINEシェア文がXと違います');
+  // シェア先は招待URL: ?match= にシェアした本人のタイプ、utm は X=invite_x・LINE=invite_line
+  const sharedXUrl = cx.searchParams.get('url') || '';
+  const sharedLineUrl = cl.searchParams.get('url') || '';
+  check(sharedXUrl !== 'https://www.personal-file.jp/80cards/' && sharedLineUrl !== 'https://www.personal-file.jp/80cards/', 'シェア先が固定の /80cards/ のままです');
+  for (const [label, href, medium] of [['X', sharedXUrl, 'invite_x'], ['LINE', sharedLineUrl, 'invite_line']]) {
+    const u = new URL(href || 'about:blank');
+    check(u.origin + u.pathname === 'https://www.personal-file.jp/80cards/' && u.searchParams.get('utm_source') === '80cards' && u.searchParams.get('utm_medium') === medium && u.searchParams.get('utm_campaign') === 'match', `${label}シェアの招待URLの形が違います: ${href}`);
+    let m = null;
+    try { m = JSON.parse(Buffer.from(u.searchParams.get('match') || '', 'base64').toString('utf8')); } catch (e) { /* 下の check で落とす */ }
+    check(m && m.t === vp.personality_type && !!m.b, `${label}シェアの ?match= がシェアした本人（${vp.personality_type}）のタイプになっていません: ${JSON.stringify(m)}`);
+  }
+  // 計測は既存の share_80（share_content=compat_result・share_surface=compat_result）のまま
+  const compatShares = (await events(b)).filter((e) => e.name === 'share_80' && e.params.share_surface === 'compat_result' && (e.params.share_method === 'x' || e.params.share_method === 'line'));
+  check(compatShares.length === 2 && compatShares.every((s) => s.params.share_content === 'compat_result' && s.params.share_status === 'initiated' && s.params.personality_type === vp.personality_type), `相性結果のX・LINEシェアの share_80 が想定と違います: ${JSON.stringify(compatShares.map((s) => s.params))}`);
+  check(JSON.stringify(compatShares.map((s) => s.params.share_method)) === JSON.stringify(['x', 'line']), '相性結果のシェアの share_80 の順序・経路が想定と違います');
+
+  // シェアされたリンクを別の人が開く: シェアした本人との相性診断の着地画面になり、経路（invite_src）が utm_medium どおりに記録される
+  const ctxC = await browser.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 2 });
+  const nickSharer = (pairAlt.match(/と(.+?)（[A-Z]{4}）の相性は/) || [])[1];
+  check(!!nickSharer, `ペア画像の代替テキストからシェアした本人のあだ名を読めません: ${pairAlt}`);
+  for (const [label, href, medium] of [['X', sharedXUrl, 'invite_x'], ['LINE', sharedLineUrl, 'invite_line']]) {
+    const c = await newPage(ctxC);
+    const lu = new URL(href);
+    lu.protocol = 'http:'; lu.host = `127.0.0.1:${PORT}`;   // 本番ホストをローカルに付け替える（本番へは接続しない）
+    lu.searchParams.set('ga_off', '1');
+    await c.goto(lu.href);
+    await c.waitForSelector('text=無料で診断して相性を調べる', { timeout: 20000 });
+    const landText = await c.locator('#root').innerText();
+    check(nickSharer && landText.includes(nickSharer), `${label}シェアのリンクの着地画面に、シェアした本人のあだ名（${nickSharer}）がありません`);
+    const cLand = (await events(c)).filter((e) => e.name === 'invite_land_80');
+    check(cLand.length === 1 && cLand[0].params.inviter_type === vp.personality_type && cLand[0].params.invite_src === medium, `${label}シェアのリンクの invite_land_80 が想定と違います: ${JSON.stringify(cLand.map((l) => l.params))}`);
+    await c.close();
+  }
+  await ctxC.close();
+
   // ペア画像の保存・共有モーダル
   await b.locator('.pf-pair-btn').click();
   await b.waitForSelector('#pf-share-modal-title');
@@ -307,4 +359,4 @@ if (failures.length) {
   failures.forEach((m) => console.error(' - ' + m));
   process.exit(1);
 }
-console.log('PASS: 結果画面のボタン構成／招待モーダル（LINE・X・コピーと utm・計測）／招待URL着地（invite_land_80）／診断完走／相性結果（compat_view_80）／ペア画像の保存（9:16・1:1）／既存のXシェア・PF誘導 が想定どおり');
+console.log('PASS: 結果画面のボタン構成／招待モーダル（LINE・X・コピーと utm・計測）／招待URL着地（invite_land_80）／診断完走／相性結果（compat_view_80）／相性結果のX・LINEシェア（シェアした本人の招待URL・utm・計測・リンク先の着地画面）／ペア画像の保存（9:16・1:1）／既存のXシェア・PF誘導 が想定どおり');
