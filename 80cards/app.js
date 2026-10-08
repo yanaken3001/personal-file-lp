@@ -3878,7 +3878,7 @@ function loadShareImageModule() {
   if (!shareImageModulePromise) {
     shareImageModulePromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = '/80cards/share-image.js?v=20261008b';
+      script.src = '/80cards/share-image.js?v=20261008c';
       script.async = true;
       script.onload = () => window.PF80ShareImage ? resolve(window.PF80ShareImage) : reject(new Error('share-image missing'));
       script.onerror = () => {

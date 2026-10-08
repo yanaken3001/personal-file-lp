@@ -10,6 +10,7 @@
 //   5. レア度（16タイプ単位の段階表示・2026-10-08ユーザー確定）の段階表が、確定した割り当てと一致する
 //      ・件数を想起させる表現（数字・％・「人に」「誰も」など）が段階名・注記・計測値に混ざっていない
 //      ・注記の文が確定した文と一致する
+//   6. 結果画像の見た目の約束: 囲み・URL・補足文を描かない／読み込み URL の版が一致する
 // 実フォントでのはみ出し検査はブラウザが必要なため、ここでは行わない（Playwright で全80件を生成して確認する）。
 import fs from 'node:fs';
 import path from 'node:path';
@@ -88,6 +89,19 @@ RARITY_NOTE_PHRASES.forEach((p, i) => { if (i > 0 && HEAD_NG.test(p)) fail(`注�
 {
   const noteNoParen = EXPECTED_NOTE.replace(/[（）]/g, '');
   if (/[0-9０-９％%]/.test(noteNoParen) || /人に|誰も/.test(noteNoParen)) fail('注記に件数を想起させる表現があります');
+}
+
+// ---- 結果画像のデザイン（2026-10-08 ユーザー指摘で確定）----
+// ・枠・塗りの囲み（ボタンに見える要素）を描かない / URL・「無料・登録不要」の文字を載せない / 行動類型の丸い枠・16タイプのコードを出さない
+{
+  const src = fs.readFileSync(path.join(ROOT, '80cards/share-image.js'), 'utf8');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  if (/roundRect\s*\(/.test(code)) fail('share-image.js に角丸の囲み（roundRect）があります。ボタンに見える要素は載せません');
+  if (/personal-file\.jp\/80cards|無料・登録不要|約3分/.test(code)) fail('share-image.js に URL または「無料・登録不要・約3分」の文字があります。結果画像には載せません');
+  if (/'RARITY'|'● '/.test(code)) fail('share-image.js にレア度の英字キャプション（RARITY）または行動類型の点（●）があります');
+  if (api.version === '20261008b') fail('share-image.js の版が更新されていません（app.jsx の読み込み URL と揃えること）');
+  const appSrc = fs.readFileSync(path.join(ROOT, '80cards/src/app.jsx'), 'utf8');
+  if (!appSrc.includes(`/80cards/share-image.js?v=${api.version}`)) fail(`app.jsx の share-image.js 読み込み URL の版が ${api.version} と一致しません`);
 }
 
 if (failures.length) {

@@ -5,7 +5,7 @@
  * JPEG を端末内で作る。サーバーへは何も送らない。
  *
  * 設計書: 08_80CARDS拡散/01_改修設計書_v1.md 1節・2節
- * 呼び出し: window.PF80ShareImage.generate({ behaviorPrefix, typeCode, nickname, summary, rarityTier, rarityLabel })
+ * 呼び出し: window.PF80ShareImage.generate({ behaviorPrefix, behaviorName, typeCode, nickname, summary, rarityTier, rarityLabel })
  * 戻り値の imageStatus: 'ready' / 'ready_font_timeout' / 'ready_font_missing' / 'ready_char_missing' とその組み合わせ
  *   （GA4 の image_status にそのまま送る。画像は作れたが品質が落ちた理由を区別するため）
  * 後始末: 不要になった結果は PF80ShareImage.release(result) で Object URL を解放する
@@ -17,7 +17,7 @@
 (function (root) {
   'use strict';
 
-  var VERSION = '20261008b';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
+  var VERSION = '20261008c';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
   var IMAGE_VERSION = '20261008';     // キャラ縮小画像の版（画像を差し替えたときだけ上げる）
   var JPEG_QUALITY = 0.92;
   var FONT_TIMEOUT_MS = 4000;
@@ -26,9 +26,7 @@
 
   var GROUP = { P: '#FF3B5C', A: '#4D6CFA', I: '#00D4AA', D: '#8B5CF6' };   // 結果画面の groupColorMap と同一
   var INK = '#1A1A1A';
-  var URL_TEXT = 'personal-file.jp/80cards';
   var CTA_TEXT = 'あなたの80CODEは？';
-  var NOTE_TEXT = '無料・登録不要・約3分';
   var RARITY_MAX = 4;                 // 段階の数（★の数）。段階表そのものは app.jsx の RARITY_TIER_BY_TYPE が正本
   var FONT_JP = '"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif';
   var FONT_NUM = '"Inter","Noto Sans JP","Helvetica Neue",Arial,sans-serif';
@@ -126,16 +124,6 @@
   function rgba(h, a) { var c = hex2rgb(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
   function deep(h) { return mix(h, '#000000', 0.28); }
   function setFont(ctx, weight, px, fam) { ctx.font = weight + ' ' + px + 'px ' + (fam || FONT_JP); }
-
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-  }
 
   /* 字間つき描画（ctx.letterSpacing は Safari 非対応のため1文字ずつ描く） */
   function spacedWidth(ctx, segs, sp) {
@@ -248,15 +236,18 @@
     return lines;
   }
 
-  /* maxLines 行に収まるまでフォントを縮めて折り返す */
-  function layoutSummary(ctx, phrases, weight, startPx, minPx, maxW, maxLines) {
-    var px = startPx, lines;
+  /* 折り返した結果が maxLines 行以内・高さ maxH 以内に収まる最大の文字の大きさを選ぶ。minPx 未満にはしない。
+     lhRatio は行間（文字の大きさに対する倍率）。返す lh は行送りのpx */
+  function layoutSummary(ctx, phrases, weight, startPx, minPx, maxW, maxLines, lhRatio, maxH) {
+    var px = startPx, lines, lh;
     for (; ; px -= 2) {
       setFont(ctx, weight, px);
       lines = breakPhrases(ctx, phrases, maxW);
-      if (lines.length <= maxLines || px <= minPx) break;
+      lh = Math.round(px * (lhRatio || 1.4));
+      var fitsH = !maxH || (lines.length - 1) * lh + px <= maxH;
+      if ((lines.length <= maxLines && fitsH) || px <= minPx) break;
     }
-    return { lines: lines, px: px };
+    return { lines: lines, px: px, lh: lh };
   }
 
   function drawLines(ctx, lines, x, y, lh, align, color) {
@@ -265,9 +256,10 @@
     lines.forEach(function (l, i) { ctx.fillText(l, x, y + i * lh); });
   }
   function drawImageFit(ctx, img, cx, bottom, maxW, maxH) {
-    if (!img) return;
+    if (!img) return null;
     var s = Math.min(maxW / img.width, maxH / img.height), w = img.width * s, h = img.height * s;
     ctx.drawImage(img, cx - w / 2, bottom - h, w, h);
+    return { x0: cx - w / 2, y0: bottom - h, x1: cx + w / 2, y1: bottom };
   }
   function paintBg(ctx, W, H, c, glow) {
     var g = ctx.createLinearGradient(0, 0, W, H);
@@ -283,24 +275,11 @@
       ctx.fillRect(0, 0, W, H);
     });
   }
-  function pill(ctx, text, x, y, h, color, align, px, weight) {
-    setFont(ctx, weight || 700, px);
-    var tw = spacedWidth(ctx, [{ t: text }], 3), w = tw + h * 1.1, x0 = align === 'center' ? x - w / 2 : x;
-    roundRect(ctx, x0, y, w, h, h / 2);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = color;
-    ctx.stroke();
-    ctx.textBaseline = 'middle';
-    drawSpaced(ctx, [{ t: text, c: deep(color) }], x0 + w / 2, y + h / 2 + 2, 3, 'center');
-    ctx.textBaseline = 'alphabetic';
-    return w;
-  }
-
-  /* ============ レア度バッジ ============
+  /* ============ レア度（星の行 + 段階名） ============
      段階（★の数）と名前だけを出す。人数・割合・「○人に1人」などの件数表現は載せない（ユーザー指示 2026-10-08）。
-     ★は文字ではなく図形で描く（端末のフォントによる字形の差・絵文字化を避ける） */
+     枠・塗りの囲みは付けない（ボタンに見えるため）。80CODE のすぐ下に、星の行 → 段階名の順で置く。
+     ★は文字ではなく図形で描く（端末のフォントによる字形の差・絵文字化を避ける）。
+     ★1 でも4つの星が同じ大きさで見えるよう、塗らない星は同じ色の輪郭で描く（段階名の文字色・大きさは全段階で同じ） */
   function starPath(ctx, cx, cy, R) {
     var r = R * 0.46;
     ctx.beginPath();
@@ -311,42 +290,88 @@
     }
     ctx.closePath();
   }
-  function rarityBadge(ctx, x, y, w, h, tier, label, color) {
-    var R = 13, gap = 32, pad = 24, midY = y + 28;
-    ctx.save();
-    roundRect(ctx, x, y, w, h, 20);
-    ctx.fillStyle = 'rgba(255,255,255,.92)';
-    ctx.fill();
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = color;
-    ctx.stroke();
-    // 上段: 左に RARITY、右に★（段階の数だけ塗る）
-    setFont(ctx, 700, 18, FONT_NUM);
-    ctx.textBaseline = 'middle';
-    drawSpaced(ctx, [{ t: 'RARITY', c: rgba(deep(color), 0.72) }], x + pad, midY + 1, 3, 'left');
-    var firstStar = x + w - pad - R - gap * (RARITY_MAX - 1);
-    for (var i = 0; i < RARITY_MAX; i++) {
-      starPath(ctx, firstStar + gap * i, midY, R);
-      ctx.fillStyle = i < tier ? color : rgba(color, 0.2);
-      ctx.fill();
-    }
-    // 下段: 段階の名前
-    ctx.textBaseline = 'alphabetic';
-    fitSize(ctx, label, 900, 26, 18, w - pad * 2, FONT_JP, 0);
-    ctx.textAlign = 'center';
-    ctx.fillStyle = deep(color);
-    ctx.fillText(label, x + w / 2, y + h - 13);
-    ctx.restore();
+
+  /* 文字の外接枠（描画位置の検査用）。x は揃えの基準（center=中心 / left=左端）、y はベースライン */
+  function textBox(ctx, str, x, y, align, sp, px) {
+    var m = ctx.measureText(str);
+    var w = sp ? spacedWidth(ctx, [{ t: str }], sp) : m.width;
+    var x0 = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x;
+    var asc = typeof m.actualBoundingBoxAscent === 'number' ? m.actualBoundingBoxAscent : px * 0.88;
+    var desc = typeof m.actualBoundingBoxDescent === 'number' ? m.actualBoundingBoxDescent : px * 0.12;
+    return { x0: x0, y0: y - asc, x1: x0 + w, y1: y + desc };
+  }
+  function unionBox(a, b) {
+    if (!a) return b;
+    return { x0: Math.min(a.x0, b.x0), y0: Math.min(a.y0, b.y0), x1: Math.max(a.x1, b.x1), y1: Math.max(a.y1, b.y1) };
   }
 
+  function rarityBlock(ctx, x, top, align, tier, label, color, L, note) {
+    var R = L.starR, gap = L.starGap, lw = Math.max(4, Math.round(R * 0.16));
+    var rowW = gap * (RARITY_MAX - 1) + 2 * R;
+    var cx0 = align === 'center' ? x - rowW / 2 + R : x + R;
+    var cy = top + R;
+    ctx.save();
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = lw;
+    for (var i = 0; i < RARITY_MAX; i++) {
+      starPath(ctx, cx0 + gap * i, cy, R - lw / 2);
+      if (i < tier) {
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.fill();
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = rgba(color, 0.55);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+    note('stars', { x0: cx0 - R, y0: top, x1: cx0 + gap * (RARITY_MAX - 1) + R, y1: top + 2 * R });
+    var px = fitSize(ctx, label, 900, L.rarityLabelPx, L.rarityLabelMin, L.rarityLabelW, FONT_JP, 3);
+    var base = top + 2 * R + L.rarityLabelGap + Math.round(px * 0.88);
+    ctx.textBaseline = 'alphabetic';
+    drawSpaced(ctx, [{ t: label, c: deep(color) }], x, base, 3, align);
+    note('rarityLabel', textBox(ctx, label, x, base, align, 3, px));
+    return { labelPx: px, starR: R, bottom: base };
+  }
+
+  /* ============ 画面ごとの配置 ============
+     高さ・大きさ・位置はここに集める（1080px幅のキャンバス上の値）。
+     文字は4行（行動類型 / あだ名 / 一言2〜3行）。全80件のはみ出し・重なりの確認はブラウザでの全件生成検査で行う（設計書 9.5）。 */
+  var LAYOUT_STORY = {
+    x: 540, align: 'center',
+    glow: { x: 540, y: 930, r: 520 },
+    labelBase: 310, labelPx: 36, labelSp: 10,
+    codeBase: 498, codeMax: 200, codeMin: 120, codeW: 880, codeSp: 8,
+    rarityTop: 532, starR: 40, starGap: 104, rarityLabelPx: 80, rarityLabelMin: 70, rarityLabelW: 900, rarityLabelGap: 22,
+    charCx: 540, charTop: 744, charTopNoRarity: 590, charBottom: 1152, charMaxW: 720,
+    behBase: 1216, behPx: 48, behSp: 8,
+    nickBase: 1350, nickMax: 132, nickMin: 72, nickW: 920,
+    sumTop: 1398, sumBottom: 1650, sumStart: 88, sumMin: 60, sumW: 920, sumLines: 3, sumLh: 1.34,
+    ctaBase: 1766, ctaPx: 52
+  };
+  var LAYOUT_SQUARE = {
+    x: 80, align: 'left',
+    glow: { x: 830, y: 300, r: 430 },
+    labelBase: 100, labelPx: 30, labelSp: 8,
+    codeBase: 262, codeMax: 176, codeMin: 110, codeW: 540, codeSp: 6,
+    rarityTop: 298, starR: 36, starGap: 92, rarityLabelPx: 76, rarityLabelMin: 66, rarityLabelW: 560, rarityLabelGap: 18,
+    charCx: 848, charTop: 64, charTopNoRarity: 64, charBottom: 505, charMaxW: 360,
+    behBase: 566, behPx: 44, behSp: 8,
+    nickBase: 688, nickMax: 108, nickMin: 56, nickW: 920,
+    sumTop: 728, sumBottom: 972, sumStart: 76, sumMin: 50, sumW: 920, sumLines: 3, sumLh: 1.32,
+    ctaBase: 1038, ctaPx: 40
+  };
+
   /* ============ 結果画像1枚の描画 ============ */
-  /* t: { code80, behaviorName, typeCode, nickname, summary, group, rarityTier, rarityLabel } */
-  function renderResult(img, t, fmt) {
+  /* t: { code80, behaviorName, typeCode, nickname, summary, group, rarityTier, rarityLabel }
+     rec: 検査用。渡すと { boxes: {名前: 外接枠}, info: {大きさ・行数} } を書き込む（本番の描画では渡さない） */
+  function renderResult(img, t, fmt, rec) {
     var story = fmt === 'story', W = 1080, H = story ? 1920 : 1080;
     var c = document.createElement('canvas');
     c.width = W; c.height = H;
     try {
-      paintResult(c.getContext('2d'), img, t, story, W, H);
+      paintResult(c.getContext('2d'), img, t, story, W, H, rec);
     } catch (e) {
       releaseCanvas(c);   // 描画に失敗したら、作りかけの canvas を残さない
       throw e;
@@ -354,71 +379,66 @@
     return c;
   }
 
-  function paintResult(ctx, img, t, story, W, H) {
+  function paintResult(ctx, img, t, story, W, H, rec) {
+    var L = story ? LAYOUT_STORY : LAYOUT_SQUARE, x = L.x, align = L.align;
     var G = GROUP[t.group], D = deep(G);
     var codeSegs = [{ t: t.code80.slice(0, 2), c: rgba(G, 0.45) }, { t: t.code80.slice(2), c: G }];
-    var pillText = '● ' + t.behaviorName + t.typeCode;
     var phrases = phrasesFor(t.code80, t.summary);
     var hasRarity = t.rarityTier >= 1 && t.rarityTier <= RARITY_MAX && !!t.rarityLabel;
+    var info = rec ? rec.info = {} : {};
+    var note = function (name, box) { if (rec) { rec.boxes = rec.boxes || {}; rec.boxes[name] = box; } };
+    ctx.textBaseline = 'alphabetic';
 
-    if (story) {
-      paintBg(ctx, W, H, G, [{ x: 540, y: 830, r: 520, c: G }]);
-      setFont(ctx, 700, 34);
-      drawSpaced(ctx, [{ t: 'MY 80CODE', c: D }], 540, 318, 10, 'center');
-      fitSizeSegs(ctx, codeSegs, 900, 210, 120, 880, FONT_NUM, 8);
-      drawSpaced(ctx, codeSegs, 540, 520, 8, 'center');
-      drawImageFit(ctx, img, 540, 1085, 720, 520);
-      if (hasRarity) rarityBadge(ctx, 730, 266, 300, 84, t.rarityTier, t.rarityLabel, G);
-      pill(ctx, pillText, 540, 1112, 76, G, 'center', 36, 700);
-      fitSize(ctx, t.nickname, 900, 132, 72, 920, FONT_JP, 0);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = INK;
-      ctx.fillText(t.nickname, 540, 1312);
-      var ls = layoutSummary(ctx, phrases, 500, 44, 36, 860, 2);
-      drawLines(ctx, ls.lines, 540, 1392, Math.round(ls.px * 1.41), 'center', 'rgba(26,26,26,.82)');
-      // CTA（下35%は表示されない場合があるため補助要素のみ）
-      roundRect(ctx, 150, 1604, 780, 100, 50);
-      ctx.fillStyle = G;
-      ctx.fill();
-      setFont(ctx, 900, 46);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#fff';
-      ctx.fillText(CTA_TEXT, 540, 1670);
-      setFont(ctx, 700, 36, FONT_NUM);
-      ctx.fillStyle = 'rgba(26,26,26,.62)';
-      ctx.fillText(URL_TEXT, 540, 1768);
-      setFont(ctx, 500, 28);
-      ctx.fillStyle = 'rgba(26,26,26,.5)';
-      ctx.fillText(NOTE_TEXT, 540, 1822);
-    } else {
-      paintBg(ctx, W, H, G, [{ x: 800, y: 560, r: 420, c: G }]);
-      setFont(ctx, 700, 30);
-      drawSpaced(ctx, [{ t: 'MY 80CODE', c: D }], 80, 122, 8, 'left');
-      fitSizeSegs(ctx, codeSegs, 900, 196, 110, 560, FONT_NUM, 6);
-      drawSpaced(ctx, codeSegs, 80, 300, 6, 'left');
-      pill(ctx, pillText, 80, 340, 68, G, 'left', 32, 700);
-      if (hasRarity) rarityBadge(ctx, 700, 56, 300, 84, t.rarityTier, t.rarityLabel, G);
-      fitSize(ctx, t.nickname, 900, 108, 52, 470, FONT_JP, 0);
-      ctx.textAlign = 'left';
-      ctx.fillStyle = INK;
-      ctx.fillText(t.nickname, 80, 508);
-      var sq = layoutSummary(ctx, phrases, 500, 36, 28, 470, 3);
-      drawLines(ctx, sq.lines, 80, 584, Math.round(sq.px * 1.5), 'left', 'rgba(26,26,26,.82)');
-      drawImageFit(ctx, img, 812, 800, 420, 500);
-      roundRect(ctx, 80, 872, 430, 92, 46);
-      ctx.fillStyle = G;
-      ctx.fill();
-      setFont(ctx, 900, 38);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#fff';
-      ctx.fillText(CTA_TEXT, 295, 933);
-      setFont(ctx, 700, 30, FONT_NUM);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(26,26,26,.6)';
-      ctx.fillText(URL_TEXT, 1000, 930);
-      setFont(ctx, 500, 24);
-      ctx.fillText(NOTE_TEXT, 1000, 968);
+    paintBg(ctx, W, H, G, [{ x: L.glow.x, y: L.glow.y, r: L.glow.r, c: G }]);
+
+    // 1. MY 80CODE（小さな見出し）と 80CODE
+    setFont(ctx, 700, L.labelPx);
+    drawSpaced(ctx, [{ t: 'MY 80CODE', c: D }], x, L.labelBase, L.labelSp, align);
+    note('label', textBox(ctx, 'MY 80CODE', x, L.labelBase, align, L.labelSp, L.labelPx));
+    info.codePx = fitSizeSegs(ctx, codeSegs, 900, L.codeMax, L.codeMin, L.codeW, FONT_NUM, L.codeSp);
+    drawSpaced(ctx, codeSegs, x, L.codeBase, L.codeSp, align);
+    note('code', textBox(ctx, t.code80, x, L.codeBase, align, L.codeSp, info.codePx));
+
+    // 2. レア度（80CODE のすぐ下。枠なし）
+    if (hasRarity) {
+      var rb = rarityBlock(ctx, x, L.rarityTop, align, t.rarityTier, t.rarityLabel, G, L, note);
+      info.rarityStarR = rb.starR;
+      info.rarityLabelPx = rb.labelPx;
     }
+
+    // 3. キャラ
+    note('char', drawImageFit(ctx, img, L.charCx, L.charBottom, L.charMaxW, L.charBottom - (hasRarity ? L.charTop : L.charTopNoRarity)));
+
+    // 4. タイプ表示（行動類型 / あだ名 / 一言）。枠・点・16タイプのコードは出さない
+    if (t.behaviorName) {
+      setFont(ctx, 700, L.behPx);
+      drawSpaced(ctx, [{ t: t.behaviorName, c: D }], x, L.behBase, L.behSp, align);
+      note('behavior', textBox(ctx, t.behaviorName, x, L.behBase, align, L.behSp, L.behPx));
+    }
+    info.nickPx = fitSize(ctx, t.nickname, 900, L.nickMax, L.nickMin, L.nickW, FONT_JP, 0);
+    ctx.textAlign = align;
+    ctx.fillStyle = INK;
+    ctx.fillText(t.nickname, x, L.nickBase);
+    note('nickname', textBox(ctx, t.nickname, x, L.nickBase, align, 0, info.nickPx));
+
+    var ls = layoutSummary(ctx, phrases, 700, L.sumStart, L.sumMin, L.sumW, L.sumLines, L.sumLh, L.sumBottom - L.sumTop);
+    var base0 = L.sumTop + Math.round(ls.px * 0.88);
+    drawLines(ctx, ls.lines, x, base0, ls.lh, align, 'rgba(26,26,26,.86)');
+    var sbox = null;
+    ls.lines.forEach(function (ln, i) { sbox = unionBox(sbox, textBox(ctx, ln, x, base0 + i * ls.lh, align, 0, ls.px)); });
+    note('summary', sbox);
+    info.summaryPx = ls.px;
+    info.summaryLines = ls.lines.length;
+    info.summaryLineTexts = ls.lines;
+
+    // 5. 呼びかけ（枠・塗りなしの普通の文字）
+    setFont(ctx, 700, L.ctaPx);
+    ctx.textAlign = align;
+    ctx.fillStyle = D;
+    ctx.fillText(CTA_TEXT, x, L.ctaBase);
+    note('cta', textBox(ctx, CTA_TEXT, x, L.ctaBase, align, 0, L.ctaPx));
+    info.w = W;
+    info.h = H;
   }
 
   /* ============ 読み込み・書き出し ============ */
@@ -532,7 +552,7 @@
     if (!GROUP[t.group] || t.code80.length !== 4) return Promise.reject(new Error('invalid type'));
 
     var imgUrl = '/80cards/share-image/' + typeCode.toLowerCase() + '.webp?v=' + IMAGE_VERSION;
-    var sample = ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, t.rarityLabel, 'RARITY', CTA_TEXT, NOTE_TEXT, URL_TEXT, '0123456789%●'].join('');
+    var sample = ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, t.rarityLabel, CTA_TEXT, '0123456789'].join('');
     var tFont, tImg;
 
     return Promise.all([
