@@ -47,7 +47,7 @@ let rows;
 try {
   const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
   await page.goto(harness.url);
-  const allText = Object.values(TYPE_NICKNAMES).join('') + COMPATIBILITY_LABELS.map((l) => l.label).join('') + '2人の相性%×あなたの80CODEは？0123456789ACDEFHIMNPS';
+  const allText = Object.values(TYPE_NICKNAMES).join('') + COMPATIBILITY_LABELS.map((l) => l.label).join('') + '2人の相性点×あなたの80CODEは？0123456789ACDEFHIMNPS';
   const fontStatus = await page.evaluate((txt) => window.PF80ShareImage._internal.ensureFonts(txt), allText);
   if (fontStatus !== 'ok') {
     console.error(`FAIL: フォントを読み込めませんでした（${fontStatus}）。Google Fonts に接続できる環境で実行してください`);

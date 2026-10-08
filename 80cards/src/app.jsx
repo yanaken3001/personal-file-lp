@@ -3503,23 +3503,41 @@
     }
 
     // 相性リンクエンコード/デコード
+    // ?match= はURLから来る値で、誰でも書き換えられる。"constructor" や "__proto__" のような継承プロパティの名前を
+    // 通さないよう、辞書は自前のキーだけを hasOwn で判定する
+    const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+    function isValidTypeCode(code) {
+      return typeof code === 'string' && code.length === 2 && hasOwn(TYPE_NICKNAMES, code) && hasOwn(TYPE_META, code);
+    }
+    // 行動類型の名前（達成型 など）から2文字のコード（AC・HM・EF・SH・IN）。対応するものが無ければ空文字
+    function getBehaviorPrefix(behaviorName) {
+      if (typeof behaviorName !== 'string' || !hasOwn(BEHAVIOR_CODE_PREFIX, behaviorName)) return '';
+      const prefix = BEHAVIOR_CODE_PREFIX[behaviorName];
+      return typeof prefix === 'string' && prefix.length === 2 ? prefix : '';
+    }
+
     function encodeMatchData(typeCode, behaviorCode) {
       return btoa(JSON.stringify({ t: typeCode, b: behaviorCode }));
     }
 
+    // 形が正しくない・16タイプに無い値は null（相性リンクとして扱わない）。行動類型だけが読めないときは空にして続ける
     function decodeMatchData(encoded) {
       try {
         const data = JSON.parse(atob(encoded));
-        return { typeCode: data.t, behaviorCode: data.b };
+        if (!data || typeof data !== 'object' || !isValidTypeCode(data.t)) return null;
+        return { typeCode: data.t, behaviorCode: getMatchBehaviorName(data.b) ? data.b : '' };
       } catch (e) {
         return null;
       }
     }
 
+    // 招待URLの行動類型の値 → 行動類型の名前。名前そのもの・旧コード（K/H/J/G/E）・2文字コード（AC など）・旧URLの1文字コードを受け付ける
     function getMatchBehaviorName(behaviorCode) {
-      if (!behaviorCode) return '';
-      if (BEHAVIOR_CODE_PREFIX[behaviorCode]) return behaviorCode;
-      return BEHAVIORAL_NAMES[behaviorCode] || BEHAVIOR_PREFIX_TO_NAME[behaviorCode] || '';
+      if (typeof behaviorCode !== 'string' || !behaviorCode) return '';
+      if (hasOwn(BEHAVIOR_CODE_PREFIX, behaviorCode)) return behaviorCode;
+      if (hasOwn(BEHAVIORAL_NAMES, behaviorCode)) return BEHAVIORAL_NAMES[behaviorCode];
+      if (hasOwn(BEHAVIOR_PREFIX_TO_NAME, behaviorCode)) return BEHAVIOR_PREFIX_TO_NAME[behaviorCode];
+      return '';
     }
 
     function buildMatchCreatorCard(typeCode, behaviorCode) {
@@ -3565,11 +3583,12 @@
     function buildInviteMessage(code80, nickname) {
       return `私は「${code80}｜${nickname}」でした。\nあなたとの相性を見てみたい！\n無料・登録不要・約3分`;
     }
-    // 招待URLで開いたときの経路（utm_medium）。無ければ none、想定外の形式なら other
+    // 招待URLで開いたときの経路（utm_medium）。INVITE_MEDIUMS の4つだけをそのまま返し、無ければ none、それ以外はすべて other。
+    // 自由な文字列を計測の値にしない（GA4 のカーディナリティと、書き換えられた値の混入を防ぐ）
     function getInviteSource() {
       const raw = urlParams.get('utm_medium');
       if (!raw) return 'none';
-      return /^[A-Za-z0-9_-]{1,40}$/.test(raw) ? raw : 'other';
+      return Object.values(INVITE_MEDIUMS).includes(raw) ? raw : 'other';
     }
 
     // ===================================================================
@@ -3677,7 +3696,7 @@
       if (!shareImageModulePromise) {
         shareImageModulePromise = new Promise((resolve, reject) => {
           const script = document.createElement('script');
-          script.src = '/80cards/share-image.js?v=20261008d';
+          script.src = '/80cards/share-image.js?v=20261008e';
           script.async = true;
           script.onload = () => (window.PF80ShareImage ? resolve(window.PF80ShareImage) : reject(new Error('share-image missing')));
           script.onerror = () => { shareImageModulePromise = null; reject(new Error('share-image load failed')); };
@@ -3911,7 +3930,7 @@
     ];
 
     // === LP 相性スキャンセクション 用デモペア ===
-    // 実データ: AA × DA = 86%（最強コンビ）
+    // 実データ: AA × DA = 86点（最強コンビ）
     // 80CODE: 効率型(EF)×演出型(SH) → EFAA × SHDA
     // LP 相性スキャンセクション 用ペア — ローテーション表示
     // 設計: 6スコア帯すべて + 6色組み合わせすべて + 行動レター A/E/H/S/I を均等配分
@@ -5062,8 +5081,8 @@
 
     // 相性ペア画像（9:16 と 1:1）。a=友だち（左）／b=自分（右）。点数とラベルは getCompatibility() の値をそのまま渡す
     function usePairImages({ a, b, score, label }) {
-      const prefixA = BEHAVIOR_CODE_PREFIX[a.behaviorName] || '';
-      const prefixB = BEHAVIOR_CODE_PREFIX[b.behaviorName] || '';
+      const prefixA = getBehaviorPrefix(a.behaviorName);
+      const prefixB = getBehaviorPrefix(b.behaviorName);
       return useGeneratedImages(`${prefixA}${a.typeCode}|${prefixB}${b.typeCode}`, (mod) => mod.generatePair({
         a: { behaviorPrefix: prefixA, typeCode: a.typeCode, nickname: TYPE_NICKNAMES[a.typeCode] },
         b: { behaviorPrefix: prefixB, typeCode: b.typeCode, nickname: TYPE_NICKNAMES[b.typeCode] },
@@ -7856,6 +7875,9 @@
       );
     }
 
+    // compat_view_80 を送った組み合わせ（creatorType|responderType）。ページを開き直すまで保持する
+    const compatViewTracked = new Set();
+
     // --- CompatibilityResult（相性結果画面）---
     // creatorType / creatorBehaviorCode: 招待してくれた友だち（?match= の中身）。responderType / responderBehavior: 診断を終えた自分
     function CompatibilityResult({ creatorType, creatorBehaviorCode, responderType, responderBehavior, onNewMatch }) {
@@ -7881,11 +7903,12 @@
       });
       const [pairModalOpen, setPairModalOpen] = React.useState(false);
 
-      // 相性結果の表示を1回だけ記録する
-      const viewTrackedRef = React.useRef(false);
+      // 相性結果の表示を、同じ2人の組み合わせにつき1ページ表示で1回だけ記録する。
+      // コンポーネントの再マウント（画面の行き来・再表示）で重複して数えないよう、記録済みの組はモジュール変数で持つ
       React.useEffect(() => {
-        if (viewTrackedRef.current || !metaA || !metaB) return;
-        viewTrackedRef.current = true;
+        const viewKey = `${creatorType}|${responderType}`;
+        if (!metaA || !metaB || compatViewTracked.has(viewKey)) return;
+        compatViewTracked.add(viewKey);
         trackGa('compat_view_80', {
           inviter_type: creatorType,
           personality_type: responderType,
@@ -7896,14 +7919,14 @@
 
       if (!metaA || !metaB) return null;
 
-      const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}%！\nあなたも相性を調べてみよう！\n\n`;
+      const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}点！\nあなたも相性を調べてみよう！\n\n`;
       const shareUrl = 'https://www.personal-file.jp/80cards/';
 
       // ペア画像の共有文。自分のタイプの招待URL（utm_medium=invite_pair）を付け、見た人がさらに友だちを招待できるようにする
-      const pairShareText = `${nickA} × ${nickB} の相性は「${compat.label}」${compat.score}%でした。\nあなたも友だちとの相性を見てみて。\n${buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.pair)}`;
-      const pairCode80A = (BEHAVIOR_CODE_PREFIX[behaviorNameA] || '') + creatorType;
-      const pairCode80B = (BEHAVIOR_CODE_PREFIX[behaviorNameB] || '') + responderType;
-      const pairAlt = `${nickA}（${pairCode80A}）と${nickB}（${pairCode80B}）の相性は ${compat.label} ${compat.score}%`;
+      const pairShareText = `${nickA} × ${nickB} の相性は「${compat.label}」${compat.score}点でした。\nあなたも友だちとの相性を見てみて。\n${buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.pair)}`;
+      const pairCode80A = getBehaviorPrefix(behaviorNameA) + creatorType;
+      const pairCode80B = getBehaviorPrefix(behaviorNameB) + responderType;
+      const pairAlt = `${nickA}（${pairCode80A}）と${nickB}（${pairCode80B}）の相性は ${compat.label} ${compat.score}点`;
       const pairTrackBase = { personality_type: responderType, ...rarityParam(responderType) };
 
       const trackCompatShare = (method, content) => trackGa('share_80', {
@@ -7997,7 +8020,7 @@
                 lineHeight: 1,
                 fontFamily: "'Inter', sans-serif"
               }}>
-                {compat.score}<span style={{ fontSize: '24px' }}>%</span>
+                {compat.score}<span style={{ fontSize: '24px' }}>点</span>
               </div>
               <div style={{
                 fontSize: '14px',
@@ -8031,7 +8054,7 @@
                   border: '1px solid rgba(255,255,255,0.7)'
                 }}>
                   <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickA}から見た相性</div>
-                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorA.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreA}%</div>
+                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorA.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreA}<span style={{ fontSize: '16px' }}>点</span></div>
                 </div>
                 <div style={{
                   flex: 1,
@@ -8044,7 +8067,7 @@
                   border: '1px solid rgba(255,255,255,0.7)'
                 }}>
                   <div style={{ fontSize: '12px', color: 'rgba(42,42,42,0.5)', marginBottom: '4px' }}>{nickB}から見た相性</div>
-                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorB.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreB}%</div>
+                  <div style={{ fontSize: '24px', fontWeight: '800', color: colorB.primary, fontFamily: "'Inter', sans-serif" }}>{compat.scoreB}<span style={{ fontSize: '16px' }}>点</span></div>
                 </div>
               </div>
             )}
@@ -8221,6 +8244,8 @@
       const closeRef = React.useRef(null);
       const dialogRef = React.useRef(null);
       const copiedTimerRef = React.useRef(null);
+      const copyBtnRef = React.useRef(null);
+      const copyingRef = React.useRef(false);
       useDialogBehavior({ dialogRef, closeRef, onClose, returnFocusSelector: '.pf-match-main' });
       React.useEffect(() => () => window.clearTimeout(copiedTimerRef.current), []);
 
@@ -8242,13 +8267,22 @@
         ...trackBase,
       });
 
+      // コピー処理中の再入は無視する（連打で done / error が重複して記録されるのを防ぐ）。
+      // 終わったらコピーボタンへフォーカスを戻す（代替経路の execCommand が一時的な入力欄にフォーカスを移すため）
       const handleCopy = async () => {
-        const ok = await copyTextToClipboard(copyInviteUrl);
-        window.clearTimeout(copiedTimerRef.current);
-        setCopied(ok);
-        setCopyFailed(!ok);
-        if (ok) copiedTimerRef.current = window.setTimeout(() => setCopied(false), 2200);
-        track('copy_link', ok ? 'done' : 'error');
+        if (copyingRef.current) return;
+        copyingRef.current = true;
+        try {
+          const ok = await copyTextToClipboard(copyInviteUrl);
+          window.clearTimeout(copiedTimerRef.current);
+          setCopied(ok);
+          setCopyFailed(!ok);
+          if (ok) copiedTimerRef.current = window.setTimeout(() => setCopied(false), 2200);
+          track('copy_link', ok ? 'done' : 'error');
+        } finally {
+          copyingRef.current = false;
+          if (copyBtnRef.current) copyBtnRef.current.focus();
+        }
       };
 
       return (
@@ -8278,7 +8312,7 @@
               <a className="pf-btn pf-btn--main" href={xHref} target="_blank" rel="noopener noreferrer" onClick={() => track('x', 'initiated')}>
                 Xで送る
               </a>
-              <button type="button" className="pf-btn pf-btn--sub" onClick={handleCopy}>
+              <button type="button" className="pf-btn pf-btn--sub" onClick={handleCopy} ref={copyBtnRef}>
                 リンクをコピー
               </button>
             </div>

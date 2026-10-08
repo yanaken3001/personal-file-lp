@@ -6647,6 +6647,8 @@
       text-decoration: none;
     }
     .pf-btn--line { border: 1px solid transparent; background: #06C755; color: #fff; }
+    /* LINE公式の緑（#06C755）と白文字は変えず、文字を太く大きくして読みやすくする。.pf-btn（後ろで定義）の文字指定に負けないよう詳細度を上げる */
+    .pf-btn.pf-btn--line { font-size: 18px; font-weight: 800; letter-spacing: 0.02em; }
     .pf-invite-status { min-height: 22px; margin: 8px 0 4px; font-size: 13px; line-height: 1.6; text-align: center; }
     .pf-invite-copied { font-weight: 800; color: var(--ink); }
     .pf-invite-failed { color: var(--ink2); }
@@ -6664,7 +6666,17 @@
       font-size: 12px;
     }
     .pf-invite-matrix { margin: 8px 0 12px; font-size: 13px; line-height: 1.7; text-align: center; }
-    .pf-invite-matrix a { color: #6638F0; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+    .pf-invite-matrix a {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      min-height: 44px;   /* タップ領域 */
+      color: #6638F0;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
 
     /* 相性結果のペア画像のプレビュー（1:1）と保存・共有ボタン */
     .pf-pair { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 28px 0; line-break: strict; }

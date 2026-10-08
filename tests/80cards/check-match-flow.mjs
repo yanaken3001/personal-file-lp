@@ -158,13 +158,22 @@ try {
     x: await a.locator('a.pf-btn--main').getAttribute('href'),
   };
   await typo(a, '.pf-modal-card', '招待モーダル(360px)');
+  // LINEボタン: 色はLINE公式の緑と白文字のまま、文字は太く・大きい。相性マトリクスへのリンクはタップ領域が高さ44px以上
+  const lineStyle = await a.locator('a.pf-btn--line').evaluate((el) => { const c = getComputedStyle(el); return { size: parseFloat(c.fontSize), weight: Number(c.fontWeight), bg: c.backgroundColor, color: c.color }; });
+  check(lineStyle.size >= 17 && lineStyle.weight >= 800, `LINEボタンの文字が太く・大きくなっていません: ${JSON.stringify(lineStyle)}`);
+  check(lineStyle.bg === 'rgb(6, 199, 85)' && lineStyle.color === 'rgb(255, 255, 255)', `LINEボタンの色が公式の緑・白文字ではありません: ${JSON.stringify(lineStyle)}`);
+  const matrixBox = await a.locator('.pf-invite-matrix a').boundingBox();
+  check(matrixBox && matrixBox.height >= 44, `相性マトリクスへのリンクのタップ領域が44px未満です: ${matrixBox && matrixBox.height}`);
   if (OUT_DIR) await a.screenshot({ path: path.join(OUT_DIR, 'invite-modal-360.png') });
   // クリック（新しいタブは開かずに記録だけ確認するため、遷移を止める）
   await a.evaluate(() => document.querySelectorAll('a.pf-btn').forEach((el) => el.addEventListener('click', (e) => e.preventDefault())));
   await a.locator('a.pf-btn--line').click();
   await a.locator('a.pf-btn--main').click();
-  await a.locator('.pf-btn--sub').click();
+  // コピーは処理中の再入を無視する: 同じ瞬間に2回押しても、記録は1回（done）だけ
+  await a.evaluate(() => { const btn = document.querySelector('.pf-btn--sub'); btn.click(); btn.click(); });
   await a.waitForSelector('.pf-invite-copied, .pf-invite-failed');
+  await a.waitForTimeout(150);
+  check(await a.evaluate(() => document.activeElement === document.querySelector('.pf-btn--sub')), 'コピーのあと、コピーボタンにフォーカスが戻っていません');
   copiedUrl = await a.evaluate(() => navigator.clipboard.readText().catch(() => ''));
   const evA = await events(a);
   const shareA = evA.filter((e) => e.name === 'share_80' && e.params.share_content === 'invite_link');
@@ -173,6 +182,12 @@ try {
     const e = shareA.find((s) => s.params.share_method === method);
     check(e && e.params.share_status === status && e.params.share_surface === 'match_modal' && e.params.personality_type === 'PP', `share_80（${method}）が想定と違います: ${JSON.stringify(e)}`);
   }
+  // クリップボードAPIが使えない環境（execCommand の代替経路）でも、コピーのあとコピーボタンにフォーカスが戻る
+  await a.evaluate(() => { Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true }); });
+  await a.evaluate(() => document.querySelector('.pf-btn--sub').click());
+  await a.waitForFunction(() => (window.dataLayer || []).filter((x) => x[0] === 'event' && x[2] && x[2].share_method === 'copy_link').length >= 2, null, { timeout: 5000 });
+  await a.waitForTimeout(150);
+  check(await a.evaluate(() => document.activeElement === document.querySelector('.pf-btn--sub')), '代替経路（execCommand）のコピーのあと、コピーボタンにフォーカスが戻っていません');
   await ctxA.close();
 
   // 招待URLの検査（LINE・X・コピーの3経路）
@@ -237,6 +252,12 @@ try {
   check(completes.length === 1 && completes[0].params.entry === 'invite', `diagnosis_80_complete（entry=invite）が想定と違います: ${JSON.stringify(completes.map((c) => c.params.entry))}`);
   const pairAlt = await b.locator('.pf-pair-img').getAttribute('alt');
   check(pairAlt && pairAlt.includes('ACPP') && pairAlt.includes(`${vp.compat_label}`) && pairAlt.includes(`${vp.compat_score}`), `ペア画像の代替テキストが想定と違います: ${pairAlt}`);
+  // 相性の点数の単位は「点」にそろえる（画面・代替テキスト）。「%」は出さない
+  check(pairAlt.endsWith(`${vp.compat_score}点`), `ペア画像の代替テキストの単位が「点」ではありません: ${pairAlt}`);
+  const compatText = await b.locator('.app-container').innerText();
+  check(!compatText.includes('%'), `相性結果の画面に「%」が残っています: ${compatText.split('\n').filter((l) => l.includes('%')).join(' / ')}`);
+  const scoreLines = compatText.split('\n').filter((l) => /^\d+点$/.test(l.trim()));
+  check(scoreLines.length >= 1 && scoreLines.includes(`${vp.compat_score}点`), `相性の点数が「${vp.compat_score}点」で表示されていません: ${JSON.stringify(scoreLines)}`);
   await typo(b, '.pf-pair', '相性結果のペア画像まわり(360px)');
   check(await b.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), '相性結果(360px)で横スクロールが出ています');
   if (OUT_DIR) await b.locator('.pf-pair').screenshot({ path: path.join(OUT_DIR, 'compat-pair-360.png') });
@@ -268,6 +289,13 @@ try {
   check((await b.locator('#pf-share-modal-title').count()) === 0, 'Esc でモーダルが閉じません');
   const focused = await b.evaluate(() => document.activeElement && document.activeElement.className);
   check(/pf-pair-btn/.test(focused || ''), `閉じたあと、開いたボタンにフォーカスが戻っていません: ${focused}`);
+
+  // 相性結果 → 自分の結果 → 相性結果と行き来して表示し直しても、compat_view_80 は増えない（同じ2人の組は1ページ表示で1回）
+  await b.locator('button', { hasText: '他の友達との相性も調べる' }).click();
+  await b.locator('button', { hasText: '相性結果を見る' }).click();
+  await b.waitForSelector('.pf-pair-img', { timeout: 30000 });
+  const viewAgain = (await events(b)).filter((e) => e.name === 'compat_view_80');
+  check(viewAgain.length === 1, `相性結果を表示し直すと compat_view_80 が重複します: ${viewAgain.length}件`);
   await ctxB.close();
 } finally {
   await browser.close();

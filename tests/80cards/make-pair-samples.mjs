@@ -56,7 +56,7 @@ try {
     ctx.font = '700 18px "Noto Sans JP", sans-serif';
     for (let i = 0; i < list.length; i++) {
       const x = pad + i * (colW + gap);
-      ctx.fillText(`${list[i].label}（${list[i].score}）  ${results[i].code80A} × ${results[i].code80B}`, x, pad + 18);
+      ctx.fillText(`${list[i].label}（${list[i].score}点）  ${results[i].code80A} × ${results[i].code80B}`, x, pad + 18);
       const s = await load(results[i].story.url);
       const q = await load(results[i].square.url);
       ctx.drawImage(s, x, pad + cap, colW, storyH);

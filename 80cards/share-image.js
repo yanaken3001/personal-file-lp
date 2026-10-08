@@ -18,7 +18,7 @@
 (function (root) {
   'use strict';
 
-  var VERSION = '20261008d';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
+  var VERSION = '20261008e';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
   var IMAGE_VERSION = '20261008';     // キャラ縮小画像の版（画像を差し替えたときだけ上げる）
   var JPEG_QUALITY = 0.92;
   var FONT_TIMEOUT_MS = 4000;
@@ -448,7 +448,7 @@
      点数とラベルは画面の getCompatibility() の値をそのまま受け取って描く（ここでは計算しない）。
      2人の80CODE・あだ名は、長い方に合わせて同じ大きさにそろえる。 */
   var PAIR_HEADING = '2人の相性';
-  var PAIR_UNIT = '%';   // 相性結果の画面・シェア文・設計書の試作と同じ単位（%）
+  var PAIR_UNIT = '点';   // 相性の点数の単位。サイト全体で「点」に統一（2026-10-08 ユーザー確定。相性結果の画面・シェア文・トップの見本・相性マトリクスと同じ）
   var LAYOUT_PAIR_STORY = {
     cx: 540,
     glowY: 1010, glowR: 560,
@@ -480,7 +480,7 @@
       : [{ t: code80, c: color }];
   }
 
-  /* 点数（大きな数字＋小さな「%」）の幅。数字の大きさが px のとき、「%」は px の 0.38 倍 */
+  /* 点数（大きな数字＋小さな「点」）の幅。数字の大きさが px のとき、「点」は px の 0.38 倍 */
   function scoreMetrics(ctx, str, px) {
     var unitPx = Math.round(px * 0.38), gap = Math.round(px * 0.05);
     setFont(ctx, 900, px, FONT_NUM);
