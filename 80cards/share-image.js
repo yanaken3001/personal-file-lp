@@ -6,6 +6,7 @@
  *
  * 設計書: 08_80CARDS拡散/01_改修設計書_v1.md 1節・2節
  * 呼び出し: window.PF80ShareImage.generate({ behaviorPrefix, behaviorName, typeCode, nickname, summary, rarityTier, rarityLabel })
+ *          window.PF80ShareImage.generatePair({ a:{behaviorPrefix,typeCode,nickname}, b:{同左}, score, label })  ← 相性ペア画像（P2）
  * 戻り値の imageStatus: 'ready' / 'ready_font_timeout' / 'ready_font_missing' / 'ready_char_missing' とその組み合わせ
  *   （GA4 の image_status にそのまま送る。画像は作れたが品質が落ちた理由を区別するため）
  * 後始末: 不要になった結果は PF80ShareImage.release(result) で Object URL を解放する
@@ -17,7 +18,7 @@
 (function (root) {
   'use strict';
 
-  var VERSION = '20261008c';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
+  var VERSION = '20261008e';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
   var IMAGE_VERSION = '20261008';     // キャラ縮小画像の版（画像を差し替えたときだけ上げる）
   var JPEG_QUALITY = 0.92;
   var FONT_TIMEOUT_MS = 4000;
@@ -441,6 +442,169 @@
     info.h = H;
   }
 
+  /* ============ 相性ペア画像（P2） ============
+     友だち（左）と自分（右）の2人を並べる。載せるもの: 見出し「2人の相性」／相性の点数とラベル／2人のキャラ・80CODE・あだ名／呼びかけ。
+     1人用の画像と同じ約束: 枠・塗りの囲み（ボタンに見える要素）・URL・「無料・登録不要」の文字は載せない。文字は大きく。
+     点数とラベルは画面の getCompatibility() の値をそのまま受け取って描く（ここでは計算しない）。
+     2人の80CODE・あだ名は、長い方に合わせて同じ大きさにそろえる。 */
+  var PAIR_HEADING = '2人の相性';
+  var PAIR_UNIT = '点';   // 相性の点数の単位。サイト全体で「点」に統一（2026-10-08 ユーザー確定。相性結果の画面・シェア文・トップの見本・相性マトリクスと同じ）
+  var LAYOUT_PAIR_STORY = {
+    cx: 540,
+    glowY: 1010, glowR: 560,
+    headBase: 326, headPx: 52, headSp: 12,
+    scoreBase: 620, scoreMax: 300, scoreMin: 240, scoreW: 640,
+    labelBase: 780, labelMax: 124, labelMin: 84, labelW: 920,
+    colA: 295, colB: 785, colW: 480,
+    charBottom: 1284, charMaxH: 450, charMaxW: 410, crossPx: 72,
+    codeBase: 1412, codeMax: 136, codeMin: 100, codeSp: 6,
+    nickBase: 1516, nickMax: 84, nickMin: 48,
+    ctaBase: 1766, ctaPx: 52
+  };
+  var LAYOUT_PAIR_SQUARE = {
+    cx: 540,
+    glowY: 560, glowR: 520,
+    headBase: 96, headPx: 40, headSp: 10,
+    scoreBase: 292, scoreMax: 200, scoreMin: 160, scoreW: 560,
+    labelBase: 400, labelMax: 88, labelMin: 60, labelW: 920,
+    colA: 295, colB: 785, colW: 480,
+    charBottom: 712, charMaxH: 270, charMaxW: 330, crossPx: 56,
+    codeBase: 826, codeMax: 120, codeMin: 80, codeSp: 5,
+    nickBase: 910, nickMax: 68, nickMin: 44,
+    ctaBase: 1020, ctaPx: 40
+  };
+
+  function codeSegsFor(code80, color) {
+    return code80.length === 4
+      ? [{ t: code80.slice(0, 2), c: rgba(color, 0.45) }, { t: code80.slice(2), c: color }]
+      : [{ t: code80, c: color }];
+  }
+
+  /* 点数（大きな数字＋小さな「点」）の幅。数字の大きさが px のとき、「点」は px の 0.38 倍 */
+  function scoreMetrics(ctx, str, px) {
+    var unitPx = Math.round(px * 0.38), gap = Math.round(px * 0.05);
+    setFont(ctx, 900, px, FONT_NUM);
+    var nw = ctx.measureText(str).width;
+    setFont(ctx, 900, unitPx, FONT_NUM);
+    var uw = ctx.measureText(PAIR_UNIT).width;
+    return { px: px, unitPx: unitPx, gap: gap, nw: nw, uw: uw, total: nw + gap + uw };
+  }
+
+  function paintPair(ctx, imgA, imgB, t, story, W, H, rec) {
+    var L = story ? LAYOUT_PAIR_STORY : LAYOUT_PAIR_SQUARE, cx = L.cx;
+    var GA = GROUP[t.a.group], GB = GROUP[t.b.group];
+    var DA = deep(GA), DB = deep(GB), DM = deep(mix(GA, GB, 0.5));
+    var info = rec ? rec.info = {} : {};
+    var note = function (name, box) { if (rec) { rec.boxes = rec.boxes || {}; rec.boxes[name] = box; } };
+    ctx.textBaseline = 'alphabetic';
+
+    // 背景: 左上は友だち、右下は自分のグループ色
+    var bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, mix(GA, '#ffffff', 0.86));
+    bg.addColorStop(1, mix(GB, '#ffffff', 0.86));
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    [[L.colA, GA], [L.colB, GB]].forEach(function (o) {
+      var r = ctx.createRadialGradient(o[0], L.glowY, 0, o[0], L.glowY, L.glowR);
+      r.addColorStop(0, rgba(o[1], 0.30));
+      r.addColorStop(1, rgba(o[1], 0));
+      ctx.fillStyle = r;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    // 1. 見出し「2人の相性」（小さな見出し。1人用の「MY 80CODE」にあたる）
+    setFont(ctx, 700, L.headPx);
+    drawSpaced(ctx, [{ t: PAIR_HEADING, c: DM }], cx, L.headBase, L.headSp, 'center');
+    note('heading', textBox(ctx, PAIR_HEADING, cx, L.headBase, 'center', L.headSp, L.headPx));
+
+    // 2. 相性の点数（特大）。左から右へ友だち→自分のグループ色
+    var scoreStr = String(t.score);
+    var sm = scoreMetrics(ctx, scoreStr, L.scoreMax);
+    while (sm.total > L.scoreW && sm.px > L.scoreMin) sm = scoreMetrics(ctx, scoreStr, sm.px - 4);
+    var sx0 = cx - sm.total / 2;
+    var sg = ctx.createLinearGradient(sx0, 0, sx0 + sm.total, 0);
+    sg.addColorStop(0, GA);
+    sg.addColorStop(1, GB);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = sg;
+    setFont(ctx, 900, sm.px, FONT_NUM);
+    ctx.fillText(scoreStr, sx0, L.scoreBase);
+    var nbox = textBox(ctx, scoreStr, sx0, L.scoreBase, 'left', 0, sm.px);
+    setFont(ctx, 900, sm.unitPx, FONT_NUM);
+    ctx.fillText(PAIR_UNIT, sx0 + sm.nw + sm.gap, L.scoreBase);
+    var ubox = textBox(ctx, PAIR_UNIT, sx0 + sm.nw + sm.gap, L.scoreBase, 'left', 0, sm.unitPx);
+    note('score', unionBox(nbox, ubox));
+    info.scorePx = sm.px;
+
+    // 3. 相性のラベル（大きく）
+    info.labelPx = fitSize(ctx, t.label, 900, L.labelMax, L.labelMin, L.labelW, FONT_JP, 0);
+    var lw = ctx.measureText(t.label).width;
+    var lg = ctx.createLinearGradient(cx - lw / 2, 0, cx + lw / 2, 0);
+    lg.addColorStop(0, DA);
+    lg.addColorStop(1, DB);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = lg;
+    ctx.fillText(t.label, cx, L.labelBase);
+    note('label', textBox(ctx, t.label, cx, L.labelBase, 'center', 0, info.labelPx));
+
+    // 4. 2人のキャラと「×」
+    var charTop = L.charBottom - L.charMaxH;
+    note('charA', drawImageFit(ctx, imgA, L.colA, L.charBottom, L.charMaxW, L.charMaxH));
+    note('charB', drawImageFit(ctx, imgB, L.colB, L.charBottom, L.charMaxW, L.charMaxH));
+    setFont(ctx, 700, L.crossPx, FONT_NUM);
+    var crossBase = Math.round(charTop + L.charMaxH / 2 + L.crossPx * 0.35);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = rgba(DM, 0.7);
+    ctx.fillText('×', cx, crossBase);
+    note('cross', textBox(ctx, '×', cx, crossBase, 'center', 0, L.crossPx));
+
+    // 5. 2人の80CODE（同じ大きさ）
+    var segsA = codeSegsFor(t.a.code80, GA), segsB = codeSegsFor(t.b.code80, GB);
+    var cpA = fitSizeSegs(ctx, segsA, 900, L.codeMax, L.codeMin, L.colW, FONT_NUM, L.codeSp);
+    var cpB = fitSizeSegs(ctx, segsB, 900, L.codeMax, L.codeMin, L.colW, FONT_NUM, L.codeSp);
+    info.codePx = Math.min(cpA, cpB);
+    setFont(ctx, 900, info.codePx, FONT_NUM);
+    drawSpaced(ctx, segsA, L.colA, L.codeBase, L.codeSp, 'center');
+    note('codeA', textBox(ctx, t.a.code80, L.colA, L.codeBase, 'center', L.codeSp, info.codePx));
+    drawSpaced(ctx, segsB, L.colB, L.codeBase, L.codeSp, 'center');
+    note('codeB', textBox(ctx, t.b.code80, L.colB, L.codeBase, 'center', L.codeSp, info.codePx));
+
+    // 6. 2人のあだ名（同じ大きさ）
+    var npA = fitSize(ctx, t.a.nickname, 900, L.nickMax, L.nickMin, L.colW, FONT_JP, 0);
+    var npB = fitSize(ctx, t.b.nickname, 900, L.nickMax, L.nickMin, L.colW, FONT_JP, 0);
+    info.nickPx = Math.min(npA, npB);
+    setFont(ctx, 900, info.nickPx, FONT_JP);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = INK;
+    ctx.fillText(t.a.nickname, L.colA, L.nickBase);
+    note('nickA', textBox(ctx, t.a.nickname, L.colA, L.nickBase, 'center', 0, info.nickPx));
+    ctx.fillText(t.b.nickname, L.colB, L.nickBase);
+    note('nickB', textBox(ctx, t.b.nickname, L.colB, L.nickBase, 'center', 0, info.nickPx));
+
+    // 7. 呼びかけ（枠・塗りなしの普通の文字。1人用と同じ文言）
+    setFont(ctx, 700, L.ctaPx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = DM;
+    ctx.fillText(CTA_TEXT, cx, L.ctaBase);
+    note('cta', textBox(ctx, CTA_TEXT, cx, L.ctaBase, 'center', 0, L.ctaPx));
+    info.w = W;
+    info.h = H;
+  }
+
+  /* t: { a:{code80,typeCode,nickname,group}, b:{…}, score, label }。rec は検査用（renderResult と同じ） */
+  function renderPair(imgA, imgB, t, fmt, rec) {
+    var story = fmt === 'story', W = 1080, H = story ? 1920 : 1080;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    try {
+      paintPair(c.getContext('2d'), imgA, imgB, t, story, W, H, rec);
+    } catch (e) {
+      releaseCanvas(c);
+      throw e;
+    }
+    return c;
+  }
+
   /* ============ 読み込み・書き出し ============ */
   function loadImage(src) {
     return new Promise(function (resolve, reject) {
@@ -535,9 +699,77 @@
     });
   }
 
+  /* 画像の用意（共通）。フォントと画像を待ち、9:16 と 1:1 を描いて JPEG にする。
+     job: { sample: フォント読み込み用の文字列, imageUrls: [キャラ画像のURL…], render(imgs, fmt): canvas, nameFor(fmt): ファイル名 }
+     戻り値: { story:{…}, square:{…}, fontsOk, fontStatus, charImageOk, imageStatus, timing }（呼び出し側が code80 などを足す） */
+  function produce(job) {
+    var t0 = performance.now();
+    var tFont, tImg;
+
+    return Promise.all([
+      ensureFonts(job.sample).then(function (st) { tFont = performance.now(); return st; }),
+      Promise.all(job.imageUrls.map(function (u) {
+        return loadImage(u).then(function (i) { return i; }, function () { return null; });
+      })).then(function (imgs) { tImg = performance.now(); return imgs; })
+    ]).then(function (res) {
+      var fontStatus = res[0], imgs = res[1];
+      var tDraw0 = performance.now();
+      var specs = ['story', 'square'];
+      var canvases = [];
+      try {
+        specs.forEach(function (fmt) { canvases.push(job.render(imgs, fmt)); });
+      } catch (e) {
+        canvases.forEach(releaseCanvas);   // 途中で失敗しても作りかけの canvas を残さない
+        throw e;
+      }
+      var tDraw1 = performance.now();
+      return Promise.all(canvases.map(canvasToBlob)).then(function (blobs) {
+        canvases.forEach(releaseCanvas);   // blob にした後は canvas を使わない（成功・失敗とも解放）
+        var tEnc = performance.now();
+        // 先に全部の blob を確認する。1つでも失敗したら URL を作らずに終える（URL の取りこぼしを防ぐ）
+        if (blobs.some(function (b) { return !b; })) throw new Error('encode failed');
+        var out = {};
+        specs.forEach(function (fmt, i) {
+          var blob = blobs[i];
+          var name = job.nameFor(fmt) + '.' + (blob.type === 'image/png' ? 'png' : 'jpg');
+          out[fmt] = {
+            fmt: fmt,
+            width: 1080,
+            height: fmt === 'story' ? 1920 : 1080,
+            blob: blob,
+            file: makeFile(blob, name),
+            name: name,
+            url: URL.createObjectURL(blob),
+            bytes: blob.size,
+            type: blob.type
+          };
+        });
+        var charOk = imgs.every(function (i) { return !!i; });
+        out.fontsOk = fontStatus === 'ok';
+        out.fontStatus = fontStatus;
+        out.charImageOk = charOk;
+        out.imageStatus = buildImageStatus(fontStatus, charOk);
+        out.timing = {
+          totalMs: Math.round(tEnc - t0),
+          fontWaitMs: Math.round(tFont - t0),
+          imageWaitMs: Math.round(tImg - t0),
+          drawMs: Math.round((tDraw1 - tDraw0) * 10) / 10,
+          encodeMs: Math.round(tEnc - tDraw1)
+        };
+        return out;
+      }, function (err) {
+        canvases.forEach(releaseCanvas);
+        throw err;
+      });
+    });
+  }
+
+  function charImageUrl(typeCode) {
+    return '/80cards/share-image/' + typeCode.toLowerCase() + '.webp?v=' + IMAGE_VERSION;
+  }
+
   /* opts: { behaviorPrefix:'AC', typeCode:'PP', behaviorName:'達成型', nickname, summary, rarityTier:1〜4, rarityLabel } */
   function generate(opts) {
-    var t0 = performance.now();
     var typeCode = String(opts.typeCode || '');
     var t = {
       code80: String(opts.behaviorPrefix || '') + typeCode,
@@ -551,64 +783,45 @@
     };
     if (!GROUP[t.group] || t.code80.length !== 4) return Promise.reject(new Error('invalid type'));
 
-    var imgUrl = '/80cards/share-image/' + typeCode.toLowerCase() + '.webp?v=' + IMAGE_VERSION;
-    var sample = ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, t.rarityLabel, CTA_TEXT, '0123456789'].join('');
-    var tFont, tImg;
+    return produce({
+      sample: ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, t.rarityLabel, CTA_TEXT, '0123456789'].join(''),
+      imageUrls: [charImageUrl(typeCode)],
+      render: function (imgs, fmt) { return renderResult(imgs[0], t, fmt); },
+      nameFor: function (fmt) { return '80cards-' + t.code80 + '-' + fmt; }
+    }).then(function (out) {
+      out.code80 = t.code80;
+      return out;
+    });
+  }
 
-    return Promise.all([
-      ensureFonts(sample).then(function (st) { tFont = performance.now(); return st; }),
-      loadImage(imgUrl).then(function (i) { tImg = performance.now(); return i; }, function () { tImg = performance.now(); return null; })
-    ]).then(function (res) {
-      var fontStatus = res[0], img = res[1];
-      var tDraw0 = performance.now();
-      var specs = [['story', 'story'], ['square', 'square']];
-      var canvases = [];
-      try {
-        specs.forEach(function (s) { canvases.push(renderResult(img, t, s[0])); });
-      } catch (e) {
-        canvases.forEach(releaseCanvas);   // 途中で失敗しても作りかけの canvas を残さない
-        throw e;
-      }
-      var tDraw1 = performance.now();
-      return Promise.all(canvases.map(canvasToBlob)).then(function (blobs) {
-        canvases.forEach(releaseCanvas);   // blob にした後は canvas を使わない（成功・失敗とも解放）
-        var tEnc = performance.now();
-        // 先に全部の blob を確認する。1つでも失敗したら URL を作らずに終える（URL の取りこぼしを防ぐ）
-        if (blobs.some(function (b) { return !b; })) throw new Error('encode failed');
-        var out = {};
-        specs.forEach(function (s, i) {
-          var blob = blobs[i];
-          var ext = blob.type === 'image/png' ? 'png' : 'jpg';
-          var name = '80cards-' + t.code80 + '-' + s[0] + '.' + ext;
-          out[s[0]] = {
-            fmt: s[0],
-            width: 1080,
-            height: s[0] === 'story' ? 1920 : 1080,
-            blob: blob,
-            file: makeFile(blob, name),
-            name: name,
-            url: URL.createObjectURL(blob),
-            bytes: blob.size,
-            type: blob.type
-          };
-        });
-        out.code80 = t.code80;
-        out.fontsOk = fontStatus === 'ok';
-        out.fontStatus = fontStatus;
-        out.charImageOk = !!img;
-        out.imageStatus = buildImageStatus(fontStatus, !!img);
-        out.timing = {
-          totalMs: Math.round(tEnc - t0),
-          fontWaitMs: Math.round(tFont - t0),
-          imageWaitMs: Math.round(tImg - t0),
-          drawMs: Math.round((tDraw1 - tDraw0) * 10) / 10,
-          encodeMs: Math.round(tEnc - tDraw1)
-        };
-        return out;
-      }, function (err) {
-        canvases.forEach(releaseCanvas);
-        throw err;
-      });
+  /* 相性ペア画像。opts: { a:{behaviorPrefix, typeCode, nickname}, b:{同左}, score: 数値, label: '最強コンビ' }
+     a=友だち（左）／b=自分（右）。behaviorPrefix が空でも作る（その場合は16タイプの2文字だけを出す） */
+  function pairSide(o) {
+    var typeCode = String((o && o.typeCode) || '');
+    return {
+      code80: String((o && o.behaviorPrefix) || '') + typeCode,
+      typeCode: typeCode,
+      nickname: (o && o.nickname) || typeCode,
+      group: typeCode.charAt(0)
+    };
+  }
+  function generatePair(opts) {
+    var a = pairSide(opts && opts.a), b = pairSide(opts && opts.b);
+    var score = Math.round(Number(opts && opts.score));
+    var label = String((opts && opts.label) || '');
+    if (!GROUP[a.group] || !GROUP[b.group] || a.typeCode.length !== 2 || b.typeCode.length !== 2 ||
+        !(score >= 0 && score <= 100) || !label) return Promise.reject(new Error('invalid pair'));
+    var t = { a: a, b: b, score: score, label: label };
+
+    return produce({
+      sample: [PAIR_HEADING, PAIR_UNIT, a.code80, b.code80, a.nickname, b.nickname, label, CTA_TEXT, '0123456789×'].join(''),
+      imageUrls: [charImageUrl(a.typeCode), charImageUrl(b.typeCode)],
+      render: function (imgs, fmt) { return renderPair(imgs[0], imgs[1], t, fmt); },
+      nameFor: function (fmt) { return '80cards-pair-' + a.code80 + '-' + b.code80 + '-' + fmt; }
+    }).then(function (out) {
+      out.code80A = a.code80;
+      out.code80B = b.code80;
+      return out;
     });
   }
 
@@ -636,12 +849,13 @@
     version: VERSION,
     PHRASES: PHRASES,
     generate: generate,
+    generatePair: generatePair,
     release: release,
     detectInApp: detectInApp,
     canShareFile: canShareFile,
     isCoarsePointer: isCoarsePointer,
     // 検査用
-    _internal: { normalizePhrases: normalizePhrases, breakPhrases: breakPhrases, phrasesFor: phrasesFor, layoutSummary: layoutSummary, renderResult: renderResult, autoPhrases: autoPhrases, ensureFonts: ensureFonts, buildImageStatus: buildImageStatus }
+    _internal: { normalizePhrases: normalizePhrases, breakPhrases: breakPhrases, phrasesFor: phrasesFor, layoutSummary: layoutSummary, renderResult: renderResult, renderPair: renderPair, autoPhrases: autoPhrases, ensureFonts: ensureFonts, buildImageStatus: buildImageStatus }
   };
 
   root.PF80ShareImage = api;
