@@ -735,7 +735,7 @@
         "personalityName": "ゲームチェンジャー",
         "behavioralType": "演出型",
         "behavioralCode": "G",
-        "summary": "数百人に１人くらいのとても珍しい類型",
+        "summary": "分析力と決断力を兼ね備えた、洗練された類型",
         "userDescription": "演出型ゲームチェンジャーは、高い分析力と合理性に加えて、決断力も備えた類型です。他の類型と比較して勉強も得意で、知性や思考力も持ち合わせています。客観的な視点も持っており、他人からの印象に気を配ることができるため、身だしなみや態度にも注意を払います。この類型の人間は極めて少なく、珍しい存在です。\n\n一方で、演出型ゲームチェンジャーの弱点として、「速度こそ正義」と考える傾向があります。彼らは一般的な人よりも思考スピードが速く、迅速に結論を出す傾向があります。他人の意見をあまり聞かずに自分の結論を急いでしまうことがあります。相手の話を遮ってしまうこともありますが、これをカッコイイと勘違いしている場合もあります。もしこのような悪癖がある場合は改善することが重要です。",
         "strengths": "分析力と決断力：分析力と決断力を兼ね備えているあなたは、問題解決のための洞察力と迅速な行動力を持っています。これはビジネスでは重要な要素で、これらの能力は新しいアイデアを生み出し、変化に対応する能力を高めます。\n知性と思考力：勉強が得意で知性と思考力があるあなたは、常に新しい情報を取り入れて自分自身を成長させる能力があります。これは業界の動向を理解し、新たなビジネスチャンスを見つけるのに役立ちます。\n自己認識と配慮：他人からどう見えているのかを理解し、自分の行動や態度を適切に調整する能力があります。これはチーム内での協調性を高め、他のメンバーと良好な関係を築くのに役立ちます。",
         "weaknesses": "「速度こそ正義」の思考傾向：あなたの思考スピードは非常に速いですが、これが過度になると他人の意見を適切に理解することを妨げる可能性があります。\n他人からの評価に対する過度の敏感さ：他人の視点を理解する能力は素晴らしいですが、これが過度になると自分自身の意思決定や行動を不適切に影響させる可能性があります。\n完璧主義の傾向：完璧主義は高品質の結果を生む可能性がありますが、これが過度になるとストレスを感じやすくなり、効率性が損なわれる可能性があります。",
@@ -1230,7 +1230,7 @@
         "personalityName": "大将気質",
         "behavioralType": "演出型",
         "behavioralCode": "G",
-        "summary": "自身の能力を理解しその力を活せる自信を持ったリーダー類型",
+        "summary": "自身の能力を理解しその力を活かせる自信を持ったリーダー類型",
         "userDescription": "演出型大将気質は、高い決断力と行動力を備えた優れたタイプです。また、客観的に自己を見る能力により、他人からどう見られているかを意識しています。そのため、身だしなみや態度に気を配り、清潔感があります。年齢と共に落ち着いた人物になり、後にはマネジメント層に進むことが多いです。\n\n一方、若い時期には自己評価が高まりやすく、自己愛が強く出ることもあるかもしれません。\nまた、時には他人の意見や評価を深く気にしてしまい、それが行動や判断に影響を及ぼすこともあります。",
         "strengths": "高い決断力と行動力：問題が起こったとき、迅速かつ適切な意思決定と行動をとる能力を持っています。これはビジネスの現場においては非常に重要なスキルで、困難な状況でもリーダーシップを発揮できます。\n多角的視点：自分を客観的に見る能力は、自己理解と自己反省を可能にし、組織内外のダイナミックを理解することができます。これにより、多角的視点から物事を評価し、様々な状況に適応できます。\nマネジメント能力：年齢と共に落ち着きを持ち、人々を導くマネジメント能力を発揮します。これはチームをまとめ、目標に向かって進めるための重要な資質です。",
         "weaknesses": "自己過剰評価の傾向：特に若い頃に自分を過大評価しやすい傾向があります。これは時として現実的な判断を曇らせ、思い込みからの失敗を引き起こす可能性があります。\n他人からの評価への過度な依存：他人からどう見られるかを気にし過ぎると、自分自身の意志が犠牲になり、ストレスや不安を生み出す可能性があります。\n感情のコントロールの難しさ：年齢が若い時は、自己顕示欲が強くなり過ぎたり、過度に他人の評価を恐れてしまったりと、感情のコントロールが難しい傾向があります。",
@@ -2583,7 +2583,7 @@
         "personalityName": "チームの太陽",
         "behavioralType": "情報型",
         "behavioralCode": "J",
-        "summary": "社交性と知性を併せ持った優れた能型",
+        "summary": "社交性と知性を併せ持った優れた万能型",
         "userDescription": "情報型チームの太陽は、明るく前向きな性格で、周囲と円滑なコミュニケーションを図る社交性があります。彼らは自分の専門分野においても熱心に学ぶ傾向があり、知識や知性を兼ね備えています。また、学習能力が高く、学業や研究分野でも活躍する多くの人々がいます。適切な専門分野を選べば、その分野の専門家に成長することも可能です。徐々に信頼と能力を築き、多くの人が管理職に就くこともよくあります。社交性と専門性が要求される分野で着実に努力すれば、高い確率で成功することができるでしょう。",
         "strengths": "社交性：あなたの明るく前向きな性格と高い社交性は、チーム内の雰囲気を和らげ、プロジェクトの進行をスムーズにします。また、顧客との良好な関係を築く上でも大いに役立ちます。\n学習能力：あなたは新しい知識を素早く習得し、その専門分野で深い理解を持つことができます。これにより、ビジネス環境の変化にも柔軟に対応し、企業の成長に貢献することが可能です。\n信頼性：年齢を重ねるごとに信頼と能力が増していくあなたの特性は、ビジネスにおける長期的な成功に不可欠です。あなたのこの特性は、人々があなたに責任ある役割を任せることを容易にします。",
         "weaknesses": "適切な専門分野の選択：あなたは好奇心が旺盛であるため、ある分野を深く追求する前に新たな興味に惹かれる可能性があります。これは、あなたが最も適した分野で最大限のポテンシャルを発揮することを阻む可能性があります。\n分散した関心：あなたの好奇心が高いため、あなたが特定の目標に集中するのを妨げ、その結果、効率が低下する可能性があります。\n社交性の過剰：あなたの高い社交性は、あなたがお酒、ギャンブル、異性などにハマり、それが仕事のパフォーマンスに影響を及ぼす可能性があります。",
@@ -3544,6 +3544,94 @@
     const matchCreator = matchParam ? decodeMatchData(matchParam) : null;
 
     // ===================================================================
+    // 計測・共有まわりの共通ヘルパー（P1: 結果画像・保存・共有）
+    // ===================================================================
+    // GA4へ安全に送る（gtag 未読み込み・ブロック環境でも例外を出さない）
+    function trackGa(eventName, params) {
+      try {
+        if (typeof gtag === 'function') gtag('event', eventName, params || {});
+      } catch (e) {}
+    }
+
+    // 再診断の識別: 端末内の完了フラグだけで判定する（個人情報・回答内容は使わない）
+    const COMPLETED_FLAG_KEY = '80cards_completed';
+    function hasCompletedBefore() {
+      try { return window.localStorage.getItem(COMPLETED_FLAG_KEY) === '1'; } catch (e) { return false; }
+    }
+    function markCompleted() {
+      try { window.localStorage.setItem(COMPLETED_FLAG_KEY, '1'); } catch (e) {}
+    }
+
+    // 診断の入口。invite=相性リンク（?match=）／ share_page・sub_page=?start=1（同一サイト内の共有ページ・その他ページから）／
+    // start_link=?start=1（参照元なし）／ direct=通常のトップ画面
+    function getDiagnosisEntry() {
+      if (matchCreator) return 'invite';
+      if (!autoStart) return 'direct';
+      try {
+        if (document.referrer) {
+          const ref = new URL(document.referrer);
+          if (ref.origin === window.location.origin) {
+            return ref.pathname.indexOf('/80cards/share/') === 0 ? 'share_page' : 'sub_page';
+          }
+        }
+      } catch (e) {}
+      return 'start_link';
+    }
+    const DIAGNOSIS_ENTRY = getDiagnosisEntry();
+
+    // diagnosis_80_complete は1回の診断につき1回だけ送る。
+    // 相性リンク（?match=）経由では結果画面より先に相性結果が表示され、結果画面は戻るまで開かれないため、
+    // 従来はこのイベントが記録されなかった。表示された時点（結果画面 or 相性結果）で送る
+    let diagnosisCompleteSent = false;
+    function resetDiagnosisCompleteTracking() { diagnosisCompleteSent = false; }
+    function trackDiagnosisComplete(scores) {
+      if (diagnosisCompleteSent) return;
+      diagnosisCompleteSent = true;
+      const personalityCode = determinePersonalityType(scores);
+      const behavioralType = determineBehavioralType(scores, personalityCode);
+      const typeName80 = behavioralType.name + (PERSONALITY_NAMES[personalityCode] || personalityCode);
+      const isRepeat = hasCompletedBefore();
+      try {
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'Diagnosis80Complete', {
+            content_name: '80cards_result',
+            personality_type: personalityCode,
+            behavioral_type: behavioralType.name,
+            full_type: typeName80,
+          });
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'diagnosis_80_complete', {
+            content_name: '80cards_result',
+            personality_type: personalityCode,
+            behavioral_type: behavioralType.name,
+            full_type: typeName80,
+            entry: DIAGNOSIS_ENTRY,
+            is_repeat: isRepeat ? 1 : 0,
+          });
+        }
+      } catch (e) {}
+      markCompleted();
+    }
+
+    // 結果画像モジュール（share-image.js）は結果画面の表示後に読み込む（初期表示の転送量を増やさない）
+    let shareImageModulePromise = null;
+    function loadShareImageModule() {
+      if (window.PF80ShareImage) return Promise.resolve(window.PF80ShareImage);
+      if (!shareImageModulePromise) {
+        shareImageModulePromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = '/80cards/share-image.js?v=20261008';
+          script.async = true;
+          script.onload = () => (window.PF80ShareImage ? resolve(window.PF80ShareImage) : reject(new Error('share-image missing')));
+          script.onerror = () => { shareImageModulePromise = null; reject(new Error('share-image load failed')); };
+          document.head.appendChild(script);
+        });
+      }
+      return shareImageModulePromise;
+    }
+
+    // ===================================================================
     // COMPONENTS
     // ===================================================================
 
@@ -4145,6 +4233,8 @@
             gtag('event', 'diagnosis_80_start', {
               content_name: '80cards_start',
               cta_position: ctaPosition,
+              entry: DIAGNOSIS_ENTRY,
+              is_repeat: hasCompletedBefore() ? 1 : 0,
             });
           }
         } catch (e) {}
@@ -4801,7 +4891,7 @@
     }
 
     // --- ShareButtons ---
-    function ShareButtons({ typeName, behaviorType, personalityCode, resultUrl }) {
+    function ShareButtons({ typeName, behaviorType, personalityCode, resultUrl, onOpenImage }) {
       const [copied, setCopied] = React.useState(false);
       const typeMeta = TYPE_META[personalityCode];
 
@@ -4850,12 +4940,28 @@
             });
           }
         } catch (e) {}
+        trackGa('share_80', {
+          share_method: 'x',
+          share_content: 'result_link',
+          share_surface: 'result_sheet',
+          share_status: 'initiated',
+          personality_type: personalityCode,
+          full_type: typeName,
+        });
       };
 
       const copyLink = async () => {
         const showCopied = () => {
           setCopied(true);
           window.setTimeout(() => setCopied(false), 2200);
+          trackGa('share_80', {
+            share_method: 'copy_link',
+            share_content: 'result_link',
+            share_surface: 'result_sheet',
+            share_status: 'done',
+            personality_type: personalityCode,
+            full_type: typeName,
+          });
         };
         try {
           await navigator.clipboard.writeText(shareUrl);
@@ -4887,6 +4993,15 @@
             >
               結果リンクをコピー
             </button>
+
+            {onOpenImage && (
+              <button
+                onClick={onOpenImage}
+                className="result-share-button-clean result-share-button-clean--copy"
+              >
+                画像を保存・共有
+              </button>
+            )}
           </div>
           {copied && (
             <div className="result-share-toast-clean" role="status" aria-live="polite">
@@ -4938,6 +5053,319 @@
           >
             📥 画像を保存してシェア
           </button>
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // 結果画像の保存・共有 / 80CODEコピー / 任意アンケート（P1・2026-10-08）
+    // 画像の描画は 80cards/share-image.js（結果画面の表示後に動的読み込み）
+    // ===================================================================
+
+    // 画面内の短い文言を文節単位で折り返すための包み（jp-typography: .keep-phrase 相当）
+    function K({ children }) {
+      return <span className="pf-kp">{children}</span>;
+    }
+
+    // クリップボードへコピー（Clipboard API → textarea の順。成功したら true）
+    async function copyTextToClipboard(text) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {}
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, text.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return !!ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // 結果が確定したら、裏で結果画像（9:16 と 1:1）を先に作っておく。
+    // Web Share API はクリック直後に呼ぶ必要があり、クリック後に重い生成を始めると失敗するため。
+    function useShareImages({ behaviorName, typeCode, nickname, summary }) {
+      const [state, setState] = React.useState({ status: 'pending', images: null });
+      const [attempt, setAttempt] = React.useState(0);
+
+      React.useEffect(() => {
+        let cancelled = false;
+        let idleId = null;
+        let timerId = null;
+        const run = () => {
+          loadShareImageModule()
+            .then(mod => mod.generate({
+              behaviorPrefix: BEHAVIOR_CODE_PREFIX[behaviorName] || '',
+              behaviorName,
+              typeCode,
+              nickname,
+              summary,
+            }))
+            .then(images => { if (!cancelled) setState({ status: 'ready', images }); })
+            .catch(() => { if (!cancelled) setState({ status: 'error', images: null }); });
+        };
+        setState({ status: 'pending', images: null });
+        if (typeof window.requestIdleCallback === 'function') {
+          idleId = window.requestIdleCallback(run, { timeout: 2000 });
+        } else {
+          timerId = window.setTimeout(run, 400);
+        }
+        return () => {
+          cancelled = true;
+          if (idleId !== null && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+          if (timerId !== null) window.clearTimeout(timerId);
+        };
+      }, [behaviorName, typeCode, attempt]);
+
+      const retry = React.useCallback(() => setAttempt(a => a + 1), []);
+      return { status: state.status, images: state.images, retry };
+    }
+
+    // --- 80CODEをコピー（結果の80CODE表示の下） ---
+    function CodeCopyRow({ onCopy, copiedKind }) {
+      return (
+        <div className="pf-code-copy">
+          <button type="button" className="pf-code-copy-btn" onClick={() => onCopy('code_line')}>
+            80CODEをコピー
+          </button>
+          <button type="button" className="pf-code-copy-btn pf-code-copy-btn--sub" onClick={() => onCopy('code_only')}>
+            コードのみ
+          </button>
+          <span className="pf-code-copy-toast" role="status" aria-live="polite">
+            {copiedKind ? 'コピーしました' : ''}
+          </span>
+        </div>
+      );
+    }
+
+    // --- 年代・今の職種（任意の1タップ。回答はGA4のイベントパラメータとしてのみ送る。保存しない） ---
+    const PROFILE_AGE_OPTIONS = [
+      { value: 'teens', label: '10代' },
+      { value: '20s_early', label: '20代前半' },
+      { value: '20s_late', label: '20代後半' },
+      { value: '30s_plus', label: '30代以上' },
+    ];
+    const PROFILE_JOB_OPTIONS = [
+      { value: 'sales', label: '営業' },
+      { value: 'retail_service', label: '販売・接客' },
+      { value: 'office', label: '事務' },
+      { value: 'it_engineer', label: 'IT・エンジニア' },
+      { value: 'manufacturing_field', label: '製造・現場' },
+      { value: 'medical_care', label: '医療・介護・福祉' },
+      { value: 'student', label: '学生' },
+      { value: 'other', label: 'その他' },
+    ];
+
+    function ProfileQuickPoll({ onAnswer }) {
+      const [age, setAge] = React.useState('');
+      const [job, setJob] = React.useState('');
+
+      const pick = (kind, value) => {
+        const nextAge = kind === 'age' ? value : age;
+        const nextJob = kind === 'job' ? value : job;
+        if (kind === 'age') setAge(value); else setJob(value);
+        onAnswer({ kind, age: nextAge, job: nextJob });
+      };
+
+      const renderChips = (kind, options, selected, label) => (
+        <div className="pf-poll-group" role="group" aria-label={label}>
+          <div className="pf-poll-label">{label}</div>
+          <div className="pf-poll-chips">
+            {options.map(opt => (
+              <button
+                key={opt.value}
+                type="button"
+                className="pf-poll-chip"
+                aria-pressed={selected === opt.value}
+                onClick={() => pick(kind, opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+
+      return (
+        <section className="pf-poll" aria-label="任意のアンケート">
+          <p className="pf-poll-title">
+            <K>よければ、</K><K>教えてください</K><span className="pf-poll-opt">（任意）</span>
+          </p>
+          {renderChips('age', PROFILE_AGE_OPTIONS, age, '年代')}
+          {renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種')}
+          <p className="pf-poll-note">
+            <K>答えなくても、</K><K>結果は</K><K>変わりません。</K><K>個人を</K><K>特定しない</K><K>統計として</K><K>使います。</K>
+          </p>
+        </section>
+      );
+    }
+
+    // --- 画像を保存・共有モーダル ---
+    function ShareImageModal({ imageState, code80, shareText, surface, trackBase, onClose }) {
+      const [fmt, setFmt] = React.useState('story');
+      const [forceLongPress, setForceLongPress] = React.useState(false);
+      const closeRef = React.useRef(null);
+      const openedRef = React.useRef(false);
+      const viewedRef = React.useRef({});
+
+      const api = window.PF80ShareImage || null;
+      const images = imageState.status === 'ready' ? imageState.images : null;
+      const current = images ? images[fmt] : null;
+      const inApp = !!(api && api.detectInApp(navigator.userAgent));
+      const webShareOk = !!(api && current && api.canShareFile(current.file));
+      const coarse = !!(api && api.isCoarsePointer());
+      const showShareButton = webShareOk && !forceLongPress;
+      const showLongPress = !!images && (inApp || !webShareOk || forceLongPress);
+      const showSaveButton = !!images && !inApp;
+      const contentName = fmt === 'story' ? 'result_image_story' : 'result_image_square';
+
+      const track = (extra) => trackGa('share_80', {
+        share_content: contentName,
+        share_surface: surface,
+        ...trackBase,
+        ...extra,
+      });
+
+      // 開いた時点の状態（画像の用意・端末の対応状況）を一度だけ記録する
+      React.useEffect(() => {
+        if (openedRef.current) return;
+        openedRef.current = true;
+        const openParams = {
+          share_surface: surface,
+          image_status: imageState.status,
+          web_share_files: webShareOk ? 1 : 0,
+          in_app: inApp ? 1 : 0,
+          ...trackBase,
+        };
+        if (images && images.timing) openParams.gen_ms = images.timing.totalMs;
+        trackGa('share_image_open_80', openParams);
+      }, []);
+
+      // 長押し保存の表示に切り替わった画像は、表示した時点で記録する（画像の種類ごとに1回）
+      React.useEffect(() => {
+        if (!showLongPress || !current || viewedRef.current[fmt]) return;
+        viewedRef.current[fmt] = true;
+        track({ share_method: 'view_image', share_status: 'initiated' });
+      }, [showLongPress, fmt, !!current]);
+
+      React.useEffect(() => {
+        const originalOverflow = document.body.style.overflow;
+        const handleKeyDown = (event) => {
+          if (event.key === 'Escape') onClose();
+        };
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
+        if (closeRef.current) closeRef.current.focus();
+        return () => {
+          document.body.style.overflow = originalOverflow;
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }, [onClose]);
+
+      const handleShare = async () => {
+        if (!current) return;
+        try {
+          await navigator.share({ files: [current.file], text: shareText });
+          track({ share_method: 'web_share', share_status: 'done' });
+        } catch (e) {
+          if (e && e.name === 'AbortError') {
+            track({ share_method: 'web_share', share_status: 'cancelled' });
+          } else {
+            track({ share_method: 'web_share', share_status: 'error' });
+            setForceLongPress(true);
+          }
+        }
+      };
+
+      const handleSave = () => {
+        if (!current) return;
+        const a = document.createElement('a');
+        a.href = current.url;
+        a.download = current.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        track({ share_method: 'save_image', share_status: 'initiated' });
+      };
+
+      return (
+        <div className="pf-modal-overlay" onClick={onClose}>
+          <div
+            className="pf-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pf-share-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="pf-modal-head">
+              <h2 id="pf-share-modal-title" className="pf-modal-title">画像を保存・共有</h2>
+              <button type="button" className="pf-modal-x" onClick={onClose} aria-label="閉じる" ref={closeRef}>×</button>
+            </div>
+
+            <div className="pf-seg" role="group" aria-label="画像の種類">
+              <button type="button" className="pf-seg-btn" aria-pressed={fmt === 'story'} onClick={() => setFmt('story')}>
+                <K>ストーリーズ</K><span className="pf-seg-sub">9:16</span>
+              </button>
+              <button type="button" className="pf-seg-btn" aria-pressed={fmt === 'square'} onClick={() => setFmt('square')}>
+                <K>正方形</K><span className="pf-seg-sub">1:1</span>
+              </button>
+            </div>
+
+            <div className={`pf-preview pf-preview--${fmt}`}>
+              {current ? (
+                <img
+                  className="pf-preview-img"
+                  src={current.url}
+                  width={current.width}
+                  height={current.height}
+                  alt={`あなたの80CODE ${code80} の結果画像`}
+                />
+              ) : (
+                <div className="pf-preview-wait" role="status">
+                  {imageState.status === 'error' ? (
+                    <>
+                      <p className="pf-note"><K>画像を作成できませんでした。</K></p>
+                      <button type="button" className="pf-btn pf-btn--sub" onClick={imageState.retry}>もう一度つくる</button>
+                    </>
+                  ) : (
+                    <p className="pf-note"><K>画像を作成しています…</K></p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {showLongPress && (
+              <p className="pf-note pf-note--strong">
+                {coarse
+                  ? <><K>画像を長押しして、</K><K>端末に保存してください。</K></>
+                  : <><K>画像を右クリックして、</K><K>保存してください。</K></>}
+              </p>
+            )}
+            {showShareButton && !showLongPress && (
+              <p className="pf-note"><K>「共有する」から、</K><K>送りたいアプリを</K><K>選べます。</K></p>
+            )}
+
+            <div className="pf-modal-actions">
+              {showShareButton && (
+                <button type="button" className="pf-btn pf-btn--main" onClick={handleShare}>共有する</button>
+              )}
+              {showSaveButton && (
+                <button type="button" className="pf-btn pf-btn--sub" onClick={handleSave}>画像を保存</button>
+              )}
+              <button type="button" className="pf-btn pf-btn--text" onClick={onClose}>閉じる</button>
+            </div>
+          </div>
         </div>
       );
     }
@@ -5713,7 +6141,7 @@
     }
 
     // ResultDetailScreen80 — フェーズ2: 詳細スクロール
-    function ResultDetailScreen80({ card, typeData, scores, personalityCode, behavioralType, compatTop3, onRetake, onShare, onOpenMatchModal }) {
+    function ResultDetailScreen80({ card, typeData, scores, personalityCode, behavioralType, compatTop3, onRetake, onShare, onOpenMatchModal, onOpenImage, onCopyCode, copiedKind, onProfileAnswer }) {
       const hue = GROUP_HUE[card.groupKey] || 280;
       const groupName = card.groupKey + '群';
       const resultActionsRef = React.useRef(null);
@@ -5824,6 +6252,9 @@
                   相性診断
                 </button>
               </div>
+              <button type="button" className="btn-clean pf-image-share-btn" onClick={onOpenImage}>
+                画像を保存・共有
+              </button>
               <img
                 className="result-brand-logo"
                 src="/80cards/logo/80cards-logo-full-new2.png?v=20260606c"
@@ -5848,6 +6279,7 @@
                       <span className="pattern-code-letter">{personalityCode?.[0] || ''}</span>
                       <span className="pattern-code-letter">{personalityCode?.[1] || ''}</span>
                     </div>
+                    <CodeCopyRow onCopy={onCopyCode} copiedKind={copiedKind} />
                   </div>
                 );
               })()}
@@ -5885,6 +6317,9 @@
               <div className="result-structure-jump">
                 <a href="#diagnosis-structure" className="result-structure-jump-link">この診断の仕組み</a>
               </div>
+
+              {/* 年代・今の職種（任意の1タップ） */}
+              <ProfileQuickPoll onAnswer={onProfileAnswer} />
 
               {/* あなたのキーワード */}
               <SectionBlock80 title="あなたのキーワード" en="TRAITS">
@@ -7165,24 +7600,7 @@
       // OGP更新 + Meta Pixel
       React.useEffect(() => {
         updateOGPMeta(personalityCode, behavioralType.name);
-        try {
-          if (typeof fbq === 'function') {
-            fbq('trackCustom', 'Diagnosis80Complete', {
-              content_name: '80cards_result',
-              personality_type: personalityCode,
-              behavioral_type: behavioralType.name,
-              full_type: typeName80,
-            });
-          }
-          if (typeof gtag === 'function') {
-            gtag('event', 'diagnosis_80_complete', {
-              content_name: '80cards_result',
-              personality_type: personalityCode,
-              behavioral_type: behavioralType.name,
-              full_type: typeName80,
-            });
-          }
-        } catch (e) {}
+        trackDiagnosisComplete(scores);
       }, []);
 
       // フェーズ遷移タイマー
@@ -7210,6 +7628,48 @@
       const [showSharePanel, setShowSharePanel] = React.useState(false);
       const handleShare = () => setShowSharePanel(v => !v);
 
+      // 結果画像（9:16 / 1:1）。結果が確定した時点で裏で先に作っておく
+      const code80 = get80Code(behavioralType.name, personalityCode);
+      const resultNickname = TYPE_NICKNAMES[personalityCode] || personalityCode;
+      const imageState = useShareImages({
+        behaviorName: behavioralType.name,
+        typeCode: personalityCode,
+        nickname: resultNickname,
+        summary: typeData?.summary || '',
+      });
+      const [imageModalSurface, setImageModalSurface] = React.useState(null); // null | 'result_top' | 'result_sheet'
+      const resultShareUrl = `https://www.personal-file.jp/80cards/share/${code80.toLowerCase()}/`;
+      const imageShareText = `私の80CODEは「${code80}｜${resultNickname}」でした。\n\nあなたの80CODEは？\n${resultShareUrl}\n\n#80CARDS #80タイプ診断`;
+      const trackBase = { personality_type: personalityCode, full_type: typeName80 };
+
+      // 80CODEをコピー（プロフィールにそのまま貼れる1行 / コードのみ）
+      const [copiedKind, setCopiedKind] = React.useState('');
+      const copiedTimerRef = React.useRef(null);
+      const handleCopyCode = async (kind) => {
+        const text = kind === 'code_only' ? code80 : `80CODE: ${code80}｜${resultNickname}`;
+        const ok = await copyTextToClipboard(text);
+        if (ok) {
+          setCopiedKind(kind);
+          window.clearTimeout(copiedTimerRef.current);
+          copiedTimerRef.current = window.setTimeout(() => setCopiedKind(''), 2200);
+        }
+        trackGa('share_80', {
+          share_method: 'copy_code',
+          share_content: kind === 'code_only' ? 'code_only' : 'code',
+          share_surface: 'result_top',
+          share_status: ok ? 'done' : 'error',
+          ...trackBase,
+        });
+      };
+
+      // 年代・今の職種（任意）。GA4のイベントパラメータとしてのみ送る。個人を特定する情報は含めない
+      const handleProfileAnswer = ({ kind, age, job }) => {
+        const params = { answer_kind: kind, ...trackBase };
+        if (age) params.age_group = age;
+        if (job) params.job_group = job;
+        trackGa('profile_answer_80', params);
+      };
+
       if (phase === 'reveal') {
         return <RevealScreen80Clean card={cardData} />;
       }
@@ -7226,6 +7686,10 @@
             onRetake={() => window.location.reload()}
             onShare={handleShare}
             onOpenMatchModal={() => setShowMatchModal(true)}
+            onOpenImage={() => setImageModalSurface('result_top')}
+            onCopyCode={handleCopyCode}
+            copiedKind={copiedKind}
+            onProfileAnswer={handleProfileAnswer}
           />
 
           {/* シェアパネル（フローティング） */}
@@ -7245,8 +7709,21 @@
                 typeName={typeName80}
                 behaviorType={behavioralType.name}
                 personalityCode={personalityCode}
+                onOpenImage={() => { setShowSharePanel(false); setImageModalSurface('result_sheet'); }}
               />
             </div>
+          )}
+
+          {/* 結果画像の保存・共有モーダル */}
+          {imageModalSurface && (
+            <ShareImageModal
+              imageState={imageState}
+              code80={code80}
+              shareText={imageShareText}
+              surface={imageModalSurface}
+              trackBase={trackBase}
+              onClose={() => setImageModalSurface(null)}
+            />
           )}
 
           {/* 相性リンク生成モーダル */}
@@ -7474,11 +7951,20 @@
       const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}%！\nあなたも相性を調べてみよう！\n\n`;
       const shareUrl = 'https://www.personal-file.jp/80cards/';
 
+      const trackCompatShare = (method, content) => trackGa('share_80', {
+        share_method: method,
+        share_content: content,
+        share_surface: 'compat_result',
+        share_status: 'initiated',
+        personality_type: responderType,
+      });
       const shareToX = () => {
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
+        trackCompatShare('x', 'compat_result');
       };
       const shareToLine = () => {
         window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        trackCompatShare('line', 'compat_result');
       };
       const downloadCard = () => {
         if (!cardUrl) return;
@@ -7486,6 +7972,7 @@
         a.href = cardUrl;
         a.download = `compatibility-${creatorType}-${responderType}.png`;
         a.click();
+        trackCompatShare('save_image', 'pair_image_square');
       };
 
       return (
@@ -7784,6 +8271,13 @@
         navigator.clipboard.writeText(matchUrl).then(() => {
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
+          trackGa('share_80', {
+            share_method: 'copy_link',
+            share_content: 'invite_link',
+            share_surface: 'match_modal',
+            share_status: 'done',
+            personality_type: personalityCode,
+          });
         });
       };
 
@@ -7938,6 +8432,7 @@
       };
 
       const handleStart = () => {
+        resetDiagnosisCompleteTracking();
         if (shouldUseProgressStorage) {
           clearSavedProgress();
           setRestorableProgress(null);
@@ -7963,6 +8458,28 @@
       };
 
       const handleRestart = () => {
+        handleStart();
+      };
+
+      // ?start=1 で最初から診断画面に入る場合も、診断開始を記録する（従来は記録されなかった）
+      React.useEffect(() => {
+        if (isDevMode || devAdaptivePreset || isMatchMode || !autoStart) return;
+        trackGa('diagnosis_80_start', {
+          content_name: '80cards_start',
+          cta_position: 'auto_start',
+          entry: DIAGNOSIS_ENTRY,
+          is_repeat: hasCompletedBefore() ? 1 : 0,
+        });
+      }, []);
+
+      // 相性リンク（?match=）経由の開始。従来は diagnosis_80_start が記録されなかった
+      const handleMatchStart = () => {
+        trackGa('diagnosis_80_start', {
+          content_name: '80cards_start',
+          cta_position: 'match_landing',
+          entry: 'invite',
+          is_repeat: hasCompletedBefore() ? 1 : 0,
+        });
         handleStart();
       };
 
@@ -8083,6 +8600,7 @@
         setPhase('result');
         // 相性モードの場合、結果表示後に自動的に相性画面も表示
         if (isMatchMode) {
+          trackDiagnosisComplete(scores);
           setShowCompatibility(true);
         }
         window.scrollTo(0, 0);
@@ -8103,7 +8621,7 @@
             <MatchLandingScreen
               creatorType={matchCreator.typeCode}
               creatorBehaviorCode={matchCreator.behaviorCode}
-              onStart={handleStart}
+              onStart={handleMatchStart}
             />
           )}
           {phase === 'start' && (

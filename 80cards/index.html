@@ -6602,6 +6602,232 @@
       }
     }
 
+    /* ===== 結果画像の保存・共有 / 80CODEコピー / 任意アンケート（P1・2026-10-08） =====
+       日本語の折り返しは jp-typography に従い、画面内の短い文言は .pf-kp（文節）で包む。
+       word-break: keep-all / auto-phrase は使わない */
+    .pf-kp { display: inline-block; white-space: nowrap; }
+
+    .btn-clean.pf-image-share-btn {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 10px;
+      padding: 13px 16px;
+      border: 1.5px solid var(--ink);
+      border-radius: 100px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .btn-clean.pf-image-share-btn:hover { background: var(--surface2); }
+
+    .pf-code-copy {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+    .pf-code-copy-btn {
+      appearance: none;
+      min-height: 36px;
+      padding: 8px 14px;
+      border: 1px solid var(--line2);
+      border-radius: 100px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .pf-code-copy-btn:hover { background: var(--surface2); }
+    .pf-code-copy-btn--sub { color: var(--ink2); font-weight: 500; }
+    .pf-code-copy-toast {
+      min-width: 6em;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-clean);
+    }
+
+    .pf-poll {
+      margin: 0 0 28px;
+      padding: 14px 14px 12px;
+      border: 1px dashed var(--line2);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.55);
+      line-break: strict;
+    }
+    .pf-poll-title {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .pf-poll-opt { font-weight: 500; color: var(--ink3); }
+    .pf-poll-group { margin: 0 0 10px; }
+    .pf-poll-label {
+      margin: 0 0 6px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--ink3);
+    }
+    .pf-poll-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pf-poll-chip {
+      appearance: none;
+      min-height: 36px;
+      padding: 7px 12px;
+      border: 1px solid var(--line2);
+      border-radius: 100px;
+      background: var(--surface);
+      color: var(--ink2);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .pf-poll-chip[aria-pressed="true"] {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+      font-weight: 700;
+    }
+    .pf-poll-note {
+      margin: 4px 0 0;
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--ink3);
+    }
+
+    .pf-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(22, 18, 32, 0.46);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.18s ease-out;
+    }
+    .pf-modal-card {
+      width: min(100%, 420px);
+      max-height: calc(100vh - 32px);
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
+      padding: 18px 18px 14px;
+      border-radius: 22px;
+      background: #FFFBF7;
+      box-shadow: 0 24px 72px rgba(22, 18, 32, 0.22);
+      line-break: strict;
+      animation: fadeSlideUp 0.24s ease-out;
+    }
+    .pf-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 12px;
+    }
+    .pf-modal-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+    .pf-modal-x {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--ink2);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .pf-seg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 0 0 12px;
+      padding: 4px;
+      border-radius: 100px;
+      background: var(--surface2);
+    }
+    .pf-seg-btn {
+      appearance: none;
+      min-height: 40px;
+      padding: 6px 8px;
+      border: none;
+      border-radius: 100px;
+      background: transparent;
+      color: var(--ink2);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+      cursor: pointer;
+    }
+    .pf-seg-btn[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .pf-seg-sub { margin-left: 6px; font-size: 11px; font-weight: 500; opacity: 0.7; }
+    @media (max-width: 340px) { .pf-seg-sub { display: none; } }
+    .pf-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+      margin: 0 0 12px;
+      border-radius: 14px;
+      background: var(--surface2);
+      overflow: hidden;
+    }
+    .pf-preview-img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 46vh;
+      max-height: 46dvh;
+    }
+    .pf-preview-wait { padding: 24px 16px; text-align: center; }
+    .pf-note {
+      margin: 0 0 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink2);
+      text-align: center;
+    }
+    .pf-note--strong { font-weight: 700; color: var(--ink); }
+    .pf-modal-actions { display: flex; flex-direction: column; gap: 8px; }
+    .pf-btn {
+      appearance: none;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: 100px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+    .pf-btn--main { border: 1px solid transparent; background: var(--ink); color: #fff; }
+    .pf-btn--sub { border: 1.5px solid var(--ink); background: var(--surface); color: var(--ink); }
+    .pf-btn--text { border: none; background: transparent; color: var(--ink3); font-weight: 500; }
+    .pf-btn:focus-visible, .pf-seg-btn:focus-visible, .pf-poll-chip:focus-visible,
+    .pf-code-copy-btn:focus-visible, .pf-modal-x:focus-visible, .btn-clean.pf-image-share-btn:focus-visible {
+      outline: 2px solid var(--accent-clean);
+      outline-offset: 2px;
+    }
+
   </style>
 
   <!-- React 18 CDN -->
