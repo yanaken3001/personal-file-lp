@@ -7920,7 +7920,11 @@
       if (!metaA || !metaB) return null;
 
       const shareText = `${nickA} × ${nickB} の相性は ${compat.icon}${compat.label} ${compat.score}点！\nあなたも相性を調べてみよう！\n\n`;
-      const shareUrl = 'https://www.personal-file.jp/80cards/';
+      // X・LINE のシェア先は、シェアした本人（responder）のタイプで作った招待URL（?match=…）。
+      // リンクを開いた人が、シェアした本人との相性診断に入れる（招待された人がさらに招待する連鎖）。
+      // utm_medium は既存の INVITE_MEDIUMS の値（X=invite_x／LINE=invite_line）。シェア文の本文は変えない
+      const shareUrlX = buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.x);
+      const shareUrlLine = buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.line);
 
       // ペア画像の共有文。自分のタイプの招待URL（utm_medium=invite_pair）を付け、見た人がさらに友だちを招待できるようにする
       const pairShareText = `${nickA} × ${nickB} の相性は「${compat.label}」${compat.score}点でした。\nあなたも友だちとの相性を見てみて。\n${buildInviteUrl(responderType, responderBehavior.code, INVITE_MEDIUMS.pair)}`;
@@ -7938,11 +7942,11 @@
         ...rarityParam(responderType),
       });
       const shareToX = () => {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrlX)}&hashtags=相性診断,パーソナルファイル`, '_blank');
         trackCompatShare('x', 'compat_result');
       };
       const shareToLine = () => {
-        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrlLine)}&text=${encodeURIComponent(shareText)}`, '_blank');
         trackCompatShare('line', 'compat_result');
       };
 
