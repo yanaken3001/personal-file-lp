@@ -5,7 +5,10 @@
  * JPEG を端末内で作る。サーバーへは何も送らない。
  *
  * 設計書: 08_80CARDS拡散/01_改修設計書_v1.md 1節・2節
- * 呼び出し: window.PF80ShareImage.generate({ behaviorPrefix, typeCode, nickname, summary })
+ * 呼び出し: window.PF80ShareImage.generate({ behaviorPrefix, typeCode, nickname, summary, rarityTier, rarityLabel })
+ * 戻り値の imageStatus: 'ready' / 'ready_font_timeout' / 'ready_font_missing' / 'ready_char_missing' とその組み合わせ
+ *   （GA4 の image_status にそのまま送る。画像は作れたが品質が落ちた理由を区別するため）
+ * 後始末: 不要になった結果は PF80ShareImage.release(result) で Object URL を解放する
  *
  * 一言（summary）は 80CODE ごとに文節で分割した固定データ（PHRASES）で折り返す。
  * 元データは TYPES_80[...].summary。BudouX 0.9.3 の出力を人が直したもの。
@@ -14,9 +17,11 @@
 (function (root) {
   'use strict';
 
-  var VERSION = '20261008';
+  var VERSION = '20261008b';          // このスクリプト自身の版（app.jsx の読み込み URL と揃える）
+  var IMAGE_VERSION = '20261008';     // キャラ縮小画像の版（画像を差し替えたときだけ上げる）
   var JPEG_QUALITY = 0.92;
   var FONT_TIMEOUT_MS = 4000;
+  var FONT_NO_FACE_GRACE_MS = 1500;   // @font-face が未登録（スタイルシート未適用）のとき、登録を待つ上限
   var IMAGE_TIMEOUT_MS = 8000;
 
   var GROUP = { P: '#FF3B5C', A: '#4D6CFA', I: '#00D4AA', D: '#8B5CF6' };   // 結果画面の groupColorMap と同一
@@ -24,6 +29,7 @@
   var URL_TEXT = 'personal-file.jp/80cards';
   var CTA_TEXT = 'あなたの80CODEは？';
   var NOTE_TEXT = '無料・登録不要・約3分';
+  var RARITY_MAX = 4;                 // 段階の数（★の数）。段階表そのものは app.jsx の RARITY_TIER_BY_TYPE が正本
   var FONT_JP = '"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif';
   var FONT_NUM = '"Inter","Noto Sans JP","Helvetica Neue",Arial,sans-serif';
 
@@ -292,17 +298,68 @@
     return w;
   }
 
+  /* ============ レア度バッジ ============
+     段階（★の数）と名前だけを出す。人数・割合・「○人に1人」などの件数表現は載せない（ユーザー指示 2026-10-08）。
+     ★は文字ではなく図形で描く（端末のフォントによる字形の差・絵文字化を避ける） */
+  function starPath(ctx, cx, cy, R) {
+    var r = R * 0.46;
+    ctx.beginPath();
+    for (var i = 0; i < 10; i++) {
+      var rad = i % 2 === 0 ? R : r, a = -Math.PI / 2 + i * Math.PI / 5;
+      var px = cx + Math.cos(a) * rad, py = cy + Math.sin(a) * rad;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+  }
+  function rarityBadge(ctx, x, y, w, h, tier, label, color) {
+    var R = 13, gap = 32, pad = 24, midY = y + 28;
+    ctx.save();
+    roundRect(ctx, x, y, w, h, 20);
+    ctx.fillStyle = 'rgba(255,255,255,.92)';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    // 上段: 左に RARITY、右に★（段階の数だけ塗る）
+    setFont(ctx, 700, 18, FONT_NUM);
+    ctx.textBaseline = 'middle';
+    drawSpaced(ctx, [{ t: 'RARITY', c: rgba(deep(color), 0.72) }], x + pad, midY + 1, 3, 'left');
+    var firstStar = x + w - pad - R - gap * (RARITY_MAX - 1);
+    for (var i = 0; i < RARITY_MAX; i++) {
+      starPath(ctx, firstStar + gap * i, midY, R);
+      ctx.fillStyle = i < tier ? color : rgba(color, 0.2);
+      ctx.fill();
+    }
+    // 下段: 段階の名前
+    ctx.textBaseline = 'alphabetic';
+    fitSize(ctx, label, 900, 26, 18, w - pad * 2, FONT_JP, 0);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = deep(color);
+    ctx.fillText(label, x + w / 2, y + h - 13);
+    ctx.restore();
+  }
+
   /* ============ 結果画像1枚の描画 ============ */
-  /* t: { code80, behaviorName, typeCode, nickname, summary, group } */
+  /* t: { code80, behaviorName, typeCode, nickname, summary, group, rarityTier, rarityLabel } */
   function renderResult(img, t, fmt) {
     var story = fmt === 'story', W = 1080, H = story ? 1920 : 1080;
     var c = document.createElement('canvas');
     c.width = W; c.height = H;
-    var ctx = c.getContext('2d');
+    try {
+      paintResult(c.getContext('2d'), img, t, story, W, H);
+    } catch (e) {
+      releaseCanvas(c);   // 描画に失敗したら、作りかけの canvas を残さない
+      throw e;
+    }
+    return c;
+  }
+
+  function paintResult(ctx, img, t, story, W, H) {
     var G = GROUP[t.group], D = deep(G);
     var codeSegs = [{ t: t.code80.slice(0, 2), c: rgba(G, 0.45) }, { t: t.code80.slice(2), c: G }];
     var pillText = '● ' + t.behaviorName + t.typeCode;
     var phrases = phrasesFor(t.code80, t.summary);
+    var hasRarity = t.rarityTier >= 1 && t.rarityTier <= RARITY_MAX && !!t.rarityLabel;
 
     if (story) {
       paintBg(ctx, W, H, G, [{ x: 540, y: 830, r: 520, c: G }]);
@@ -311,6 +368,7 @@
       fitSizeSegs(ctx, codeSegs, 900, 210, 120, 880, FONT_NUM, 8);
       drawSpaced(ctx, codeSegs, 540, 520, 8, 'center');
       drawImageFit(ctx, img, 540, 1085, 720, 520);
+      if (hasRarity) rarityBadge(ctx, 730, 266, 300, 84, t.rarityTier, t.rarityLabel, G);
       pill(ctx, pillText, 540, 1112, 76, G, 'center', 36, 700);
       fitSize(ctx, t.nickname, 900, 132, 72, 920, FONT_JP, 0);
       ctx.textAlign = 'center';
@@ -339,6 +397,7 @@
       fitSizeSegs(ctx, codeSegs, 900, 196, 110, 560, FONT_NUM, 6);
       drawSpaced(ctx, codeSegs, 80, 300, 6, 'left');
       pill(ctx, pillText, 80, 340, 68, G, 'left', 32, 700);
+      if (hasRarity) rarityBadge(ctx, 700, 56, 300, 84, t.rarityTier, t.rarityLabel, G);
       fitSize(ctx, t.nickname, 900, 108, 52, 470, FONT_JP, 0);
       ctx.textAlign = 'left';
       ctx.fillStyle = INK;
@@ -360,7 +419,6 @@
       setFont(ctx, 500, 24);
       ctx.fillText(NOTE_TEXT, 1000, 968);
     }
-    return c;
   }
 
   /* ============ 読み込み・書き出し ============ */
@@ -374,12 +432,44 @@
     });
   }
 
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  /* フォントの用意を待ち、結果の種類を返す。
+       'ok'          ... Noto Sans JP の字形が読み込めた
+       'timeout'     ... 読み込み中のまま FONT_TIMEOUT_MS で打ち切った（システムフォントで描く）
+       'missing'     ... @font-face が見つからないまま待ち時間を過ぎた（スタイルシート未適用・ブロック。システムフォントで描く）
+       'unsupported' ... document.fonts が使えない環境
+     document.fonts.load() は、その family の @font-face が1つも登録されていないと、エラーにも待ちにもならず
+     空配列で成功を返す。成功扱いにすると、フォント未適用のまま描いてしまうため、返り値の中身（FontFace の数）で見分ける */
   function ensureFonts(sample) {
-    if (!root.document || !root.document.fonts || !root.document.fonts.load) return Promise.resolve(false);
-    var specs = ['900 100px "Noto Sans JP"', '700 100px "Noto Sans JP"', '500 100px "Noto Sans JP"', '900 100px "Inter"', '700 100px "Inter"'];
-    var loads = specs.map(function (f) { return root.document.fonts.load(f, sample).catch(function () { return null; }); });
-    var timeout = new Promise(function (r) { setTimeout(function () { r('timeout'); }, FONT_TIMEOUT_MS); });
-    return Promise.race([Promise.all(loads).then(function () { return true; }), timeout]).then(function (v) { return v === true; });
+    var doc = root.document;
+    if (!doc || !doc.fonts || !doc.fonts.load) return Promise.resolve('unsupported');
+    var jp = ['900 100px "Noto Sans JP"', '700 100px "Noto Sans JP"', '500 100px "Noto Sans JP"'];
+    var latin = ['900 100px "Inter"', '700 100px "Inter"'];
+    var startedAt = Date.now();
+    var noFaceSince = 0;
+
+    function once() {
+      var left = FONT_TIMEOUT_MS - (Date.now() - startedAt);
+      if (left <= 0) return Promise.resolve(noFaceSince ? 'missing' : 'timeout');
+      var loads = jp.concat(latin).map(function (f) {
+        return doc.fonts.load(f, sample).then(function (faces) { return faces ? faces.length : 0; }, function () { return 0; });
+      });
+      return Promise.race([
+        Promise.all(loads).then(function (counts) { return { counts: counts }; }),
+        wait(left).then(function () { return { timeout: true }; })
+      ]).then(function (res) {
+        // 待ちが終わらなかった＝@font-face は登録済みで読み込み中（未登録なら上の分岐で即座に空配列が返る）
+        if (res.timeout) return 'timeout';
+        var jpFaces = res.counts[0] + res.counts[1] + res.counts[2];
+        if (jpFaces > 0) return 'ok';
+        // @font-face が未登録。スタイルシートがまだ適用されていない可能性があるので、少しだけ待って再確認する
+        if (!noFaceSince) noFaceSince = Date.now();
+        if (Date.now() - noFaceSince >= FONT_NO_FACE_GRACE_MS) return 'missing';
+        return wait(250).then(once);
+      });
+    }
+    return once();
   }
 
   function canvasToBlob(canvas) {
@@ -404,7 +494,28 @@
 
   function releaseCanvas(canvas) { canvas.width = 0; canvas.height = 0; }
 
-  /* opts: { behaviorPrefix:'AC', typeCode:'PP', behaviorName:'達成型', nickname, summary } */
+  /* 画像の用意の結果を GA4 の image_status 用の文字列にまとめる（新しいパラメータは増やさず、値で区別する） */
+  function buildImageStatus(fontStatus, charOk) {
+    var s = 'ready';
+    if (fontStatus === 'timeout') s += '_font_timeout';
+    else if (fontStatus === 'missing' || fontStatus === 'unsupported') s += '_font_missing';
+    if (!charOk) s += '_char_missing';
+    return s;
+  }
+
+  /* 不要になった結果の Object URL を解放する（モーダルを閉じる・画面を離れる・古い結果を捨てるとき） */
+  function release(result) {
+    if (!result) return;
+    ['story', 'square'].forEach(function (k) {
+      var o = result[k];
+      if (o && o.url) {
+        try { URL.revokeObjectURL(o.url); } catch (e) { /* 解放済み */ }
+        o.url = '';
+      }
+    });
+  }
+
+  /* opts: { behaviorPrefix:'AC', typeCode:'PP', behaviorName:'達成型', nickname, summary, rarityTier:1〜4, rarityLabel } */
   function generate(opts) {
     var t0 = performance.now();
     var typeCode = String(opts.typeCode || '');
@@ -414,29 +525,39 @@
       typeCode: typeCode,
       nickname: opts.nickname || typeCode,
       summary: opts.summary || '',
-      group: typeCode.charAt(0)
+      group: typeCode.charAt(0),
+      rarityTier: Number(opts.rarityTier) || 0,
+      rarityLabel: opts.rarityLabel || ''
     };
     if (!GROUP[t.group] || t.code80.length !== 4) return Promise.reject(new Error('invalid type'));
 
-    var imgUrl = '/80cards/share-image/' + typeCode.toLowerCase() + '.webp?v=' + VERSION;
-    var sample = ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, CTA_TEXT, NOTE_TEXT, URL_TEXT, '0123456789%●'].join('');
+    var imgUrl = '/80cards/share-image/' + typeCode.toLowerCase() + '.webp?v=' + IMAGE_VERSION;
+    var sample = ['MY 80CODE', t.code80, t.behaviorName, typeCode, t.nickname, t.summary, t.rarityLabel, 'RARITY', CTA_TEXT, NOTE_TEXT, URL_TEXT, '0123456789%●'].join('');
     var tFont, tImg;
 
     return Promise.all([
-      ensureFonts(sample).then(function (ok) { tFont = performance.now(); return ok; }),
+      ensureFonts(sample).then(function (st) { tFont = performance.now(); return st; }),
       loadImage(imgUrl).then(function (i) { tImg = performance.now(); return i; }, function () { tImg = performance.now(); return null; })
     ]).then(function (res) {
-      var fontsOk = res[0], img = res[1];
+      var fontStatus = res[0], img = res[1];
       var tDraw0 = performance.now();
       var specs = [['story', 'story'], ['square', 'square']];
-      var canvases = specs.map(function (s) { return renderResult(img, t, s[0]); });
+      var canvases = [];
+      try {
+        specs.forEach(function (s) { canvases.push(renderResult(img, t, s[0])); });
+      } catch (e) {
+        canvases.forEach(releaseCanvas);   // 途中で失敗しても作りかけの canvas を残さない
+        throw e;
+      }
       var tDraw1 = performance.now();
       return Promise.all(canvases.map(canvasToBlob)).then(function (blobs) {
+        canvases.forEach(releaseCanvas);   // blob にした後は canvas を使わない（成功・失敗とも解放）
         var tEnc = performance.now();
+        // 先に全部の blob を確認する。1つでも失敗したら URL を作らずに終える（URL の取りこぼしを防ぐ）
+        if (blobs.some(function (b) { return !b; })) throw new Error('encode failed');
         var out = {};
         specs.forEach(function (s, i) {
           var blob = blobs[i];
-          if (!blob) throw new Error('encode failed');
           var ext = blob.type === 'image/png' ? 'png' : 'jpg';
           var name = '80cards-' + t.code80 + '-' + s[0] + '.' + ext;
           out[s[0]] = {
@@ -450,11 +571,12 @@
             bytes: blob.size,
             type: blob.type
           };
-          releaseCanvas(canvases[i]);
         });
         out.code80 = t.code80;
-        out.fontsOk = fontsOk;
+        out.fontsOk = fontStatus === 'ok';
+        out.fontStatus = fontStatus;
         out.charImageOk = !!img;
+        out.imageStatus = buildImageStatus(fontStatus, !!img);
         out.timing = {
           totalMs: Math.round(tEnc - t0),
           fontWaitMs: Math.round(tFont - t0),
@@ -463,6 +585,9 @@
           encodeMs: Math.round(tEnc - tDraw1)
         };
         return out;
+      }, function (err) {
+        canvases.forEach(releaseCanvas);
+        throw err;
       });
     });
   }
@@ -491,11 +616,12 @@
     version: VERSION,
     PHRASES: PHRASES,
     generate: generate,
+    release: release,
     detectInApp: detectInApp,
     canShareFile: canShareFile,
     isCoarsePointer: isCoarsePointer,
     // 検査用
-    _internal: { normalizePhrases: normalizePhrases, breakPhrases: breakPhrases, phrasesFor: phrasesFor, layoutSummary: layoutSummary, renderResult: renderResult, autoPhrases: autoPhrases }
+    _internal: { normalizePhrases: normalizePhrases, breakPhrases: breakPhrases, phrasesFor: phrasesFor, layoutSummary: layoutSummary, renderResult: renderResult, autoPhrases: autoPhrases, ensureFonts: ensureFonts, buildImageStatus: buildImageStatus }
   };
 
   root.PF80ShareImage = api;

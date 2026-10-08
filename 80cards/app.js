@@ -3739,6 +3739,68 @@ function trackGa(eventName, params) {
   } catch (e) {}
 }
 
+// ===================================================================
+// レア度（16タイプ単位の段階表示）
+// ===================================================================
+// 根拠: GA4 の diagnosis_80_complete を personality_type 別に見た「出やすさ」。
+//       集計期間 2026-07-16〜2026-10-07、診断完了 251人。段階は 2026-10-08 にユーザーが確定。
+// 見直しの目安: 診断完了者が 500人を超えたとき。見直したら、上の期間・人数・決定日を書き換える。
+// 表示のルール: 段階と名前だけを出す。人数・割合・「○人に1人」・「まだ誰も出ていない」など
+//   件数を想起させる表現は、画面・画像・計測の値のどこにも出さない（ユーザー指示）。
+//   旧「レア分岐（10人に1人）」の虚偽表示（docs/adaptive-branch-decision.md）とは別物。
+// 判定の単位は16タイプ（personality_type）。80CODE（80タイプ）単位にはしない。
+const RARITY_MAX_TIER = 4;
+const RARITY_TIERS = {
+  1: {
+    label: 'スタンダード'
+  },
+  2: {
+    label: 'ちょっと珍しい'
+  },
+  3: {
+    label: 'レア'
+  },
+  4: {
+    label: '超レア'
+  }
+};
+const RARITY_TIER_BY_TYPE = {
+  IP: 1,
+  AD: 1,
+  IA: 1,
+  PD: 1,
+  AI: 1,
+  DP: 1,
+  PI: 1,
+  PA: 1,
+  DA: 2,
+  ID: 2,
+  AP: 2,
+  II: 3,
+  DI: 3,
+  PP: 4,
+  AA: 4,
+  DD: 4
+};
+// 根拠の注記（結果画面にだけ小さく出す。結果画像には入れない）。連結すると次の文になる:
+// 「レア度は、これまでの診断結果での出やすさをもとにした目安です（定期的に見直します）」
+const RARITY_NOTE_PHRASES = ['レア度は、', 'これまでの', '診断結果での', '出やすさを', 'もとにした', '目安です', '（定期的に', '見直します）'];
+function getRarity(personalityCode) {
+  const tier = RARITY_TIER_BY_TYPE[personalityCode];
+  if (!tier || !RARITY_TIERS[tier]) return null;
+  return {
+    tier,
+    label: RARITY_TIERS[tier].label
+  };
+}
+// GA4 のイベントに付ける rarity_tier（'1'〜'4' の文字列）。未定義のタイプでは何も付けない
+function rarityParam(personalityCode) {
+  const rarity = getRarity(personalityCode);
+  return rarity ? {
+    rarity_tier: String(rarity.tier)
+  } : {};
+}
+
 // 再診断の識別: 端末内の完了フラグだけで判定する（個人情報・回答内容は使わない）
 const COMPLETED_FLAG_KEY = '80cards_completed';
 function hasCompletedBefore() {
@@ -3801,7 +3863,8 @@ function trackDiagnosisComplete(scores) {
         behavioral_type: behavioralType.name,
         full_type: typeName80,
         entry: DIAGNOSIS_ENTRY,
-        is_repeat: isRepeat ? 1 : 0
+        is_repeat: isRepeat ? 1 : 0,
+        ...rarityParam(personalityCode)
       });
     }
   } catch (e) {}
@@ -3815,7 +3878,7 @@ function loadShareImageModule() {
   if (!shareImageModulePromise) {
     shareImageModulePromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = '/80cards/share-image.js?v=20261008';
+      script.src = '/80cards/share-image.js?v=20261008b';
       script.async = true;
       script.onload = () => window.PF80ShareImage ? resolve(window.PF80ShareImage) : reject(new Error('share-image missing'));
       script.onerror = () => {
@@ -5327,7 +5390,8 @@ function ShareButtons({
       share_surface: 'result_sheet',
       share_status: 'initiated',
       personality_type: personalityCode,
-      full_type: typeName
+      full_type: typeName,
+      ...rarityParam(personalityCode)
     });
   };
   const copyLink = async () => {
@@ -5340,7 +5404,8 @@ function ShareButtons({
         share_surface: 'result_sheet',
         share_status: 'done',
         personality_type: personalityCode,
-        full_type: typeName
+        full_type: typeName,
+        ...rarityParam(personalityCode)
       });
     };
     try {
@@ -5462,7 +5527,8 @@ function useShareImages({
   behaviorName,
   typeCode,
   nickname,
-  summary
+  summary,
+  rarity
 }) {
   const [state, setState] = React.useState({
     status: 'pending',
@@ -5473,15 +5539,30 @@ function useShareImages({
     let cancelled = false;
     let idleId = null;
     let timerId = null;
+    let produced = null; // この実行で作った結果。後始末で Object URL を解放する
+    let imageModule = null;
+    const releaseImages = images => {
+      if (images && imageModule && typeof imageModule.release === 'function') imageModule.release(images);
+    };
     const run = () => {
-      loadShareImageModule().then(mod => mod.generate({
-        behaviorPrefix: BEHAVIOR_CODE_PREFIX[behaviorName] || '',
-        behaviorName,
-        typeCode,
-        nickname,
-        summary
-      })).then(images => {
-        if (!cancelled) setState({
+      loadShareImageModule().then(mod => {
+        imageModule = mod;
+        return mod.generate({
+          behaviorPrefix: BEHAVIOR_CODE_PREFIX[behaviorName] || '',
+          behaviorName,
+          typeCode,
+          nickname,
+          summary,
+          rarityTier: rarity ? rarity.tier : 0,
+          rarityLabel: rarity ? rarity.label : ''
+        });
+      }).then(images => {
+        if (cancelled) {
+          releaseImages(images);
+          return;
+        } // 破棄された後に届いた結果はすぐ解放する
+        produced = images;
+        setState({
           status: 'ready',
           images
         });
@@ -5507,6 +5588,7 @@ function useShareImages({
       cancelled = true;
       if (idleId !== null && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
       if (timerId !== null) window.clearTimeout(timerId);
+      releaseImages(produced);
     };
   }, [behaviorName, typeCode, attempt]);
   const retry = React.useCallback(() => setAttempt(a => a + 1), []);
@@ -5537,6 +5619,43 @@ function CodeCopyRow({
     role: "status",
     "aria-live": "polite"
   }, copiedKind ? 'コピーしました' : ''));
+}
+
+// --- レア度（結果画面のタイプ名の下）。段階の★と名前だけを出し、人数・割合は出さない。根拠の注記は小さく添える ---
+function RarityChip({
+  rarity,
+  color
+}) {
+  if (!rarity) return null;
+  const stars = Array.from({
+    length: RARITY_MAX_TIER
+  }, (_, i) => i < rarity.tier);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "pf-rarity",
+    style: {
+      '--pf-rarity-color': color || 'var(--ink)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pf-rarity-chip",
+    role: "img",
+    "aria-label": `レア度 ${rarity.label}（${RARITY_MAX_TIER}段階中の${rarity.tier}）`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pf-rarity-cap",
+    "aria-hidden": "true"
+  }, "RARITY"), /*#__PURE__*/React.createElement("span", {
+    className: "pf-rarity-stars",
+    "aria-hidden": "true"
+  }, stars.map((on, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    className: on ? 'is-on' : ''
+  }, "\u2605"))), /*#__PURE__*/React.createElement("span", {
+    className: "pf-rarity-name",
+    "aria-hidden": "true"
+  }, rarity.label)), /*#__PURE__*/React.createElement("p", {
+    className: "pf-rarity-note"
+  }, RARITY_NOTE_PHRASES.map(phrase => /*#__PURE__*/React.createElement(K, {
+    key: phrase
+  }, phrase))));
 }
 
 // --- 年代・今の職種（任意の1タップ。回答はGA4のイベントパラメータとしてのみ送る。保存しない） ---
@@ -5631,9 +5750,18 @@ function ShareImageModal({
 }) {
   const [fmt, setFmt] = React.useState('story');
   const [forceLongPress, setForceLongPress] = React.useState(false);
+  const [sharing, setSharing] = React.useState(false);
   const closeRef = React.useRef(null);
+  const dialogRef = React.useRef(null);
   const openedRef = React.useRef(false);
   const viewedRef = React.useRef({});
+  const sharingRef = React.useRef(false);
+  // onClose は親の再描画のたびに新しい関数になる。effect の依存に入れると、再描画のたびに
+  // フォーカスが×へ戻り、スクロールロックも張り直されるため、ref で最新を持つ
+  const onCloseRef = React.useRef(onClose);
+  onCloseRef.current = onClose;
+  // 閉じたときにフォーカスを戻す先（モーダルを開いたボタン）。最初の描画の時点で控える
+  const openerRef = React.useRef(document.activeElement);
   const api = window.PF80ShareImage || null;
   const images = imageState.status === 'ready' ? imageState.images : null;
   const current = images ? images[fmt] : null;
@@ -5651,13 +5779,15 @@ function ShareImageModal({
     ...extra
   });
 
-  // 開いた時点の状態（画像の用意・端末の対応状況）を一度だけ記録する
+  // 開いた時点の状態（画像の用意・端末の対応状況）を一度だけ記録する。
+  // image_status は ready / pending / error のほか、画像は作れたが品質が落ちた理由
+  // （ready_font_timeout=フォント読み込みを4秒で打ち切り / ready_font_missing=フォント未適用 / ready_char_missing=キャラ画像なし）を区別する
   React.useEffect(() => {
     if (openedRef.current) return;
     openedRef.current = true;
     const openParams = {
       share_surface: surface,
-      image_status: imageState.status,
+      image_status: images && images.imageStatus ? images.imageStatus : imageState.status,
       web_share_files: webShareOk ? 1 : 0,
       in_app: inApp ? 1 : 0,
       ...trackBase
@@ -5675,21 +5805,61 @@ function ShareImageModal({
       share_status: 'initiated'
     });
   }, [showLongPress, fmt, !!current]);
+
+  // 開いた直後に×へフォーカス。閉じるときは開いたボタンへ戻す（ボタンが消えている場合は結果画面の「画像を保存・共有」へ）
+  React.useEffect(() => {
+    if (closeRef.current) closeRef.current.focus();
+    return () => {
+      const opener = openerRef.current;
+      const target = opener && opener !== document.body && document.contains(opener) ? opener : document.querySelector('.pf-image-share-btn');
+      if (target && typeof target.focus === 'function') target.focus();
+    };
+  }, []);
+
+  // スクロールロック・Esc で閉じる・Tab のフォーカストラップ（モーダルの外へフォーカスを出さない）
   React.useEffect(() => {
     const originalOverflow = document.body.style.overflow;
+    const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
     const handleKeyDown = event => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const items = Array.from(dialog.querySelectorAll(FOCUSABLE)).filter(el => el.getClientRects().length > 0);
+      if (items.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (!dialog.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && (active === first || active === dialog)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    if (closeRef.current) closeRef.current.focus();
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, []);
   const handleShare = async () => {
-    if (!current) return;
+    // 共有シートが開いている間の二度押しは無視する（二度目の navigator.share は InvalidStateError になる）
+    if (!current || sharingRef.current) return;
+    sharingRef.current = true;
+    setSharing(true);
     try {
       await navigator.share({
         files: [current.file],
@@ -5700,11 +5870,14 @@ function ShareImageModal({
         share_status: 'done'
       });
     } catch (e) {
-      if (e && e.name === 'AbortError') {
+      const errName = e && e.name;
+      if (errName === 'AbortError') {
         track({
           share_method: 'web_share',
           share_status: 'cancelled'
         });
+      } else if (errName === 'InvalidStateError') {
+        // 共有シートが既に開いている状態での呼び出し。共有の結果ではないので、記録も長押し表示への切り替えもしない
       } else {
         track({
           share_method: 'web_share',
@@ -5712,6 +5885,9 @@ function ShareImageModal({
         });
         setForceLongPress(true);
       }
+    } finally {
+      sharingRef.current = false;
+      setSharing(false);
     }
   };
   const handleSave = () => {
@@ -5735,6 +5911,8 @@ function ShareImageModal({
     role: "dialog",
     "aria-modal": "true",
     "aria-labelledby": "pf-share-modal-title",
+    ref: dialogRef,
+    tabIndex: -1,
     onClick: event => event.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     className: "pf-modal-head"
@@ -5793,7 +5971,9 @@ function ShareImageModal({
   }, showShareButton && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "pf-btn pf-btn--main",
-    onClick: handleShare
+    onClick: handleShare,
+    "aria-disabled": sharing,
+    "aria-busy": sharing
   }, "\u5171\u6709\u3059\u308B"), showSaveButton && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "pf-btn pf-btn--sub",
@@ -6751,7 +6931,8 @@ function ResultDetailScreen80({
   onOpenImage,
   onCopyCode,
   copiedKind,
-  onProfileAnswer
+  onProfileAnswer,
+  rarity
 }) {
   const hue = GROUP_HUE[card.groupKey] || 280;
   const groupName = card.groupKey + '群';
@@ -6937,7 +7118,10 @@ function ResultDetailScreen80({
     style: {
       color: 'var(--ink)'
     }
-  }, card.nickname), /*#__PURE__*/React.createElement("p", {
+  }, card.nickname), /*#__PURE__*/React.createElement(RarityChip, {
+    rarity: rarity,
+    color: card.groupColor
+  }), /*#__PURE__*/React.createElement("p", {
     className: "jp-serif",
     style: {
       fontSize: 17,
@@ -8345,18 +8529,21 @@ function ResultScreen80({
   // 結果画像（9:16 / 1:1）。結果が確定した時点で裏で先に作っておく
   const code80 = get80Code(behavioralType.name, personalityCode);
   const resultNickname = TYPE_NICKNAMES[personalityCode] || personalityCode;
+  const rarity = getRarity(personalityCode);
   const imageState = useShareImages({
     behaviorName: behavioralType.name,
     typeCode: personalityCode,
     nickname: resultNickname,
-    summary: typeData?.summary || ''
+    summary: typeData?.summary || '',
+    rarity
   });
   const [imageModalSurface, setImageModalSurface] = React.useState(null); // null | 'result_top' | 'result_sheet'
   const resultShareUrl = `https://www.personal-file.jp/80cards/share/${code80.toLowerCase()}/`;
   const imageShareText = `私の80CODEは「${code80}｜${resultNickname}」でした。\n\nあなたの80CODEは？\n${resultShareUrl}\n\n#80CARDS #80タイプ診断`;
   const trackBase = {
     personality_type: personalityCode,
-    full_type: typeName80
+    full_type: typeName80,
+    ...rarityParam(personalityCode)
   };
 
   // 80CODEをコピー（プロフィールにそのまま貼れる1行 / コードのみ）
@@ -8411,7 +8598,8 @@ function ResultScreen80({
     onOpenImage: () => setImageModalSurface('result_top'),
     onCopyCode: handleCopyCode,
     copiedKind: copiedKind,
-    onProfileAnswer: handleProfileAnswer
+    onProfileAnswer: handleProfileAnswer,
+    rarity: rarity
   }), showSharePanel && /*#__PURE__*/React.createElement("div", {
     style: {
       position: 'fixed',
@@ -8669,7 +8857,8 @@ function CompatibilityResult({
     share_content: content,
     share_surface: 'compat_result',
     share_status: 'initiated',
-    personality_type: responderType
+    personality_type: responderType,
+    ...rarityParam(responderType)
   });
   const shareToX = () => {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=相性診断,パーソナルファイル`, '_blank');
@@ -9085,7 +9274,8 @@ function MatchShareModal({
         share_content: 'invite_link',
         share_surface: 'match_modal',
         share_status: 'done',
-        personality_type: personalityCode
+        personality_type: personalityCode,
+        ...rarityParam(personalityCode)
       });
     });
   };
