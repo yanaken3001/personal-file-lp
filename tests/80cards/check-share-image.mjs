@@ -22,7 +22,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(__dirname, '../..');
 const api = require(path.join(ROOT, '80cards/share-image.js'));
-const { TYPES_80, BEHAVIOR_CODE_PREFIX, RARITY_MAX_TIER, RARITY_TIERS, RARITY_TIER_BY_TYPE, RARITY_NOTE_PHRASES, getRarity, rarityParam } = loadDiagnosisLogic();
+const { TYPES_80, BEHAVIOR_CODE_PREFIX, RARITY_MAX_TIER, RARITY_TIERS, RARITY_TIER_BY_TYPE, getRarity, rarityParam } = loadDiagnosisLogic();
 
 const HEAD_NG = /^[、。，．,.)）」』】〕〉》!！?？・:：;；ー〜～ぁぃぅぇぉっゃゅょァィゥェォッャュョゝゞヽヾ々]/;
 const TYPE_CODES = ['PP', 'PA', 'PI', 'PD', 'AP', 'AA', 'AI', 'AD', 'IP', 'IA', 'II', 'ID', 'DP', 'DA', 'DI', 'DD'];
@@ -66,7 +66,6 @@ const EXPECTED_TIER = {
   PP: 4, AA: 4, DD: 4,
 };
 const EXPECTED_LABEL = { 1: 'スタンダード', 2: 'ちょっと珍しい', 3: 'レア', 4: '超レア' };
-const EXPECTED_NOTE = 'レア度は、これまでの診断結果での出やすさをもとにした目安です（定期的に見直します）';
 // 件数・割合・人数を想起させる表現（段階名・注記・計測値に出してはいけない）
 const COUNT_WORDS = /[0-9０-９％%]|人に|誰も|まだ|だけ|のみ|限定|[一二三四五六七八九十百千万]人|分の/;
 
@@ -84,12 +83,7 @@ for (const c of Object.keys(RARITY_TIER_BY_TYPE)) {
 if (Object.keys(RARITY_TIER_BY_TYPE).length !== 16) fail(`レア度表が16件ではありません: ${Object.keys(RARITY_TIER_BY_TYPE).length}`);
 if (getRarity('XX') !== null || Object.keys(rarityParam('XX')).length !== 0) fail('未定義のタイプでレア度が返っています');
 Object.values(RARITY_TIERS).forEach((t) => { if (COUNT_WORDS.test(t.label)) fail(`段階名に件数を想起させる表現があります: ${t.label}`); });
-if (RARITY_NOTE_PHRASES.join('') !== EXPECTED_NOTE) fail(`レア度の注記が確定した文と違います: ${RARITY_NOTE_PHRASES.join('')}`);
-RARITY_NOTE_PHRASES.forEach((p, i) => { if (i > 0 && HEAD_NG.test(p)) fail(`注記の文節が行頭禁則の文字で始まっています: ${p}`); });
-{
-  const noteNoParen = EXPECTED_NOTE.replace(/[（）]/g, '');
-  if (/[0-9０-９％%]/.test(noteNoParen) || /人に|誰も/.test(noteNoParen)) fail('注記に件数を想起させる表現があります');
-}
+// レア度の根拠の注記は 2026-10-08 ユーザー判断で画面から削除（文言の検査も廃止）
 
 // ---- 結果画像のデザイン（2026-10-08 ユーザー指摘で確定）----
 // ・枠・塗りの囲み（ボタンに見える要素）を描かない / URL・「無料・登録不要」の文字を載せない / 行動類型の丸い枠・16タイプのコードを出さない

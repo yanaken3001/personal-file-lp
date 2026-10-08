@@ -3782,9 +3782,8 @@ const RARITY_TIER_BY_TYPE = {
   AA: 4,
   DD: 4
 };
-// 根拠の注記（結果画面にだけ小さく出す。結果画像には入れない）。連結すると次の文になる:
-// 「レア度は、これまでの診断結果での出やすさをもとにした目安です（定期的に見直します）」
-const RARITY_NOTE_PHRASES = ['レア度は、', 'これまでの', '診断結果での', '出やすさを', 'もとにした', '目安です', '（定期的に', '見直します）'];
+// 根拠の注記（「これまでの診断結果での出やすさをもとにした目安」）は 2026-10-08 ユーザー判断で画面から削除。
+// 段階は引き続き上の実データ（GA4実績）で決め、人数・割合は出さない
 function getRarity(personalityCode) {
   const tier = RARITY_TIER_BY_TYPE[personalityCode];
   if (!tier || !RARITY_TIERS[tier]) return null;
@@ -5651,11 +5650,7 @@ function RarityChip({
   }, "\u2605"))), /*#__PURE__*/React.createElement("span", {
     className: "pf-rarity-name",
     "aria-hidden": "true"
-  }, rarity.label)), /*#__PURE__*/React.createElement("p", {
-    className: "pf-rarity-note"
-  }, RARITY_NOTE_PHRASES.map(phrase => /*#__PURE__*/React.createElement(K, {
-    key: phrase
-  }, phrase))));
+  }, rarity.label)));
 }
 
 // --- 年代・今の職種（任意の1タップ。回答はGA4のイベントパラメータとしてのみ送る。保存しない） ---
@@ -5702,15 +5697,22 @@ function ProfileQuickPoll({
 }) {
   const [age, setAge] = React.useState('');
   const [job, setJob] = React.useState('');
+  const [sent, setSent] = React.useState(false);
+
+  // 年代と職種の両方がそろった時点で1回だけ送る（1人1件で集計できるように。2026-10-08 ユーザー判断）。送信後は選び直せない
   const pick = (kind, value) => {
+    if (sent) return;
     const nextAge = kind === 'age' ? value : age;
     const nextJob = kind === 'job' ? value : job;
     if (kind === 'age') setAge(value);else setJob(value);
-    onAnswer({
-      kind,
-      age: nextAge,
-      job: nextJob
-    });
+    if (nextAge && nextJob) {
+      setSent(true);
+      onAnswer({
+        kind: 'both',
+        age: nextAge,
+        job: nextJob
+      });
+    }
   };
   const renderChips = (kind, options, selected, label) => /*#__PURE__*/React.createElement("div", {
     className: "pf-poll-group",
@@ -5725,6 +5727,7 @@ function ProfileQuickPoll({
     type: "button",
     className: "pf-poll-chip",
     "aria-pressed": selected === opt.value,
+    disabled: sent,
     onClick: () => pick(kind, opt.value)
   }, opt.label))));
   return /*#__PURE__*/React.createElement("section", {
@@ -5734,7 +5737,10 @@ function ProfileQuickPoll({
     className: "pf-poll-title"
   }, /*#__PURE__*/React.createElement(K, null, "\u3088\u3051\u308C\u3070\u3001"), /*#__PURE__*/React.createElement(K, null, "\u6559\u3048\u3066\u304F\u3060\u3055\u3044"), /*#__PURE__*/React.createElement("span", {
     className: "pf-poll-opt"
-  }, "\uFF08\u4EFB\u610F\uFF09")), renderChips('age', PROFILE_AGE_OPTIONS, age, '年代'), renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種'), /*#__PURE__*/React.createElement("p", {
+  }, "\uFF08\u4EFB\u610F\uFF09")), renderChips('age', PROFILE_AGE_OPTIONS, age, '年代'), renderChips('job', PROFILE_JOB_OPTIONS, job, '今の職種'), sent && /*#__PURE__*/React.createElement("p", {
+    className: "pf-poll-thanks",
+    role: "status"
+  }, "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\uFF01"), /*#__PURE__*/React.createElement("p", {
     className: "pf-poll-note"
   }, /*#__PURE__*/React.createElement(K, null, "\u7B54\u3048\u306A\u304F\u3066\u3082\u3001"), /*#__PURE__*/React.createElement(K, null, "\u7D50\u679C\u306F"), /*#__PURE__*/React.createElement(K, null, "\u5909\u308F\u308A\u307E\u305B\u3093\u3002"), /*#__PURE__*/React.createElement(K, null, "\u500B\u4EBA\u3092"), /*#__PURE__*/React.createElement(K, null, "\u7279\u5B9A\u3057\u306A\u3044"), /*#__PURE__*/React.createElement(K, null, "\u7D71\u8A08\u3068\u3057\u3066"), /*#__PURE__*/React.createElement(K, null, "\u4F7F\u3044\u307E\u3059\u3002")));
 }
