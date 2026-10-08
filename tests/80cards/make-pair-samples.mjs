@@ -28,6 +28,7 @@ const jobs = PAIRS.map((p) => {
     b: { behaviorPrefix: p.b[0], typeCode: p.b[1], nickname: TYPE_NICKNAMES[p.b[1]] },
     score: c.score,
     label: c.label,
+    tone: c.tone,
   };
 });
 console.log(jobs.map((j) => `${j.a.behaviorPrefix + j.a.typeCode} × ${j.b.behaviorPrefix + j.b.typeCode}: ${j.score} ${j.label}`).join('\n'));

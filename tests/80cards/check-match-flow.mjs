@@ -296,8 +296,10 @@ try {
   check(pairAlt.endsWith(`${vp.compat_score}点`), `ペア画像の代替テキストの単位が「点」ではありません: ${pairAlt}`);
   const compatText = await b.locator('.app-container').innerText();
   check(!compatText.includes('%'), `相性結果の画面に「%」が残っています: ${compatText.split('\n').filter((l) => l.includes('%')).join(' / ')}`);
-  const scoreLines = compatText.split('\n').filter((l) => /^\d+点$/.test(l.trim()));
-  check(scoreLines.length >= 1 && scoreLines.includes(`${vp.compat_score}点`), `相性の点数が「${vp.compat_score}点」で表示されていません: ${JSON.stringify(scoreLines)}`);
+  // 総合点はペア画像（canvas）の中に描かれ、画面の文字には出さない（2026-10-09）。片側点数カード「〇〇から見た相性」が残っていないこと・並び順・最後のボタンを確認する
+  check(!compatText.includes('から見た相性'), '相性結果の画面に「〇〇から見た相性」のカードが残っています');
+  check(compatText.indexOf('画像を保存・共有') >= 0 && compatText.indexOf('画像を保存・共有') < compatText.indexOf('わかり合えるポイント'), 'ペア画像（保存・共有）が画面の最上部（本文より前）にありません');
+  check(!compatText.includes('他の友達との相性も調べる') && compatText.includes('自分の診断結果を見る'), '最後のボタンが「自分の診断結果を見る」になっていません');
   await typo(b, '.pf-pair', '相性結果のペア画像まわり(360px)');
   check(await b.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), '相性結果(360px)で横スクロールが出ています');
   if (OUT_DIR) await b.locator('.pf-pair').screenshot({ path: path.join(OUT_DIR, 'compat-pair-360.png') });
@@ -383,7 +385,8 @@ try {
   check(/pf-pair-btn/.test(focused || ''), `閉じたあと、開いたボタンにフォーカスが戻っていません: ${focused}`);
 
   // 相性結果 → 自分の結果 → 相性結果と行き来して表示し直しても、compat_view_80 は増えない（同じ2人の組は1ページ表示で1回）
-  await b.locator('button', { hasText: '他の友達との相性も調べる' }).click();
+  await b.locator('button', { hasText: '自分の診断結果を見る' }).click();
+  await b.waitForSelector('.pf-match-main', { timeout: 15000 });   // この人自身の結果画面（ResultDetailScreen80。招待モーダルへの導線つき）
   await b.locator('button', { hasText: '相性結果を見る' }).click();
   await b.waitForSelector('.pf-pair-img', { timeout: 30000 });
   const viewAgain = (await events(b)).filter((e) => e.name === 'compat_view_80');

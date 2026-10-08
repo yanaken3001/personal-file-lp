@@ -443,7 +443,7 @@
   }
 
   /* ============ 相性ペア画像（P2） ============
-     友だち（左）と自分（右）の2人を並べる。載せるもの: 見出し「2人の相性」／相性の点数とラベル／2人のキャラ・80CODE・あだ名／呼びかけ。
+     友だち（左）と自分（右）の2人を並べる。載せるもの: 見出し「2人の相性」／相性の点数とラベル／ラベルごとの一言／2人のキャラ・80CODE・あだ名。「あなたの80CODEは？」は載せない（2026-10-09 ユーザー指示）。
      1人用の画像と同じ約束: 枠・塗りの囲み（ボタンに見える要素）・URL・「無料・登録不要」の文字は載せない。文字は大きく。
      点数とラベルは画面の getCompatibility() の値をそのまま受け取って描く（ここでは計算しない）。
      2人の80CODE・あだ名は、長い方に合わせて同じ大きさにそろえる。 */
@@ -453,25 +453,25 @@
     cx: 540,
     glowY: 1010, glowR: 560,
     headBase: 326, headPx: 52, headSp: 12,
-    scoreBase: 620, scoreMax: 300, scoreMin: 240, scoreW: 640,
-    labelBase: 780, labelMax: 124, labelMin: 84, labelW: 920,
+    scoreBase: 600, scoreMax: 300, scoreMin: 240, scoreW: 640,
+    labelBase: 740, labelMax: 124, labelMin: 84, labelW: 920,
+    toneBase: 812, toneMax: 52, toneMin: 40, toneW: 920,
     colA: 295, colB: 785, colW: 480,
-    charBottom: 1284, charMaxH: 450, charMaxW: 410, crossPx: 72,
+    charBottom: 1284, charMaxH: 430, charMaxW: 410, crossPx: 72,
     codeBase: 1412, codeMax: 136, codeMin: 100, codeSp: 6,
-    nickBase: 1516, nickMax: 84, nickMin: 48,
-    ctaBase: 1766, ctaPx: 52
+    nickBase: 1516, nickMax: 84, nickMin: 48
   };
   var LAYOUT_PAIR_SQUARE = {
     cx: 540,
-    glowY: 560, glowR: 520,
-    headBase: 96, headPx: 40, headSp: 10,
-    scoreBase: 292, scoreMax: 200, scoreMin: 160, scoreW: 560,
-    labelBase: 400, labelMax: 88, labelMin: 60, labelW: 920,
+    glowY: 620, glowR: 520,
+    headBase: 100, headPx: 40, headSp: 10,
+    scoreBase: 296, scoreMax: 200, scoreMin: 160, scoreW: 560,
+    labelBase: 404, labelMax: 88, labelMin: 60, labelW: 920,
+    toneBase: 470, toneMax: 40, toneMin: 30, toneW: 920,
     colA: 295, colB: 785, colW: 480,
-    charBottom: 712, charMaxH: 270, charMaxW: 330, crossPx: 56,
-    codeBase: 826, codeMax: 120, codeMin: 80, codeSp: 5,
-    nickBase: 910, nickMax: 68, nickMin: 44,
-    ctaBase: 1020, ctaPx: 40
+    charBottom: 790, charMaxH: 270, charMaxW: 330, crossPx: 56,
+    codeBase: 906, codeMax: 120, codeMin: 80, codeSp: 5,
+    nickBase: 990, nickMax: 68, nickMin: 44
   };
 
   function codeSegsFor(code80, color) {
@@ -547,6 +547,15 @@
     ctx.fillText(t.label, cx, L.labelBase);
     note('label', textBox(ctx, t.label, cx, L.labelBase, 'center', 0, info.labelPx));
 
+    // 3b. 相性ラベルごとの一言（画面の getCompatibility().tone をそのまま描く。無ければ描かない）
+    if (t.tone) {
+      info.tonePx = fitSize(ctx, t.tone, 700, L.toneMax, L.toneMin, L.toneW, FONT_JP, 0);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = INK;
+      ctx.fillText(t.tone, cx, L.toneBase);
+      note('tone', textBox(ctx, t.tone, cx, L.toneBase, 'center', 0, info.tonePx));
+    }
+
     // 4. 2人のキャラと「×」
     var charTop = L.charBottom - L.charMaxH;
     note('charA', drawImageFit(ctx, imgA, L.colA, L.charBottom, L.charMaxW, L.charMaxH));
@@ -581,17 +590,11 @@
     ctx.fillText(t.b.nickname, L.colB, L.nickBase);
     note('nickB', textBox(ctx, t.b.nickname, L.colB, L.nickBase, 'center', 0, info.nickPx));
 
-    // 7. 呼びかけ（枠・塗りなしの普通の文字。1人用と同じ文言）
-    setFont(ctx, 700, L.ctaPx);
-    ctx.textAlign = 'center';
-    ctx.fillStyle = DM;
-    ctx.fillText(CTA_TEXT, cx, L.ctaBase);
-    note('cta', textBox(ctx, CTA_TEXT, cx, L.ctaBase, 'center', 0, L.ctaPx));
     info.w = W;
     info.h = H;
   }
 
-  /* t: { a:{code80,typeCode,nickname,group}, b:{…}, score, label }。rec は検査用（renderResult と同じ） */
+  /* t: { a:{code80,typeCode,nickname,group}, b:{…}, score, label, tone }。rec は検査用（renderResult と同じ） */
   function renderPair(imgA, imgB, t, fmt, rec) {
     var story = fmt === 'story', W = 1080, H = story ? 1920 : 1080;
     var c = document.createElement('canvas');
@@ -794,7 +797,7 @@
     });
   }
 
-  /* 相性ペア画像。opts: { a:{behaviorPrefix, typeCode, nickname}, b:{同左}, score: 数値, label: '最強コンビ' }
+  /* 相性ペア画像。opts: { a:{behaviorPrefix, typeCode, nickname}, b:{同左}, score: 数値, label: '最強コンビ', tone: '一緒にいると互いが伸びる' }
      a=友だち（左）／b=自分（右）。behaviorPrefix が空でも作る（その場合は16タイプの2文字だけを出す） */
   function pairSide(o) {
     var typeCode = String((o && o.typeCode) || '');
@@ -811,10 +814,11 @@
     var label = String((opts && opts.label) || '');
     if (!GROUP[a.group] || !GROUP[b.group] || a.typeCode.length !== 2 || b.typeCode.length !== 2 ||
         !(score >= 0 && score <= 100) || !label) return Promise.reject(new Error('invalid pair'));
-    var t = { a: a, b: b, score: score, label: label };
+    var tone = String((opts && opts.tone) || '');
+    var t = { a: a, b: b, score: score, label: label, tone: tone };
 
     return produce({
-      sample: [PAIR_HEADING, PAIR_UNIT, a.code80, b.code80, a.nickname, b.nickname, label, CTA_TEXT, '0123456789×'].join(''),
+      sample: [PAIR_HEADING, PAIR_UNIT, a.code80, b.code80, a.nickname, b.nickname, label, tone, '0123456789×'].join(''),
       imageUrls: [charImageUrl(a.typeCode), charImageUrl(b.typeCode)],
       render: function (imgs, fmt) { return renderPair(imgs[0], imgs[1], t, fmt); },
       nameFor: function (fmt) { return '80cards-pair-' + a.code80 + '-' + b.code80 + '-' + fmt; }
