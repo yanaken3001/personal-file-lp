@@ -24,6 +24,8 @@ const EXPORT_NAMES = [
   'createEmptyScoreDelta', 'getScoredValue', 'getQuestionScoreDelta', 'applyQuestionScore',
   'get80Code', 'getPatternNo',
   'encodeMatchData', 'decodeMatchData',
+  'getCompatibility', 'COMPATIBILITY_LABELS', 'TYPE_META', 'getMatchBehaviorName',
+  'INVITE_MEDIUMS', 'buildInviteUrl', 'buildInviteMessage',
   'RARITY_MAX_TIER', 'RARITY_TIERS', 'RARITY_TIER_BY_TYPE', 'getRarity', 'rarityParam',
 ];
 
